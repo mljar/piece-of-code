@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.2.5
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: contact@mljar.com
+author_name: MLJAR Sp. z o.o.
+data_format: string
+file_extension: ''
+has_binder: false
+has_settings: true
+kind: frontend
+labextension_name: pieceofcode
+mimetype: ''
+mimetype_name: ''
+project_short_description: Write code with UI.
+python_name: pieceofcode
+repository: https://github.com/mljar/piece-of-code
+test: false
+viewer_name: ''
+

@@ -1,0 +1,27 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "pieceofcode",
+  "description": "pieceofcode settings.",
+  "type": "object",
+  "properties": {
+    "alwaysOpenPieceOfCode": {
+      "type": "boolean",
+      "title": "alwaysOpenPieceOfCode",
+      "description": "Always Open Piece of Code",
+      "default": true
+    }
+  },
+  "additionalProperties": false,
+  "jupyter.lab.toolbars": {
+    "Cell": [
+      {
+        "name": "open-piece-of-code",
+        "command": "@mljar/pieceofcode:open"
+      },
+      {
+        "name": "hide-piece-of-code",
+        "command": "@mljar/pieceofcode:hide"
+      }
+    ]
+  }
+}

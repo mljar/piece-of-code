@@ -1,0 +1,10 @@
+/*
+    See the JupyterLab Developer Guide for useful CSS Patterns:
+
+    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+*/
+
+/* hide buttons in cell toolbar */
+.jp-ToolbarButtonComponent.lm-mod-hidden {
+  display: none;
+}
