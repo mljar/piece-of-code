@@ -5,6 +5,7 @@ import {
 
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { commandsPlugin } from './commands';
+import { extendedCellFactory } from './extendedcell';
 import { setAlwaysOpen } from './flags';
 /**
  * Initialization data for the pieceofcode extension.
@@ -42,6 +43,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
   }
 };
 
-const plugins: JupyterFrontEndPlugin<any>[] = [plugin, commandsPlugin];
+const plugins: JupyterFrontEndPlugin<any>[] = [plugin, commandsPlugin, extendedCellFactory];
 
 export default plugins;
