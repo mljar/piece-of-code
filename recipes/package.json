@@ -1,0 +1,44 @@
+{
+  "name": "@mljar/coderecipes",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/bundle.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "MLJAR Sp. z o.o.",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "@blueprintjs/core": "^5.8.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.7",
+    "@storybook/addon-interactions": "^7.6.7",
+    "@storybook/addon-links": "^7.6.7",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.7",
+    "@storybook/react": "^7.6.7",
+    "@storybook/react-webpack5": "^7.6.7",
+    "@storybook/test": "^7.6.7",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "@types/storybook__react": "^5.2.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^12.0.0",
+    "css-loader": "^6.9.0",
+    "storybook": "^7.6.7",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
