@@ -1,24 +1,21 @@
-import { Cell, ICellHeader, ICellModel } from '@jupyterlab/cells';
-import { NotebookPanel } from '@jupyterlab/notebook';
+import { Cell, ICellFooter, ICellModel } from '@jupyterlab/cells';
 import { PanelLayout, Widget } from '@lumino/widgets';
 
 import { Message } from '@lumino/messaging';
-import { Recipes } from './recipes';
 
-export class ExtendedCellHeader extends Widget implements ICellHeader {
-  private a: Recipes | undefined;
+export class ExtendedCellFooter extends Widget implements ICellFooter {
+  private a: Widget | undefined;
   constructor() {
     super();
-    console.log('cell header');
+    console.log('cell footer');
     this.layout = new PanelLayout();
     if (this.layout instanceof PanelLayout) {
       const t = document.createElement('div');
       t.textContent = 'Ola koduje2';
-      this.a = new Recipes({});
+      this.a = new Widget({ node: t });
       this.layout.addWidget(this.a);
       this.a.hide();
     }
-    console.log('this cell', this.cell, this.notebook);
   }
 
   protected onAfterAttach(msg: Message): void {
@@ -36,16 +33,5 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       });
       //cell.displayChanged.connect(() => console.log('change'));
     }
-  }
-
-  private get cell(): Cell<ICellModel> | null {
-    console.log('parent', this.parent);
-    return this.parent instanceof Cell ? this.parent : null;
-  }
-
-  private get notebook(): NotebookPanel | null {
-    return this.cell?.parent?.parent instanceof NotebookPanel
-      ? this.cell.parent.parent
-      : null;
   }
 }

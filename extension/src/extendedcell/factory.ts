@@ -1,6 +1,7 @@
-import { Cell, ICellHeader } from '@jupyterlab/cells';
+import { Cell, ICellFooter, ICellHeader } from '@jupyterlab/cells';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import { ExtendedCellHeader } from './header';
+import { ExtendedCellFooter } from './footer';
 
 export class ExtendedCellFactory extends NotebookPanel.ContentFactory {
   constructor(options: Cell.ContentFactory.IOptions) {
@@ -12,4 +13,7 @@ export class ExtendedCellFactory extends NotebookPanel.ContentFactory {
     return new ExtendedCellHeader();
   }
 
+  createCellFooter(): ICellFooter {
+    return new ExtendedCellFooter();
+  }
 }
