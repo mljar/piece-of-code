@@ -4,7 +4,7 @@ import MyComponent, { MyComponentProps } from "./MyComponent";
 
 const meta: Meta<typeof MyComponent> = {
   component: MyComponent,
-  title: "Marbella/MyComponent",
+  title: "CodePieces/MyComponent",
   argTypes: {},
 };
 export default meta;

@@ -21,7 +21,7 @@ export class Recipes extends VDomRenderer<RecipesModel.Model> {
   render(): JSX.Element | null {
     return (
       <>
-      <MyComponent text= {'Recipes'} />
+      <MyComponent text= {'Re'} />
       <readCSVRecipe.ui />
       <readCSVRecipe.parent.icon />
       </>
