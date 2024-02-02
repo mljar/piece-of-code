@@ -2,6 +2,7 @@ import { Cell, ICellHeader, ICellModel } from '@jupyterlab/cells';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import { PanelLayout, Widget } from '@lumino/widgets';
 
+import { KernelMessage } from '@jupyterlab/services';
 import { Message } from '@lumino/messaging';
 import { CounterWidget } from './recipes';
 
@@ -27,6 +28,23 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     cell.model.sharedModel.setSource(src);
   }
 
+  private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
+    const msgType = msg.header.msg_type;
+    console.log(msg);
+    switch (msgType) {
+      case 'execute_result':
+      case 'display_data':
+      case 'update_display_data':
+
+        console.log(msg.content);
+
+        break;
+      default:
+        break;
+    }
+    return;
+  };
+
   protected onAfterAttach(msg: Message): void {
     const cell = this.parent as Cell<ICellModel>;
     //console.log('get cell', cell);
@@ -42,6 +60,19 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
         // this.setCode("hejka");
         const nb = this.notebook;
+
+
+        let future = nb?.sessionContext.session?.kernel?.requestExecute({
+          code: "2+2",
+          store_history: false,
+        });
+        if (future) {
+          future.onIOPub = this._onIOPub;
+        }
+
+
+        //nb?.sessionContext.
+
         const cells = nb?.model?.cells;
         // const sharedModel = nb?.model?.sharedModel;
         // sharedModel?.insertCell(0, {
