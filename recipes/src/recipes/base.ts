@@ -1,11 +1,16 @@
-import { TablerIconsProps } from '@tabler/icons-react';
+// import { TablerIconsProps } from '@tabler/icons-react';
 import React from 'react';
 
+
+export interface IRecipeProps {
+
+}
 
 export interface IRecipeSet {
     name: string;
     description: string;
-    icon: (props: TablerIconsProps) => JSX.Element;
+    // icon: (props: TablerIconsProps) => JSX.Element;
+    recipes: IRecipe[];
 }
 
 export interface IPackage {
@@ -14,20 +19,9 @@ export interface IPackage {
 }
 
 export interface IRecipe {
-    parent: IRecipeSet;
     name: string;
     description: string;
+    // icon: (props: TablerIconsProps) => JSX.Element;
     //requiredPackages: IPackage[];
-    // ui: JSX.Element;
-    ui: React.FC<IProps>;
-}
-
-export interface IProps {
-
-}
-
-class Recipe {
-
-    private constructor() { }
-
+    ui: React.FC<IRecipeProps>;
 }

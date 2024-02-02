@@ -1,2 +1,2 @@
 export { default as MyComponent } from './components/MyComponent';
-export { default as readCSVRecipe } from './recipes/readData/readCSV';
+export { default as ReadCSV } from './recipes/readData/readCSV';

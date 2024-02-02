@@ -32,7 +32,8 @@ const config: StorybookConfig = {
       ],
     },],
       }
-    })
+    }),
+    "@storybook/addon-themes"
   ],
   framework: {
     name: "@storybook/react-webpack5",

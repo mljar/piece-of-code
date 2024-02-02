@@ -55,5 +55,9 @@ module.exports = {
     //   filename: 'style.css',
     // }),
   ],
+  externals: {
+    'react': 'react',
+    'react-dom': 'react-dom',
+  }
 };
 

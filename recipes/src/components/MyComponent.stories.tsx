@@ -19,3 +19,12 @@ export const Primary: Story = (args: React.JSX.IntrinsicAttributes & MyComponent
 Primary.args = {
   text: "Primary texts abecadło",
 };
+
+export const Primary2: Story = (args: React.JSX.IntrinsicAttributes & MyComponentProps) => (
+  <>
+    <MyComponent data-testId="InputField-id" {...args} />
+  </>
+);
+Primary2.args = {
+  text: "2Primary texts abecadło",
+};
