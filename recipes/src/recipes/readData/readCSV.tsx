@@ -6,6 +6,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
+import { FileUpload } from "../../components/FileUpload";
 
 export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
   const [name, setName] = useState("df");
@@ -22,6 +23,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
         name={name}
         setName={setName}
       />
+      <FileUpload title={"Upload CSV file"} />
 
       <code>
         import pandas as pd

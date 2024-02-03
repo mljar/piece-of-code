@@ -17,7 +17,7 @@ export const Title: React.FC<TitleProps> = ({ title, Icon }: TitleProps) => {
       {title}
       <div className="inline items-center float-right">
         <a
-          className="text-blue-600 hover:text-blue-700 
+          className="text-blue-500 hover:text-blue-700 
           font-medium text-sm text-center 
           inline-flex items-center dark:bg-blue-600 
           dark:hover:bg-blue-700 dark:focus:ring-blue-800"
