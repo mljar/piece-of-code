@@ -2,6 +2,7 @@
 // import { IconFileTypeCsv, TablerIconsProps } from "@tabler/icons-react";
 import React from "react";
 import { FileCsvIcon } from "../icons/FileCsv";
+import { BookIcon } from "../icons/Book";
 import { IconProps } from "../icons/props";
 
 interface TitleProps {
@@ -12,15 +13,36 @@ interface TitleProps {
 export const Title: React.FC<TitleProps> = ({ title, Icon }: TitleProps) => {
   return (
     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-      {Icon && <Icon className="inline pb-1" />}
+      {Icon && <Icon className="inline" />}
       {title}
-      {/* <button
-          type="button"
-          className="text-blue-500 hover:text-blue-700 font-medium rounded-lg text-sm text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      <div className="inline items-center float-right">
+        <a
+          className="text-blue-600 hover:text-blue-700 
+          font-medium text-sm text-center 
+          inline-flex items-center dark:bg-blue-600 
+          dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          href=""
         >
-          <IconInfoCircle className="pt-1" />
-          <span className="sr-only">Icon description</span>
-        </button> */}
+          <BookIcon className="" /> <span className="pb-0.5">Docs</span>
+          <span className="sr-only">Docs</span>
+        </a>
+      </div>
+      <div className="inline items-center float-right px-2">
+        <label className="relative inline-flex 
+                          items-center cursor-pointer">
+          <input type="checkbox" value="" className="sr-only peer" />
+          <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+                        peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 
+                        rounded-full peer dark:bg-gray-700 
+                        peer-checked:after:translate-x-full 
+                        rtl:peer-checked:after:-translate-x-full 
+                        peer-checked:after:border-white after:content-[''] 
+                        after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          <span className="ms-1 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Advanced
+          </span>
+        </label>
+      </div>
     </h3>
   );
 };
