@@ -1,5 +1,5 @@
 {
-  "name": "@mljar/coderecipes",
+  "name": "@mljar/recipes",
   "version": "0.0.1",
   "description": "",
   "main": "dist/bundle.js",
@@ -13,7 +13,8 @@
   },
   "keywords": [],
   "author": "MLJAR Sp. z o.o.",
-  "license": "AGPL-3.0-only",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {},
   "peerDependencies": {
     "react": "^18.0.0",
