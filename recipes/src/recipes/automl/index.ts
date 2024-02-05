@@ -7,5 +7,8 @@ export const AutoMLRecipes: IRecipeSet = {
   name: "MLJAR AutoML",
   description: "AutoML",
   Icon: RobotIcon,
-  recipes: [TrainRecipe, PredictRecipe],
+  recipes: {
+    [TrainRecipe.name]: TrainRecipe, 
+    [PredictRecipe.name]: PredictRecipe,
+  }
 };

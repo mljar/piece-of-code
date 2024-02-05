@@ -17,11 +17,9 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   return (
     <>
       <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-        <WalkIcon className="inline pb-1" /> Select your next step
+        {Icon && <Icon className="inline pb-1" />} {title && title}
       </h3>
-      <p className="mb-2">
-        What is your next step? Please select code recipe from the left sidebar.
-      </p>
+      {description && <p className="mb-2">description</p>}
     </>
   );
 };
@@ -58,18 +56,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
   let subTabs = undefined;
   if (selectedRecipeSet !== "") {
-    subTabs = allRecipeSets[selectedRecipeSet].recipes.map((recipe) => (
-      <li key={`select-recipe-${recipe.name}`}>
-        <a
-          className={selectedRecipe === recipe.name ? ActiveTabClass : TabClass}
-          onClick={() => {
-            setSelectedRecipe(recipe.name);
-          }}
-        >
-          {recipe.Icon && <recipe.Icon className="p-1" />} {recipe.name}
-        </a>
-      </li>
-    ));
+    subTabs = Object.entries(allRecipeSets[selectedRecipeSet].recipes).map(
+      ([_, recipe]) => (
+        <li key={`select-recipe-${recipe.name}`}>
+          <a
+            className={
+              selectedRecipe === recipe.name ? ActiveTabClass : TabClass
+            }
+            onClick={() => {
+              setSelectedRecipe(recipe.name);
+            }}
+          >
+            {recipe.Icon && <recipe.Icon className="p-1" />} {recipe.name}
+          </a>
+        </li>
+      )
+    );
   }
 
   let welcomeMsg = (
@@ -91,32 +93,44 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       />
     );
   }
+  let RecipeUI = undefined;
   if (selectedRecipeSet !== "" && selectedRecipe !== "") {
-    const recipeSet = allRecipeSets[selectedRecipeSet];
+    console.log(selectedRecipeSet, selectedRecipe);
+    const recipe = allRecipeSets[selectedRecipeSet].recipes[selectedRecipe];
     welcomeMsg = (
       <Welcome
-        title={recipeSet.name}
-        Icon={recipeSet.Icon}
-        description={recipeSet.description}
+        title={recipe.name}
+        Icon={recipe.Icon}
+        description={recipe.description}
       />
     );
+    RecipeUI = recipe.ui;
   }
-
   return (
-    <div className="bg-white dark:bg-slate-700 p-2">
-      <div className="md:flex">
-        <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
-          {tabs}
-        </ul>
-        {subTabs && (
+    <>
+      <div className="bg-white dark:bg-slate-700 p-2">
+        <div className="md:flex">
           <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
-            {subTabs}
+            {tabs}
           </ul>
-        )}
-        <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-          {welcomeMsg}
+          {subTabs && (
+            <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
+              {subTabs}
+            </ul>
+          )}
+          <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+            {welcomeMsg}
+          </div>
         </div>
+        {RecipeUI && (
+          <div className="pt-1">
+            <hr/>
+          <div className="pt-1">
+            <RecipeUI />
+          </div>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };

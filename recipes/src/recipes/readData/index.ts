@@ -9,5 +9,8 @@ export const ReadDataRecipes: IRecipeSet = {
     name: "Read data",
     description: "Read data from file, url or database.",
     Icon: OpenBookIcon,
-    recipes: [ReadCSVRecipe, ReadExcelRecipe],
+    recipes: {
+        [ReadCSVRecipe.name]: ReadCSVRecipe, 
+        [ReadExcelRecipe.name]: ReadExcelRecipe,
+    }
 };

@@ -11,7 +11,7 @@ export interface IRecipeSet {
     name: string;
     description: string;
     Icon?: React.FC<IconProps>;
-    recipes: IRecipe[];
+    recipes: Record<string, IRecipe>;
 }
 
 export interface IPackage {

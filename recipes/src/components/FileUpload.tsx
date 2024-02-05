@@ -6,11 +6,13 @@ import { IconProps } from "../icons/props";
 interface FileUploadProps {
   title: string;
   additionalInfo?: string;
+  setFilePath?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({
   title,
   additionalInfo,
+  setFilePath,
 }: FileUploadProps) => {
   return (
     <div className="mt-2">
@@ -23,6 +25,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         dark:text-gray-400 focus:outline-none focus:border-2 focus:border-blue-500 dark:bg-gray-700 
         dark:border-gray-600 dark:placeholder-gray-400 p-0.5 text-md"
         type="file"
+        multiple={false}
+        onChange={(e) => {
+          if (e.target.files && setFilePath) {
+            setFilePath(e.target.files[0].name);
+          }
+        }}
       ></input>
       {additionalInfo && (
         <p

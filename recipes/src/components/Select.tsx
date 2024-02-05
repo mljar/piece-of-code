@@ -13,9 +13,12 @@ export const Select: React.FC<SelectProps> = ({
   options,
   setOption,
 }: SelectProps) => {
-  const optionsElements = options.map((label, v) => (
-    <option value={v}>{label}</option>
-  ));
+  console.log(options);
+  const optionsElements = options.map((option) => {
+    const label = option[0];
+    const value = option[1];
+    return <option value={value}>{label}</option>;
+  });
   return (
     <div>
       <div className="mt-2">
@@ -24,7 +27,7 @@ export const Select: React.FC<SelectProps> = ({
         </label>
         <select
           value={option}
-          onChange={(e)=>setOption(e.target.value)}
+          onChange={(e) => setOption(e.target.value)}
           className="border rounded-md block w-full p-1.5 
           bg-gray-50 
           border-gray-300 

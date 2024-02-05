@@ -8,5 +8,9 @@ export const TransformDataRecipes: IRecipeSet = {
     name: "Transform Data",
     description: "Transform DataFrame",
     Icon: TransformIcon,
-    recipes: [SelectRowsRecipe, SelectColsRecipe, SplitDataRecipe],
+    recipes: {
+        [SelectRowsRecipe.name]: SelectRowsRecipe, 
+        [SelectColsRecipe.name]: SelectColsRecipe, 
+        [SplitDataRecipe.name]: SplitDataRecipe,
+    }
 };
