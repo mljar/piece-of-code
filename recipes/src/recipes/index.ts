@@ -3,4 +3,8 @@ import { ReadDataRecipes } from "./readData";
 import { TransformDataRecipes } from "./transformData";
 import { AutoMLRecipes } from "./automl";
 
-const allRecipes: IRecipeSet[] = [ReadDataRecipes, TransformDataRecipes, AutoMLRecipes]
+export const allRecipes: Record<string, IRecipeSet> = {
+    [ReadDataRecipes.name]: ReadDataRecipes,
+    [TransformDataRecipes.name]: TransformDataRecipes,
+    [AutoMLRecipes.name]: AutoMLRecipes
+}

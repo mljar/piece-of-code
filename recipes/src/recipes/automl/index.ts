@@ -1,12 +1,11 @@
 import { IRecipeSet } from "../base";
-// import { IconTransform } from '@tabler/icons-react';
-
 import { TrainRecipe } from "./train";
 import { PredictRecipe } from "./predict";
+import { RobotIcon } from "../../icons/Robot";
 
 export const AutoMLRecipes: IRecipeSet = {
-  name: "AutoML",
+  name: "MLJAR AutoML",
   description: "AutoML",
-  // icon: IconTransform,
+  Icon: RobotIcon,
   recipes: [TrainRecipe, PredictRecipe],
 };

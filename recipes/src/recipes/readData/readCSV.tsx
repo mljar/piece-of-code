@@ -66,7 +66,7 @@ export const ReadCSVRecipe: IRecipe = {
   name: "Read CSV",
   description: "Load CSV file into dataframe.",
   ui: ReadCSV,
-  // icon: IconFileTypeCsv,
+  Icon: FileCsvIcon,
 };
 
 export default ReadCSV;
