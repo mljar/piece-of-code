@@ -7,6 +7,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
 import { FileUpload } from "../../components/FileUpload";
+import { Select } from "../../components/Select";
 
 export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
   const [name, setName] = useState("df");
@@ -14,6 +15,13 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
   useEffect(() => {
     console.log(name);
   }, [name]);
+
+  const delimiterOptions: [string, string][] = [
+    ["Comma (,)", ","],
+    ["Semicolon (;)", ";"],
+    ["Tab (\\t)", "\\t"]
+  ];
+  const [delimiter, setDelimiter] = useState(delimiterOptions[0][1]);
 
   return (
     <div className="bg-gray-50 dark:bg-slate-700 p-2">
@@ -24,38 +32,17 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
         setName={setName}
       />
       <FileUpload title={"Upload CSV file"} />
-
+      <Select
+        label={"Delimiter"}
+        option={delimiter}
+        setOption={setDelimiter}
+        options={delimiterOptions}
+      />
       <code>
         import pandas as pd
         <br />
         {name} = pd.read_csv("filename")
       </code>
-
-      {/* <div className="mt-2">
-        <label className="block text-sm font-medium text-gray-900 dark:text-white">
-          Delimiter
-        </label>
-        <select
-          id="delimiter"
-          className="border rounded-md block w-full p-1.5 
-          bg-gray-50 
-          border-gray-300 
-          text-gray-900
-          active:ring-blue-500 
-          active:border-blue-500 
-          focus:ring-blue-500 
-          focus:border-blue-500 
-          dark:bg-gray-700 
-          dark:border-gray-600 
-          dark:placeholder-gray-400 
-          dark:text-white 
-          "
-        >
-          <option value="," selected>,</option>
-          <option value=";">;</option>
-        </select>
-        
-      </div> */}
     </div>
   );
 };
