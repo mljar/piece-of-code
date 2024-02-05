@@ -1,13 +1,12 @@
 import { IRecipeSet } from "../base";
-// import { IconTransform } from '@tabler/icons-react';
-
 import { SelectRowsRecipe } from "./seletRows";
 import { SelectColsRecipe } from "./selectCols";
 import { SplitDataRecipe } from "./splitData";
+import { TransformIcon } from "../../icons/Transform";
 
 export const TransformDataRecipes: IRecipeSet = {
     name: "Transform Data",
     description: "Transform DataFrame",
-    // icon: IconTransform,
+    Icon: TransformIcon,
     recipes: [SelectRowsRecipe, SelectColsRecipe, SplitDataRecipe],
 };

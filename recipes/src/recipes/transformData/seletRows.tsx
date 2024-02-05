@@ -10,7 +10,7 @@ export const SelectRows: React.FC<IRecipeProps> = ({ }) => {
   
 
 export const SelectRowsRecipe: IRecipe = {
-  name: "Select Columns",
+  name: "Select Rows",
   description: "Select rows from dataframe.",
   ui: SelectRows,
   // icon: IconTableRow
