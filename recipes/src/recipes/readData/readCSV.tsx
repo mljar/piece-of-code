@@ -23,6 +23,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
   const [code, setCode] = useState("");
 
   useEffect(() => {
+    let src = '';
     setCode(name);
     console.log(name);
   }, [name]);
