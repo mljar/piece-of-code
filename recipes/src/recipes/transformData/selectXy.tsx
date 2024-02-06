@@ -5,6 +5,7 @@ import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { MultiSelect } from "../../components/MultiSelect";
+import { Variable } from "../../components/Variable";
 
 export const SelectXy: React.FC<IRecipeProps> = ({
   setCode,
@@ -23,11 +24,12 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   }
   const dataFrames = Object.keys(dataFramesColumns);
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
+  const [x, setX] = useState("X");
+  const [y, setY] = useState("y");
   const [xCols, setXCols] = useState([] as string[]);
   const [yCol, setYCol] = useState("");
 
   useEffect(() => {
-    console.log("set x cols empty");
     if (df === "") {
       setXCols([]);
       setYCol("");
@@ -43,13 +45,19 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
-    if (!xCols) {
+    if (!xCols || yCol === "") {
       return;
     }
-    let src = "";
+    const xColsStr = '"' + xCols.join('", "') + '"';
+    let src = `x_cols = [${xColsStr}]\n`;
+    src += `y_col = \"${yCol}\"\n`;
+    src += "# input matrix\n";
+    src += `${x} = ${df}[x_cols]\n`;
+    src += "# target vector\n";
+    src += `${y} = ${df}[y_col]`;
     setCode(src);
     setPackages(["import pandas as pd"]);
-  }, [xCols, yCol]);
+  }, [df, xCols, yCol, x, y]);
 
   return (
     <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
@@ -68,12 +76,14 @@ export const SelectXy: React.FC<IRecipeProps> = ({
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
+          <Variable description={"Input maxtrix variable name"} name={x} setName={setX} />
           <MultiSelect
             label={"Select X columns"}
             option={xCols.map((x) => ({ value: x, label: x }))}
             options={dataFramesColumns[df].map((c) => ({ value: c, label: c }))}
             setOption={setXCols}
           />
+          <Variable description={"Target vector variable name"} name={y} setName={setY} />
           <Select
             label={"Select y column"}
             option={yCol}
