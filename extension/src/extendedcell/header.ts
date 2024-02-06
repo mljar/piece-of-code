@@ -4,23 +4,21 @@ import { PanelLayout, Widget } from '@lumino/widgets';
 
 import { KernelMessage } from '@jupyterlab/services';
 import { Message } from '@lumino/messaging';
-import { CounterWidget } from './recipes';
+import { SelectRecipeWidget } from './recipes';
 
 export class ExtendedCellHeader extends Widget implements ICellHeader {
-  private a: CounterWidget | undefined;
+  private selectRecipe: SelectRecipeWidget | undefined;
   constructor() {
     super();
-    console.log('cell header');
     this.layout = new PanelLayout();
     if (this.layout instanceof PanelLayout) {
-      const t = document.createElement('div');
-      t.textContent = 'Ola koduje2';
-      const a = this.setCode.bind(this);
-      this.a = new CounterWidget(a);
-      this.layout.addWidget(this.a);
-      this.a.hide();
+      this.removeClass('lm-Widget');
+      this.removeClass('jp-Cell-header');
+      this.addClass('recipe-panel-layout');
+      this.selectRecipe = new SelectRecipeWidget(this.setCode.bind(this));
+      this.layout.addWidget(this.selectRecipe);
+      this.selectRecipe.hide();
     }
-    console.log('this cell', this.cell, this.notebook);
   }
 
   setCode(src: string): void {
@@ -56,7 +54,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       // });
       cell.inputArea?.node.addEventListener('focusin', () => {
         //console.log('focusin is here2', cell);
-        this.a?.show();
+        this.selectRecipe?.show();
 
         // this.setCode("hejka");
         const nb = this.notebook;

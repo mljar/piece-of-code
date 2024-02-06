@@ -20,5 +20,5 @@ export const SelectRecipeForm: Story = (args: React.JSX.IntrinsicAttributes & IS
 );
 
 SelectRecipeForm.args = {
-  allRecipeSets: allRecipes
+  // allRecipeSets: allRecipes
 };

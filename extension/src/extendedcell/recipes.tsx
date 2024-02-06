@@ -1,74 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ReactWidget } from '@jupyterlab/ui-components';
 
-import { VDomModel, VDomRenderer } from '@jupyterlab/ui-components';
-
-import { MyComponent } from '@mljar/recipes';
-
-import { ReadCSV } from '@mljar/recipes';
-
-export namespace RecipesModel {
-  export class Model extends VDomModel {
-    constructor() {
-      super();
-    }
-  }
-}
-
-export interface IRecipesOptions {}
-
-export class Recipes extends VDomRenderer<RecipesModel.Model> {
-  // const [test:string, setTest: any] = React.useState('a');
-
-  constructor(options: IRecipesOptions) {
-    super(new RecipesModel.Model());
-  }
-  render(): JSX.Element | null {
-    return (
-      <>
-        {/* <ReadCSV /> */}
-        aaa
-        {/* <MyComponent text= {'Re121'} /> */}
-        {/* <readCSVRecipe.ui /> */}
-      </>
-    );
-  }
-}
+import { SelectRecipe } from '@mljar/recipes';
 
 interface Props {
   setCode: (src: string) => void;
 }
 
-const CounterComponent = ({ setCode }: Props): JSX.Element => {
-  const [counter, setCounter] = useState(0);
-  // const [name, setName] = useState("example");
+const SelectRecipeComponent = ({ setCode }: Props): JSX.Element => {
+  
+  const setPackages = (packages: string[]) => {
+    console.log(packages);
+  };
   return (
     <div>
-      <MyComponent text={'Re'} />
-      <p>You clicked {counter} times!</p>
-      <button
-        onClick={(): void => {
-          setCounter(counter + 1);
-          setCode(`hejka ${counter}`);
-        }}
-      >
-        Increment aa2
-      </button>
-      <ReadCSV />
-      {/* {name} */}
+      <SelectRecipe setCode={setCode} setPackages={setPackages} />
     </div>
   );
 };
 
-/**
- * A Counter Lumino Widget that wraps a CounterComponent.
- */
-export class CounterWidget extends ReactWidget {
+export class SelectRecipeWidget extends ReactWidget {
   setCodeCallback: (src: string) => void;
-  /**
-   * Constructs a new CounterWidget.
-   */
   constructor(setCode: (src: string) => void) {
     super();
     this.addClass('jp-react-widget');
@@ -76,6 +29,6 @@ export class CounterWidget extends ReactWidget {
   }
 
   render(): JSX.Element {
-    return <CounterComponent setCode={this.setCodeCallback} />;
+    return <SelectRecipeComponent setCode={this.setCodeCallback} />;
   }
 }

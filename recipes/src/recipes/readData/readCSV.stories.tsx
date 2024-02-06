@@ -14,11 +14,14 @@ export default meta;
 
 type Story = StoryObj<typeof ReadCSV>;
 
-export const ReadCSVForm: Story = (args: React.JSX.IntrinsicAttributes & IRecipeProps) => (
+export const ReadCSVForm: Story = (
+  args: React.JSX.IntrinsicAttributes & IRecipeProps
+) => (
   <>
     <ReadCSV data-testId="InputField-id" {...args} />
   </>
 );
 ReadCSVForm.args = {
-  text: "Primary texts abecadło",
+  setCode: (src: string) => console.log(src),
+  setPackages: (packages: string[]) => console.log(packages),
 };

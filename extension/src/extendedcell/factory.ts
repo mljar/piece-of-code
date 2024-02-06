@@ -9,7 +9,6 @@ export class ExtendedCellFactory extends NotebookPanel.ContentFactory {
   }
 
   createCellHeader(): ICellHeader {
-    console.log('create cell header');
     return new ExtendedCellHeader();
   }
 

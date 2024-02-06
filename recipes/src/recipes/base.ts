@@ -4,13 +4,15 @@ import { IconProps } from '../icons/props';
 
 
 export interface IRecipeProps {
-
+    setCode: (src: string) => void;
+    setPackages: (packages: string[]) => void;
 }
 
 export interface IRecipeSet {
     name: string;
     description: string;
     Icon?: React.FC<IconProps>;
+    docsLink?: string;
     recipes: Record<string, IRecipe>;
 }
 
@@ -23,6 +25,7 @@ export interface IRecipe {
     name: string;
     description: string;
     Icon?: React.FC<IconProps>;
-    //requiredPackages: IPackage[];
+    requiredPackages?: [string, string][];
+    docsLink?: string;
     ui: React.FC<IRecipeProps>;
 }

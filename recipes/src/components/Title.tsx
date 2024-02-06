@@ -20,7 +20,7 @@ export const Title: React.FC<TitleProps> = ({
 }: TitleProps) => {
   return (
     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-      {Icon && <Icon className="inline" />}
+      {Icon && <Icon className="inline pb-1" />}
       {title}
       {/* <div className="inline items-center float-right">
         <a

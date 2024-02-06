@@ -2,46 +2,19 @@ import React, { useState } from "react";
 import { IRecipeSet } from "../recipes/base";
 import { WalkIcon } from "../icons/Walk";
 import { IconProps } from "../icons/props";
-
-export interface IWelcomeProps {
-  title?: string;
-  Icon?: React.FC<IconProps>;
-  description: string;
-}
-
-export const Welcome: React.FC<IWelcomeProps> = ({
-  title,
-  Icon,
-  description,
-}: IWelcomeProps) => {
-  return (
-    <>
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-        {Icon && <Icon className="inline pb-1" />} {title && title}
-      </h3>
-      {description && <p className="mb-2">description</p>}
-
-      <div className="flex items-center mb-4">
-        <input
-          type="checkbox"
-          value=""
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-          Default checkbox
-        </label>
-      </div>
-    </>
-  );
-};
+import { Welcome } from "./Welcome";
+import { allRecipes } from "../recipes";
 
 export interface ISelectRecipeProps {
-  allRecipeSets: Record<string, IRecipeSet>;
+  setCode: (src: string) => void;
+  setPackages: (packages: string[]) => void;
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
-  allRecipeSets,
+  setCode,
+  setPackages,
 }: ISelectRecipeProps) => {
+  const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
 
@@ -113,6 +86,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         title={recipe.name}
         Icon={recipe.Icon}
         description={recipe.description}
+        packages={recipe.requiredPackages}
+        docsLink={recipe.docsLink}
       />
     );
     RecipeUI = recipe.ui;
@@ -137,7 +112,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <div className="pt-1">
             <hr />
             <div className="pt-1">
-              <RecipeUI />
+              <RecipeUI setCode={setCode} setPackages={setPackages} />
             </div>
           </div>
         )}
@@ -145,3 +120,5 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     </>
   );
 };
+
+export default SelectRecipe;

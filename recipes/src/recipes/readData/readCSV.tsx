@@ -1,15 +1,13 @@
 // MyComponent.tsx
 import React, { useEffect, useState } from "react";
-
 import { IRecipe, IRecipeProps } from "../base";
-// import { IconFileTypeCsv, IconInfoCircle } from "@tabler/icons-react";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
 import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 
-export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
+export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
 
@@ -20,13 +18,21 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
   ];
   const [delimiter, setDelimiter] = useState(delimiterOptions[0][1]);
   const [filePath, setFilePath] = useState("");
-  const [code, setCode] = useState("");
 
   useEffect(() => {
-    let src = '';
-    setCode(name);
-    console.log(name);
-  }, [name]);
+    if (name === "" || filePath === "") {
+      //setCode("");
+      //setPackages([""]);
+      return;
+    }
+    let delimiterSrc = "";
+    if (delimiter !== ",") {
+      delimiterSrc = `, delimiter="${delimiter}"`;
+    }
+    let src = `${name} = pd.read_csv("path/to/your/file/${filePath}"${delimiterSrc})`;
+    setCode(src);
+    setPackages(["import pandas as pd"]);
+  }, [name, filePath]);
 
   return (
     <div className="bg-gray-50 dark:bg-slate-700 p-2">
@@ -41,7 +47,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
         name={name}
         setName={setName}
       />
-      <FileUpload title={"Upload CSV file"} />
+      <FileUpload title={"CSV file"} setFilePath={setFilePath} />
       {advanced && (
         <>
           <Select
@@ -52,11 +58,6 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
           />
         </>
       )}
-      <code>
-        import pandas as pd
-        <br />
-        {name} = pd.read_csv("filename")
-      </code>
     </div>
   );
 };
@@ -65,9 +66,11 @@ export const ReadCSV: React.FC<IRecipeProps> = ({}) => {
 
 export const ReadCSVRecipe: IRecipe = {
   name: "Read CSV",
-  description: "Load CSV file into dataframe.",
+  description: "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
   ui: ReadCSV,
   Icon: FileCsvIcon,
+  requiredPackages: [['pandas', '>=1.0.0']],
+  docsLink: "http://mljar.com"
 };
 
 export default ReadCSV;
