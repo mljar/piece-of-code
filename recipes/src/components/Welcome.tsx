@@ -27,7 +27,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 dark:bg-gray-700 dark:border-gray-600"
         checked
       />
-      <label className="ms-1 text-sm  text-gray-900 dark:text-gray-300">
+      <label className="ms-1 text-gray-900 dark:text-gray-300">
         {p[0]}
         {p[1]}
       </label>
@@ -55,7 +55,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         )}
         
       </h3>
-      {description && <p className="mb-2">{description}</p>}
+      {description && <p className="mb-2 text-base">{description}</p>}
 
       {packages && (
         <div>
