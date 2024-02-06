@@ -15,7 +15,9 @@
   "author": "MLJAR Sp. z o.o.",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
-  "dependencies": {},
+  "dependencies": {
+    "react-select": "^5.8.0"
+  },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"

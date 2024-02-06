@@ -6,6 +6,7 @@ import { IconProps } from '../icons/props';
 export interface IRecipeProps {
     setCode: (src: string) => void;
     setPackages: (packages: string[]) => void;
+    dataFramesColumns?: Record<string, string[]>;
 }
 
 export interface IRecipeSet {
