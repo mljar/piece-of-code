@@ -32,7 +32,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     let src = `${name} = pd.read_csv("path/to/your/file/${filePath}"${delimiterSrc})`;
     setCode(src);
     setPackages(["import pandas as pd"]);
-  }, [name, filePath]);
+  }, [name, filePath, delimiter]);
 
   return (
     <div className="bg-white dark:bg-slate-800 p-4 rounded-md">

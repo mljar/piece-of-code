@@ -20,6 +20,8 @@ export const SelectXyStory: Story = (
   </>
 );
 SelectXyStory.args = {
+  setCode: (src: string) => console.log(src),
+  setPackages: (packages: string[]) => console.log(packages),
   dataFramesColumns: {
     df: ["col1", "col2", "col3", "col4"],
     df2: ["feature1", "feature2", "feature3", "feature4"],
@@ -35,5 +37,7 @@ export const SelectXyEmptyDfStory: Story = (
   </>
 );
 SelectXyEmptyDfStory.args = {
+  setCode: (src: string) => console.log(src),
+  setPackages: (packages: string[]) => console.log(packages),
   dataFramesColumns: {},
 };

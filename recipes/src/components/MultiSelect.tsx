@@ -1,10 +1,15 @@
 import React from "react";
-import Select from "react-select";
+import Select, { MultiValue } from "react-select";
+
+export type Option = {
+  value: string;
+  label: string;
+};
 
 interface SelectProps {
   label: string;
-  option: string[]; // selected value
-  options: [string, string][]; // array of title, value
+  option: Option[]; // selected value
+  options: Option[]; // array of title, value
   setOption: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
@@ -14,22 +19,19 @@ export const MultiSelect: React.FC<SelectProps> = ({
   options,
   setOption,
 }: SelectProps) => {
-  const optionsList = options.map((option) => {
-    const label = option[0];
-    const value = option[1];
-    return { value, label };
-  });
   return (
     <div>
       <div className="mt-2">
         <label className="block text-sm font-medium text-gray-900 dark:text-white">
           {label}
         </label>
-        <Select 
-          options={optionsList}
+        <Select
+          value={option}
+          options={options}
           isMulti={true}
           onChange={(e) => {
-            console.log(e);
+            const sel = e.map((i) => i.value);
+            setOption(sel);
           }}
         />
       </div>
