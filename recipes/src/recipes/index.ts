@@ -9,7 +9,6 @@ import { MLRecipes } from "./ml";
 import { AutoMLRecipes } from "./automl";
 import { WidgetsRecipes } from "./widgets";
 
-
 export const allRecipes: Record<string, IRecipeSet> = {
     [PythonRecipes.name]: PythonRecipes,
     [MarkdownRecipes.name]: MarkdownRecipes,

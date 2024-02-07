@@ -6,6 +6,7 @@ import { Welcome } from "./Welcome";
 import { allRecipes } from "../recipes";
 import { PlayIcon } from "../icons/Play";
 import { HomeIcon } from "../icons/Home";
+import { TrashIcon } from "../icons/Trash";
 
 export interface ISelectRecipeProps {
   setCode: (src: string) => void;
@@ -103,8 +104,26 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     <div className="flex">
       <div className="flex-none" style={{ width: "72px" }}>
         <div className="h-full grid grid-cols-1 content-end">
-          {
-            <div>
+          {RecipeUI && (
+            <div className="has-tooltip">
+              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+                Delete cell
+              </span>
+              <button
+                type="button"
+                className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+                onClick={() => setShowNav(!showNav)}
+              >
+                {<TrashIcon className="inline p-0.5" />}
+              </button>
+            </div>
+          )}
+
+          {RecipeUI && (
+            <div className="has-tooltip">
+              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+                Toggle menu view
+              </span>
               <button
                 type="button"
                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
@@ -113,15 +132,20 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                 {<HomeIcon className="inline p-0.5" />}
               </button>
             </div>
-          }
-          <div>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
-            >
-              {<PlayIcon className="inline" />}
-            </button>
-          </div>
+          )}
+          {RecipeUI && (
+            <div className="has-tooltip">
+              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+                Run code
+              </span>
+              <button
+                type="button"
+                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
+              >
+                {<PlayIcon className="inline" />}
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r">
