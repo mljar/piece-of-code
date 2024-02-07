@@ -60,7 +60,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   }, [df, xCols, yCol, x, y]);
 
   return (
-    <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+    <div>
       <Title Icon={XyIcon} title={"Select X,y"} />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
@@ -71,19 +71,19 @@ export const SelectXy: React.FC<IRecipeProps> = ({
       {df !== "" && (
         <>
           <Select
-            label={"Select DataFrame"}
+            label={"From which DataFrame we will select columns?"}
             option={df}
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
-          <Variable description={"Input maxtrix variable name"} name={x} setName={setX} />
+          <Variable label={"Input maxtrix variable name"} name={x} setName={setX} />
           <MultiSelect
             label={"Select X columns"}
             option={xCols.map((x) => ({ value: x, label: x }))}
             options={dataFramesColumns[df].map((c) => ({ value: c, label: c }))}
             setOption={setXCols}
           />
-          <Variable description={"Target vector variable name"} name={y} setName={setY} />
+          <Variable label={"Target vector variable name"} name={y} setName={setY} />
           <Select
             label={"Select y column"}
             option={yCol}

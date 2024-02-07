@@ -5,6 +5,7 @@ import { IconProps } from "../icons/props";
 import { Welcome } from "./Welcome";
 import { allRecipes } from "../recipes";
 import { PlayIcon } from "../icons/Play";
+import { HomeIcon } from "../icons/Home";
 
 export interface ISelectRecipeProps {
   setCode: (src: string) => void;
@@ -15,6 +16,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   setCode,
   setPackages,
 }: ISelectRecipeProps) => {
+  const [showNav, setShowNav] = useState(true);
   const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
@@ -39,6 +41,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     </li>
   ));
 
+  let showSubTabs = false;
   let subTabs = undefined;
   if (selectedRecipeSet !== "") {
     subTabs = Object.entries(allRecipeSets[selectedRecipeSet].recipes).map(
@@ -57,6 +60,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </li>
       )
     );
+    if (Object.entries(allRecipeSets[selectedRecipeSet].recipes).length > 0) {
+      showSubTabs = true;
+    }
   }
 
   let welcomeMsg = (
@@ -94,37 +100,57 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     RecipeUI = recipe.ui;
   }
   return (
-    <>
-      <div className="bg-white dark:bg-slate-700 p-2">
-        <div className="md:flex">
-          <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
-            {tabs}
-          </ul>
-          {subTabs && (
-            <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
-              {subTabs}
-            </ul>
-          )}
-          <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-            {welcomeMsg}
-          </div>
-        </div>
-        {RecipeUI && (
-          <div className="pt-1">
-            <hr />
-            <div className="pt-1">
-              <RecipeUI setCode={setCode} setPackages={setPackages} />
+    <div className="flex">
+      <div className="flex-none" style={{ width: "72px" }}>
+        <div className="h-full grid grid-cols-1 content-end">
+          {
+            <div>
+              <button
+                type="button"
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+                onClick={() => setShowNav(!showNav)}
+              >
+                {<HomeIcon className="inline p-0.5" />}
+              </button>
             </div>
+          }
+          <div>
             <button
               type="button"
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
             >
-              {<PlayIcon className="inline" />} Run
+              {<PlayIcon className="inline" />}
             </button>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r">
+        {showNav && (
+          <div className="md:flex">
+            <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
+              {tabs}
+            </ul>
+            {showSubTabs && (
+              <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
+                {subTabs}
+              </ul>
+            )}
+            <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+              {welcomeMsg}
+            </div>
+          </div>
+        )}
+
+        {RecipeUI && (
+          <div>
+            {showNav && <hr className="p-1 m-2" />}
+            <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
+              <RecipeUI setCode={setCode} setPackages={setPackages} />
+            </div>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

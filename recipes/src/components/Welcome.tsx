@@ -34,7 +34,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
     </div>
   ));
   return (
-    <>
+    <div>
       <h3 className="text-lg   text-gray-900 dark:text-white mb-2">
         {Icon && <Icon className="inline pb-1" />} {title && title}
         {docsLink && (
@@ -65,6 +65,6 @@ export const Welcome: React.FC<IWelcomeProps> = ({
           {packagesList}
         </div>
       )}
-    </>
+    </div>
   );
 };

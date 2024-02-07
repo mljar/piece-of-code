@@ -28,7 +28,7 @@ export const Select: React.FC<SelectProps> = ({
         <select
           value={option}
           onChange={(e) => setOption(e.target.value)}
-          className="border rounded-md block w-full p-1.5 
+          className="border rounded-md block w-full p-2 
           bg-gray-50 
           border-gray-300 
           text-gray-900 

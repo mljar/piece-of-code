@@ -35,7 +35,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   }, [name, filePath, delimiter]);
 
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
       <Title
         Icon={FileCsvIcon}
         title={"Read CSV file"}

@@ -19,7 +19,7 @@ export const Title: React.FC<TitleProps> = ({
   setAdvanced,
 }: TitleProps) => {
   return (
-    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
       {Icon && <Icon className="inline pb-1" />}
       {title}
       {/* <div className="inline items-center float-right">
@@ -57,7 +57,7 @@ export const Title: React.FC<TitleProps> = ({
                         peer-checked:after:border-white after:content-[''] 
                         after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
             ></div>
-            <span className="ms-1 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <span className="ms-1 text-xs font-normal text-gray-900 dark:text-gray-300">
               Advanced
             </span>
           </label>

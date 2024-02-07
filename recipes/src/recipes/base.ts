@@ -7,6 +7,7 @@ export interface IRecipeProps {
     setCode: (src: string) => void;
     setPackages: (packages: string[]) => void;
     dataFramesColumns?: Record<string, string[]>;
+    variables?: Record<string, string>; // name, type
 }
 
 export interface IRecipeSet {
