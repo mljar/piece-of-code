@@ -6,9 +6,11 @@ import { ExtendedCellFooter } from './footer';
 export class ExtendedCellFactory extends NotebookPanel.ContentFactory {
   constructor(options: Cell.ContentFactory.IOptions) {
     super(options);
+    console.log('extended cell factory');
   }
 
   createCellHeader(): ICellHeader {
+    console.log('create cell header');
     return new ExtendedCellHeader();
   }
 

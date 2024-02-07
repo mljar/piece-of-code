@@ -6,6 +6,16 @@ import { KernelMessage } from '@jupyterlab/services';
 import { Message } from '@lumino/messaging';
 import { SelectRecipeWidget } from './recipes';
 
+const hideAllSelectRecipeWidgets = (): void => {
+  const elements = document.querySelectorAll(
+    `jp-react-widget`
+  );
+  elements.forEach((e: Element) => {
+    e.classList.add('lm-mod-hidden');
+  });
+};
+
+
 export class ExtendedCellHeader extends Widget implements ICellHeader {
   private selectRecipe: SelectRecipeWidget | undefined;
   constructor() {
@@ -28,13 +38,13 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
     const msgType = msg.header.msg_type;
-    console.log(msg);
+    // console.log(msg);
     switch (msgType) {
       case 'execute_result':
       case 'display_data':
       case 'update_display_data':
 
-        console.log(msg.content);
+        // console.log(msg.content);
 
         break;
       default:
@@ -52,8 +62,10 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       //   console.log('focusin is here2', cell);
       //   this.a?.hide();
       // });
+
       cell.inputArea?.node.addEventListener('focusin', () => {
         //console.log('focusin is here2', cell);
+        hideAllSelectRecipeWidgets();
         this.selectRecipe?.show();
 
         // this.setCode("hejka");
@@ -81,7 +93,12 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         if (cells) {
           // cells.get(0).sharedModel.setSource("hejka");
           for (let i = 0; i < cells?.length; i++) {
-            console.log(cells.get(i).sharedModel.source)
+            // console.log(cells.get(i).sharedModel.source)
+            console.log(cells.get(i).id);
+            console.log(cells.get(i).sharedModel.getMetadata());
+            let m = cells.get(i).sharedModel.getMetadata();
+            m['showPoC'] = true;
+            cells.get(i).sharedModel.setMetadata(m);
           }
         }
       });
@@ -93,7 +110,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   //private _stateChanged = new Signal<ButtonWidget, ICount>(this);
 
   private get cell(): Cell<ICellModel> | null {
-    console.log('parent', this.parent);
+    // console.log('parent', this.parent);
     return this.parent instanceof Cell ? this.parent : null;
   }
 

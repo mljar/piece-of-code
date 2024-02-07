@@ -16,3 +16,12 @@
   border-right: 1px solid #eee;
   margin-left: 72px; */
 }
+
+.jp-Cell.jp-mod-active {
+  /* background-color: #2563eb !important; 
+  box-shadow: rgba(37, 99, 235, 0.1) 0px 4px 6px -1px, rgba(37, 99, 235, 0.06) 0px 2px 4px -1px; */
+  /* box-shadow: rgba(37, 99, 235, 0.3) 0px 19px 38px, rgba(37, 99, 235, 0.22) 0px 15px 12px; */
+  /* box-shadow: rgba(37, 99, 235, 0.12) 0px 2px 4px 0px, rgba(37, 99, 235, 0.32) 0px 2px 16px 0px; */
+  border: 1px solid rgba(37, 99, 235, 1);
+}
+
