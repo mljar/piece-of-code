@@ -4,12 +4,20 @@ import {
 } from '@jupyterlab/application';
 
 import { cakeIcon, cakeOffIcon } from '../icons';
-import { INotebookTracker } from '@jupyterlab/notebook';
+
 import { getAlwaysOpen, setAlwaysOpen } from '../flags';
+
+import { ISessionContext, ISessionContextDialogs } from '@jupyterlab/apputils';
+
+import { INotebookTracker, Notebook, NotebookActions } from '@jupyterlab/notebook';
+
+import { ITranslator } from '@jupyterlab/translation';
+
 
 const CommandIds = {
   openPieceOfCode: '@mljar/pieceofcode:open',
-  hidePieceOfCode: '@mljar/pieceofcode:hide'
+  hidePieceOfCode: '@mljar/pieceofcode:hide',
+  runFirstCell: '@mljar/pieceofcode:runfirstcell'
 };
 
 const showButton = (title = 'open'): void => {
@@ -59,5 +67,35 @@ export const commandsPlugin: JupyterFrontEndPlugin<void> = {
       },
       isVisible: () => getAlwaysOpen()
     });
+
+    app.commands.addCommand(CommandIds.runFirstCell, {
+      label: 'Execute cells below',
+      execute: () => {
+        const nb = tracker.currentWidget;
+        if (nb) {
+          return runFirst(nb.content, nb.context.sessionContext);
+        }
+      }
+    });
   }
 };
+
+export function runFirst(
+  notebook: Notebook,
+  sessionContext?: ISessionContext,
+  sessionDialogs?: ISessionContextDialogs,
+  translator?: ITranslator
+) {
+  if (!notebook.model || !notebook.activeCell) {
+    return Promise.resolve(false);
+  }
+  const cells = [notebook.widgets[0], notebook.widgets[notebook.activeCellIndex]];
+  const promise = NotebookActions.runCells(
+    notebook,
+    cells,
+    sessionContext,
+    sessionDialogs,
+    translator
+  );
+  return promise;
+}

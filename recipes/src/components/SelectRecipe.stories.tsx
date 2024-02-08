@@ -13,12 +13,17 @@ export default meta;
 
 type Story = StoryObj<typeof SelectRecipe>;
 
-export const SelectRecipeForm: Story = (args: React.JSX.IntrinsicAttributes & ISelectRecipeProps) => (
+export const SelectRecipeForm: Story = (
+  args: React.JSX.IntrinsicAttributes & ISelectRecipeProps
+) => (
   <>
     <SelectRecipe {...args} />
   </>
 );
 
 SelectRecipeForm.args = {
+  setCode: (src: string) => console.log(src),
+  setPackages: (packages: string[]) => console.log(packages),
+  runCell: () => console.log("runCell"),
   // allRecipeSets: allRecipes
 };

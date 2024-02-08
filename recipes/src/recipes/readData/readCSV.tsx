@@ -17,7 +17,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     //["Tab (\\t)", "\\t"]
   ];
   const [delimiter, setDelimiter] = useState(delimiterOptions[0][1]);
-  const [filePath, setFilePath] = useState("");
+  const [filePath, setFilePath] = useState("data.csv");
 
   useEffect(() => {
     if (name === "" || filePath === "") {

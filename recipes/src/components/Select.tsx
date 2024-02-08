@@ -13,11 +13,10 @@ export const Select: React.FC<SelectProps> = ({
   options,
   setOption,
 }: SelectProps) => {
-  console.log(options);
   const optionsElements = options.map((option) => {
     const label = option[0];
     const value = option[1];
-    return <option value={value}>{label}</option>;
+    return <option value={value} key={`${value}`}>{label}</option>;
   });
   return (
     <div>

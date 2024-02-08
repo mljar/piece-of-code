@@ -20,12 +20,12 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   docsLink,
 }: IWelcomeProps) => {
   const packagesList = packages?.map((p: [string, string]) => (
-    <div className="flex items-center mb-4">
+    <div className="flex items-center mb-4" key={`${p[0]}${p[1]}`}>
       <input
         type="checkbox"
         value="1"
         className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 dark:bg-gray-700 dark:border-gray-600"
-        checked
+        defaultChecked
       />
       <label className="ms-1 text-gray-900 dark:text-gray-300">
         {p[0]}

@@ -10,11 +10,13 @@ import { TrashIcon } from "../icons/Trash";
 
 export interface ISelectRecipeProps {
   setCode: (src: string) => void;
+  runCell: () => void;
   setPackages: (packages: string[]) => void;
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   setCode,
+  runCell,
   setPackages,
 }: ISelectRecipeProps) => {
   const [showNav, setShowNav] = useState(true);
@@ -104,51 +106,46 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     <div className="flex">
       <div className="flex-none" style={{ width: "72px" }}>
         <div className="h-full grid grid-cols-1 content-end">
-          {RecipeUI && (
-            <div className="has-tooltip">
-              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
-                Delete cell
-              </span>
-              <button
-                type="button"
-                className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-                onClick={() => setShowNav(!showNav)}
-              >
-                {<TrashIcon className="inline p-0.5" />}
-              </button>
-            </div>
-          )}
+          <div className="has-tooltip">
+            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+              Delete cell
+            </span>
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+              onClick={() => setShowNav(!showNav)}
+            >
+              {<TrashIcon className="inline p-0.5" />}
+            </button>
+          </div>
+          <div className="has-tooltip">
+            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+              Toggle menu view
+            </span>
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+              onClick={() => setShowNav(!showNav)}
+            >
+              {<HomeIcon className="inline p-0.5" />}
+            </button>
+          </div>
 
-          {RecipeUI && (
-            <div className="has-tooltip">
-              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
-                Toggle menu view
-              </span>
-              <button
-                type="button"
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-                onClick={() => setShowNav(!showNav)}
-              >
-                {<HomeIcon className="inline p-0.5" />}
-              </button>
-            </div>
-          )}
-          {RecipeUI && (
-            <div className="has-tooltip">
-              <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
-                Run code
-              </span>
-              <button
-                type="button"
-                className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
-              >
-                {<PlayIcon className="inline" />}
-              </button>
-            </div>
-          )}
+          <div className="has-tooltip">
+            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-8 text-sm">
+              Run code
+            </span>
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
+              onClick={() => runCell()}
+            >
+              {<PlayIcon className="inline" />}
+            </button>
+          </div>
         </div>
       </div>
-      <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r">
+      <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
         {showNav && (
           <div className="md:flex">
             <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0">
