@@ -95,9 +95,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       this.removeClass('lm-Widget');
       this.removeClass('jp-Cell-header');
       this.addClass('recipe-panel-layout');
-      this.selectRecipe = new SelectRecipeWidget(this.setCode.bind(this), this.setPackages.bind(this), this.runCell.bind(this));
-      this.layout.addWidget(this.selectRecipe);
-      this.selectRecipe.hide();
+
     }
   }
   dispose(): void {
@@ -156,6 +154,14 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     const cell = this.parent as Cell<ICellModel>;
     //console.log('get cell', cell);
     if (cell) {
+      if (this.selectRecipe === undefined) {
+        this.selectRecipe = new SelectRecipeWidget(cell, this.setCode.bind(this), this.setPackages.bind(this), this.runCell.bind(this));
+        this.selectRecipe.hide();
+        if (this.layout instanceof PanelLayout) {
+          this.layout?.addWidget(this.selectRecipe);
+        }
+      }
+
       //console.log('try add focus');
       // cell.inputArea?.node.addEventListener('focusout', () => {
       //   console.log('focusin is here2', cell);
