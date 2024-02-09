@@ -122,7 +122,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   supplementPackages() {
-    if(!this._packages) {
+    if (!this._packages) {
       return;
     }
     const nb = this.notebook;
@@ -175,8 +175,17 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         this._packages = [];
 
         if (getAlwaysOpen()) {
+
+          this.selectRecipe?.setPreviousCode(cell.model.sharedModel.getSource());
+
           this.selectRecipe?.show();
+
+
         }
+
+
+
+        console.log(cell.model.sharedModel.toJSON());
 
         // this.setCode("hejka");
         const nb = this.notebook;

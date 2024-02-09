@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IRecipeSet } from "../recipes/base";
 import { WalkIcon } from "../icons/Walk";
 import { IconProps } from "../icons/props";
@@ -7,22 +7,80 @@ import { allRecipes } from "../recipes";
 import { PlayIcon } from "../icons/Play";
 import { HomeIcon } from "../icons/Home";
 import { TrashIcon } from "../icons/Trash";
+import RunStatus, { ExecutionStatus } from "./RunStatus";
+import NextStepEdit from "./NextStepEdit";
+import NextStepError from "./NextStepError";
+import NextStepSuccess from "./NextStepSuccess";
 
 export interface ISelectRecipeProps {
+  previousCode: string;
+  previousErrorName: string;
+  previousErroValue: string;
   setCode: (src: string) => void;
   runCell: () => void;
   setPackages: (packages: string[]) => void;
+  executionSteps: [string, ExecutionStatus][];
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
+  previousCode,
+  previousErrorName,
+  previousErroValue,
   setCode,
   runCell,
   setPackages,
+  executionSteps,
 }: ISelectRecipeProps) => {
+  const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
   const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
+
+  useEffect(() => {
+    if (executionSteps.length) {
+      setShowNav(false);
+      // if all success
+      if (
+        executionSteps.length ===
+        executionSteps.filter((step) => step[1] === ExecutionStatus.Success)
+          .length
+      ) {
+        setShowSuccess(true);
+      }
+    }
+  }, [executionSteps]);
+
+  if (
+    previousCode !== "" &&
+    previousErrorName === "" &&
+    !overwriteExistingCode
+  ) {
+    return (
+      <div className="flex">
+        <div className="flex-none" style={{ width: "72px" }}></div>
+        <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+          <NextStepEdit letsOverwrite={() => setOverwriteExistingCode(true)} />
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    previousCode !== "" &&
+    previousErrorName !== "" &&
+    !overwriteExistingCode
+  ) {
+    return (
+      <div className="flex">
+        <div className="flex-none" style={{ width: "72px" }}></div>
+        <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+          <NextStepError ename={previousErrorName} evalue={previousErroValue} />
+        </div>
+      </div>
+    );
+  }
 
   const ActiveTabClass =
     "inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-lg w-full dark:bg-blue-600";
@@ -170,6 +228,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             </div>
           </div>
         )}
+
+        {executionSteps.length > 0 && (
+          <RunStatus label={"Run code"} steps={executionSteps} />
+        )}
+        {showSuccess && <NextStepSuccess />}
       </div>
     </div>
   );
