@@ -8,6 +8,7 @@ import { CommandRegistry } from '@lumino/commands';
 import { Message } from '@lumino/messaging';
 import { SelectRecipeWidget } from './recipes';
 import { getAlwaysOpen } from '../flags';
+import { ExecutionStatus } from '@mljar/recipes';
 
 // import { NotebookActions } from '@jupyterlab/notebook';
 // import { nbformat } from '@jupyterlab/coreutils';
@@ -17,7 +18,6 @@ export class RecipeWidgetsRegistry {
   private _widgets: Record<string, SelectRecipeWidget> = {};
   private _lastSelectedCellId: string = '';
   private _commands: CommandRegistry | undefined;
-
   private constructor() {}
 
   public static getInstance(): RecipeWidgetsRegistry {
@@ -31,31 +31,36 @@ export class RecipeWidgetsRegistry {
     this._commands = commands;
   }
 
-  public runCell() {
+  public runCell(addStep: (label: string, status: ExecutionStatus)=> void) {
     if (this._commands) {
-      // const promise = this._commands.execute('notebook:run-cell-and-insert-below');
-      // promise.finally(() => {
-      //   console.log('run and insert');
+      
+      addStep('Run cell', ExecutionStatus.Wait);
 
-      // })
-      if (this._commands) {
-        const promise2 = this._commands.execute(
-          '@mljar/pieceofcode:runfirstcell'
-        );
-        promise2.finally(() => {
-          console.log('promise2');
-          // if (this._commands) {
-          //   const promise = this._commands.execute('notebook:run-cell');
-          //   promise.finally(() => {
-          //     console.log('run and insert');
-
-          //   })
-          // }
-        });
-      }
+      const promise = this._commands.execute(
+        '@mljar/pieceofcode:runcurrentcell'
+      );
+      promise.then(() => {
+        addStep('Run cell', ExecutionStatus.Success);
+        console.log('promise');  
+      });
     }
   }
+  public runFirstCell(addStep: (label: string, status: ExecutionStatus)=> void) {
+    if (this._commands) {
 
+      addStep('Import', ExecutionStatus.Wait);
+      
+      const promise = this._commands.execute(
+        '@mljar/pieceofcode:runfirstcell'
+      );
+      promise.catch(() => {
+
+      });
+      promise.finally(() => {
+        console.log('promise');  
+      });
+    }
+  }
   public addWidget(cellId: string, widget: SelectRecipeWidget) {
     this._widgets[cellId] = widget;
   }
@@ -80,15 +85,14 @@ export class RecipeWidgetsRegistry {
 }
 
 // export const run = 'notebook:run-cell';
-
 // export const runAndAdvance = 'notebook:run-cell-and-select-next';
-
 // export const runAndInsert = 'notebook:run-cell-and-insert-below';
 
 export class ExtendedCellHeader extends Widget implements ICellHeader {
   private selectRecipe: SelectRecipeWidget | undefined;
   private _cellId: string | undefined;
   private _packages: string[] = [];
+  private _executionSteps: [string, ExecutionStatus][] = [];
 
   constructor() {
     super();
@@ -115,10 +119,19 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   setPackages(packages: string[]): void {
     this._packages = packages;
     console.log('set packages', packages);
+    
+  }
+
+  addExecutionStep(label: string, status: ExecutionStatus) {
+    console.log('add', label, status);
+    this._executionSteps.push([label, status])
   }
 
   runCell(): void {
-    RecipeWidgetsRegistry.getInstance().runCell();
+    this.supplementPackages();
+    RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this));
+
+    RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this));
   }
 
   supplementPackages() {
@@ -129,7 +142,16 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     if (nb) {
       const cells = nb?.model?.cells;
       if (cells) {
-        cells.get(0).sharedModel.setSource('hejka');
+        let firstCellSrc = cells.get(0).sharedModel.getSource();
+        console.log({firstCellSrc});
+        this._packages.forEach((packageImport) => {
+          const packageImported = firstCellSrc.includes(packageImport);
+          console.log({packageImport, packageImported});
+          if(!packageImported) {
+            firstCellSrc += `${packageImport}\n`;
+          }
+        });
+        cells.get(0).sharedModel.setSource(firstCellSrc);
       }
     }
   }

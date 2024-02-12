@@ -17,7 +17,8 @@ import { ITranslator } from '@jupyterlab/translation';
 const CommandIds = {
   openPieceOfCode: '@mljar/pieceofcode:open',
   hidePieceOfCode: '@mljar/pieceofcode:hide',
-  runFirstCell: '@mljar/pieceofcode:runfirstcell'
+  runFirstCell: '@mljar/pieceofcode:runfirstcell',
+  runCurrentCell: '@mljar/pieceofcode:runcurrentcell',
 };
 
 const showButton = (title = 'open'): void => {
@@ -69,27 +70,42 @@ export const commandsPlugin: JupyterFrontEndPlugin<void> = {
     });
 
     app.commands.addCommand(CommandIds.runFirstCell, {
-      label: 'Execute cells below',
+      label: 'Execute first cell',
       execute: () => {
         const nb = tracker.currentWidget;
         if (nb) {
-          return runFirst(nb.content, nb.context.sessionContext);
+          return runCell(nb.content, nb.context.sessionContext, 0);
         }
       }
     });
+    
+    app.commands.addCommand(CommandIds.runCurrentCell, {
+      label: 'Execute current cell',
+      execute: () => {
+        const nb = tracker.currentWidget;
+        if (nb) {
+          return runCell(nb.content, nb.context.sessionContext);
+        }
+      }
+    });
+    
   }
 };
 
-export function runFirst(
+export function runCell(
   notebook: Notebook,
   sessionContext?: ISessionContext,
+  cellIndex?: number,
   sessionDialogs?: ISessionContextDialogs,
-  translator?: ITranslator
+  translator?: ITranslator,
 ) {
   if (!notebook.model || !notebook.activeCell) {
     return Promise.resolve(false);
   }
-  const cells = [notebook.widgets[0], notebook.widgets[notebook.activeCellIndex]];
+  if(cellIndex === undefined) {
+    cellIndex = notebook.activeCellIndex
+  }
+  const cells = [notebook.widgets[cellIndex]];
   const promise = NotebookActions.runCells(
     notebook,
     cells,

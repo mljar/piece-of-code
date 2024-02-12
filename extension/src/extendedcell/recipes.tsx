@@ -68,7 +68,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _previousCode: string = '';
   private _previousErrorName: string = '';
   private _previousErrorValue: string = '';
-  private _executionSteps: [string, ExecutionStatus][] = [['Reac CSV', ExecutionStatus.Success]];
+  private _executionSteps: [string, ExecutionStatus][] = [];// [['Reac CSV', ExecutionStatus.Success]];
 
   constructor(
     cell: Cell<ICellModel>,
