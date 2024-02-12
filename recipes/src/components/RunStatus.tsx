@@ -43,8 +43,8 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     }
     if (status === ExecutionStatus.Success) {
       return (
-        <div key={label}>
-          <SuccessIcon className="inline" /> {label}
+        <div key={label} className="inline">
+          <SuccessIcon className="inline" /><div className="inline"> {label}</div>
         </div>
       );
     }

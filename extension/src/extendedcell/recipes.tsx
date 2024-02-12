@@ -6,6 +6,14 @@ import { Cell, ICellModel } from '@jupyterlab/cells';
 import { ReactWidget, UseSignal } from '@jupyterlab/ui-components';
 
 import { Signal } from '@lumino/signaling';
+//import { ExecutionStatus } from '@mljar/recipes';
+
+export enum ExecutionStatus {
+  Wait = "Wait",
+  Success = "Success",
+  Error = "Error",
+  Warning = "Warning",
+}
 
 interface Props {
   previousCode: string;
@@ -15,6 +23,7 @@ interface Props {
   setCode: (src: string) => void;
   setPackages: (packages: string[]) => void;
   runCell: () => void;
+  executionSteps: [string, ExecutionStatus][];
 }
 
 const SelectRecipeComponent = ({
@@ -24,7 +33,8 @@ const SelectRecipeComponent = ({
   cell,
   setCode,
   setPackages,
-  runCell
+  runCell,
+  executionSteps,
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -43,7 +53,7 @@ const SelectRecipeComponent = ({
         setCode={setCode}
         setPackages={setPackages}
         runCell={runCell}
-        executionSteps={[]}
+        executionSteps={executionSteps}
       />
     </div>
   );
@@ -58,6 +68,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _previousCode: string = '';
   private _previousErrorName: string = '';
   private _previousErrorValue: string = '';
+  private _executionSteps: [string, ExecutionStatus][] = [['Reac CSV', ExecutionStatus.Success]];
 
   constructor(
     cell: Cell<ICellModel>,
@@ -71,6 +82,10 @@ export class SelectRecipeWidget extends ReactWidget {
     this._setCodeCallback = setCode;
     this._setPackagesCallback = setPackages;
     this._runCellCallback = runCell;
+  }
+
+  public setExecutionSteps(steps: [string, ExecutionStatus][]) {
+    this._executionSteps = steps;
   }
 
   public setPreviousCode(src: string) {
@@ -101,6 +116,7 @@ export class SelectRecipeWidget extends ReactWidget {
               setCode={this._setCodeCallback}
               setPackages={this._setPackagesCallback}
               runCell={this._runCellCallback}
+              executionSteps={this._executionSteps}
             />
           );
         }}

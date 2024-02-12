@@ -109,10 +109,12 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   setCode(src: string): void {
     const cell = this.parent as Cell<ICellModel>;
     cell.model.sharedModel.setSource(src);
+    console.log('set code', src);
   }
 
   setPackages(packages: string[]): void {
     this._packages = packages;
+    console.log('set packages', packages);
   }
 
   runCell(): void {
