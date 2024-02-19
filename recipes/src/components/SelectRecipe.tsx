@@ -221,8 +221,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </div>
       </div>
       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
-        {showNav && (
-          <div className="md:flex" >
+        {true && (
+          <div className="md:flex" style={{opacity: showNav? "1": "0",
+            visibility: showNav? "visible":"hidden",
+            transition: "opacity 1000ms, visibility 1000ms"}}>
+
             <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
             style={{maxHeight: "250px", overflowY: "auto"}}
             >
@@ -242,7 +245,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         )}
 
         {RecipeUI && (
-          <div>
+          <div onMouseOver={()=>{setShowNav(false)}}>
             {showNav && <hr className="p-1 m-2" />}
             <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
               <RecipeUI setCode={setCode} setPackages={setPackages} />
