@@ -21,6 +21,8 @@ export interface ISelectRecipeProps {
   runCell: () => void;
   setPackages: (packages: string[]) => void;
   executionSteps: [string, ExecutionStatus][];
+  deleteCell: () => void;
+  addCell: () => void;
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
@@ -31,6 +33,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   runCell,
   setPackages,
   executionSteps,
+  deleteCell,
+  addCell,
 }: ISelectRecipeProps) => {
   const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
@@ -38,6 +42,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
+  const [executed, setExecuted] = useState(false);
 
   useEffect(() => {
     if (executionSteps.length) {
@@ -53,7 +58,66 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     }
   }, [executionSteps]);
 
+  const leftButtons = (
+    <div className="h-full grid grid-cols-1 content-end">
+      <div className="has-tooltip">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Delete cell
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          onClick={() => deleteCell()}
+        >
+          {<TrashIcon className="inline p-0.5" />}
+        </button>
+      </div>
+      <div className="has-tooltip">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Toggle menu view
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          onClick={() => setShowNav(!showNav)}
+        >
+          {<HomeIcon className="inline p-0.5" />}
+        </button>
+      </div>
+
+      <div className="has-tooltip inline">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Add cell
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          onClick={() => addCell()}
+        >
+          <PlusIcon className="inline pb-1" />
+        </button>
+      </div>
+
+      <div className="has-tooltip">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Run code
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
+          onClick={() => {
+            runCell();
+            setExecuted(true);
+          }}
+        >
+          {<PlayIcon className="inline" />}
+        </button>
+      </div>
+    </div>
+  );
+
   if (
+    executed &&
     previousCode !== "" &&
     previousErrorName === "" &&
     !overwriteExistingCode
@@ -65,20 +129,34 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           className="bg-white dark:bg-slate-700 p-2 pt-4 w-full border-gray-100 border-t border-l border-r rounded-t-md"
           style={{ marginBottom: "-13px" }}
         >
-          <NextStepEdit letsOverwrite={() => setOverwriteExistingCode(true)} />
+          <NextStepEdit
+            letsOverwrite={() => setOverwriteExistingCode(true)}
+            runCell={() => {
+              runCell();
+              setExecuted(true);
+            }}
+            addCell={addCell}
+            deleteCell={deleteCell}
+          />
+          {executionSteps.length > 0 && (
+            <RunStatus label={"Run code"} steps={executionSteps} />
+          )}
         </div>
       </div>
     );
   }
 
   if (
+    executed &&
     previousCode !== "" &&
     previousErrorName !== "" &&
     !overwriteExistingCode
   ) {
     return (
       <div className="flex">
-        <div className="flex-none" style={{ width: "72px" }}></div>
+        <div className="flex-none" style={{ width: "72px" }}>
+          {leftButtons}
+        </div>
         <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
           <NextStepError ename={previousErrorName} evalue={previousErroValue} />
         </div>
@@ -164,76 +242,42 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     );
     RecipeUI = recipe.ui;
   }
+
+  // const [showNavDelayed, setShowNavDelayed] = useState(showNav);
+  // useEffect(
+  //   () => {
+  //     console.log('nav effect')
+  //     let timer1 = setTimeout(() => setShowNavDelayed(showNav), 800);
+  //     return () => {
+  //       clearTimeout(timer1);
+  //     };
+  //   },
+  //   [showNav]
+  // );
+
   return (
     <div className="flex">
       <div className="flex-none" style={{ width: "72px" }}>
-        <div className="h-full grid grid-cols-1 content-end">
-          <div className="has-tooltip">
-            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-              Delete cell
-            </span>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-              onClick={() => setShowNav(!showNav)}
-            >
-              {<TrashIcon className="inline p-0.5" />}
-            </button>
-          </div>
-          <div className="has-tooltip">
-            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-              Toggle menu view
-            </span>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-              onClick={() => setShowNav(!showNav)}
-            >
-              {<HomeIcon className="inline p-0.5" />}
-            </button>
-          </div>
-
-          <div className="has-tooltip inline">
-            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-              Add cell
-            </span>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-              onClick={() => {}}
-            >
-              <PlusIcon className="inline pb-1" />
-            </button>
-          </div>
-
-          <div className="has-tooltip">
-            <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-              Run code
-            </span>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
-              onClick={() => runCell()}
-            >
-              {<PlayIcon className="inline" />}
-            </button>
-          </div>
-        </div>
+        {leftButtons}
       </div>
       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
-        {true && (
-          <div className="md:flex" style={{opacity: showNav? "1": "0",
-            visibility: showNav? "visible":"hidden",
-            transition: "opacity 1000ms, visibility 1000ms"}}>
-
-            <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
-            style={{maxHeight: "250px", overflowY: "auto"}}
+        {showNav && (
+          <div
+            className="md:flex"
+            // style={{opacity: showNav? "1": "0",
+            // visibility: showNav? "visible":"hidden",
+            // transition: "opacity 1000ms, visibility 1000ms"}}
+          >
+            <ul
+              className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
+              style={{ maxHeight: "250px", overflowY: "auto" }}
             >
               {tabs}
             </ul>
             {showSubTabs && (
-              <ul className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
-              style={{maxHeight: "250px", overflowY: "auto"}}
+              <ul
+                className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
+                style={{ maxHeight: "250px", overflowY: "auto" }}
               >
                 {subTabs}
               </ul>
@@ -244,8 +288,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           </div>
         )}
 
-        {RecipeUI && (
-          <div onMouseOver={()=>{setShowNav(false)}}>
+        {RecipeUI && executionSteps.length === 0 && (
+          <div
+          // onMouseOver={()=>{setShowNav(false)}}
+          >
             {showNav && <hr className="p-1 m-2" />}
             <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
               <RecipeUI setCode={setCode} setPackages={setPackages} />
@@ -256,7 +302,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         {executionSteps.length > 0 && (
           <RunStatus label={"Run code"} steps={executionSteps} />
         )}
-        {showSuccess && <NextStepSuccess />}
+        {/* {showSuccess && <NextStepSuccess />} */}
       </div>
     </div>
   );

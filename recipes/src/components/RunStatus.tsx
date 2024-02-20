@@ -1,19 +1,10 @@
 import React, { useState } from "react";
-import { IRecipeSet } from "../recipes/base";
-import { WalkIcon } from "../icons/Walk";
-import { IconProps } from "../icons/props";
-import { Welcome } from "./Welcome";
-import { allRecipes } from "../recipes";
-import { PlayIcon } from "../icons/Play";
-import { HomeIcon } from "../icons/Home";
-import { TrashIcon } from "../icons/Trash";
 import { SpinnerIcon } from "../icons/Spinner";
 import { SuccessIcon } from "../icons/Success";
 import { ErrorIcon } from "../icons/Error";
 import { WarningIcon } from "../icons/Warning";
-import { PythonIcon } from "../icons/Python";
-import { MarkdownIcon } from "../icons/Markdown";
-import { CodeIcon } from "../icons/Code";
+import { PlusIcon } from "../icons/Plus";
+import { BoltIcon } from "../icons/Bolt";
 
 export enum ExecutionStatus {
   Wait = "Wait",
@@ -43,8 +34,8 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     }
     if (status === ExecutionStatus.Success) {
       return (
-        <div key={label} className="inline">
-          <SuccessIcon className="inline" /><div className="inline"> {label}</div>
+        <div key={label}>
+          <SuccessIcon className="inline" /> {label}
         </div>
       );
     }
@@ -62,11 +53,32 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     );
   });
 
+  const allSuccess =
+    steps.filter((step) => step[1] === ExecutionStatus.Success).length ==
+    steps.length;
+
   return (
     <div className="text-base text-gray-900 dark:text-white border-2 mb-2 p-2 rounded-md">
-      <div>
-        <label className="block text-lg font-medium ">{label}</label>
-        {elements}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-lg font-medium "><BoltIcon className="inline pb-1"/>{label}</label>
+          {elements}
+        </div>
+
+        {allSuccess && (
+          <div>
+            <p className="py-2 text-base">
+              Congratulations, your code is working! 👍
+            </p>
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center"
+              // onClick={() => setShowNav(!showNav)}
+            >
+              <PlusIcon className="inline pb-1" /> Let's add a new cell
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

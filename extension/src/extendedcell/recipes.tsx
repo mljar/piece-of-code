@@ -9,10 +9,10 @@ import { Signal } from '@lumino/signaling';
 //import { ExecutionStatus } from '@mljar/recipes';
 
 export enum ExecutionStatus {
-  Wait = "Wait",
-  Success = "Success",
-  Error = "Error",
-  Warning = "Warning",
+  Wait = 'Wait',
+  Success = 'Success',
+  Error = 'Error',
+  Warning = 'Warning'
 }
 
 interface Props {
@@ -24,6 +24,8 @@ interface Props {
   setPackages: (packages: string[]) => void;
   runCell: () => void;
   executionSteps: [string, ExecutionStatus][];
+  deleteCell: () => void;
+  addCell: () => void;
 }
 
 const SelectRecipeComponent = ({
@@ -35,6 +37,8 @@ const SelectRecipeComponent = ({
   setPackages,
   runCell,
   executionSteps,
+  deleteCell,
+  addCell
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -54,6 +58,8 @@ const SelectRecipeComponent = ({
         setPackages={setPackages}
         runCell={runCell}
         executionSteps={executionSteps}
+        deleteCell={deleteCell}
+        addCell={addCell}
       />
     </div>
   );
@@ -63,18 +69,22 @@ export class SelectRecipeWidget extends ReactWidget {
   private _setCodeCallback: (src: string) => void;
   private _setPackagesCallback: (packages: string[]) => void;
   private _runCellCallback: () => void;
+  private _deleteCell: () => void;
+  private _addCell: () => void;
   private _cell: Cell<ICellModel>;
   private _signal = new Signal<this, void>(this);
   private _previousCode: string = '';
   private _previousErrorName: string = '';
   private _previousErrorValue: string = '';
-  private _executionSteps: [string, ExecutionStatus][] = [];// [['Reac CSV', ExecutionStatus.Success]];
+  private _executionSteps: [string, ExecutionStatus][] = []; // [['Reac CSV', ExecutionStatus.Success]];
 
   constructor(
     cell: Cell<ICellModel>,
     setCode: (src: string) => void,
     setPackages: (packages: string[]) => void,
-    runCell: () => void
+    runCell: () => void,
+    deleteCell: () => void,
+    addCell: () => void
   ) {
     super();
     this.addClass('jp-react-widget');
@@ -82,10 +92,14 @@ export class SelectRecipeWidget extends ReactWidget {
     this._setCodeCallback = setCode;
     this._setPackagesCallback = setPackages;
     this._runCellCallback = runCell;
+    this._deleteCell = deleteCell;
+    this._addCell = addCell;
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
     this._executionSteps = steps;
+    console.log(steps);
+    this.updateWidget();
   }
 
   public setPreviousCode(src: string) {
@@ -102,11 +116,9 @@ export class SelectRecipeWidget extends ReactWidget {
   }
 
   render(): JSX.Element {
-    console.log('render');
     return (
       <UseSignal signal={this._signal}>
         {() => {
-          console.log('-render');
           return (
             <SelectRecipeComponent
               previousCode={this._previousCode}
@@ -117,6 +129,8 @@ export class SelectRecipeWidget extends ReactWidget {
               setPackages={this._setPackagesCallback}
               runCell={this._runCellCallback}
               executionSteps={this._executionSteps}
+              deleteCell={this._deleteCell}
+              addCell={this._addCell}
             />
           );
         }}

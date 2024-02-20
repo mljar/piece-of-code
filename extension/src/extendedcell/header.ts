@@ -18,7 +18,7 @@ export class RecipeWidgetsRegistry {
   private _widgets: Record<string, SelectRecipeWidget> = {};
   private _lastSelectedCellId: string = '';
   private _commands: CommandRegistry | undefined;
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): RecipeWidgetsRegistry {
     if (!RecipeWidgetsRegistry._instance) {
@@ -31,33 +31,63 @@ export class RecipeWidgetsRegistry {
     this._commands = commands;
   }
 
-  public runCell(addStep: (label: string, status: ExecutionStatus)=> void) {
+  public deleteCell() {
     if (this._commands) {
-      
-      addStep('Run cell', ExecutionStatus.Wait);
+      this._commands.execute(
+        'notebook:delete-cell'
+      );
+    }
+  }
+
+  public addCell() {
+    if (this._commands) {
+      const promise = this._commands.execute(
+        'notebook:insert-cell-below'
+      );
+      promise.then(() => {
+        this._commands?.execute(
+          'notebook:enter-edit-mode'
+        );
+      });
+    }
+  }
+
+  public addCellAbove() {
+    if (this._commands) {
+      const promise = this._commands.execute(
+        'notebook:insert-cell-above'
+      );
+      promise.then(() => {
+        this._commands?.execute(
+          'notebook:enter-edit-mode'
+        );
+      });
+    }
+  }
+
+  public runCell(addStep: (label: string, status: ExecutionStatus) => void) {
+    if (this._commands) {
+      addStep('Run code', ExecutionStatus.Wait);
 
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runcurrentcell'
       );
+
       promise.then(() => {
-        addStep('Run cell', ExecutionStatus.Success);
-        console.log('promise');  
+        setTimeout(() => addStep('Run code', ExecutionStatus.Success), 500);
       });
     }
   }
-  public runFirstCell(addStep: (label: string, status: ExecutionStatus)=> void) {
+  public runFirstCell(addStep: (label: string, status: ExecutionStatus) => void) {
     if (this._commands) {
+      addStep('Import packages', ExecutionStatus.Wait);
 
-      addStep('Import', ExecutionStatus.Wait);
-      
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runfirstcell'
       );
-      promise.catch(() => {
 
-      });
-      promise.finally(() => {
-        console.log('promise');  
+      promise.then(() => {
+        setTimeout(() => addStep('Import packages', ExecutionStatus.Success), 500);
       });
     }
   }
@@ -113,25 +143,65 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   setCode(src: string): void {
     const cell = this.parent as Cell<ICellModel>;
     cell.model.sharedModel.setSource(src);
-    console.log('set code', src);
   }
 
   setPackages(packages: string[]): void {
     this._packages = packages;
-    console.log('set packages', packages);
-    
+  }
+
+  clearExecutionSteps() {
+    this._executionSteps = [];
   }
 
   addExecutionStep(label: string, status: ExecutionStatus) {
-    console.log('add', label, status);
-    this._executionSteps.push([label, status])
+    let found = false;
+    this._executionSteps = this._executionSteps.map((step) => {
+      if (step[0] == label) {
+        found = true;
+        return [step[0], status];
+      }
+      return [step[0], step[1]];
+    });
+    if (!found) {
+      this._executionSteps.push([label, status]);
+    }
+    this.selectRecipe?.setExecutionSteps(this._executionSteps);
   }
 
   runCell(): void {
+
+    this.insertCellAtTop();
+
     this.supplementPackages();
+
     RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this));
 
     RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this));
+  }
+
+  deleteCell(): void {
+    RecipeWidgetsRegistry.getInstance().deleteCell();
+  }
+
+  addCell(): void {
+    RecipeWidgetsRegistry.getInstance().addCell();
+  }
+
+  insertCellAtTop() {
+    // insert cell at the top of the notebook
+    // if there is only one cell in the notebook
+    if (!this._packages) {
+      return;
+    }
+    const nb = this.notebook;
+    if (nb) {
+      const cells = nb?.model?.cells;
+      if (cells) {
+        if (cells.length == 1) {
+          nb?.model?.sharedModel.insertCell(0, { cell_type: 'code', source: '' })
+        }
+      }
+    }
   }
 
   supplementPackages() {
@@ -143,12 +213,13 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       const cells = nb?.model?.cells;
       if (cells) {
         let firstCellSrc = cells.get(0).sharedModel.getSource();
-        console.log({firstCellSrc});
         this._packages.forEach((packageImport) => {
           const packageImported = firstCellSrc.includes(packageImport);
-          console.log({packageImport, packageImported});
-          if(!packageImported) {
-            firstCellSrc += `${packageImport}\n`;
+          if (!packageImported) {
+            if (firstCellSrc.length > 0) {
+              firstCellSrc += '\n'
+            }
+            firstCellSrc += `${packageImport}`;
           }
         });
         cells.get(0).sharedModel.setSource(firstCellSrc);
@@ -204,7 +275,9 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           cell,
           this.setCode.bind(this),
           this.setPackages.bind(this),
-          this.runCell.bind(this)
+          this.runCell.bind(this),
+          this.deleteCell.bind(this),
+          this.addCell.bind(this)
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {

@@ -20,7 +20,12 @@ export const RunStatusForm: Story = (
 ) => (
   <>
     <RunStatus {...args} />
-    <NextStepEdit letsOverwrite={() => console.log("lets overwrite")} />
+    <NextStepEdit
+      letsOverwrite={() => console.log("lets overwrite")}
+      runCell={() => {}}
+      addCell={() => {}}
+      deleteCell={() => {}}
+    />
     <NextStepSuccess />
     <NextStepError ename={"NameError"} evalue={"name 'app' is not defined"} />
   </>
@@ -29,9 +34,10 @@ export const RunStatusForm: Story = (
 RunStatusForm.args = {
   label: "Run code",
   steps: [
-    ["Wait for installation", ExecutionStatus.Wait],
+    // ["Wait for installation", ExecutionStatus.Wait],
     ["Install packages", ExecutionStatus.Success],
-    ["Load data", ExecutionStatus.Error],
-    ["Train ML model", ExecutionStatus.Warning],
+    ["Run code", ExecutionStatus.Success],
+    // ["Load data", ExecutionStatus.Error],
+    // ["Train ML model", ExecutionStatus.Warning],
   ],
 };
