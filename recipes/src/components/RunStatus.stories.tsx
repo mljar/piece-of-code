@@ -40,4 +40,28 @@ RunStatusForm.args = {
     // ["Load data", ExecutionStatus.Error],
     // ["Train ML model", ExecutionStatus.Warning],
   ],
+  errorName: "",
+  errorValue: "",
+};
+
+
+export const RunStatusError: Story = (
+  args: React.JSX.IntrinsicAttributes & IRunStatusProps
+) => (
+  <>
+    <RunStatus {...args} />
+  </>
+);
+
+RunStatusError.args = {
+  label: "Run code",
+  steps: [
+    // ["Wait for installation", ExecutionStatus.Wait],
+    ["Install packages", ExecutionStatus.Success],
+    // ["Run code", ExecutionStatus.Success],
+    ["Load data", ExecutionStatus.Error],
+    // ["Train ML model", ExecutionStatus.Warning],
+  ],
+  errorName: "Bad error",
+  errorValue: "Very bad error",
 };

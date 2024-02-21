@@ -19,6 +19,7 @@ interface Props {
   previousCode: string;
   previousErrorName: string;
   previousErrorValue: string;
+  previousExecutionCount: number;
   cell: Cell<ICellModel>;
   setCode: (src: string) => void;
   setPackages: (packages: string[]) => void;
@@ -32,6 +33,7 @@ const SelectRecipeComponent = ({
   previousCode,
   previousErrorName,
   previousErrorValue,
+  previousExecutionCount,
   cell,
   setCode,
   setPackages,
@@ -54,6 +56,7 @@ const SelectRecipeComponent = ({
         previousCode={previousCode}
         previousErroValue={previousErrorName}
         previousErrorName={previousErrorValue}
+        previousExecutionCount={previousExecutionCount}
         setCode={setCode}
         setPackages={setPackages}
         runCell={runCell}
@@ -76,6 +79,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _previousCode: string = '';
   private _previousErrorName: string = '';
   private _previousErrorValue: string = '';
+  private _previousExecutionCount: number = 0;
   private _executionSteps: [string, ExecutionStatus][] = []; // [['Reac CSV', ExecutionStatus.Success]];
 
   constructor(
@@ -84,7 +88,8 @@ export class SelectRecipeWidget extends ReactWidget {
     setPackages: (packages: string[]) => void,
     runCell: () => void,
     deleteCell: () => void,
-    addCell: () => void
+    addCell: () => void,
+    executionCount: number
   ) {
     super();
     this.addClass('jp-react-widget');
@@ -94,16 +99,20 @@ export class SelectRecipeWidget extends ReactWidget {
     this._runCellCallback = runCell;
     this._deleteCell = deleteCell;
     this._addCell = addCell;
+    this._previousExecutionCount = executionCount;
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
     this._executionSteps = steps;
-    console.log(steps);
     this.updateWidget();
   }
 
   public setPreviousCode(src: string) {
     this._previousCode = src;
+  }
+
+  public setPreviousExecutionCount(cnt: number) {
+    this._previousExecutionCount = cnt;
   }
 
   public setPreviousError(name: string, value: string) {
@@ -124,6 +133,7 @@ export class SelectRecipeWidget extends ReactWidget {
               previousCode={this._previousCode}
               previousErrorName={this._previousErrorName}
               previousErrorValue={this._previousErrorValue}
+              previousExecutionCount={this._previousExecutionCount}
               cell={this._cell}
               setCode={this._setCodeCallback}
               setPackages={this._setPackagesCallback}

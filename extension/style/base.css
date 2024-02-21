@@ -9,14 +9,15 @@
   display: none;
 }
 
-.jp-mod-active {
+/* .jp-mod-active {
   .recipe-panel-layout {
     margin-top: 25px;
   }
-}
+} */
 
 .jp-cell-toolbar {
   border: none;
+  display: none;
 }
 
 .jp-Cell.jp-mod-active {

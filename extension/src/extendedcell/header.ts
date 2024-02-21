@@ -4,11 +4,11 @@ import { NotebookPanel } from '@jupyterlab/notebook';
 import { PanelLayout, Widget } from '@lumino/widgets';
 
 import { CommandRegistry } from '@lumino/commands';
-// import { KernelMessage } from '@jupyterlab/services';
 import { Message } from '@lumino/messaging';
 import { SelectRecipeWidget } from './recipes';
 import { getAlwaysOpen } from '../flags';
 import { ExecutionStatus } from '@mljar/recipes';
+import { VariableInspector } from './variableinspector';
 
 // import { NotebookActions } from '@jupyterlab/notebook';
 // import { nbformat } from '@jupyterlab/coreutils';
@@ -18,6 +18,7 @@ export class RecipeWidgetsRegistry {
   private _widgets: Record<string, SelectRecipeWidget> = {};
   private _lastSelectedCellId: string = '';
   private _commands: CommandRegistry | undefined;
+
   private constructor() { }
 
   public static getInstance(): RecipeWidgetsRegistry {
@@ -65,17 +66,18 @@ export class RecipeWidgetsRegistry {
     }
   }
 
-  public runCell(addStep: (label: string, status: ExecutionStatus) => void) {
+  public runCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => void) {
     if (this._commands) {
       addStep('Run code', ExecutionStatus.Wait);
 
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runcurrentcell'
       );
-
       promise.then(() => {
-        setTimeout(() => addStep('Run code', ExecutionStatus.Success), 500);
+        checkOutput();
+        //setTimeout(() => addStep('Run code', ExecutionStatus.Success), 500);
       });
+
     }
   }
   public runFirstCell(addStep: (label: string, status: ExecutionStatus) => void) {
@@ -123,6 +125,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   private _cellId: string | undefined;
   private _packages: string[] = [];
   private _executionSteps: [string, ExecutionStatus][] = [];
+  private _variableInspector: VariableInspector | undefined;
 
   constructor() {
     super();
@@ -132,6 +135,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       this.removeClass('jp-Cell-header');
       this.addClass('recipe-panel-layout');
     }
+
   }
   dispose(): void {
     if (this._cellId) {
@@ -151,6 +155,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
   clearExecutionSteps() {
     this._executionSteps = [];
+    this.selectRecipe?.setExecutionSteps(this._executionSteps);
   }
 
   addExecutionStep(label: string, status: ExecutionStatus) {
@@ -170,13 +175,36 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
   runCell(): void {
 
+    this.selectRecipe?.setPreviousError('', '');
+
+    this.clearExecutionSteps();
+
     this.insertCellAtTop();
 
     this.supplementPackages();
 
-    RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this));
+    if (this._packages.length) {
+      RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this));
+    }
 
-    RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this));
+    RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
+
+    // clear packages
+    this._packages = [];
+  }
+
+  checkOutput(): void {
+    const cell = this.cell;
+    if (cell) {
+      const [errorName, errorValue] = this.getErrorNameAndValue(cell);
+      this.selectRecipe?.setPreviousError(errorName, errorValue);
+      this.selectRecipe?.updateWidget();
+      if (errorName === '') {
+        setTimeout(() => this.addExecutionStep('Run code', ExecutionStatus.Success), 500);
+      } else {
+        setTimeout(() => this.addExecutionStep('Run code', ExecutionStatus.Error), 500);
+      }
+    }
   }
 
   deleteCell(): void {
@@ -266,18 +294,37 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     return ['', ''];
   }
 
+  protected getExecutionCount(cell: Cell<ICellModel>): number {
+    const output = cell.model.sharedModel.toJSON();
+    if (output) {
+      if (output.cell_type === 'code') {
+        const execution_count = output.execution_count as number | null;
+        if (execution_count) {
+          return execution_count;
+        }
+      }
+    }
+    return 0;
+  }
+
+
   protected onAfterAttach(msg: Message): void {
     const cell = this.parent as Cell<ICellModel>;
     //console.log('get cell', cell);
     if (cell) {
+      if (this._variableInspector === undefined) {
+        this._variableInspector = new VariableInspector(this.notebook);
+      }
       if (this.selectRecipe === undefined) {
+        const executionCount = this.getExecutionCount(cell);
         this.selectRecipe = new SelectRecipeWidget(
           cell,
           this.setCode.bind(this),
           this.setPackages.bind(this),
           this.runCell.bind(this),
           this.deleteCell.bind(this),
-          this.addCell.bind(this)
+          this.addCell.bind(this),
+          executionCount
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {
@@ -298,6 +345,9 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         );
       }
       cell.inputArea?.node.addEventListener('focusin', () => {
+
+        
+
         if (this._cellId) {
           RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
         }
@@ -311,7 +361,12 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           );
           const [errorName, errorValue] = this.getErrorNameAndValue(cell);
           this.selectRecipe?.setPreviousError(errorName, errorValue);
-          this.selectRecipe?.update();
+          const executionCount = this.getExecutionCount(cell);
+          this.selectRecipe?.setPreviousExecutionCount(executionCount);
+          this.selectRecipe?.updateWidget();
+          //this.selectRecipe?.update();
+          this._variableInspector?.getVariables();
+          
           this.selectRecipe?.show();
         }
 
@@ -349,7 +404,6 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           }
         }
       });
-      //cell.displayChanged.connect(() => console.log('change'));
     }
   }
 

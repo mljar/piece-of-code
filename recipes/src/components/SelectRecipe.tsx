@@ -17,6 +17,7 @@ export interface ISelectRecipeProps {
   previousCode: string;
   previousErrorName: string;
   previousErroValue: string;
+  previousExecutionCount: number;
   setCode: (src: string) => void;
   runCell: () => void;
   setPackages: (packages: string[]) => void;
@@ -29,6 +30,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   previousCode,
   previousErrorName,
   previousErroValue,
+  previousExecutionCount,
   setCode,
   runCell,
   setPackages,
@@ -42,7 +44,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
-  const [executed, setExecuted] = useState(false);
+  const [executed, setExecuted] = useState(previousExecutionCount !== 0);
+
+  useEffect(() => {
+    setExecuted(previousExecutionCount !== 0);
+  }, [previousExecutionCount]);
 
   useEffect(() => {
     if (executionSteps.length) {
@@ -119,7 +125,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   if (
     executed &&
     previousCode !== "" &&
-    previousErrorName === "" &&
+    //previousErrorName === "" &&
     !overwriteExistingCode
   ) {
     return (
@@ -139,7 +145,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             deleteCell={deleteCell}
           />
           {executionSteps.length > 0 && (
-            <RunStatus label={"Run code"} steps={executionSteps} />
+            <RunStatus
+              label={"Run code"}
+              steps={executionSteps}
+              errorName={previousErrorName}
+              errorValue={previousErroValue}
+            />
           )}
         </div>
       </div>
@@ -300,7 +311,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         )}
 
         {executionSteps.length > 0 && (
-          <RunStatus label={"Run code"} steps={executionSteps} />
+          <RunStatus
+            label={"Run code"}
+            steps={executionSteps}
+            errorName={previousErrorName}
+            errorValue={previousErroValue}
+          />
         )}
         {/* {showSuccess && <NextStepSuccess />} */}
       </div>
