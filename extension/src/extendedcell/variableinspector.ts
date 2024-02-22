@@ -225,36 +225,37 @@ def _jupyterlab_variableinspector_deletevariable(x):
 
 const getVars = `_jupyterlab_variableinspector_dict_list()`;
 
+interface Variable {
+  varName: string;
+  varType: string;
+  varSize: string;
+  varShape: string;
+  varContent: string;
+  isMatrix: boolean;
+  isWidget: boolean;
+}
+
 export class VariableInspector {
 
   private _notebook: NotebookPanel | null;
+  private _notebookId: string | undefined;
 
   constructor(nb: NotebookPanel | null) {
     this._notebook = nb;
-    
-    const nbId = this._notebook?.id;
-    if (nbId) {
-      if (!notebooksInitialized.includes(nbId)) {
-        this.initGetVariables();
-        notebooksInitialized.push(nbId);
-      }
-    }
+    this._notebookId = this._notebook?.id;
   }
-
-
-  initGetVariables() {
-    console.log('initGetVariables');
-    this._notebook?.sessionContext.session?.kernel?.requestExecute({
-      code: initCode,
-      store_history: false,
-    });
-  }
-
 
   getVariables() {
-    console.log('getVariables', this._notebook);
+
+    let code = '';
+    if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
+      code += initCode + '\n\n';
+      notebooksInitialized.push(this._notebookId);
+    }
+    code += getVars;
+
     let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
-      code: getVars,
+      code,
       store_history: false,
     });
     if (future) {
@@ -263,14 +264,35 @@ export class VariableInspector {
   }
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
+    // console.log(msg);
     const msgType = msg.header.msg_type;
-
     switch (msgType) {
       case 'execute_result':
       case 'display_data':
       case 'update_display_data':
 
-        console.log(msg.content);
+        // console.log(msg.content);
+
+        interface ContentData {
+          data: {
+            'text/plain': string;
+          }
+        }
+        const content = msg.content as ContentData;
+
+        try {
+          let contentDisplay: string = content.data["text/plain"] as string;
+          contentDisplay = contentDisplay.slice(1, -1);
+          contentDisplay = contentDisplay
+            .replace(/\\"/g, '"')
+            .replace(/\\'/g, "'");
+
+          const variables: Variable[] = JSON.parse(contentDisplay);
+
+          console.log(variables);
+        } catch (e) {
+          console.log(e);
+        }
 
         break;
       default:
