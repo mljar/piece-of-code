@@ -1,10 +1,11 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
-import RunStatus, { ExecutionStatus, IRunStatusProps } from "./RunStatus";
+import RunStatus, { IRunStatusProps } from "./RunStatus";
 import NextStepSuccess from "./NextStepSuccess";
 import NextStepError from "./NextStepError";
 import NextStepEdit from "./NextStepEdit";
+import ExecutionStatus from "./ExecutionStatus";
 
 const meta: Meta<typeof RunStatus> = {
   component: RunStatus,
@@ -32,7 +33,6 @@ export const RunStatusForm: Story = (
 );
 
 RunStatusForm.args = {
-  label: "Run code",
   steps: [
     // ["Wait for installation", ExecutionStatus.Wait],
     ["Install packages", ExecutionStatus.Success],
@@ -42,6 +42,7 @@ RunStatusForm.args = {
   ],
   errorName: "",
   errorValue: "",
+  addCell: () => {},
 };
 
 
@@ -54,7 +55,6 @@ export const RunStatusError: Story = (
 );
 
 RunStatusError.args = {
-  label: "Run code",
   steps: [
     // ["Wait for installation", ExecutionStatus.Wait],
     ["Install packages", ExecutionStatus.Success],
@@ -64,4 +64,5 @@ RunStatusError.args = {
   ],
   errorName: "Bad error",
   errorValue: "Very bad error",
+  addCell: () => {},
 };

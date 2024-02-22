@@ -10,9 +10,10 @@ import { Variable } from "../../components/Variable";
 export const SelectXy: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
-  dataFramesColumns,
+  variablesStatus,
+  variables,
 }) => {
-  if (!dataFramesColumns) {
+  if (variablesStatus === "loaded" && !variables.length) {
     return (
       <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
@@ -22,10 +23,13 @@ export const SelectXy: React.FC<IRecipeProps> = ({
       </div>
     );
   }
-  const dataFrames = Object.keys(dataFramesColumns);
+  const dataFrames = variables
+    .filter((v) => v.varType === "DataFrame")
+    .map((v) => v.varName);
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [x, setX] = useState("X");
   const [y, setY] = useState("y");
+  const [allCols, setAllCols] = useState([] as string[]);
   const [xCols, setXCols] = useState([] as string[]);
   const [yCol, setYCol] = useState("");
 
@@ -34,12 +38,14 @@ export const SelectXy: React.FC<IRecipeProps> = ({
       setXCols([]);
       setYCol("");
     } else {
-      if (df in dataFramesColumns) {
-        const cols = dataFramesColumns[df];
-        if (cols) {
-          setXCols(cols.slice(0, cols.length - 1));
-          setYCol(cols[cols.length - 1]);
-        }
+      const colList = variables
+        .filter((v) => v.varName === df)
+        .map((v) => v.varColumns);
+      if (colList.length) {
+        const cols = colList[0];
+        setAllCols(cols);
+        setXCols(cols.slice(0, cols.length - 1));
+        setYCol(cols[cols.length - 1]);
       }
     }
   }, [df]);
@@ -76,18 +82,26 @@ export const SelectXy: React.FC<IRecipeProps> = ({
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
-          <Variable label={"Input maxtrix variable name"} name={x} setName={setX} />
+          <Variable
+            label={"Input matrix variable name"}
+            name={x}
+            setName={setX}
+          />
           <MultiSelect
             label={"Select X columns"}
             option={xCols.map((x) => ({ value: x, label: x }))}
-            options={dataFramesColumns[df].map((c) => ({ value: c, label: c }))}
+            options={allCols.map((c) => ({ value: c, label: c }))}
             setOption={setXCols}
           />
-          <Variable label={"Target vector variable name"} name={y} setName={setY} />
+          <Variable
+            label={"Target vector variable name"}
+            name={y}
+            setName={setY}
+          />
           <Select
             label={"Select y column"}
             option={yCol}
-            options={dataFramesColumns[df].map((c) => [c, c])}
+            options={allCols.map((c) => [c, c])}
             setOption={setYCol}
           />
         </>

@@ -1,13 +1,14 @@
 // import { TablerIconsProps } from '@tabler/icons-react';
 import React from 'react';
 import { IconProps } from '../icons/props';
+import IVariable from '../components/IVariable';
 
 
 export interface IRecipeProps {
     setCode: (src: string) => void;
     setPackages: (packages: string[]) => void;
-    dataFramesColumns?: Record<string, string[]>;
-    variables?: Record<string, string>; // name, type
+    variablesStatus: "loading" | "loaded" | "error" | "unknown";
+    variables: IVariable[];
 }
 
 export interface IRecipeSet {

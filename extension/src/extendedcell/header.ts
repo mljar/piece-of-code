@@ -307,14 +307,11 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     return 0;
   }
 
-
   protected onAfterAttach(msg: Message): void {
     const cell = this.parent as Cell<ICellModel>;
     //console.log('get cell', cell);
     if (cell) {
-      if (this._variableInspector === undefined) {
-        this._variableInspector = new VariableInspector(this.notebook);
-      }
+
       if (this.selectRecipe === undefined) {
         const executionCount = this.getExecutionCount(cell);
         this.selectRecipe = new SelectRecipeWidget(
@@ -332,6 +329,10 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         }
       }
 
+      if (this._variableInspector === undefined && this.selectRecipe !== undefined) {
+        this._variableInspector = new VariableInspector(this.notebook, this.selectRecipe.setVariablesStatus.bind(this.selectRecipe), this.selectRecipe.setVariables.bind(this.selectRecipe));
+      }
+
       //console.log('try add focus');
       // cell.inputArea?.node.addEventListener('focusout', () => {
       //   console.log('focusin is here2', cell);
@@ -345,8 +346,6 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         );
       }
       cell.inputArea?.node.addEventListener('focusin', () => {
-
-        
 
         if (this._cellId) {
           RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
@@ -366,7 +365,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.selectRecipe?.updateWidget();
           //this.selectRecipe?.update();
           this._variableInspector?.getVariables();
-          
+
           this.selectRecipe?.show();
         }
 

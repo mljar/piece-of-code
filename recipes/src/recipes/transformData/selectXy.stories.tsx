@@ -22,10 +22,39 @@ export const SelectXyStory: Story = (
 SelectXyStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
-  dataFramesColumns: {
-    df: ["col1", "col2", "col3", "col4"],
-    df2: ["feature1", "feature2", "feature3", "feature4"],
-  },
+  variablesStatus: "loaded",
+  variables: [
+    {
+      varName: "X",
+      varType: "DataFrame",
+      varColumns: ["col1", "col2", "col3", "col4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "X2",
+      varType: "DataFrame",
+      varColumns: ["feature1", "feature2", "feature3", "feature4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "y",
+      varType: "Series",
+      varColumns: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 
@@ -39,5 +68,6 @@ export const SelectXyEmptyDfStory: Story = (
 SelectXyEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
-  dataFramesColumns: {},
+  variablesStatus: "loaded",
+  variables: [],
 };

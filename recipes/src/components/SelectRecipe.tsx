@@ -7,11 +7,13 @@ import { allRecipes } from "../recipes";
 import { PlayIcon } from "../icons/Play";
 import { HomeIcon } from "../icons/Home";
 import { TrashIcon } from "../icons/Trash";
-import RunStatus, { ExecutionStatus } from "./RunStatus";
+import RunStatus from "./RunStatus";
 import NextStepEdit from "./NextStepEdit";
 import NextStepError from "./NextStepError";
 import NextStepSuccess from "./NextStepSuccess";
 import { PlusIcon } from "../icons/Plus";
+import IVariable from "./IVariable";
+import ExecutionStatus from "./ExecutionStatus";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -24,6 +26,8 @@ export interface ISelectRecipeProps {
   executionSteps: [string, ExecutionStatus][];
   deleteCell: () => void;
   addCell: () => void;
+  variablesStatus: "loading" | "loaded" | "error" | "unknown";
+  variables: IVariable[];
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
@@ -37,6 +41,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   executionSteps,
   deleteCell,
   addCell,
+  variablesStatus,
+  variables,
 }: ISelectRecipeProps) => {
   const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
@@ -146,10 +152,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           />
           {executionSteps.length > 0 && (
             <RunStatus
-              label={"Run code"}
               steps={executionSteps}
               errorName={previousErrorName}
               errorValue={previousErroValue}
+              addCell={addCell}
             />
           )}
         </div>
@@ -157,23 +163,23 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     );
   }
 
-  if (
-    executed &&
-    previousCode !== "" &&
-    previousErrorName !== "" &&
-    !overwriteExistingCode
-  ) {
-    return (
-      <div className="flex">
-        <div className="flex-none" style={{ width: "72px" }}>
-          {leftButtons}
-        </div>
-        <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
-          <NextStepError ename={previousErrorName} evalue={previousErroValue} />
-        </div>
-      </div>
-    );
-  }
+  // if (
+  //   executed &&
+  //   previousCode !== "" &&
+  //   previousErrorName !== "" &&
+  //   !overwriteExistingCode
+  // ) {
+  //   return (
+  //     <div className="flex">
+  //       <div className="flex-none" style={{ width: "72px" }}>
+  //         {leftButtons}
+  //       </div>
+  //       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+  //         <NextStepError ename={previousErrorName} evalue={previousErroValue} />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const ActiveTabClass =
     "inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-lg w-full dark:bg-blue-600";
@@ -295,6 +301,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             )}
             <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
               {welcomeMsg}
+
+              {variablesStatus}
+              {JSON.stringify(variables)}
             </div>
           </div>
         )}
@@ -305,17 +314,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           >
             {showNav && <hr className="p-1 m-2" />}
             <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
-              <RecipeUI setCode={setCode} setPackages={setPackages} />
+              <RecipeUI
+                setCode={setCode}
+                setPackages={setPackages}
+                variablesStatus={variablesStatus}
+                variables={variables}
+              />
             </div>
           </div>
         )}
 
         {executionSteps.length > 0 && (
           <RunStatus
-            label={"Run code"}
             steps={executionSteps}
             errorName={previousErrorName}
             errorValue={previousErroValue}
+            addCell={addCell}
           />
         )}
         {/* {showSuccess && <NextStepSuccess />} */}

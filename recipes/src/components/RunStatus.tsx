@@ -7,26 +7,27 @@ import { PlusIcon } from "../icons/Plus";
 import { BoltIcon } from "../icons/Bolt";
 import { ChatIcon } from "../icons/Chat";
 import { MailIcon } from "../icons/Mail";
+import ExecutionStatus from "./ExecutionStatus";
 
-export enum ExecutionStatus {
-  Wait = "Wait",
-  Success = "Success",
-  Error = "Error",
-  Warning = "Warning",
-}
+// export enum ExecutionStatus {
+//   Wait = "Wait",
+//   Success = "Success",
+//   Error = "Error",
+//   Warning = "Warning",
+// }
 
 export interface IRunStatusProps {
-  label: string;
   steps: [string, ExecutionStatus][];
   errorName: string;
   errorValue: string;
+  addCell: () => void;
 }
 
 export const RunStatus: React.FC<IRunStatusProps> = ({
-  label,
   steps,
   errorName,
   errorValue,
+  addCell,
 }: IRunStatusProps) => {
   const [showEmail, setShowEmail] = useState(false);
   const elements = steps.map((step) => {
@@ -70,7 +71,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
         <div>
           <label className="block text-lg font-medium ">
             <BoltIcon className="inline pb-1" />
-            {label}
+            Execution status
           </label>
           {elements}
         </div>
@@ -79,14 +80,14 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
           <div className="col-span-2">
             <p className="py-2 text-base">
               All good 👍
+              <button
+                type="button"
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center mx-2"
+                 onClick={() => addCell()}
+              >
+                <PlusIcon className="inline pb-1" /> Let's add a new cell
+              </button>
             </p>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center"
-              // onClick={() => setShowNav(!showNav)}
-            >
-              <PlusIcon className="inline pb-1" /> Let's add a new cell
-            </button>
           </div>
         )}
         {errorName !== "" && (

@@ -1,5 +1,6 @@
 import { NotebookPanel } from "@jupyterlab/notebook";
 import { KernelMessage } from '@jupyterlab/services';
+import { IVariable } from "@mljar/recipes";
 
 var notebooksInitialized: string[] = [];
 
@@ -87,6 +88,10 @@ def _jupyterlab_variableinspector_getshapeof(x):
         return "%s keys" % len(x)
     return None
 
+def _jupyterlab_variableinspector_getcolumnsof(x):
+    if __pd and isinstance(x, __pd.DataFrame):
+        return list(x.columns)
+    return []
 
 def _jupyterlab_variableinspector_getcontentof(x):
     # returns content in a friendly way for python variables
@@ -171,7 +176,8 @@ def _jupyterlab_variableinspector_dict_list():
             'varShape': str(_jupyterlab_variableinspector_getshapeof(eval(_v))) if _jupyterlab_variableinspector_getshapeof(eval(_v)) else '', 
             'varContent': str(_jupyterlab_variableinspector_getcontentof(eval(_v))), 
             'isMatrix': _jupyterlab_variableinspector_is_matrix(eval(_v)),
-            'isWidget': _jupyterlab_variableinspector_is_widget(type(eval(_v)))
+            'isWidget': _jupyterlab_variableinspector_is_widget(type(eval(_v))),
+            'varColumns': _jupyterlab_variableinspector_getcolumnsof(eval(_v)),
         }
         for _v in values if keep_cond(_v)
     ]
@@ -225,27 +231,26 @@ def _jupyterlab_variableinspector_deletevariable(x):
 
 const getVars = `_jupyterlab_variableinspector_dict_list()`;
 
-interface Variable {
-  varName: string;
-  varType: string;
-  varSize: string;
-  varShape: string;
-  varContent: string;
-  isMatrix: boolean;
-  isWidget: boolean;
-}
-
 export class VariableInspector {
 
   private _notebook: NotebookPanel | null;
   private _notebookId: string | undefined;
+  private _setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void;
+  private _setVariables: (variables: IVariable[]) => void;
 
-  constructor(nb: NotebookPanel | null) {
+  constructor(nb: NotebookPanel | null, 
+    setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void, 
+    setVariables: (variables: IVariable[]) => void) {
     this._notebook = nb;
     this._notebookId = this._notebook?.id;
+    this._setVariablesStatus = setVariablesStatus;
+    this._setVariables = setVariables;
   }
 
   getVariables() {
+
+    this._setVariablesStatus("loading");
+    this._setVariables([]);
 
     let code = '';
     if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
@@ -287,12 +292,15 @@ export class VariableInspector {
             .replace(/\\"/g, '"')
             .replace(/\\'/g, "'");
 
-          const variables: Variable[] = JSON.parse(contentDisplay);
+          const variables: IVariable[] = JSON.parse(contentDisplay);
 
           console.log(variables);
+          this._setVariables(variables);
+          this._setVariablesStatus("loaded");
         } catch (e) {
           console.log(e);
         }
+
 
         break;
       default:

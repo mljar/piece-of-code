@@ -1,36 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { EngineIcon } from "../../icons/Engine";
 import { Variable } from "../../components/Variable";
-import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 import { Numeric } from "../../components/Numeric";
 
-export const Train: React.FC<IRecipeProps> = ({ variables }) => {
+export const Train: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  variablesStatus,
+  variables,
+}) => {
+  if (variablesStatus === "loaded" && !variables.length) {
+    return (
+      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There are no DataFrames in your notebook. Please create DataFrame by
+          reading data from file, url or database.
+        </p>
+      </div>
+    );
+  }
+
   const [name, setName] = useState("automl");
   const [resultsPath, setResultsPath] = useState("auto");
   let matrices = [] as string[];
   let vectors = [] as string[];
 
   if (variables) {
-    matrices = Object.entries(variables)
-      .filter((e) => e[1] === "pd.DataFrame")
-      .map((e) => e[0]);
-    vectors = Object.entries(variables)
-      .filter((e) => e[1] === "pd.Series")
-      .map((e) => e[0]);
+    matrices = variables
+      .filter((e) => e.varType === "DataFrame")
+      .map((e) => e.varName);
+    vectors = variables
+      .filter((e) => e.varType === "Series")
+      .map((e) => e.varName);
   }
   const [X, setX] = useState(matrices.length ? matrices[0] : "");
   const [y, setY] = useState(vectors.length ? vectors[0] : "");
   const modeOptions = [
-    ["Explain - initial data exploration", "explain"],
-    ["Performance - production ready ML", "performance"],
-    ["Compete - highly tuned ML", "compete"],
+    ["Explain - initial data exploration", "Explain"],
+    ["Performance - production ready ML", "Performance"],
+    ["Compete - highly tuned ML", "Compete"],
   ] as [string, string][];
-  const [mode, setMode] = useState("explain");
+  const [mode, setMode] = useState("Explain");
   const [trainingTime, setTrainingTime] = useState(300);
+
+  useEffect(() => {
+    if (X === "" || y === "") {
+      return;
+    }
+    let src = `# create automl object\n`;
+    src += `${name} = AutoML(`
+    src += `total_time_limit=${trainingTime}`
+    src += `, mode="${mode}"`
+    if(resultsPath !== "auto") {
+      src += `, results_path="${resultsPath}"`
+    }
+    src += `)\n`
+    src += `# train automl\n`
+    src += `${name}.fit(${X}, ${y})`
+    
+    setCode(src);
+    setPackages(["from supervised import AutoML"]);
+  }, []);
 
   return (
     <div>

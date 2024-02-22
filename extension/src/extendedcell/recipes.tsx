@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { SelectRecipe } from '@mljar/recipes';
+import { IVariable, SelectRecipe } from '@mljar/recipes';
 import { Cell, ICellModel } from '@jupyterlab/cells';
 
 import { ReactWidget, UseSignal } from '@jupyterlab/ui-components';
 
 import { Signal } from '@lumino/signaling';
-//import { ExecutionStatus } from '@mljar/recipes';
 
 export enum ExecutionStatus {
   Wait = 'Wait',
@@ -27,6 +26,8 @@ interface Props {
   executionSteps: [string, ExecutionStatus][];
   deleteCell: () => void;
   addCell: () => void;
+  variablesStatus: 'loading' | 'loaded' | 'error' | 'unknown';
+  variables: IVariable[];
 }
 
 const SelectRecipeComponent = ({
@@ -40,7 +41,9 @@ const SelectRecipeComponent = ({
   runCell,
   executionSteps,
   deleteCell,
-  addCell
+  addCell,
+  variablesStatus,
+  variables
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -63,6 +66,8 @@ const SelectRecipeComponent = ({
         executionSteps={executionSteps}
         deleteCell={deleteCell}
         addCell={addCell}
+        variablesStatus={variablesStatus}
+        variables={variables}
       />
     </div>
   );
@@ -80,7 +85,10 @@ export class SelectRecipeWidget extends ReactWidget {
   private _previousErrorName: string = '';
   private _previousErrorValue: string = '';
   private _previousExecutionCount: number = 0;
-  private _executionSteps: [string, ExecutionStatus][] = []; // [['Reac CSV', ExecutionStatus.Success]];
+  private _executionSteps: [string, ExecutionStatus][] = [];
+  private _variablesStatus: 'loading' | 'loaded' | 'error' | 'unknown' =
+    'unknown';
+  private _variables: IVariable[] = [];
 
   constructor(
     cell: Cell<ICellModel>,
@@ -124,6 +132,17 @@ export class SelectRecipeWidget extends ReactWidget {
     this._signal.emit();
   }
 
+  public setVariablesStatus(
+    status: 'loading' | 'loaded' | 'error' | 'unknown'
+  ) {
+    this._variablesStatus = status;
+  }
+
+  public setVariables(variables: IVariable[]) {
+    this._variables = variables;
+    this.updateWidget();
+  }
+
   render(): JSX.Element {
     return (
       <UseSignal signal={this._signal}>
@@ -141,6 +160,8 @@ export class SelectRecipeWidget extends ReactWidget {
               executionSteps={this._executionSteps}
               deleteCell={this._deleteCell}
               addCell={this._addCell}
+              variablesStatus={this._variablesStatus}
+              variables={this._variables}
             />
           );
         }}

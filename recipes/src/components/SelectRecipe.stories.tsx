@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { ISelectRecipeProps, SelectRecipe } from "./SelectRecipe";
 import { allRecipes } from "../recipes";
-import { ExecutionStatus } from "./RunStatus";
+import ExecutionStatus from "./ExecutionStatus";
 
 const meta: Meta<typeof SelectRecipe> = {
   component: SelectRecipe,
@@ -26,14 +26,17 @@ SelectRecipeForm.args = {
   previousCode: "",
   previousErrorName: "",
   previousErroValue: "",
+  previousExecutionCount: 0,
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   runCell: () => console.log("runCell"),
   // executionSteps: [],
   executionSteps: [
-     ["Wait for installation", ExecutionStatus.Wait],
-     ["Install packages", ExecutionStatus.Success],
+    // ["Wait for installation", ExecutionStatus.Wait],
+    // ["Install packages", ExecutionStatus.Success],
     // ["Load data", ExecutionStatus.Error],
     // ["Train ML model", ExecutionStatus.Warning],
   ],
+  variablesStatus: "loaded",
+  variables: [],
 };
