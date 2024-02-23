@@ -64,7 +64,7 @@ export const Train: React.FC<IRecipeProps> = ({
     
     setCode(src);
     setPackages(["from supervised import AutoML"]);
-  }, []);
+  }, [name, resultsPath, mode, trainingTime, X, y]);
 
   return (
     <div>

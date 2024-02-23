@@ -96,7 +96,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
               Some problems with code ...
             </p>
             <p className="py-2">There was an error during code execution:</p>
-            <pre className="border-2 p-2">
+            <pre className="border-2 p-2 overflow-auto">
               {errorName}
               <br />
               {errorValue}

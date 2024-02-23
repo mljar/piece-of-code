@@ -1,6 +1,6 @@
 import { Cell, ICellHeader, ICellModel } from '@jupyterlab/cells';
 import { NotebookPanel } from '@jupyterlab/notebook';
-
+import * as nbformat from '@jupyterlab/nbformat';
 import { PanelLayout, Widget } from '@lumino/widgets';
 
 import { CommandRegistry } from '@lumino/commands';
@@ -69,27 +69,23 @@ export class RecipeWidgetsRegistry {
   public runCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => void) {
     if (this._commands) {
       addStep('Run code', ExecutionStatus.Wait);
-
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runcurrentcell'
       );
       promise.then(() => {
         checkOutput();
-        //setTimeout(() => addStep('Run code', ExecutionStatus.Success), 500);
       });
-
     }
   }
-  public runFirstCell(addStep: (label: string, status: ExecutionStatus) => void) {
+  public runFirstCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => void) {
     if (this._commands) {
       addStep('Import packages', ExecutionStatus.Wait);
-
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runfirstcell'
       );
-
       promise.then(() => {
-        setTimeout(() => addStep('Import packages', ExecutionStatus.Success), 500);
+        checkOutput();
+        //setTimeout(() => addStep('Import packages', ExecutionStatus.Success), 500);
       });
     }
   }
@@ -184,7 +180,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     this.supplementPackages();
 
     if (this._packages.length) {
-      RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this));
+      RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this), this.checkFirstCellOutput.bind(this));
     }
 
     RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
@@ -194,15 +190,30 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   checkOutput(): void {
-    const cell = this.cell;
-    if (cell) {
-      const [errorName, errorValue] = this.getErrorNameAndValue(cell);
+    if (this.cell) {
+      this.checkCellOutput(this.cell.model.sharedModel.toJSON(), 'Run code');
+    }
+  }
+
+  checkFirstCellOutput(): void {
+    const nb = this.notebook;
+    if (nb) {
+      const cells = nb?.model?.cells;
+      if (cells) {
+        this.checkCellOutput(cells.get(0).sharedModel.toJSON(), 'Import packages');
+      }
+    }
+  }
+
+  checkCellOutput(output: nbformat.IBaseCell, stepName: string): void {
+    if (output) {
+      const [errorName, errorValue] = this.getErrorNameAndValue(output);
       this.selectRecipe?.setPreviousError(errorName, errorValue);
       this.selectRecipe?.updateWidget();
       if (errorName === '') {
-        setTimeout(() => this.addExecutionStep('Run code', ExecutionStatus.Success), 500);
+        setTimeout(() => this.addExecutionStep(stepName, ExecutionStatus.Success), 500);
       } else {
-        setTimeout(() => this.addExecutionStep('Run code', ExecutionStatus.Error), 500);
+        setTimeout(() => this.addExecutionStep(stepName, ExecutionStatus.Error), 500);
       }
     }
   }
@@ -272,8 +283,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   //   return;
   // };
 
-  protected getErrorNameAndValue(cell: Cell<ICellModel>): [string, string] {
-    const output = cell.model.sharedModel.toJSON();
+  protected getErrorNameAndValue(output: nbformat.IBaseCell): [string, string] {
+    // const output: nbformat.IBaseCell = cell.model.sharedModel.toJSON();
     if (output) {
       if (output.cell_type === 'code') {
         let outputs = output.outputs as any[];
@@ -358,7 +369,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.selectRecipe?.setPreviousCode(
             cell.model.sharedModel.getSource()
           );
-          const [errorName, errorValue] = this.getErrorNameAndValue(cell);
+          const [errorName, errorValue] = this.getErrorNameAndValue(cell.model.sharedModel.toJSON());
           this.selectRecipe?.setPreviousError(errorName, errorValue);
           const executionCount = this.getExecutionCount(cell);
           this.selectRecipe?.setPreviousExecutionCount(executionCount);
