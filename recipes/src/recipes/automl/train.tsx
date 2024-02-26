@@ -52,16 +52,16 @@ export const Train: React.FC<IRecipeProps> = ({
       return;
     }
     let src = `# create automl object\n`;
-    src += `${name} = AutoML(`
-    src += `total_time_limit=${trainingTime}`
-    src += `, mode="${mode}"`
-    if(resultsPath !== "auto") {
-      src += `, results_path="${resultsPath}"`
+    src += `${name} = AutoML(`;
+    src += `total_time_limit=${trainingTime}`;
+    src += `, mode="${mode}"`;
+    if (resultsPath !== "auto") {
+      src += `, results_path="${resultsPath}"`;
     }
-    src += `)\n`
-    src += `# train automl\n`
-    src += `${name}.fit(${X}, ${y})`
-    
+    src += `)\n`;
+    src += `# train automl\n`;
+    src += `${name}.fit(${X}, ${y})`;
+
     setCode(src);
     setPackages(["from supervised import AutoML"]);
   }, [name, resultsPath, mode, trainingTime, X, y]);
@@ -119,5 +119,11 @@ export const TrainRecipe: IRecipe = {
   description: "Train AutoML.",
   ui: Train,
   Icon: EngineIcon,
-  requiredPackages: [["mljar-supervised", ">=1.1.2"]],
+  requiredPackages: [
+    {
+      importName: "supervised",
+      installationName: "mljar-supervised",
+      version: ">=1.1.2",
+    },
+  ],
 };

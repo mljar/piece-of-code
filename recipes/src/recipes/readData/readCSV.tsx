@@ -66,11 +66,14 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 
 export const ReadCSVRecipe: IRecipe = {
   name: "Read CSV",
-  description: "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
+  description:
+    "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
   ui: ReadCSV,
   Icon: FileCsvIcon,
-  requiredPackages: [['pandas', '>=1.0.0']],
-  docsLink: "http://mljar.com"
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
+  docsLink: "http://mljar.com",
 };
 
 export default ReadCSV;

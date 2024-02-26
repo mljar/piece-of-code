@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import { IRecipeSet } from "../recipes/base";
+import { IPackage, IRecipeSet } from "../recipes/base";
 import { WalkIcon } from "../icons/Walk";
 import { IconProps } from "../icons/props";
 import { BookIcon } from "../icons/Book";
+import { SuccessIcon } from "../icons/Success";
+import { WarningIcon } from "../icons/Warning";
+import { Tooltip } from "react-tooltip";
+import { PackageIcon } from "../icons/Package";
+import { ErrorIcon } from "../icons/Error";
+import { SpinnerIcon } from "../icons/Spinner";
 
 export interface IWelcomeProps {
   title?: string;
   Icon?: React.FC<IconProps>;
   description: string;
-  packages?: [string, string][];
+  packages?: IPackage[];
   docsLink?: string;
+  checkPackage?: (pkg: string) => void;
+  checkedPackages?: Record<string, string>;
+  installPackage?: (installationName: string, importName: string) => void;
 }
 
 export const Welcome: React.FC<IWelcomeProps> = ({
@@ -18,21 +27,83 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   description,
   packages,
   docsLink,
+  checkPackage,
+  checkedPackages,
+  installPackage,
 }: IWelcomeProps) => {
-  const packagesList = packages?.map((p: [string, string]) => (
-    <div className="flex items-center mb-4" key={`${p[0]}${p[1]}`}>
-      <input
-        type="checkbox"
-        value="1"
-        className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-0 dark:bg-gray-700 dark:border-gray-600"
-        defaultChecked
-      />
-      <label className="ms-1 text-gray-900 dark:text-gray-300">
-        {p[0]}
-        {p[1]}
-      </label>
-    </div>
-  ));
+  console.log({ welcome: "very", checkedPackages });
+  packages?.forEach((p: IPackage) => {
+    if (
+      checkPackage &&
+      checkedPackages &&
+      !(p.importName in checkedPackages)
+    ) {
+      checkPackage(p.importName);
+    }
+  });
+  const packagesList = packages?.map((p: IPackage) => {
+    let status = "unknown";
+    if (checkedPackages && p.importName in checkedPackages) {
+      switch (checkedPackages[p.importName]) {
+        case "error":
+        case "install":
+          status = checkedPackages[p.importName];
+          break;
+        default:
+          status = "available";
+          break;
+      }
+    }
+
+    let tooltipMsg = "Package is available";
+    if (status === "error") {
+      tooltipMsg = "Package is not available, please install it";
+    } else if (status === "install") {
+      tooltipMsg = "Package installation, please wait";
+    } else if (status === "unknown") {
+      tooltipMsg = "Package status is unknown";
+    }
+    return (
+      <div
+        className="flex items-center mb-4"
+        key={`${p.installationName}${p.version}`}
+      >
+        <Tooltip id="package-icon-tooltip" />
+        <div
+          data-tooltip-id="package-icon-tooltip"
+          data-tooltip-content={tooltipMsg}
+        >
+          {status === "available" && <SuccessIcon className="inline pt-1" />}
+          {status === "error" && <ErrorIcon className="inline p-1" />}
+          {status === "unknown" && <WarningIcon className="inline pt-1" />}
+          {status === "install" && <SpinnerIcon className="inline p-1" />}
+
+          <label className="text-gray-900 dark:text-gray-300">
+            {p.installationName}
+            {p.version}
+          </label>
+        </div>
+        {status === "error" && (
+          <button
+            type="button"
+            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-2 py-1 text-center mx-2"
+            onClick={() => {
+              if (installPackage !== undefined) {
+                installPackage(p.installationName, p.importName);
+              }
+            }}
+          >
+            Install package
+          </button>
+        )}
+        {status === "install" && (
+          <label className="text-gray-900 dark:text-gray-300 px-1">
+            Please wait, package installation ...
+          </label>
+        )}
+      </div>
+    );
+  });
   return (
     <div>
       <h3 className="text-lg   text-gray-900 dark:text-white mb-2">
@@ -53,14 +124,13 @@ export const Welcome: React.FC<IWelcomeProps> = ({
             </a>
           </div>
         )}
-        
       </h3>
       {description && <p className="mb-2 text-base">{description}</p>}
 
       {packages && (
         <div>
-          <h4 className="text-md text-gray-900 dark:text-white mb-1">
-            Required Packages
+          <h4 className="text-base text-gray-900 dark:text-white mb-1">
+            <PackageIcon className="inline pb-1" /> Required Packages
           </h4>
           {packagesList}
         </div>

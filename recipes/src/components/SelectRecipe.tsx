@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IRecipeSet } from "../recipes/base";
+import { IPackage, IRecipeSet } from "../recipes/base";
 import { WalkIcon } from "../icons/Walk";
 import { IconProps } from "../icons/props";
 import { Welcome } from "./Welcome";
@@ -14,6 +14,11 @@ import NextStepSuccess from "./NextStepSuccess";
 import { PlusIcon } from "../icons/Plus";
 import IVariable from "./IVariable";
 import ExecutionStatus from "./ExecutionStatus";
+import { PackageIcon } from "../icons/Package";
+import { WarningIcon } from "../icons/Warning";
+import { ErrorIcon } from "../icons/Error";
+import { SuccessIcon } from "../icons/Success";
+import { SpinnerIcon } from "../icons/Spinner";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -28,6 +33,9 @@ export interface ISelectRecipeProps {
   addCell: () => void;
   variablesStatus: "loading" | "loaded" | "error" | "unknown";
   variables: IVariable[];
+  checkPackage: (pkg: string) => void;
+  checkedPackages: Record<string, string>;
+  installPackage: (installationName: string, importName: string) => void;
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
@@ -43,6 +51,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   addCell,
   variablesStatus,
   variables,
+  checkPackage,
+  checkedPackages,
+  installPackage,
 }: ISelectRecipeProps) => {
   const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
@@ -244,6 +255,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       />
     );
   }
+
+  let installPackages: IPackage[] = [];
   let RecipeUI = undefined;
   if (selectedRecipeSet !== "" && selectedRecipe !== "") {
     console.log(selectedRecipeSet, selectedRecipe);
@@ -255,10 +268,74 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         description={recipe.description}
         packages={recipe.requiredPackages}
         docsLink={recipe.docsLink}
+        checkPackage={checkPackage}
+        checkedPackages={checkedPackages}
+        installPackage={installPackage}
       />
     );
     RecipeUI = recipe.ui;
+
+    recipe.requiredPackages?.forEach((p) => {
+      if (
+        !(
+          checkedPackages &&
+          p.importName in checkedPackages &&
+          checkedPackages[p.importName] !== "error" &&
+          checkedPackages[p.importName] !== "install"
+        )
+      ) {
+        installPackages.push(p);
+      }
+    });
   }
+
+  const installPackagesElement = installPackages.map((p) => {
+    let status = "unknown";
+
+    if (checkedPackages && p.importName in checkedPackages) {
+      switch (checkedPackages[p.importName]) {
+        case "error":
+        case "install":
+          status = checkedPackages[p.importName];
+          break;
+        default:
+          status = "available";
+          break;
+      }
+    }
+    return (
+      <div key={`${p.installationName}-${p.version}`}>
+        {status === "available" && <SuccessIcon className="inline pt-1" />}
+        {status === "error" && <ErrorIcon className="inline p-1" />}
+        {status === "unknown" && <WarningIcon className="inline pt-1" />}
+        {status === "install" && <SpinnerIcon className="inline p-1" />}
+
+        <label className="text-gray-900 dark:text-gray-300">
+          {p.installationName}
+          {p.version}
+        </label>
+
+        {status === "error" && (
+          <button
+            type="button"
+            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-2 py-1 text-center mx-2"
+            onClick={() => {
+              if (installPackage)
+                installPackage(p.installationName, p.importName);
+            }}
+          >
+            Install package
+          </button>
+        )}
+        {status === "install" && (
+          <label className="text-gray-900 dark:text-gray-300">
+            {" "}
+            Please wait, package installation ...
+          </label>
+        )}
+      </div>
+    );
+  });
 
   // const [showNavDelayed, setShowNavDelayed] = useState(showNav);
   // useEffect(
@@ -301,25 +378,36 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             )}
             <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
               {welcomeMsg}
-
-              {variablesStatus}
-              {JSON.stringify(variables)}
             </div>
           </div>
         )}
 
-        {RecipeUI && executionSteps.length === 0 && (
-          <div
-          // onMouseOver={()=>{setShowNav(false)}}
-          >
-            {showNav && <hr className="p-1 m-2" />}
-            <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
-              <RecipeUI
-                setCode={setCode}
-                setPackages={setPackages}
-                variablesStatus={variablesStatus}
-                variables={variables}
-              />
+        {RecipeUI &&
+          executionSteps.length === 0 &&
+          installPackages.length === 0 && (
+            <div
+            // onMouseOver={()=>{setShowNav(false)}}
+            >
+              {showNav && <hr className="p-1 m-2" />}
+              <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
+                <RecipeUI
+                  setCode={setCode}
+                  setPackages={setPackages}
+                  variablesStatus={variablesStatus}
+                  variables={variables}
+                />
+              </div>
+            </div>
+          )}
+        {installPackages.length > 0 && (
+          <div>
+            <hr className="m-2" />
+            <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+              <h3 className="text-lg   text-gray-900 dark:text-white mb-2">
+                <PackageIcon className="inline pb-1" /> Install packages
+              </h3>
+
+              {installPackagesElement}
             </div>
           </div>
         )}

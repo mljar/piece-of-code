@@ -231,20 +231,47 @@ def _jupyterlab_variableinspector_deletevariable(x):
 
 const getVars = `_jupyterlab_variableinspector_dict_list()`;
 
+var checkedPackages: Record<string, Record<string, string>> = {};
+
+const checkPackageCode = (pkg: string): string =>
+  `
+from importlib import __import__
+try:
+    print('{' + f'"package": "${pkg}", "version": "{__import__("${pkg}").__version__}"' + '}')
+except ImportError:
+  print('{"package": "${pkg}", "version": "error"}')`;
+
+
+const installPackageConda = (pkg: string): string =>
+  `import sys
+!conda install --yes --prefix {sys.prefix} ${pkg}`;
+
+const installPackagePip = (pkg: string): string =>
+  `import sys
+!{sys.executable} -m pip install ${pkg}`;
+
+const checkIfConda = `import sys
+!conda list --prefix {sys.prefix}`;
+
+var notebookPackageManager: Record<string, 'conda' | 'pip'> = {};
+
 export class VariableInspector {
 
   private _notebook: NotebookPanel | null;
   private _notebookId: string | undefined;
   private _setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void;
   private _setVariables: (variables: IVariable[]) => void;
+  private _setInstalledPackages: (pkgs: Record<string, string>) => void;
 
-  constructor(nb: NotebookPanel | null, 
-    setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void, 
-    setVariables: (variables: IVariable[]) => void) {
+  constructor(nb: NotebookPanel | null,
+    setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void,
+    setVariables: (variables: IVariable[]) => void,
+    setInstalledPackages: (pkgs: Record<string, string>) => void) {
     this._notebook = nb;
     this._notebookId = this._notebook?.id;
     this._setVariablesStatus = setVariablesStatus;
     this._setVariables = setVariables;
+    this._setInstalledPackages = setInstalledPackages;
   }
 
   getVariables() {
@@ -265,6 +292,10 @@ export class VariableInspector {
     });
     if (future) {
       future.onIOPub = this._onIOPub;
+    }
+
+    if (this._notebookId && !(this._notebookId in notebookPackageManager)) {
+      this.checkPackageManager();
     }
   }
 
@@ -293,14 +324,13 @@ export class VariableInspector {
             .replace(/\\'/g, "'");
 
           const variables: IVariable[] = JSON.parse(contentDisplay);
-
-          console.log(variables);
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
         } catch (e) {
           console.log(e);
+          this._setVariables([]);
+          this._setVariablesStatus("error");
         }
-
 
         break;
       default:
@@ -309,4 +339,174 @@ export class VariableInspector {
     return;
   };
 
+  checkPackage(pkg: string) {
+    console.log(pkg);
+    console.log(checkedPackages);
+    console.log(checkPackageCode(pkg));
+    if (this._notebookId) {
+      if (this._notebookId in checkedPackages && pkg in checkedPackages[this._notebookId]) {
+        const version = checkedPackages[this._notebookId][pkg];
+        console.log({ version });
+        this._setInstalledPackages(checkedPackages[this._notebookId]);
+      } else {
+        let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
+          code: checkPackageCode(pkg),
+          store_history: false,
+        });
+        console.log(future);
+        if (future) {
+          future.onIOPub = this._onCheckPackage;
+        }
+      }
+    }
+
+  }
+
+  private _onCheckPackage = (msg: KernelMessage.IIOPubMessage): void => {
+    console.log(msg);
+    const msgType = msg.header.msg_type;
+    switch (msgType) {
+      case 'stream':
+      case 'execute_result':
+      case 'display_data':
+      case 'update_display_data':
+
+        console.log(msg.content);
+
+        interface ContentData {
+          text: string;
+        }
+        const content = msg.content as ContentData;
+        console.log(content.text);
+
+        interface IPackage {
+          package: string;
+          version: string;
+        }
+        try {
+          const p: IPackage = JSON.parse(content.text);
+
+          if (this._notebookId) {
+            if (!(this._notebookId in checkedPackages)) {
+              checkedPackages[this._notebookId] = { [p.package]: p.version }
+            } else {
+              checkedPackages[this._notebookId][p.package] = p.version;
+            }
+            this._setInstalledPackages(checkedPackages[this._notebookId]);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+
+        break;
+      default:
+        break;
+    }
+    return;
+  };
+
+
+  installPackage(installationName: string, importName: string) {
+    let packageManager: 'conda' | 'pip' = 'conda';
+    if (this._notebookId && this._notebookId in notebookPackageManager) {
+      packageManager = notebookPackageManager[this._notebookId];
+    }
+
+    this._installPackagePackageManager(installationName, importName, packageManager);
+  }
+
+  private _installPackagePackageManager(installationName: string, importName: string, envManager: 'conda' | 'pip') {
+    console.log('install', importName);
+
+    if (this._notebookId) {
+      if (!(this._notebookId in checkedPackages)) {
+        checkedPackages[this._notebookId] = { [importName]: 'install' }
+      } else {
+        checkedPackages[this._notebookId][importName] = 'install';
+      }
+      this._setInstalledPackages(checkedPackages[this._notebookId]);
+    }
+
+    let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
+      code: envManager === 'conda' ? installPackageConda(installationName) : installPackagePip(installationName),
+      store_history: false,
+    });
+    console.log(future);
+    if (future) {
+      // will be needed to collect logs from installation
+      //future.onIOPub = this._onInstallPackage;
+      future.done.then(() => {
+        console.log(' DONE ');
+        if (this._notebookId && this._notebookId in checkedPackages) {
+          // delete all packages, we need to re-check all packages again
+          // there might be dependencies
+          delete checkedPackages[this._notebookId]; //[importName];
+          this.checkPackage(importName);
+        }
+      })
+    }
+  }
+
+
+  // private _onInstallPackage = (msg: KernelMessage.IIOPubMessage): void => {
+  //   const msgType = msg.header.msg_type;
+  //   switch (msgType) {
+  //     case 'stream':
+  //     case 'execute_result':
+  //     case 'display_data':
+  //     case 'update_display_data':
+  //       interface ContentData {
+  //         name: string;
+  //         text: string;
+  //       }
+  //       const content = msg.content as ContentData;
+
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   return;
+  // };
+
+
+  checkPackageManager() {
+    let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
+      code: checkIfConda,
+      store_history: false,
+    });
+    if (future) {
+      future.onIOPub = this._onCheckPackageManager;
+    }
+  }
+
+
+  private _onCheckPackageManager = (msg: KernelMessage.IIOPubMessage): void => {
+    const msgType = msg.header.msg_type;
+    switch (msgType) {
+      case 'stream':
+      case 'execute_result':
+      case 'display_data':
+      case 'update_display_data':
+
+        interface ContentData {
+          name: string;
+          text: string;
+        }
+        const content = msg.content as ContentData;
+
+        if (this._notebookId) {
+          //                     n(N)ot a conda environment
+          if (content.text.includes('ot a conda environment')) {
+            notebookPackageManager[this._notebookId] = 'pip';
+          } else {
+            notebookPackageManager[this._notebookId] = 'conda';
+          }
+        }
+
+        break;
+      default:
+        break;
+    }
+    return;
+  };
 }

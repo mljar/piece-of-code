@@ -20,7 +20,8 @@ export interface IRecipeSet {
 }
 
 export interface IPackage {
-    name: string;
+    importName: string;
+    installationName: string;
     version: string;
 }
 
@@ -28,7 +29,7 @@ export interface IRecipe {
     name: string;
     description: string;
     Icon?: React.FC<IconProps>;
-    requiredPackages?: [string, string][];
+    requiredPackages?: IPackage[];
     docsLink?: string;
     ui: React.FC<IRecipeProps>;
 }

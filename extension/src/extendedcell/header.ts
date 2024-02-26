@@ -66,7 +66,7 @@ export class RecipeWidgetsRegistry {
     }
   }
 
-  public runCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => void) {
+  public runCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => string) {
     if (this._commands) {
       addStep('Run code', ExecutionStatus.Wait);
       const promise = this._commands.execute(
@@ -77,17 +77,14 @@ export class RecipeWidgetsRegistry {
       });
     }
   }
-  public runFirstCell(addStep: (label: string, status: ExecutionStatus) => void, checkOutput: () => void) {
+  public runFirstCell(): Promise<any> | undefined {
     if (this._commands) {
-      addStep('Import packages', ExecutionStatus.Wait);
       const promise = this._commands.execute(
         '@mljar/pieceofcode:runfirstcell'
       );
-      promise.then(() => {
-        checkOutput();
-        //setTimeout(() => addStep('Import packages', ExecutionStatus.Success), 500);
-      });
+      return promise;
     }
+    return undefined;
   }
   public addWidget(cellId: string, widget: SelectRecipeWidget) {
     this._widgets[cellId] = widget;
@@ -180,32 +177,54 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     this.supplementPackages();
 
     if (this._packages.length) {
-      RecipeWidgetsRegistry.getInstance().runFirstCell(this.addExecutionStep.bind(this), this.checkFirstCellOutput.bind(this));
+      //
+      // import packages and run code
+      //
+      this.addExecutionStep('Import packages', ExecutionStatus.Wait)
+      const promise = RecipeWidgetsRegistry.getInstance().runFirstCell();
+      promise?.then(() => {
+        const errorName = this.checkFirstCellOutput();
+        console.log('check first cell', errorName);
+        if (errorName === '') {
+          // no error with package import let's run code
+          RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
+        } else {
+          this.addExecutionStep('Code not executed', ExecutionStatus.Warning)
+        }
+      });
+      // clear packages
+      this._packages = [];
+    } else {
+      //
+      // just run current cell
+      //
+      RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
     }
 
-    RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
 
-    // clear packages
-    this._packages = [];
+
+
   }
 
-  checkOutput(): void {
+  checkOutput(): string {
     if (this.cell) {
-      this.checkCellOutput(this.cell.model.sharedModel.toJSON(), 'Run code');
+      return this.checkCellOutput(this.cell.model.sharedModel.toJSON(), 'Run code');
     }
+    return '';
   }
 
-  checkFirstCellOutput(): void {
+  checkFirstCellOutput(): string {
     const nb = this.notebook;
     if (nb) {
       const cells = nb?.model?.cells;
       if (cells) {
-        this.checkCellOutput(cells.get(0).sharedModel.toJSON(), 'Import packages');
+        return this.checkCellOutput(cells.get(0).sharedModel.toJSON(), 'Import packages');
       }
     }
+    return '';
   }
 
-  checkCellOutput(output: nbformat.IBaseCell, stepName: string): void {
+  checkCellOutput(output: nbformat.IBaseCell, stepName: string): string {
     if (output) {
       const [errorName, errorValue] = this.getErrorNameAndValue(output);
       this.selectRecipe?.setPreviousError(errorName, errorValue);
@@ -215,7 +234,9 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       } else {
         setTimeout(() => this.addExecutionStep(stepName, ExecutionStatus.Error), 500);
       }
+      return errorName;
     }
+    return '';
   }
 
   deleteCell(): void {
@@ -332,7 +353,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.runCell.bind(this),
           this.deleteCell.bind(this),
           this.addCell.bind(this),
-          executionCount
+          executionCount,
+
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {
@@ -341,7 +363,16 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       }
 
       if (this._variableInspector === undefined && this.selectRecipe !== undefined) {
-        this._variableInspector = new VariableInspector(this.notebook, this.selectRecipe.setVariablesStatus.bind(this.selectRecipe), this.selectRecipe.setVariables.bind(this.selectRecipe));
+        this._variableInspector = new VariableInspector(this.notebook,
+          this.selectRecipe.setVariablesStatus.bind(this.selectRecipe),
+          this.selectRecipe.setVariables.bind(this.selectRecipe),
+          this.selectRecipe.setCheckedPackages.bind(this.selectRecipe)
+        );
+
+        this.selectRecipe.setCheckPackage(this._variableInspector.checkPackage.bind(this._variableInspector));
+        this.selectRecipe.setInstallPackage(this._variableInspector.installPackage.bind(this._variableInspector));
+
+        this.selectRecipe.updateWidget();
       }
 
       //console.log('try add focus');

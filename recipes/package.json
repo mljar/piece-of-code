@@ -16,7 +16,8 @@
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "react-tooltip": "^5.26.3"
   },
   "peerDependencies": {
     "react": "^18.0.0",

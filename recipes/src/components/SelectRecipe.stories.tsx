@@ -39,4 +39,5 @@ SelectRecipeForm.args = {
   ],
   variablesStatus: "loaded",
   variables: [],
+  checkPackage: (pkg: string) => {},
 };

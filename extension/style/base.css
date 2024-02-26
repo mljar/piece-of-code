@@ -20,8 +20,9 @@
   display: none;
 }
 
+/* rgba(37, 99, 235, 0.15); */
 .jp-Cell.jp-mod-active {
-  border: 2px solid rgba(37, 99, 235, 0.15);
+  border: 1px solid #1976d2;
   border-radius: 5px;
   background-color: rgba(37, 99, 235, 0.02) !important;
 }

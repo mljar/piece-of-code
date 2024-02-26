@@ -116,6 +116,9 @@ export const SelectXyRecipe: IRecipe = {
     "Select X,y for Machine Learning model training. The `X` matrix is used as model input, whereas `y` vector is used as model target.",
   ui: SelectXy,
   Icon: XyIcon,
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };
 
 export default SelectXyRecipe;
