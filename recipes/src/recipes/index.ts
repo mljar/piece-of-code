@@ -10,13 +10,13 @@ import { AutoMLRecipes } from "./automl";
 import { WidgetsRecipes } from "./widgets";
 
 export const allRecipes: Record<string, IRecipeSet> = {
-    [PythonRecipes.name]: PythonRecipes,
-    [MarkdownRecipes.name]: MarkdownRecipes,
+    // [PythonRecipes.name]: PythonRecipes,
+    // [MarkdownRecipes.name]: MarkdownRecipes,
     [ReadDataRecipes.name]: ReadDataRecipes,
-    [WriteDataRecipes.name]: WriteDataRecipes,
+    // [WriteDataRecipes.name]: WriteDataRecipes,
     [TransformDataRecipes.name]: TransformDataRecipes,
-    [ChartsRecipes.name]: ChartsRecipes,
-    [MLRecipes.name]: MLRecipes,
+    // [ChartsRecipes.name]: ChartsRecipes,
+    // [MLRecipes.name]: MLRecipes,
     [AutoMLRecipes.name]: AutoMLRecipes,
-    [WidgetsRecipes.name]: WidgetsRecipes,
+    // [WidgetsRecipes.name]: WidgetsRecipes,
 }

@@ -8,9 +8,8 @@ import { PlayIcon } from "../icons/Play";
 import { HomeIcon } from "../icons/Home";
 import { TrashIcon } from "../icons/Trash";
 import RunStatus from "./RunStatus";
-import NextStepEdit from "./NextStepEdit";
-import NextStepError from "./NextStepError";
-import NextStepSuccess from "./NextStepSuccess";
+import TopButtons from "./TopButtons";
+
 import { PlusIcon } from "../icons/Plus";
 import IVariable from "./IVariable";
 import ExecutionStatus from "./ExecutionStatus";
@@ -95,7 +94,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
           style={{ marginBottom: "-13px" }}
         >
-          <NextStepEdit
+          <TopButtons
             letsOverwrite={() => setOverwriteExistingCode(true)}
             runCell={() => {
               runCell();
@@ -242,11 +241,19 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
   const leftButtons = (
     <div className="h-full grid grid-cols-1 content-end">
-      <div className="has-tooltip">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Delete cell
-        </span>
+      <Tooltip
+        id="left-buttons-tooltip"
+        place="top"
+        positionStrategy="fixed"
+        offset={5}
+        style={{ zIndex: "10001" }}
+        className="text-base"
+      />
+
+      <div>
         <button
+          data-tooltip-id="left-buttons-tooltip"
+          data-tooltip-content="Delete cell"
           type="button"
           className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
           onClick={() => deleteCell()}
@@ -269,12 +276,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           </button>
         </div>
       )} */}
-
-      <div className="has-tooltip inline">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Add cell
-        </span>
+      <div>
         <button
+          data-tooltip-id="left-buttons-tooltip"
+          data-tooltip-content="Add cell"
           type="button"
           className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
           onClick={() => addCell()}
@@ -282,12 +287,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <PlusIcon className="inline pb-1" />
         </button>
       </div>
-
-      <div className="has-tooltip">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Run code
-        </span>
+      <div>
         <button
+          data-tooltip-id="left-buttons-tooltip"
+          data-tooltip-content="Run cell"
           type="button"
           className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
           onClick={() => {
@@ -327,7 +330,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
     return (
       <div key={`${p.installationName}-${p.version}`}>
-        <Tooltip id="package-icon-tooltip-recipe" />
+        <Tooltip id="package-icon-tooltip-recipe" className="text-base"/>
         <div
           data-tooltip-id="package-icon-tooltip-recipe"
           data-tooltip-content={tooltipMsg}
@@ -449,7 +452,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             addCell={addCell}
           />
         )}
-        {/* {showSuccess && <NextStepSuccess />} */}
       </div>
     </div>
   );

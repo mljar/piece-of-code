@@ -67,7 +67,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         className="flex items-center mb-4"
         key={`${p.installationName}${p.version}`}
       >
-        <Tooltip id="package-icon-tooltip" />
+        <Tooltip id="package-icon-tooltip" className="text-base"/>
         <div
           data-tooltip-id="package-icon-tooltip"
           data-tooltip-content={tooltipMsg}
@@ -126,7 +126,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
       </h3>
       {description && <p className="mb-2 text-base">{description}</p>}
 
-      {packages && (
+      {packages && packages.length > 0 && (
         <div>
           <h4 className="text-base text-gray-900 dark:text-white mb-1">
             <PackageIcon className="inline pb-1" /> Required Packages

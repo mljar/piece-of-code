@@ -397,7 +397,17 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       //   console.log('metadata changed');
       // }, cell);
       cell.model.stateChanged.connect((model: ICellModel, args: IChangedArgs<any>) => {
-        console.log('state changed', args, model);
+        // console.log('state changed', args, model);
+        // if (args.name === 'executionCount' && args.newValue) {
+        //   console.log('go for it');
+        //   const [errorName, errorValue] = this.getErrorNameAndValue(cell.model.sharedModel.toJSON());
+        //   this.selectRecipe?.setPreviousError(errorName, errorValue);
+        //   const executionCount = this.getExecutionCount(cell);
+        //   this.selectRecipe?.setPreviousExecutionCount(executionCount);
+        //   this.selectRecipe?.updateWidget();
+
+        // }
+
       }, cell);
 
       cell.inputArea?.node.addEventListener('focusin', () => {

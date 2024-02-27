@@ -2,9 +2,7 @@ import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import RunStatus, { IRunStatusProps } from "./RunStatus";
-import NextStepSuccess from "./NextStepSuccess";
-import NextStepError from "./NextStepError";
-import NextStepEdit from "./NextStepEdit";
+import TopButtons from "./TopButtons";
 import ExecutionStatus from "./ExecutionStatus";
 
 const meta: Meta<typeof RunStatus> = {
@@ -21,14 +19,12 @@ export const RunStatusForm: Story = (
 ) => (
   <>
     <RunStatus {...args} />
-    <NextStepEdit
+    <TopButtons
       letsOverwrite={() => console.log("lets overwrite")}
       runCell={() => {}}
       addCell={() => {}}
       deleteCell={() => {}}
     />
-    <NextStepSuccess />
-    <NextStepError ename={"NameError"} evalue={"name 'app' is not defined"} />
   </>
 );
 
@@ -44,7 +40,6 @@ RunStatusForm.args = {
   errorValue: "",
   addCell: () => {},
 };
-
 
 export const RunStatusError: Story = (
   args: React.JSX.IntrinsicAttributes & IRunStatusProps
