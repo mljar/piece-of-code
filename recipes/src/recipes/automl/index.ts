@@ -12,7 +12,7 @@ export const AutoMLRecipes: IRecipeSet = {
   recipes: {
     [TrainRecipe.name]: TrainRecipe,
     [PredictRecipe.name]: PredictRecipe,
-    [AutoMLReportRecipe.name]: AutoMLReportRecipe,
+    // [AutoMLReportRecipe.name]: AutoMLReportRecipe,
     [LoadAutoMLRecipe.name]: LoadAutoMLRecipe,
   }
 };

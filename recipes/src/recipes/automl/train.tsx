@@ -48,6 +48,8 @@ export const Train: React.FC<IRecipeProps> = ({
   const [trainingTime, setTrainingTime] = useState(300);
 
   useEffect(() => {
+    setPackages(["from supervised import AutoML"]);
+
     if (X === "" || y === "") {
       return;
     }
@@ -63,7 +65,6 @@ export const Train: React.FC<IRecipeProps> = ({
     src += `${name}.fit(${X}, ${y})`;
 
     setCode(src);
-    setPackages(["from supervised import AutoML"]);
   }, [name, resultsPath, mode, trainingTime, X, y]);
 
   return (

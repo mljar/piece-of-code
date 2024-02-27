@@ -275,6 +275,8 @@ export class VariableInspector {
   }
 
   getVariables() {
+    console.log('get variables');
+
     this.checkPackageManager();
 
     this._setVariablesStatus("loading");
@@ -304,14 +306,14 @@ export class VariableInspector {
       case 'execute_result':
       case 'display_data':
       case 'update_display_data':
-        // console.log(msg.content);
+
         interface ContentData {
           data: {
             'text/plain': string;
           }
         }
         const content = msg.content as ContentData;
-
+        console.log(content);
         try {
           let contentDisplay: string = content.data["text/plain"] as string;
           contentDisplay = contentDisplay.slice(1, -1);
@@ -356,7 +358,7 @@ export class VariableInspector {
   }
 
   private _onCheckPackage = (msg: KernelMessage.IIOPubMessage): void => {
-    
+
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'stream':
@@ -461,6 +463,7 @@ export class VariableInspector {
     if (this._notebookId && this._notebookId in notebookPackageManager) {
       return;
     }
+    console.log('Check package manager');
     let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
       code: checkIfConda,
       store_history: false,
