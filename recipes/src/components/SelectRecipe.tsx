@@ -19,6 +19,7 @@ import { WarningIcon } from "../icons/Warning";
 import { ErrorIcon } from "../icons/Error";
 import { SuccessIcon } from "../icons/Success";
 import { SpinnerIcon } from "../icons/Spinner";
+import { Tooltip } from "react-tooltip";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -81,64 +82,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     }
   }, [executionSteps]);
 
-  const leftButtons = (
-    <div className="h-full grid grid-cols-1 content-end">
-      <div className="has-tooltip">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Delete cell
-        </span>
-        <button
-          type="button"
-          className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-          onClick={() => deleteCell()}
-        >
-          {<TrashIcon className="inline p-0.5" />}
-        </button>
-      </div>
-      <div className="has-tooltip">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Toggle menu view
-        </span>
-        <button
-          type="button"
-          className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-          onClick={() => setShowNav(!showNav)}
-        >
-          {<HomeIcon className="inline p-0.5" />}
-        </button>
-      </div>
-
-      <div className="has-tooltip inline">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Add cell
-        </span>
-        <button
-          type="button"
-          className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
-          onClick={() => addCell()}
-        >
-          <PlusIcon className="inline pb-1" />
-        </button>
-      </div>
-
-      <div className="has-tooltip">
-        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-          Run code
-        </span>
-        <button
-          type="button"
-          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
-          onClick={() => {
-            runCell();
-            setExecuted(true);
-          }}
-        >
-          {<PlayIcon className="inline" />}
-        </button>
-      </div>
-    </div>
-  );
-
   if (
     executed &&
     previousCode !== "" &&
@@ -149,7 +92,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       <div className="flex">
         <div className="flex-none" style={{ width: "72px" }}></div>
         <div
-          className="bg-white dark:bg-slate-700 p-2 pt-4 w-full border-gray-100 border-t border-l border-r rounded-t-md"
+          className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
           style={{ marginBottom: "-13px" }}
         >
           <NextStepEdit
@@ -288,6 +231,75 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       }
     });
   }
+  let showRecipeUI = false;
+  if (
+    RecipeUI !== undefined &&
+    executionSteps.length === 0 &&
+    installPackages.length === 0
+  ) {
+    showRecipeUI = true;
+  }
+
+  const leftButtons = (
+    <div className="h-full grid grid-cols-1 content-end">
+      <div className="has-tooltip">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Delete cell
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          onClick={() => deleteCell()}
+        >
+          {<TrashIcon className="inline p-0.5" />}
+        </button>
+      </div>
+
+      {/* {showRecipeUI && (
+        <div className="has-tooltip">
+          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+            Toggle menu view
+          </span>
+          <button
+            type="button"
+            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+            onClick={() => setShowNav(!showNav)}
+          >
+            {<HomeIcon className="inline p-0.5" />}
+          </button>
+        </div>
+      )} */}
+
+      <div className="has-tooltip inline">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Add cell
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          onClick={() => addCell()}
+        >
+          <PlusIcon className="inline pb-1" />
+        </button>
+      </div>
+
+      <div className="has-tooltip">
+        <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          Run code
+        </span>
+        <button
+          type="button"
+          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
+          onClick={() => {
+            runCell();
+            setExecuted(true);
+          }}
+        >
+          {<PlayIcon className="inline" />}
+        </button>
+      </div>
+    </div>
+  );
 
   const installPackagesElement = installPackages.map((p) => {
     let status = "unknown";
@@ -303,18 +315,34 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           break;
       }
     }
+
+    let tooltipMsg = "Package is available";
+    if (status === "error") {
+      tooltipMsg = "Package is not available, please install it";
+    } else if (status === "install") {
+      tooltipMsg = "Package installation, please wait";
+    } else if (status === "unknown") {
+      tooltipMsg = "Package status is unknown";
+    }
+
     return (
       <div key={`${p.installationName}-${p.version}`}>
-        {status === "available" && <SuccessIcon className="inline pt-1" />}
-        {status === "error" && <ErrorIcon className="inline p-1" />}
-        {status === "unknown" && <WarningIcon className="inline pt-1" />}
-        {status === "install" && <SpinnerIcon className="inline p-1" />}
+        <Tooltip id="package-icon-tooltip-recipe" />
+        <div
+          data-tooltip-id="package-icon-tooltip-recipe"
+          data-tooltip-content={tooltipMsg}
+          className="inline"
+        >
+          {status === "available" && <SuccessIcon className="inline pt-1" />}
+          {status === "error" && <ErrorIcon className="inline p-1" />}
+          {status === "unknown" && <WarningIcon className="inline pt-1" />}
+          {status === "install" && <SpinnerIcon className="inline p-1" />}
 
-        <label className="text-gray-900 dark:text-gray-300">
-          {p.installationName}
-          {p.version}
-        </label>
-
+          <label className="text-gray-900 dark:text-gray-300">
+            {p.installationName}
+            {p.version}
+          </label>
+        </div>
         {status === "error" && (
           <button
             type="button"
@@ -382,30 +410,31 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           </div>
         )}
 
-        {RecipeUI &&
-          executionSteps.length === 0 &&
-          installPackages.length === 0 && (
-            <div
-            // onMouseOver={()=>{setShowNav(false)}}
-            >
-              {showNav && <hr className="p-1 m-2" />}
-              <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
-                <RecipeUI
-                  setCode={setCode}
-                  setPackages={setPackages}
-                  variablesStatus={variablesStatus}
-                  variables={variables}
-                />
-              </div>
+        {RecipeUI && showRecipeUI && (
+          <div
+          // onMouseOver={()=>{setShowNav(false)}}
+          >
+            {showNav && <hr className="p-1 m-2" />}
+            <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
+              <RecipeUI
+                setCode={setCode}
+                setPackages={setPackages}
+                variablesStatus={variablesStatus}
+                variables={variables}
+              />
             </div>
-          )}
+          </div>
+        )}
         {installPackages.length > 0 && (
           <div>
             <hr className="m-2" />
             <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-              <h3 className="text-lg   text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg text-gray-900 dark:text-white mb-2">
                 <PackageIcon className="inline pb-1" /> Install packages
               </h3>
+              <p className="text-base text-gray-900 dark:text-white pb-1">
+                Please install below packages to use this code recipe.
+              </p>
 
               {installPackagesElement}
             </div>

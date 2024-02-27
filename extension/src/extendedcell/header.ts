@@ -10,6 +10,8 @@ import { getAlwaysOpen } from '../flags';
 import { ExecutionStatus } from '@mljar/recipes';
 import { VariableInspector } from './variableinspector';
 
+import { IChangedArgs } from '@jupyterlab/coreutils';
+
 // import { NotebookActions } from '@jupyterlab/notebook';
 // import { nbformat } from '@jupyterlab/coreutils';
 
@@ -387,6 +389,17 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.selectRecipe
         );
       }
+
+      // cell.model.contentChanged.connect(() => {
+      //   console.log('content changed');
+      // }, cell);
+      // cell.model.metadataChanged.connect(() => {
+      //   console.log('metadata changed');
+      // }, cell);
+      cell.model.stateChanged.connect((model: ICellModel, args: IChangedArgs<any>) => {
+        console.log('state changed', args, model);
+      }, cell);
+
       cell.inputArea?.node.addEventListener('focusin', () => {
 
         if (this._cellId) {

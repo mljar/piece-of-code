@@ -275,6 +275,7 @@ export class VariableInspector {
   }
 
   getVariables() {
+    this.checkPackageManager();
 
     this._setVariablesStatus("loading");
     this._setVariables([]);
@@ -294,21 +295,16 @@ export class VariableInspector {
       future.onIOPub = this._onIOPub;
     }
 
-    if (this._notebookId && !(this._notebookId in notebookPackageManager)) {
-      this.checkPackageManager();
-    }
+
   }
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
-    // console.log(msg);
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'execute_result':
       case 'display_data':
       case 'update_display_data':
-
         // console.log(msg.content);
-
         interface ContentData {
           data: {
             'text/plain': string;
@@ -339,21 +335,18 @@ export class VariableInspector {
     return;
   };
 
-  checkPackage(pkg: string) {
-    console.log(pkg);
-    console.log(checkedPackages);
-    console.log(checkPackageCode(pkg));
+  checkPackage(pkg: string): void {
+    this.checkPackageManager();
+
     if (this._notebookId) {
       if (this._notebookId in checkedPackages && pkg in checkedPackages[this._notebookId]) {
-        const version = checkedPackages[this._notebookId][pkg];
-        console.log({ version });
+        // const version = checkedPackages[this._notebookId][pkg];
         this._setInstalledPackages(checkedPackages[this._notebookId]);
       } else {
         let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
           code: checkPackageCode(pkg),
           store_history: false,
         });
-        console.log(future);
         if (future) {
           future.onIOPub = this._onCheckPackage;
         }
@@ -363,21 +356,18 @@ export class VariableInspector {
   }
 
   private _onCheckPackage = (msg: KernelMessage.IIOPubMessage): void => {
-    console.log(msg);
+    
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'stream':
       case 'execute_result':
       case 'display_data':
       case 'update_display_data':
-
-        console.log(msg.content);
-
         interface ContentData {
           text: string;
         }
         const content = msg.content as ContentData;
-        console.log(content.text);
+        //console.log(content.text);
 
         interface IPackage {
           package: string;
@@ -415,9 +405,8 @@ export class VariableInspector {
     this._installPackagePackageManager(installationName, importName, packageManager);
   }
 
-  private _installPackagePackageManager(installationName: string, importName: string, envManager: 'conda' | 'pip') {
-    console.log('install', importName);
-
+  private _installPackagePackageManager(installationName: string, importName: string, packageManager: 'conda' | 'pip') {
+    console.log('Install', importName, 'with', packageManager);
     if (this._notebookId) {
       if (!(this._notebookId in checkedPackages)) {
         checkedPackages[this._notebookId] = { [importName]: 'install' }
@@ -428,15 +417,13 @@ export class VariableInspector {
     }
 
     let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
-      code: envManager === 'conda' ? installPackageConda(installationName) : installPackagePip(installationName),
+      code: packageManager === 'conda' ? installPackageConda(installationName) : installPackagePip(installationName),
       store_history: false,
     });
-    console.log(future);
     if (future) {
       // will be needed to collect logs from installation
-      //future.onIOPub = this._onInstallPackage;
+      // future.onIOPub = this._onInstallPackage;
       future.done.then(() => {
-        console.log(' DONE ');
         if (this._notebookId && this._notebookId in checkedPackages) {
           // delete all packages, we need to re-check all packages again
           // there might be dependencies
@@ -460,7 +447,7 @@ export class VariableInspector {
   //         text: string;
   //       }
   //       const content = msg.content as ContentData;
-
+  //       //console.log(content);
   //       break;
   //     default:
   //       break;
@@ -470,6 +457,10 @@ export class VariableInspector {
 
 
   checkPackageManager() {
+    // if already checked, then skip this step
+    if (this._notebookId && this._notebookId in notebookPackageManager) {
+      return;
+    }
     let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
       code: checkIfConda,
       store_history: false,

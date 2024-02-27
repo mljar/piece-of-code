@@ -7,6 +7,7 @@ import { CakeOffIcon } from "../icons/CakeOff";
 import { PlayIcon } from "../icons/Play";
 import { TrashIcon } from "../icons/Trash";
 import { PlusIcon } from "../icons/Plus";
+import { Tooltip } from "react-tooltip";
 
 export interface INextStepEditProps {
   letsOverwrite: () => void;
@@ -23,12 +24,18 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
 }: INextStepEditProps) => {
   return (
     <div className="border-none text-base text-gray-500 dark:text-gray-400 rounded-md">
-      <p className="pt-4">
-        <div className="has-tooltip inline">
-          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-            Run code
-          </span>
+      <Tooltip
+        id="top-buttons-tooltip"
+        place="top"
+        positionStrategy="fixed"
+        offset={5}
+        style={{ zIndex: "10001" }}
+      />
+      <div>
+        <div className="inline">
           <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Run code"
             type="button"
             className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
             onClick={() => runCell()}
@@ -36,11 +43,10 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
             {<PlayIcon className="inline pb-1" />}
           </button>
         </div>
-        <div className="has-tooltip inline">
-          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-            Add cell
-          </span>
+        <div className="inline">
           <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Add new cell below"
             type="button"
             className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
             onClick={() => addCell()}
@@ -48,11 +54,10 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
             <PlusIcon className="inline pb-1" />
           </button>
         </div>
-        <div className="has-tooltip inline">
-          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-            Overwrite
-          </span>
+        <div className="inline">
           <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Open Piece of Code and overwrite with new code"
             type="button"
             className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
             onClick={() => letsOverwrite()}
@@ -60,11 +65,10 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
             <CakeIcon className="inline pb-1" />
           </button>
         </div>
-        <div className="has-tooltip inline">
-          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
-            Delete cell
-          </span>
+        <div className="inline">
           <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Delete cell"
             type="button"
             className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
             onClick={() => deleteCell()}
@@ -72,7 +76,7 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
             {<TrashIcon className="inline pb-1" />}
           </button>
         </div>
-      </p>
+      </div>
     </div>
   );
 };

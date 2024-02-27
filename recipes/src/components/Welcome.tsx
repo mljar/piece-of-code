@@ -31,7 +31,6 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   checkedPackages,
   installPackage,
 }: IWelcomeProps) => {
-  console.log({ welcome: "very", checkedPackages });
   packages?.forEach((p: IPackage) => {
     if (
       checkPackage &&
