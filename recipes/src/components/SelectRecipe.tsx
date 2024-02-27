@@ -244,7 +244,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       <Tooltip
         id="left-buttons-tooltip"
         place="right"
-        //positionStrategy="fixed"
+        positionStrategy="fixed"
         offset={0}
         style={{ zIndex: "10001" }}
         className="text-base"
