@@ -4,6 +4,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { TargetArrowIcon } from "../../icons/TargetArrow";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
+import { Variable } from "../../components/Variable";
 // import { IconCrystalBall } from "@tabler/icons-react";
 
 export const Predict: React.FC<IRecipeProps> = ({
@@ -38,19 +39,24 @@ export const Predict: React.FC<IRecipeProps> = ({
       </div>
     );
   }
-
+  const [name, setName] = useState("predictions");
   const [automl, setAutoml] = useState(automls[0]);
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
 
   useEffect(() => {
     let src = `# predict with AutoML\n`;
-    src += `${automl}.predict(${df})`;
+    src += `${name} = ${automl}.predict(${df})`;
     setCode(src);
-  }, [automl, df]);
+  }, [name, automl, df]);
 
   return (
     <div>
       <Title Icon={TargetArrowIcon} title="Predict with AutoML" />
+      <Variable
+        label={"Store predictions in variable name"}
+        name={name}
+        setName={setName}
+      />
       <Select
         label={"Use AutoML object to predict"}
         option={automl}

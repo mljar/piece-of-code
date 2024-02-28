@@ -28,7 +28,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# display AutoML report\n`;
-    src += `${automl}.display()`;
+    src += `${automl}.report()`;
     
     setCode(src);
   }, [automl]);

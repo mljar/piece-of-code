@@ -30,7 +30,8 @@ interface Props {
   variables: IVariable[];
   checkPackage: (pkg: string) => void;
   checkedPackages: Record<string, string>;
-  installPackage: (installationName:string, importName: string) => void;
+  installPackage: (installationName: string, importName: string) => void;
+  clearExecutionSteps: () => void;
 }
 
 const SelectRecipeComponent = ({
@@ -49,7 +50,8 @@ const SelectRecipeComponent = ({
   variables,
   checkPackage,
   checkedPackages,
-  installPackage
+  installPackage,
+  clearExecutionSteps
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -77,6 +79,7 @@ const SelectRecipeComponent = ({
         checkPackage={checkPackage}
         checkedPackages={checkedPackages}
         installPackage={installPackage}
+        clearExecutionSteps={clearExecutionSteps}
       />
     </div>
   );
@@ -100,7 +103,10 @@ export class SelectRecipeWidget extends ReactWidget {
   private _variables: IVariable[] = [];
   private _checkPackage: (pkg: string) => void;
   private _checkedPackages: Record<string, string>;
-  private _installPackage: (installationName:string, importName: string) => void;
+  private _installPackage: (
+    installationName: string,
+    importName: string
+  ) => void;
 
   constructor(
     cell: Cell<ICellModel>,
@@ -122,7 +128,7 @@ export class SelectRecipeWidget extends ReactWidget {
     this._previousExecutionCount = executionCount;
     this._checkPackage = (pkg: string) => {};
     this._checkedPackages = {};
-    this._installPackage = (installationName:string, importName: string) => {};
+    this._installPackage = (installationName: string, importName: string) => {};
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
@@ -169,7 +175,9 @@ export class SelectRecipeWidget extends ReactWidget {
     this.updateWidget();
   }
 
-  public setInstallPackage(installPackage: (installationName:string, importName: string) => void) {
+  public setInstallPackage(
+    installPackage: (installationName: string, importName: string) => void
+  ) {
     this._installPackage = installPackage;
   }
 
@@ -195,6 +203,7 @@ export class SelectRecipeWidget extends ReactWidget {
               checkPackage={this._checkPackage}
               checkedPackages={this._checkedPackages}
               installPackage={this._installPackage}
+              clearExecutionSteps={() => this.setExecutionSteps([])}
             />
           );
         }}

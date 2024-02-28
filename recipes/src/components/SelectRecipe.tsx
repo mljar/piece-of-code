@@ -36,6 +36,7 @@ export interface ISelectRecipeProps {
   checkPackage: (pkg: string) => void;
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
+  clearExecutionSteps: () => void;
 }
 
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
@@ -54,6 +55,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   checkPackage,
   checkedPackages,
   installPackage,
+  clearExecutionSteps,
 }: ISelectRecipeProps) => {
   const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
@@ -81,6 +83,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     }
   }, [executionSteps]);
 
+  const topButtons = (
+    <TopButtons
+      letsOverwrite={() => {
+        setOverwriteExistingCode(true);
+        clearExecutionSteps();
+        setShowNav(true);
+      }}
+      runCell={() => {
+        runCell();
+        setExecuted(true);
+      }}
+      addCell={addCell}
+      deleteCell={deleteCell}
+    />
+  );
+
   if (
     executed &&
     previousCode !== "" &&
@@ -94,15 +112,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
           style={{ marginBottom: "-13px" }}
         >
-          <TopButtons
-            letsOverwrite={() => setOverwriteExistingCode(true)}
-            runCell={() => {
-              runCell();
-              setExecuted(true);
-            }}
-            addCell={addCell}
-            deleteCell={deleteCell}
-          />
+          {topButtons}
           {executionSteps.length > 0 && (
             <RunStatus
               steps={executionSteps}
@@ -330,7 +340,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
     return (
       <div key={`${p.installationName}-${p.version}`}>
-        <Tooltip id="package-icon-tooltip-recipe" className="text-base"/>
+        <Tooltip id="package-icon-tooltip-recipe" className="text-base" />
         <div
           data-tooltip-id="package-icon-tooltip-recipe"
           data-tooltip-content={tooltipMsg}
@@ -383,9 +393,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   return (
     <div className="flex">
       <div className="flex-none" style={{ width: "72px" }}>
-        {leftButtons}
+        {executionSteps.length === 0 && leftButtons}
       </div>
       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+        {executionSteps.length > 0 && topButtons}
         {showNav && (
           <div
             className="md:flex"

@@ -145,6 +145,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   setPackages(packages: string[]): void {
+    console.log('setPackages', packages);
     this._packages = packages;
   }
 
@@ -179,6 +180,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     this.supplementPackages();
 
     if (this._packages.length) {
+      console.log('runCell', this._packages);
       //
       // import packages and run code
       //
@@ -250,6 +252,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   insertCellAtTop() {
+    console.log('insert cell at top', this._packages);
     // insert cell at the top of the notebook
     // if there is only one cell in the notebook
     if (!this._packages) {
@@ -267,6 +270,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   supplementPackages() {
+    console.log('supplement packages', this._packages);
     if (!this._packages) {
       return;
     }
@@ -410,6 +414,14 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
       }, cell);
 
+      // cell.node.addEventListener('focusin', () => {
+      //   console.log('cell node focusin');
+      // });
+      // cell.node.addEventListener('focusout', () => {
+      //   console.log('cell node focus-out');
+      //   // this.selectRecipe?.setExecutionSteps([]);
+      // });
+
       cell.inputArea?.node.addEventListener('focusin', () => {
 
         if (this._cellId) {
@@ -417,6 +429,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         }
 
         RecipeWidgetsRegistry.getInstance().hideAll();
+        console.log('focus in clear packages');
         this._packages = [];
 
         if (getAlwaysOpen()) {

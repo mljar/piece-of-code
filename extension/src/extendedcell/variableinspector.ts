@@ -276,31 +276,37 @@ export class VariableInspector {
 
   getVariables() {
     console.log('get variables');
+    try {
+      this.checkPackageManager();
 
-    this.checkPackageManager();
+      this._setVariablesStatus("loading");
+      this._setVariables([]);
 
-    this._setVariablesStatus("loading");
-    this._setVariables([]);
+      let code = '';
+      console.log(this._notebookId);
+      console.log(notebooksInitialized);
+      if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
+        console.log('init getVariables');
+        code += initCode + '\n\n';
 
-    let code = '';
-    if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
-      code += initCode + '\n\n';
-      notebooksInitialized.push(this._notebookId);
+      }
+      code += getVars;
+
+      let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
+        code,
+        store_history: false,
+      });
+      if (future) {
+        future.onIOPub = this._onIOPub;
+      }
+    } catch (e) {
+      console.log(e);
     }
-    code += getVars;
-
-    let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
-      code,
-      store_history: false,
-    });
-    if (future) {
-      future.onIOPub = this._onIOPub;
-    }
-
 
   }
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
+    console.log(msg);
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'execute_result':
@@ -321,9 +327,14 @@ export class VariableInspector {
             .replace(/\\"/g, '"')
             .replace(/\\'/g, "'");
 
+          console.log('get variables', contentDisplay);
           const variables: IVariable[] = JSON.parse(contentDisplay);
+          console.log(variables);
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
+          if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
+            notebooksInitialized.push(this._notebookId);
+          }
         } catch (e) {
           console.log(e);
           this._setVariables([]);
@@ -376,6 +387,7 @@ export class VariableInspector {
           version: string;
         }
         try {
+          console.log('check package', content.text);
           const p: IPackage = JSON.parse(content.text);
 
           if (this._notebookId) {
