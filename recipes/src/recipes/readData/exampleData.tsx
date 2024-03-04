@@ -42,7 +42,9 @@ export const ExampleData: React.FC<IRecipeProps> = ({
       src += `, skipinitialspace=True`;
     }
 
-    src += ")";
+    src += ")\n";
+    src += `# display first rows\n`
+    src += `${name}.head()`
     setCode(src);
     setPackages(["import pandas as pd"]);
   }, [name, dataset]);

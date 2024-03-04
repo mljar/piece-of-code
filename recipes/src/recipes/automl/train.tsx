@@ -124,7 +124,7 @@ export const TrainRecipe: IRecipe = {
     {
       importName: "supervised",
       installationName: "mljar-supervised",
-      version: ">=1.1.2",
+      version: ">=1.1.5",
     },
   ],
 };

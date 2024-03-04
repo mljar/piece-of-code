@@ -55,11 +55,12 @@ export const SelectXy: React.FC<IRecipeProps> = ({
       return;
     }
     const xColsStr = '"' + xCols.join('", "') + '"';
-    let src = `x_cols = [${xColsStr}]\n`;
+    let src = `# create X columns list and set y column`;
+    src += `x_cols = [${xColsStr}]\n`;
     src += `y_col = \"${yCol}\"\n`;
-    src += "# input matrix\n";
+    src += "# set input matrix\n";
     src += `${x} = ${df}[x_cols]\n`;
-    src += "# target vector\n";
+    src += "# set target vector\n";
     src += `${y} = ${df}[y_col]`;
     setCode(src);
     setPackages(["import pandas as pd"]);

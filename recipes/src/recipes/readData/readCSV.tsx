@@ -29,7 +29,11 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     if (delimiter !== ",") {
       delimiterSrc = `, delimiter="${delimiter}"`;
     }
-    let src = `${name} = pd.read_csv("path/to/your/file/${filePath}"${delimiterSrc})`;
+    let src = `# read data from csv file\n`;
+    src += `${name} = pd.read_csv(r"${filePath}"${delimiterSrc})\n`;
+    src += `# display first rows\n`
+    src += `${name}.head()`
+
     setCode(src);
     setPackages(["import pandas as pd"]);
   }, [name, filePath, delimiter]);
@@ -47,7 +51,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         name={name}
         setName={setName}
       />
-      <FileUpload title={"CSV file"} setFilePath={setFilePath} />
+      <FileUpload title={"Select CSV file"} setFilePath={setFilePath} />
       {advanced && (
         <>
           <Select

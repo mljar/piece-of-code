@@ -11,7 +11,8 @@
     "bugs": {
         "url": "https://github.com/mljar/piece-of-code/issues"
     },
-    "license": "AGPL-3.0-only",
+    "private": true,
+    "license": "SEE LICENSE IN LICENSE",
     "author": {
         "name": "MLJAR Sp. z o.o.",
         "email": "contact@mljar.com"
