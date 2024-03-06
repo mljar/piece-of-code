@@ -1,3 +1,6 @@
+import {
+  ILabShell
+} from '@jupyterlab/application';
 import { Cell, ICellHeader, ICellModel } from '@jupyterlab/cells';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import * as nbformat from '@jupyterlab/nbformat';
@@ -10,7 +13,10 @@ import { getAlwaysOpen } from '../flags';
 import { ExecutionStatus } from '@mljar/recipes';
 import { VariableInspector } from './variableinspector';
 
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IChangedArgs } from '@jupyterlab/coreutils';
+
+const STATUSBAR_PLUGIN_ID = '@jupyterlab/statusbar-extension:plugin';
 
 // import { NotebookActions } from '@jupyterlab/notebook';
 // import { nbformat } from '@jupyterlab/coreutils';
@@ -20,7 +26,9 @@ export class RecipeWidgetsRegistry {
   private _widgets: Record<string, SelectRecipeWidget> = {};
   private _lastSelectedCellId: string = '';
   private _commands: CommandRegistry | undefined;
-
+  private _labShell: ILabShell | null = null;
+  private _labShellSet: boolean = false;
+  private _settingRegistry: ISettingRegistry | null = null;
   private constructor() { }
 
   public static getInstance(): RecipeWidgetsRegistry {
@@ -33,6 +41,44 @@ export class RecipeWidgetsRegistry {
   public setCommandRegistry(commands: CommandRegistry) {
     this._commands = commands;
   }
+
+  public setLabShell(labShell: ILabShell | null) {
+    this._labShell = labShell;
+    if (this._labShell) {
+      this._labShell.layoutModified.connect(() => {
+        this.checkLabShell();
+      });
+    }
+  }
+
+  public setSettingRegistry(settingRegistry: ISettingRegistry) {
+    this._settingRegistry = settingRegistry;
+  }
+
+  public checkLabShell() {
+    if (this._labShellSet) return;
+
+    if (this._labShell) {
+      if (this._labShell.isSideTabBarVisible('right')) {
+        this._labShell.toggleSideTabBarVisibility('right');
+        this._labShellSet = true;
+      }
+      if (this._settingRegistry) {
+        this._settingRegistry
+          .load(STATUSBAR_PLUGIN_ID)
+          .then(settings => {
+            const isVisible = settings.get('visible').composite as boolean;
+            if (isVisible) {
+              this._commands?.execute('statusbar:toggle');
+            }
+          })
+          .catch(reason => {
+            console.error('Failed to hide status bar', reason);
+          });
+      }
+    }
+  }
+
 
   public deleteCell() {
     if (this._commands) {
@@ -130,7 +176,6 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       this.removeClass('jp-Cell-header');
       this.addClass('recipe-panel-layout');
     }
-
   }
   dispose(): void {
     if (this._cellId) {
@@ -346,6 +391,9 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   protected onAfterAttach(msg: Message): void {
+
+    RecipeWidgetsRegistry.getInstance().checkLabShell();
+
     const cell = this.parent as Cell<ICellModel>;
     //console.log('get cell', cell);
     if (cell) {

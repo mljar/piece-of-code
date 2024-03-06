@@ -15,11 +15,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'Write code with UI.',
   autoStart: true,
   optional: [ISettingRegistry],
-  activate: (
+  activate: async (
     app: JupyterFrontEnd,
-    settingRegistry: ISettingRegistry | null
+    settingRegistry: ISettingRegistry | null,
   ) => {
-    console.log('JupyterLab extension pieceofcode is activated!');
+    console.log('Piece of Code extension is activated!');
 
     if (settingRegistry) {
       settingRegistry
