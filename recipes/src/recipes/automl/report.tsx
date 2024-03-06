@@ -20,7 +20,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
       </div>
     );
   }
-  
+
   const automls = variables
     .filter((v) => v.varType === "AutoML")
     .map((v) => v.varName);
@@ -60,7 +60,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
 export const AutoMLReportRecipe: IRecipe = {
   name: "AutoML report",
-  description: "Display AutoML report from training",
+  description: "Display AutoML report from training. You can click on the model name in the leaderboard to check each model details.",
   ui: AutoMLReport,
   Icon: ReportIcon,
 };

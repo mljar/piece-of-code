@@ -41,7 +41,7 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
 
 export const LoadAutoMLRecipe: IRecipe = {
   name: "Load AutoML",
-  description: "Load AutoML from folder",
+  description: "You can load AutoML models from disk and use the to compute predictions on new data.",
   ui: LoadAutoML,
   Icon: FolderOpenIcon,
 };
