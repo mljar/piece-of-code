@@ -108,19 +108,21 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     return (
       <div className="flex">
         <div className="flex-none" style={{ width: "72px" }}></div>
-        <div
-          className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
-          style={{ marginBottom: "-13px" }}
-        >
+        <div className="w-full">
           {topButtons}
-          {executionSteps.length > 0 && (
-            <RunStatus
-              steps={executionSteps}
-              errorName={previousErrorName}
-              errorValue={previousErroValue}
-              addCell={addCell}
-            />
-          )}
+          <div
+            className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
+            style={{ marginBottom: "-13px" }}
+          >
+            {executionSteps.length > 0 && (
+              <RunStatus
+                steps={executionSteps}
+                errorName={previousErrorName}
+                errorValue={previousErroValue}
+                addCell={addCell}
+              />
+            )}
+          </div>
         </div>
       </div>
     );
@@ -395,74 +397,76 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       <div className="flex-none" style={{ width: "72px" }}>
         {executionSteps.length === 0 && leftButtons}
       </div>
-      <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+      <div className="w-full">
         {executionSteps.length > 0 && topButtons}
-        {showNav && (
-          <div
-            className="md:flex"
-            // style={{opacity: showNav? "1": "0",
-            // visibility: showNav? "visible":"hidden",
-            // transition: "opacity 1000ms, visibility 1000ms"}}
-          >
-            <ul
-              className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
-              style={{ maxHeight: "250px", overflowY: "auto" }}
+        <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+          {showNav && (
+            <div
+              className="md:flex"
+              // style={{opacity: showNav? "1": "0",
+              // visibility: showNav? "visible":"hidden",
+              // transition: "opacity 1000ms, visibility 1000ms"}}
             >
-              {tabs}
-            </ul>
-            {showSubTabs && (
               <ul
-                className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0 pr-2"
+                className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0"
                 style={{ maxHeight: "250px", overflowY: "auto" }}
               >
-                {subTabs}
+                {tabs}
               </ul>
-            )}
-            <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-              {welcomeMsg}
+              {showSubTabs && (
+                <ul
+                  className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0"
+                  style={{ maxHeight: "250px", overflowY: "auto" }}
+                >
+                  {subTabs}
+                </ul>
+              )}
+              <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+                {welcomeMsg}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {RecipeUI && showRecipeUI && (
-          <div
-          // onMouseOver={()=>{setShowNav(false)}}
-          >
-            {showNav && <hr className="p-1 m-2" />}
-            <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
-              <RecipeUI
-                setCode={setCode}
-                setPackages={setPackages}
-                variablesStatus={variablesStatus}
-                variables={variables}
-              />
+          {RecipeUI && showRecipeUI && (
+            <div
+            // onMouseOver={()=>{setShowNav(false)}}
+            >
+              {showNav && <hr className="p-1 m-2" />}
+              <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
+                <RecipeUI
+                  setCode={setCode}
+                  setPackages={setPackages}
+                  variablesStatus={variablesStatus}
+                  variables={variables}
+                />
+              </div>
             </div>
-          </div>
-        )}
-        {installPackages.length > 0 && (
-          <div>
-            <hr className="m-2" />
-            <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-              <h3 className="text-lg text-gray-900 dark:text-white mb-2">
-                <PackageIcon className="inline pb-1" /> Install packages
-              </h3>
-              <p className="text-base text-gray-900 dark:text-white pb-1">
-                Please install below packages to use this code recipe.
-              </p>
+          )}
+          {installPackages.length > 0 && (
+            <div>
+              <hr className="m-2" />
+              <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+                <h3 className="text-lg text-gray-900 dark:text-white mb-2">
+                  <PackageIcon className="inline pb-1" /> Install packages
+                </h3>
+                <p className="text-base text-gray-900 dark:text-white pb-1">
+                  Please install below packages to use this code recipe.
+                </p>
 
-              {installPackagesElement}
+                {installPackagesElement}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {executionSteps.length > 0 && (
-          <RunStatus
-            steps={executionSteps}
-            errorName={previousErrorName}
-            errorValue={previousErroValue}
-            addCell={addCell}
-          />
-        )}
+          {executionSteps.length > 0 && (
+            <RunStatus
+              steps={executionSteps}
+              errorName={previousErrorName}
+              errorValue={previousErroValue}
+              addCell={addCell}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

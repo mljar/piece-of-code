@@ -66,7 +66,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     steps.length;
 
   return (
-    <div className="text-base text-gray-900 dark:text-white border mb-2 p-2 rounded-md">
+    <div className="text-base text-gray-900 dark:text-white pl-2">
       <div className="grid grid-cols-3 gap-4">
         <div>
           <label className="block text-lg font-medium ">
