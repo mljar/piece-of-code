@@ -471,13 +471,13 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       // });
 
       cell.inputArea?.node.addEventListener('focusin', () => {
-
+        
         if (this._cellId) {
           RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
         }
 
         RecipeWidgetsRegistry.getInstance().hideAll();
-        console.log('focus in clear packages');
+        
         this._packages = [];
 
         if (getAlwaysOpen()) {

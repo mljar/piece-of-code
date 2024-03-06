@@ -274,7 +274,7 @@ export class VariableInspector {
     this._setInstalledPackages = setInstalledPackages;
   }
 
-  getVariables() {
+  async getVariables() {
     console.log('get variables');
     try {
       this.checkPackageManager();
@@ -291,11 +291,13 @@ export class VariableInspector {
 
       }
       code += getVars;
+      await this._notebook?.sessionContext.ready;
 
       let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
         code,
         store_history: false,
       });
+      console.log({ future });
       if (future) {
         future.onIOPub = this._onIOPub;
       }

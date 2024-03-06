@@ -10,11 +10,22 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
 }) => {
+
+  if (variablesStatus === "loading") {
+    return (
+      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          Loading variables ...
+        </p>
+      </div>
+    );
+  }
+  
   const automls = variables
     .filter((v) => v.varType === "AutoML")
     .map((v) => v.varName);
 
-  if (variablesStatus === "loaded" && !automls.length) {
+  if (automls.length == 0) {
     return (
       <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">

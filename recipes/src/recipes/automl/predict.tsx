@@ -16,6 +16,15 @@ export const Predict: React.FC<IRecipeProps> = ({
     .filter((v) => v.varType === "AutoML")
     .map((v) => v.varName);
 
+  if (variablesStatus === "loading") {
+    return (
+      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          Loading variables ...
+        </p>
+      </div>
+    );
+  }
   if (variablesStatus === "loaded" && !automls.length) {
     return (
       <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
@@ -47,8 +56,8 @@ export const Predict: React.FC<IRecipeProps> = ({
     let src = `# predict with AutoML\n`;
     src += `${name} = ${automl}.predict(${df})\n`;
     src += `# predicted values\n`;
-    src += `print(${name})`
-    
+    src += `print(${name})`;
+
     setCode(src);
   }, [name, automl, df]);
 
