@@ -51,7 +51,7 @@ export const Predict: React.FC<IRecipeProps> = ({
 
   return (
     <div>
-      <Title Icon={TargetArrowIcon} title="Predict with AutoML" />
+      <Title Icon={TargetArrowIcon} label="Predict with AutoML" />
       <Variable
         label={"Store predictions in variable name"}
         name={name}

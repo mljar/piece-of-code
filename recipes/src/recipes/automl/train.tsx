@@ -6,6 +6,7 @@ import { EngineIcon } from "../../icons/Engine";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { Numeric } from "../../components/Numeric";
+import { SelectPath } from "../../components/SelectPath";
 
 export const Train: React.FC<IRecipeProps> = ({
   setCode,
@@ -69,17 +70,18 @@ export const Train: React.FC<IRecipeProps> = ({
 
   return (
     <div>
-      <Title Icon={EngineIcon} title={"Train AutoML"} />
+      <Title Icon={EngineIcon} label={"Train AutoML"} />
       <div className="grid md:grid-cols-2 md:gap-4">
         <Variable
           label={"AutoML variable name"}
           name={name}
           setName={setName}
         />
-        <Variable
+        <SelectPath
           label={"Where to save results?"}
-          name={resultsPath}
-          setName={setResultsPath}
+          setPath={setResultsPath}
+          selectFolder={true}
+          defaultPath="auto"
         />
       </div>
       <div className="grid md:grid-cols-2 md:gap-4">

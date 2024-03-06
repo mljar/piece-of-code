@@ -66,7 +66,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     steps.length;
 
   return (
-    <div className="text-base text-gray-900 dark:text-white border-2 mb-2 p-2 rounded-md">
+    <div className="text-base text-gray-900 dark:text-white border mb-2 p-2 rounded-md">
       <div className="grid grid-cols-3 gap-4">
         <div>
           <label className="block text-lg font-medium ">
@@ -91,12 +91,12 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
           </div>
         )}
         {errorName !== "" && (
-          <div className="border-2 p-2 border-red-300 rounded-md text-base col-span-2">
+          <div className="border p-2 border-red-300 rounded-md text-base col-span-2">
             <p className="block text-lg font-medium text-red-600 ">
               Some problems with code ...
             </p>
             <p className="py-2">There was an error during code execution:</p>
-            <pre className="border-2 p-2 overflow-auto">
+            <pre className="border p-2 overflow-auto">
               {errorName}
               <br />
               {errorValue}

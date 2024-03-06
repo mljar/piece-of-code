@@ -6,14 +6,14 @@ import { BookIcon } from "../icons/Book";
 import { IconProps } from "../icons/props";
 
 interface TitleProps {
-  title: string;
+  label: string;
   Icon?: React.FC<IconProps>;
   advanced?: boolean;
   setAdvanced?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Title: React.FC<TitleProps> = ({
-  title,
+  label,
   Icon,
   advanced,
   setAdvanced,
@@ -21,7 +21,7 @@ export const Title: React.FC<TitleProps> = ({
   return (
     <h3 className="text-lg font-bold text-gray-900 dark:text-white">
       {Icon && <Icon className="inline pb-1" />}
-      {title}
+      {label}
       {/* <div className="inline items-center float-right">
         <a
           className="text-blue-500 hover:text-blue-700 

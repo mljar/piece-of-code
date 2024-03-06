@@ -4,8 +4,8 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
-import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
+import { SelectPath } from "../../components/SelectPath";
 
 export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [advanced, setAdvanced] = useState(false);
@@ -38,7 +38,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
       <Title
         Icon={FileCsvIcon}
-        title={"Read CSV file"}
+        label={"Read CSV file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
       />
@@ -47,7 +47,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         name={name}
         setName={setName}
       />
-      <FileUpload title={"CSV file"} setFilePath={setFilePath} />
+      <SelectPath label={"CSV file"} setPath={setFilePath} />
       {advanced && (
         <>
           <Select

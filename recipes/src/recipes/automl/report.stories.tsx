@@ -5,7 +5,7 @@ import { AutoMLReport } from "./report";
 
 const meta: Meta<typeof AutoMLReport> = {
   component: AutoMLReport,
-  title: "CodePieces/AutoMLReport",
+  title: "CodePieces/AutoML/AutoMLReport",
   argTypes: {},
 };
 export default meta;

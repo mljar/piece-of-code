@@ -4,7 +4,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
-import { FileUpload } from "../../components/FileUpload";
+import { SelectPath } from "../../components/SelectPath";
 import { Select } from "../../components/Select";
 
 export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
@@ -31,8 +31,8 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     }
     let src = `# read data from csv file\n`;
     src += `${name} = pd.read_csv(r"${filePath}"${delimiterSrc})\n`;
-    src += `# display first rows\n`
-    src += `${name}.head()`
+    src += `# display first rows\n`;
+    src += `${name}.head()`;
 
     setCode(src);
     setPackages(["import pandas as pd"]);
@@ -42,7 +42,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     <div>
       <Title
         Icon={FileCsvIcon}
-        title={"Read CSV file"}
+        label={"Read CSV file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
       />
@@ -51,7 +51,10 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         name={name}
         setName={setName}
       />
-      <FileUpload title={"Select CSV file"} setFilePath={setFilePath} />
+      <SelectPath
+        label={"Select CSV file"}
+        setPath={setFilePath}
+      />
       {advanced && (
         <>
           <Select

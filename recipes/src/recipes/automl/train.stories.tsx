@@ -5,7 +5,7 @@ import { Train } from "./train";
 
 const meta: Meta<typeof Train> = {
   component: Train,
-  title: "CodePieces/Train",
+  title: "CodePieces/AutoML/Train",
   argTypes: {},
 };
 export default meta;

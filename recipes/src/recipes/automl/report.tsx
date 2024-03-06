@@ -36,7 +36,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
   return (
     <div>
-      <Title Icon={ReportIcon} title="Display AutoML report" />
+      <Title Icon={ReportIcon} label="Display AutoML report" />
       <Select
         label={"Display report for AutoML object"}
         option={automl}

@@ -3,7 +3,6 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { FileCsvIcon } from "../../icons/FileCsv";
-import { FileUpload } from "../../components/FileUpload";
 import { Select } from "../../components/Select";
 import { FileSmileIcon } from "../../icons/FileSmile";
 
@@ -51,7 +50,7 @@ export const ExampleData: React.FC<IRecipeProps> = ({
 
   return (
     <div>
-      <Title Icon={FileSmileIcon} title={"Example Data"} />
+      <Title Icon={FileSmileIcon} label={"Example Data"} />
       <Variable
         label={"Allocate DataFrame to variable"}
         name={name}
