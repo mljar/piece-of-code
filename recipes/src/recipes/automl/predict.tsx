@@ -45,7 +45,10 @@ export const Predict: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# predict with AutoML\n`;
-    src += `${name} = ${automl}.predict(${df})`;
+    src += `${name} = ${automl}.predict(${df})\n`;
+    src += `# predicted values\n`;
+    src += `print(${name})`
+    
     setCode(src);
   }, [name, automl, df]);
 

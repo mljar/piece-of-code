@@ -4,6 +4,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { FolderOpenIcon } from "../../icons/FolderOpen";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
+import { SelectPath } from "../../components/SelectPath";
 
 export const LoadAutoML: React.FC<IRecipeProps> = ({
   setCode,
@@ -30,7 +31,7 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
         setName={setAutoml}
       />
       <SelectPath
-        label="Select folder with models"
+        label="Directory with AutoML models"
         setPath={setFolder}
         selectFolder={true}
       />
