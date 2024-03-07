@@ -105,27 +105,35 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     //previousErrorName === "" &&
     !overwriteExistingCode
   ) {
-    return (
-      <div className="flex">
-        <div className="flex-none" style={{ width: "72px" }}></div>
-        <div className="w-full">
-          {topButtons}
-          <div
-            className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
-            style={{ marginBottom: "-13px" }}
-          >
-            {executionSteps.length > 0 && (
-              <RunStatus
-                steps={executionSteps}
-                errorName={previousErrorName}
-                errorValue={previousErroValue}
-                addCell={addCell}
-              />
-            )}
+    if (executionSteps.length === 0) {
+      return (
+        <div className="flex">
+          <div className="flex-none" style={{ width: "72px" }}></div>
+          <div className="w-full">{topButtons}</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex">
+          <div className="flex-none" style={{ width: "72px" }}></div>
+          <div className="w-full">
+            {topButtons}
+            <div
+              className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
+            >
+              {executionSteps.length > 0 && (
+                <RunStatus
+                  steps={executionSteps}
+                  errorName={previousErrorName}
+                  errorValue={previousErroValue}
+                  addCell={addCell}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   // if (

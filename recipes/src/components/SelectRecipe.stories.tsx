@@ -42,3 +42,31 @@ SelectRecipeForm.args = {
   checkPackage: (pkg: string) => {},
 };
 
+export const SelectRecipeExecuted: Story = (
+  args: React.JSX.IntrinsicAttributes & ISelectRecipeProps
+) => (
+  <>
+    <SelectRecipe {...args} />
+  </>
+);
+
+SelectRecipeExecuted.args = {
+  previousCode: "print(1)",
+  previousErrorName: "",
+  previousErroValue: "",
+  previousExecutionCount: 1,
+  setCode: (src: string) => console.log(src),
+  setPackages: (packages: string[]) => console.log(packages),
+  runCell: () => console.log("runCell"),
+  // executionSteps: [],
+  executionSteps: [
+    // ["Wait for installation", ExecutionStatus.Wait],
+    // ["Install packages", ExecutionStatus.Success],
+    // ["Load data", ExecutionStatus.Error],
+    // ["Train ML model", ExecutionStatus.Warning],
+  ],
+  variablesStatus: "loaded",
+  variables: [],
+  checkPackage: (pkg: string) => {},
+};
+
