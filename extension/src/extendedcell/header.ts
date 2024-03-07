@@ -15,6 +15,7 @@ import { VariableInspector } from './variableinspector';
 
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { IChangedArgs } from '@jupyterlab/coreutils';
+import { mIcon } from '../icons';
 
 const STATUSBAR_PLUGIN_ID = '@jupyterlab/statusbar-extension:plugin';
 
@@ -49,6 +50,7 @@ export class RecipeWidgetsRegistry {
         this.checkLabShell();
       });
     }
+
   }
 
   public setSettingRegistry(settingRegistry: ISettingRegistry) {
@@ -57,6 +59,7 @@ export class RecipeWidgetsRegistry {
 
   public checkLabShell() {
     if (this._labShellSet) return;
+
 
     if (this._labShell) {
       if (this._labShell.isSideTabBarVisible('right')) {
@@ -75,6 +78,11 @@ export class RecipeWidgetsRegistry {
           .catch(reason => {
             console.error('Failed to hide status bar', reason);
           });
+      }
+      const element = document.getElementById('jp-MainLogo');
+      console.log(element);
+      if (element) {
+        element.innerHTML = mIcon.svgstr;
       }
     }
   }
@@ -471,13 +479,13 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       // });
 
       cell.inputArea?.node.addEventListener('focusin', () => {
-        
+
         if (this._cellId) {
           RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
         }
 
         RecipeWidgetsRegistry.getInstance().hideAll();
-        
+
         this._packages = [];
 
         if (getAlwaysOpen()) {

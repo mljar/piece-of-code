@@ -33,8 +33,9 @@
   --tw-gradient-to: #06b6d4 var(--tw-gradient-from-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   --tw-gradient-from: #3f83f8 var(--tw-gradient-to-position); */
-
+  /* background: linear-gradient(-45deg, #23a6d5, #23d5ab, #ee7752, #e73c7e); */
   background: linear-gradient(-45deg, #23a6d5, #23d5ab, #ee7752, #e73c7e);
+  /* background: linear-gradient(-45deg, #23d5ab, #23a6d5, #06b6d4, #3f83f8); */
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
 }
@@ -48,5 +49,48 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+#jupyterlab-splash {
+  z-index: 10;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#jupyterlab-splash.light {
+  background-color: white;
+}
+
+#jupyterlab-splash.dark {
+  background-color: var(--md-grey-900);
+}
+
+.splash-fade {
+  animation: 2s fade-out forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }

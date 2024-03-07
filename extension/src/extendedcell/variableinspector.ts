@@ -244,7 +244,7 @@ except ImportError:
 
 const installPackageConda = (pkg: string): string =>
   `import sys
-!conda install --yes --prefix {sys.prefix} ${pkg}`;
+!conda install --yes --prefix {sys.prefix} -c conda-forge ${pkg}`;
 
 const installPackagePip = (pkg: string): string =>
   `import sys
