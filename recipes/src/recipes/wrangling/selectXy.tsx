@@ -61,7 +61,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
     src += "# set input matrix\n";
     src += `${x} = ${df}[x_cols]\n`;
     src += "# set target vector\n";
-    src += `${y} = ${df}[y_col]`;
+    src += `${y} = ${df}[y_col]\n`;
     src += `# display data shapes\n`;
     src += `print(f"${x} shape is {${x}.shape}")\n`;
     src += `print(f"${y} shape is {${y}.shape}")\n`;
