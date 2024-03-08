@@ -1,4 +1,3 @@
-// MyComponent.tsx
 import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";

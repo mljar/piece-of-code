@@ -1,8 +1,4 @@
-// MyComponent.tsx
-// import { IconFileTypeCsv, TablerIconsProps } from "@tabler/icons-react";
 import React from "react";
-import { FileCsvIcon } from "../icons/FileCsv";
-import { BookIcon } from "../icons/Book";
 import { IconProps } from "../icons/props";
 
 interface TitleProps {

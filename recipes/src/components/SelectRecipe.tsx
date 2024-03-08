@@ -20,6 +20,8 @@ import { SuccessIcon } from "../icons/Success";
 import { SpinnerIcon } from "../icons/Spinner";
 import { Tooltip } from "react-tooltip";
 
+import "../style.css";
+
 export interface ISelectRecipeProps {
   previousCode: string;
   previousErrorName: string;

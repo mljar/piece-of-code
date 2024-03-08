@@ -1,6 +1,5 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import MyComponent, { MyComponentProps } from "../../components/MyComponent";
 
 import { ReadCSV } from "./readCSV";
 import { IRecipeProps } from "../base";
