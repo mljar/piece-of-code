@@ -27,9 +27,12 @@ export interface IPackage {
 
 export interface IRecipe {
     name: string;
+    longName: string;
+    parentName: string;
     description: string;
+    codeExplanation: string;
     Icon?: React.FC<IconProps>;
     requiredPackages?: IPackage[];
-    docsLink?: string;
+    docsUrl?: string;
     ui: React.FC<IRecipeProps>;
 }

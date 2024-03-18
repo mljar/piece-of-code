@@ -9,7 +9,7 @@ export const SuccessIcon: React.FC<IconProps> = ({
    <svg
       width={size}
       height={size}
-      className={`${className} text-green-500 dark:text-green-400 pb-1`}
+      className={`${className} poc-text-green-500 dark:poc-text-green-400 poc-pb-1`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

@@ -36,27 +36,27 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     if (status === ExecutionStatus.Wait) {
       return (
         <div key={label}>
-          <SpinnerIcon className="inline" /> {label}
+          <SpinnerIcon className="poc-inline" /> {label}
         </div>
       );
     }
     if (status === ExecutionStatus.Success) {
       return (
         <div key={label}>
-          <SuccessIcon className="inline" /> {label}
+          <SuccessIcon className="poc-inline" /> {label}
         </div>
       );
     }
     if (status === ExecutionStatus.Error) {
       return (
         <div key={label}>
-          <ErrorIcon className="inline" /> {label}
+          <ErrorIcon className="poc-inline" /> {label}
         </div>
       );
     }
     return (
       <div key={label}>
-        <WarningIcon className="inline" /> {label}
+        <WarningIcon className="poc-inline" /> {label}
       </div>
     );
   });
@@ -66,63 +66,63 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     steps.length;
 
   return (
-    <div className="text-base text-gray-900 dark:text-white pl-2">
-      <div className="grid grid-cols-3 gap-4">
+    <div className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pl-2">
+      <div className="poc-grid poc-grid-cols-3 poc-gap-4">
         <div>
-          <label className="block text-lg font-medium ">
-            <BoltIcon className="inline pb-1" />
+          <label className="poc-block poc-text-lg poc-font-medium ">
+            <BoltIcon className="poc-inline poc-pb-1" />
             Execution status
           </label>
           {elements}
         </div>
 
         {allSuccess && (
-          <div className="col-span-2">
-            <p className="py-2 text-base">
+          <div className="poc-col-span-2">
+            <p className="poc-py-2 poc-text-base">
               All good 👍
               <button
                 type="button"
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center mx-2"
+                className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-2"
                  onClick={() => addCell()}
               >
-                <PlusIcon className="inline pb-1" /> Let's add a new cell
+                <PlusIcon className="poc-inline poc-pb-1" /> Let's add a new cell
               </button>
             </p>
           </div>
         )}
         {errorName !== "" && (
-          <div className="border p-2 border-red-300 rounded-md text-base col-span-2">
-            <p className="block text-lg font-medium text-red-600 ">
+          <div className="poc-border poc-p-2 poc-border-red-300 poc-rounded-md poc-text-base poc-col-span-2">
+            <p className="poc-block poc-text-lg poc-font-medium poc-text-red-600 ">
               Some problems with code ...
             </p>
-            <p className="py-2">There was an error during code execution:</p>
-            <pre className="border p-2 overflow-auto">
+            <p className="poc-py-2">There was an error during code execution:</p>
+            <pre className="poc-border poc-p-2 poc-overflow-auto">
               {errorName}
               <br />
               {errorValue}
             </pre>
 
-            <p className="pt-2">
+            <p className="poc-pt-2">
               Do you need more help?
               {/* 
             <button
               type="button"
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center my-2"
+              className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2"
             >
-              <ChatIcon className="inline pb-1" /> Ask on forum
+              <ChatIcon className="poc-inline poc-pb-1" /> Ask on forum
             </button> */}
               <button
                 type="button"
-                className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center my-2 mx-2"
+                className="poc-text-white poc-bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2 poc-mx-2"
                 onClick={() => {
                   setShowEmail(true);
                 }}
               >
-                <MailIcon className="inline pb-1" /> Write email to us
+                <MailIcon className="poc-inline poc-pb-1" /> Write email to us
               </button>
             </p>
             {showEmail && (
-              <p className="text-base">
+              <p className="poc-text-base">
                 Our email address is <b>contact@mljar.com</b> please include the
                 error message and describe your use case.
               </p>

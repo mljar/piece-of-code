@@ -11,9 +11,13 @@ export const SelectCols: React.FC<IRecipeProps> = ({ }) => {
 
 export const SelectColsRecipe: IRecipe = {
   name: "Select Columns",
+  longName: "Select columns from Pandas DataFrame",
+  parentName: "Data wrangling",
   description: "Select columns from dataframe.",
   ui: SelectCols,
+  codeExplanation: "",
   // icon: IconTableColumn
+  docsUrl: "python-select-columns-pandas-data-frame"
 };
 
 export default SelectColsRecipe;

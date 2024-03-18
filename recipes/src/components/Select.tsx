@@ -20,24 +20,24 @@ export const Select: React.FC<SelectProps> = ({
   });
   return (
     <div>
-      <div className="mt-2">
-        <label className="block text-sm font-medium text-gray-900 dark:text-white">
+      <div className="poc-mt-2">
+        <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
         </label>
         <select
           value={option}
           onChange={(e) => setOption(e.target.value)}
-          className="border rounded-md block w-full p-2 
-          bg-gray-50 
-          border-gray-300 
-          text-gray-900 
-          focus:border-blue-500 
-          focus:border
-          dark:bg-gray-700 
-          dark:border-gray-600 
-          dark:placeholder-gray-400 
-          dark:text-white 
-          outline-none
+          className="poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
+          poc-bg-gray-50 
+          poc-border-gray-300 
+          poc-text-gray-900 
+          focus:poc-border-blue-500 
+          focus:poc-border
+          dark:poc-bg-gray-700 
+          dark:poc-border-gray-600 
+          dark:poc-placeholder-gray-400 
+          dark:poc-text-white 
+          poc-outline-none
           "
         >
           {optionsElements}

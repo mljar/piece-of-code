@@ -31,6 +31,10 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   checkedPackages,
   installPackage,
 }: IWelcomeProps) => {
+  
+  //
+
+
   packages?.forEach((p: IPackage) => {
     if (
       checkPackage &&
@@ -64,20 +68,20 @@ export const Welcome: React.FC<IWelcomeProps> = ({
     }
     return (
       <div
-        className="flex items-center mb-4"
+        className="poc-flex poc-items-center poc-mb-4"
         key={`${p.installationName}${p.version}`}
       >
-        <Tooltip id="package-icon-tooltip" className="text-base"/>
+        <Tooltip id="package-icon-tooltip" className="poc-text-base"/>
         <div
           data-tooltip-id="package-icon-tooltip"
           data-tooltip-content={tooltipMsg}
         >
-          {status === "available" && <SuccessIcon className="inline pt-1" />}
-          {status === "error" && <ErrorIcon className="inline p-1" />}
-          {status === "unknown" && <WarningIcon className="inline pt-1" />}
-          {status === "install" && <SpinnerIcon className="inline p-1" />}
+          {status === "available" && <SuccessIcon className="poc-inline poc-pt-1" />}
+          {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
+          {status === "unknown" && <WarningIcon className="poc-inline poc-pt-1" />}
+          {status === "install" && <SpinnerIcon className="poc-inline poc-p-1" />}
 
-          <label className="text-gray-900 dark:text-gray-300">
+          <label className="poc-text-gray-900 dark:poc-text-gray-300">
             {p.installationName}
             {p.version}
           </label>
@@ -85,7 +89,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         {status === "error" && (
           <button
             type="button"
-            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-2 py-1 text-center mx-2"
+            className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-mx-2"
             onClick={() => {
               if (installPackage !== undefined) {
                 installPackage(p.installationName, p.importName);
@@ -96,7 +100,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
           </button>
         )}
         {status === "install" && (
-          <label className="text-gray-900 dark:text-gray-300 px-1">
+          <label className="poc-text-gray-900 dark:poc-text-gray-300 poc-px-1">
             Please wait, package installation ...
           </label>
         )}
@@ -105,31 +109,33 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   });
   return (
     <div>
-      <h3 className="text-lg   text-gray-900 dark:text-white mb-2">
-        {Icon && <Icon className="inline pb-1" />} {title && title}
+      <h3 className="poc-text-lg   poc-text-gray-900 dark:poc-text-white poc-mb-2">
+        {Icon && <Icon className="poc-inline poc-pb-1" />} {title && title}
+        
         {docsLink && (
-          <div className="inline items-center float-right">
+          <div className="poc-inline poc-items-center poc-float-right">
             <a
-              className="text-blue-500 hover:text-blue-700 
-          font-medium text-sm text-center 
-          inline-flex items-center dark:bg-blue-600 
-          dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="poc-text-blue-500 hover:poc-text-blue-700 
+          poc-font-medium poc-text-sm poc-text-center 
+          poc-inline-flex poc-items-center dark:poc-bg-blue-600 
+          dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800"
               href={docsLink}
               target="_blank"
             >
-              <BookIcon className="p-0.5" />
+              <BookIcon className="poc-p-0.5" />
               <span>Docs</span>
-              <span className="sr-only">Documentation</span>
+              <span className="poc-sr-only">Documentation</span>
             </a>
           </div>
         )}
+        
       </h3>
-      {description && <p className="mb-2 text-base">{description}</p>}
+      {description && <p className="poc-mb-2 poc-text-base">{description}</p>}
 
       {packages && packages.length > 0 && (
         <div>
-          <h4 className="text-base text-gray-900 dark:text-white mb-1">
-            <PackageIcon className="inline pb-1" /> Required Packages
+          <h4 className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-mb-1">
+            <PackageIcon className="poc-inline poc-pb-1" /> Required Packages
           </h4>
           {packagesList}
         </div>

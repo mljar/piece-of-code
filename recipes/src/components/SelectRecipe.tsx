@@ -109,19 +109,19 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   ) {
     if (executionSteps.length === 0) {
       return (
-        <div className="flex">
-          <div className="flex-none" style={{ width: "72px" }}></div>
-          <div className="w-full">{topButtons}</div>
+        <div className="poc-flex">
+          <div className="poc-flex-none" style={{ width: "72px" }}></div>
+          <div className="poc-w-full">{topButtons}</div>
         </div>
       );
     } else {
       return (
-        <div className="flex">
-          <div className="flex-none" style={{ width: "72px" }}></div>
-          <div className="w-full">
+        <div className="poc-flex">
+          <div className="poc-flex-none" style={{ width: "72px" }}></div>
+          <div className="poc-w-full">
             {topButtons}
             <div
-              className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md"
+              className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
             >
               {executionSteps.length > 0 && (
                 <RunStatus
@@ -145,11 +145,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //   !overwriteExistingCode
   // ) {
   //   return (
-  //     <div className="flex">
-  //       <div className="flex-none" style={{ width: "72px" }}>
+  //     <div className="poc-flex">
+  //       <div className="poc-flex-none" style={{ width: "72px" }}>
   //         {leftButtons}
   //       </div>
-  //       <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+  //       <div className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
   //         <NextStepError ename={previousErrorName} evalue={previousErroValue} />
   //       </div>
   //     </div>
@@ -157,9 +157,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   // }
 
   const ActiveTabClass =
-    "inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-lg w-full dark:bg-blue-600";
+    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-text-white poc-bg-blue-500 poc-rounded-lg poc-w-full dark:poc-bg-blue-600";
   const TabClass =
-    "inline-flex items-center px-4 py-2 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-blue-100 w-full dark:bg-gray-800 dark:hover:bg-gray-800 dark:text-gray-200 dark:hover:text-white";
+    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-rounded-lg poc-bg-gray-50 hover:poc-text-gray-900 hover:poc-bg-blue-100 poc-w-full dark:poc-bg-gray-800 dark:hover:poc-bg-gray-800 dark:poc-text-gray-200 dark:hover:poc-text-white";
   const tabs = Object.entries(allRecipeSets).map(([name, recipeSet]) => (
     <li key={`select-recipe-set-${recipeSet.name}`}>
       <a
@@ -171,7 +171,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           setSelectedRecipe("");
         }}
       >
-        {recipeSet.Icon && <recipeSet.Icon className="p-1" />} {recipeSet.name}
+        {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />} {recipeSet.name}
       </a>
     </li>
   ));
@@ -190,7 +190,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               setSelectedRecipe(recipe.name);
             }}
           >
-            {recipe.Icon && <recipe.Icon className="p-1" />} {recipe.name}
+            {recipe.Icon && <recipe.Icon className="poc-p-1" />} {recipe.name}
           </a>
         </li>
       )
@@ -231,7 +231,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         Icon={recipe.Icon}
         description={recipe.description}
         packages={recipe.requiredPackages}
-        docsLink={recipe.docsLink}
+        docsLink={`https://mljar.com/docs/${recipe.docsUrl}/`}
         checkPackage={checkPackage}
         checkedPackages={checkedPackages}
         installPackage={installPackage}
@@ -262,14 +262,14 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   }
 
   const leftButtons = (
-    <div className="h-full grid grid-cols-1 content-end">
+    <div className="poc-h-full poc-grid poc-grid-cols-1 poc-content-end">
       <Tooltip
         id="left-buttons-tooltip"
         place="right"
         positionStrategy="fixed"
         offset={0}
         style={{ zIndex: "10001" }}
-        className="text-base"
+        className="poc-text-base"
       />
 
       <div>
@@ -277,24 +277,24 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           data-tooltip-id="left-buttons-tooltip"
           data-tooltip-content="Delete cell"
           type="button"
-          className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-me-2 poc-mb-2 poc-ml-4"
           onClick={() => deleteCell()}
         >
-          {<TrashIcon className="inline p-0.5" />}
+          {<TrashIcon className="poc-inline poc-p-0.5" />}
         </button>
       </div>
 
       {/* {showRecipeUI && (
         <div className="has-tooltip">
-          <span className="tooltip rounded shadow-lg p-1 bg-slate-800 text-gray-50 -mt-7 text-sm">
+          <span className="tooltip poc-rounded poc-shadow-lg poc-p-1 bg-slate-800 poc-text-gray-50 poc--mt-7 poc-text-sm">
             Toggle menu view
           </span>
           <button
             type="button"
-            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+            className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
             onClick={() => setShowNav(!showNav)}
           >
-            {<HomeIcon className="inline p-0.5" />}
+            {<HomeIcon className="poc-inline poc-p-0.5" />}
           </button>
         </div>
       )} */}
@@ -303,10 +303,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           data-tooltip-id="left-buttons-tooltip"
           data-tooltip-content="Add cell"
           type="button"
-          className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2 ml-4"
+          className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg
+           poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-me-2 poc-mb-2 poc-ml-4"
           onClick={() => addCell()}
         >
-          <PlusIcon className="inline pb-1" />
+          <PlusIcon className="poc-inline poc-pb-1" />
         </button>
       </div>
       <div>
@@ -314,13 +315,13 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           data-tooltip-id="left-buttons-tooltip"
           data-tooltip-content="Run cell"
           type="button"
-          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2  mb-2 ml-4"
+          className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-me-2  poc-mb-2 poc-ml-4"
           onClick={() => {
             runCell();
             setExecuted(true);
           }}
         >
-          {<PlayIcon className="inline" />}
+          {<PlayIcon className="poc-inline" />}
         </button>
       </div>
     </div>
@@ -352,18 +353,18 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
     return (
       <div key={`${p.installationName}-${p.version}`}>
-        <Tooltip id="package-icon-tooltip-recipe" className="text-base" />
+        <Tooltip id="package-icon-tooltip-recipe" className="poc-text-base" />
         <div
           data-tooltip-id="package-icon-tooltip-recipe"
           data-tooltip-content={tooltipMsg}
-          className="inline"
+          className="poc-inline"
         >
-          {status === "available" && <SuccessIcon className="inline pt-1" />}
-          {status === "error" && <ErrorIcon className="inline p-1" />}
-          {status === "unknown" && <WarningIcon className="inline pt-1" />}
-          {status === "install" && <SpinnerIcon className="inline p-1" />}
+          {status === "available" && <SuccessIcon className="poc-inline poc-pt-1" />}
+          {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
+          {status === "unknown" && <WarningIcon className="poc-inline poc-pt-1" />}
+          {status === "install" && <SpinnerIcon className="poc-inline poc-p-1" />}
 
-          <label className="text-gray-900 dark:text-gray-300">
+          <label className="poc-text-gray-900 dark:poc-text-gray-300">
             {p.installationName}
             {p.version}
           </label>
@@ -371,7 +372,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         {status === "error" && (
           <button
             type="button"
-            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-2 py-1 text-center mx-2"
+            className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-mx-2"
             onClick={() => {
               if (installPackage)
                 installPackage(p.installationName, p.importName);
@@ -381,7 +382,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           </button>
         )}
         {status === "install" && (
-          <label className="text-gray-900 dark:text-gray-300">
+          <label className="poc-text-gray-900 dark:poc-text-gray-300">
             {" "}
             Please wait, package installation ...
           </label>
@@ -403,35 +404,35 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   // );
 
   return (
-    <div className="flex">
-      <div className="flex-none" style={{ width: "72px" }}>
+    <div className="poc-flex">
+      <div className="poc-flex-none" style={{ width: "72px" }}>
         {executionSteps.length === 0 && leftButtons}
       </div>
-      <div className="w-full">
+      <div className="poc-w-full">
         {executionSteps.length > 0 && topButtons}
-        <div className="bg-white dark:bg-slate-700 p-2 w-full border-gray-100 border-t border-l border-r rounded-t-md">
+        <div className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
             <div
-              className="md:flex"
+              className="md:poc-flex"
               // style={{opacity: showNav? "1": "0",
-              // visibility: showNav? "visible":"hidden",
-              // transition: "opacity 1000ms, visibility 1000ms"}}
+              // visibility: showNav? "poc-visible":"poc-hidden",
+              // poc-transition: "opacity 1000ms, visibility 1000ms"}}
             >
               <ul
-                className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0"
+                className="poc-flex-none md:poc-w-52 space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:me-2 poc-mb-2 md:poc-mb-0"
                 style={{ maxHeight: "250px", overflowY: "auto" }}
               >
                 {tabs}
               </ul>
               {showSubTabs && (
                 <ul
-                  className="flex-none md:w-52 space-y space-y-2 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-2 mb-2 md:mb-0"
+                  className="poc-flex-none md:poc-w-52 space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:me-2 poc-mb-2 md:poc-mb-0"
                   style={{ maxHeight: "250px", overflowY: "auto" }}
                 >
                   {subTabs}
                 </ul>
               )}
-              <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+              <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
                 {welcomeMsg}
               </div>
             </div>
@@ -441,8 +442,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             <div
             // onMouseOver={()=>{setShowNav(false)}}
             >
-              {showNav && <hr className="p-1 m-2" />}
-              <div className="bg-white dark:bg-slate-800 p-2 rounded-md">
+              {showNav && <hr className="poc-p-1 poc-m-2" />}
+              <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-2 poc-rounded-md">
                 <RecipeUI
                   setCode={setCode}
                   setPackages={setPackages}
@@ -454,12 +455,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           )}
           {installPackages.length > 0 && (
             <div>
-              <hr className="m-2" />
-              <div className="p-3 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-                <h3 className="text-lg text-gray-900 dark:text-white mb-2">
-                  <PackageIcon className="inline pb-1" /> Install packages
+              <hr className="poc-m-2" />
+              <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
+                <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2">
+                  <PackageIcon className="poc-inline poc-pb-1" /> Install packages
                 </h3>
-                <p className="text-base text-gray-900 dark:text-white pb-1">
+                <p className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pb-1">
                   Please install below packages to use this code recipe.
                 </p>
 

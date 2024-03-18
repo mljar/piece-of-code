@@ -13,7 +13,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
   if (variablesStatus === "loading") {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           Loading variables ...
         </p>
@@ -27,7 +27,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
   if (automls.length == 0) {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           There are no AutoML objects in your notebook. Please train AutoML or
           load AutoML from folder.
@@ -60,7 +60,11 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
 export const AutoMLReportRecipe: IRecipe = {
   name: "AutoML report",
+  longName: "Display AutoML report",
+  parentName: "MLJAR AutoML",
   description: "Display AutoML report from training. You can click on the model name in the leaderboard to check each model details.",
+  codeExplanation: "",
   ui: AutoMLReport,
   Icon: ReportIcon,
+  docsUrl: "python-display-automl-report",
 };

@@ -9,7 +9,7 @@ export const ErrorIcon: React.FC<IconProps> = ({
   <svg
       width={size}
       height={size}
-      className={`${className} text-red-500 dark:text-red-200 inline pb-1`}
+      className={`${className} poc-text-red-500 dark:poc-text-red-200 poc-inline poc-pb-1`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

@@ -15,7 +15,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
           reading data from file, url or database.
@@ -117,11 +117,15 @@ export const SelectXy: React.FC<IRecipeProps> = ({
 
 export const SelectXyRecipe: IRecipe = {
   name: "Select X,y",
+  longName: "Select training attributes and target for ML",
+  parentName: "Data wrangling",
   description:
     "Select X,y for Machine Learning model training. The `X` matrix is used as model input, whereas `y` vector is used as model target.",
+  codeExplanation: "",
   ui: SelectXy,
   Icon: XyIcon,
   requiredPackages: [],
+  docsUrl: "python-select-training-attributes-for-machine-learning"
 };
 
 export default SelectXyRecipe;

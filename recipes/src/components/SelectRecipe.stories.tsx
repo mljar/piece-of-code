@@ -32,8 +32,8 @@ SelectRecipeForm.args = {
   runCell: () => console.log("runCell"),
   // executionSteps: [],
   executionSteps: [
-     ["Wait for installation", ExecutionStatus.Wait],
-     ["Install packages", ExecutionStatus.Success],
+    // ["Wait for installation", ExecutionStatus.Wait],
+    // ["Install packages", ExecutionStatus.Success],
     // ["Load data", ExecutionStatus.Error],
     // ["Train ML model", ExecutionStatus.Warning],
   ],

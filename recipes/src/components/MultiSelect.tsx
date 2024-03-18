@@ -21,8 +21,8 @@ export const MultiSelect: React.FC<SelectProps> = ({
 }: SelectProps) => {
   return (
     <div>
-      <div className="mt-2">
-        <label className="block text-sm font-medium text-gray-900 dark:text-white">
+      <div className="poc-mt-2">
+        <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
         </label>
         <Select

@@ -6,7 +6,7 @@ import { FileCsvIcon } from "../../icons/FileCsv";
 import { Select } from "../../components/Select";
 import { SelectPath } from "../../components/SelectPath";
 
-export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+export const WriteCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
 
@@ -34,7 +34,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   }, [name, filePath, delimiter]);
 
   return (
-    <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+    <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
       <Title
         Icon={FileCsvIcon}
         label={"Read CSV file"}
@@ -63,16 +63,19 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 
 // export default ReadCSV;
 
-export const ReadCSVRecipe: IRecipe = {
-  name: "Read CSV",
+export const WriteCSVRecipe: IRecipe = {
+  name: "Write CSV",
+  longName: "Write Pandas DataFrame to CSV file",
+  parentName: "Write data",
   description:
     "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
-  ui: ReadCSV,
+  codeExplanation: "",
+  ui: WriteCSV,
   Icon: FileCsvIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsLink: "http://mljar.com",
+  docsUrl: "python-write-dataframe-csv",
 };
 
-export default ReadCSV;
+export default WriteCSVRecipe;

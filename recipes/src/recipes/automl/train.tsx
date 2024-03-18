@@ -16,7 +16,7 @@ export const Train: React.FC<IRecipeProps> = ({
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
           reading data from file, url or database.
@@ -119,7 +119,10 @@ export const Train: React.FC<IRecipeProps> = ({
 
 export const TrainRecipe: IRecipe = {
   name: "Train AutoML",
+  longName: "Train AutoML in Python",
+  parentName: "MLJAR AuutoML",
   description: "Train AutoML.",
+  codeExplanation: "",
   ui: Train,
   Icon: EngineIcon,
   requiredPackages: [
@@ -129,4 +132,5 @@ export const TrainRecipe: IRecipe = {
       version: ">=1.1.5",
     },
   ],
+  docsUrl: "python-train-automl"
 };

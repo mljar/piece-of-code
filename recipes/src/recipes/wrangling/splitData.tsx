@@ -11,8 +11,12 @@ export const SplitData: React.FC<IRecipeProps> = ({ }) => {
 
 export const SplitDataRecipe: IRecipe = {
   name: "Split data",
+  longName: "Split dataset to train and test",
+  parentName: "Data wrangling",
   description: "Split data",
+  codeExplanation: "",
   ui: SplitData,
+  docsUrl: "python-split-data-train-test",
   // icon: IconBorderHorizontal
 };
 

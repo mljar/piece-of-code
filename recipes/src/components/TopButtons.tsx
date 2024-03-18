@@ -23,7 +23,7 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
   deleteCell,
 }: INextStepEditProps) => {
   return (
-    <div className="border-none text-base text-gray-500 dark:text-gray-400 rounded-md">
+    <div className="poc-border-none poc-text-base poc-text-gray-500 dark:poc-text-gray-400 poc-rounded-md">
       <Tooltip
         id="top-buttons-tooltip"
         place="top"
@@ -32,48 +32,48 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
         style={{ zIndex: "10001" }}
       />
       <div>
-        <div className="inline">
+        <div className="poc-inline">
           <button
             data-tooltip-id="top-buttons-tooltip"
             data-tooltip-content="Run code"
             type="button"
-            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
             onClick={() => runCell()}
           >
-            {<PlayIcon className="inline pb-1" />}
+            {<PlayIcon className="poc-inline poc-pb-1" />}
           </button>
         </div>
-        <div className="inline">
+        <div className="poc-inline">
           <button
             data-tooltip-id="top-buttons-tooltip"
             data-tooltip-content="Add new cell below"
             type="button"
-            className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
             onClick={() => addCell()}
           >
-            <PlusIcon className="inline pb-1" />
+            <PlusIcon className="poc-inline poc-pb-1" />
           </button>
         </div>
-        <div className="inline">
+        <div className="poc-inline">
           <button
             data-tooltip-id="top-buttons-tooltip"
             data-tooltip-content="Open Piece of Code and overwrite with new code"
             type="button"
-            className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-teal-400 poc-via-teal-500 poc-to-teal-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-teal-300 dark:focus:ring-teal-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
             onClick={() => letsOverwrite()}
           >
-            <CakeIcon className="inline pb-1" />
+            <CakeIcon className="poc-inline poc-pb-1" />
           </button>
         </div>
-        <div className="inline">
+        <div className="poc-inline">
           <button
             data-tooltip-id="top-buttons-tooltip"
             data-tooltip-content="Delete cell"
             type="button"
-            className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-t-lg text-sm px-5 py-1.5 text-center mx-1"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
             onClick={() => deleteCell()}
           >
-            {<TrashIcon className="inline pb-1" />}
+            {<TrashIcon className="poc-inline poc-pb-1" />}
           </button>
         </div>
       </div>

@@ -12,19 +12,19 @@ export const Variable: React.FC<VariableProps> = ({
   setName,
 }: VariableProps) => {
   return (
-    <div className="mt-2">
-      <label className="block text-sm font-medium text-gray-900 dark:text-white">
+    <div className="poc-mt-2">
+      <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
         {label}
       </label>
       <input
         type="text"
-        className="bg-gray-50 border border-gray-300 text-gray-900 
-        rounded-md 
-        focus:border-blue-500 block w-full p-1.5 
-        focus:border
-        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-        dark:text-white dark:focus:border-blue-400
-     text-md outline-0"
+        className="poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
+        poc-rounded-md 
+        focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 
+        focus:poc-border
+        dark:poc-bg-gray-700 dark:poc-border-gray-600 dark:poc-placeholder-gray-400 
+        dark:poc-text-white dark:focus:poc-border-blue-400
+        poc-outline-0"
         placeholder={name}
         value={name}
         onChange={(e) => setName(e.target.value)}

@@ -68,14 +68,20 @@ export const ExampleData: React.FC<IRecipeProps> = ({
 
 export const ExampleDataRecipe: IRecipe = {
   name: "Example Data",
+  longName: "Load example dataset",
+  parentName: "Read data",
   description:
-    "Read example dataset to pandas DataFrame. Datasets are loaded from https://github.com/pplonski/datasets-for-start, you need internet connection to load them.",
+    `Read example dataset to pandas DataFrame. Datasets are loaded from https://github.com/pplonski/datasets-for-start, you need internet connection to load them. You can select from three datasets:
+    - Iris dataset, 
+    - Adult dataset,
+    - Housing dataset`,
+  codeExplanation: "",
   ui: ExampleData,
   Icon: FileSmileIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsLink: "http://mljar.com",
+  docsUrl: "python-load-example-dataset",
 };
 
-export default ExampleData;
+export default ExampleDataRecipe;

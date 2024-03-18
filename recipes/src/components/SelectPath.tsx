@@ -39,22 +39,22 @@ export const SelectPath: React.FC<SelectPathProps> = ({
   }, [defaultPath])
 
   return (
-    <div className="mt-2">
-      <label className="block text-sm font-medium text-gray-900 dark:text-white">
+    <div className="poc-mt-2">
+      <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
         {label}
       </label>
 
       {isElectron && (
         <div
-          className="block w-full text-gray-900 
-        border border-gray-300 rounded-md cursor-pointer bg-gray-50 
-        dark:text-gray-400 focus:outline-none focus:border focus:border-blue-500 dark:bg-gray-700 
-        dark:border-gray-600 dark:placeholder-gray-400 p-0.5 "
+          className="poc-block poc-w-full poc-text-gray-900 
+        poc-border poc-border-gray-300 poc-rounded-md poc-cursor-pointer poc-bg-gray-50 
+        dark:poc-text-gray-400 focus:poc-outline-none focus:poc-border focus:poc-border-blue-500 dark:poc-bg-gray-700 
+        dark:poc-border-gray-600 dark:poc-placeholder-gray-400 poc-p-0.5 "
         >
           <button
             type="button"
-            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 
-          focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-md text-sm px-2 py-1 text-center my-0.5 mx-0.5 mr-2"
+            className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 
+          focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-md poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-my-0.5 poc-mx-0.5 poc-mr-2"
             onClick={async () => {
               const filePath = selectFolder
                 ? await window.electronAPI.recipeOpenFolder()
@@ -74,15 +74,15 @@ export const SelectPath: React.FC<SelectPathProps> = ({
 
       {!isElectron && !selectFolder && (
         <input
-          className="block w-full text-gray-900 
-        border border-gray-300 rounded-md cursor-pointer bg-gray-50 
-        dark:text-gray-400 focus:outline-none focus:border focus:border-blue-500 dark:bg-gray-700 
-        dark:border-gray-600 dark:placeholder-gray-400 p-0.5 text-base
+          className="poc-block poc-w-full poc-text-gray-900 
+        poc-border poc-border-gray-300 poc-rounded-md poc-cursor-pointer poc-bg-gray-50 
+        dark:poc-text-gray-400 focus:poc-outline-none focus:poc-border focus:poc-border-blue-500 dark:poc-bg-gray-700 
+        dark:poc-border-gray-600 dark:poc-placeholder-gray-400 poc-p-0.5 poc-text-base
         
-            file:outline-none  file:border-none
-            file:text-white file:bg-gradient-to-r file:from-cyan-500 file:to-blue-500 file:hover:bg-gradient-to-bl file:focus:ring-4 
-            file:focus:outline-none file:focus:ring-cyan-300 file:dark:focus:ring-cyan-800 file:font-medium file:rounded-md 
-            file:text-sm file:px-2 file:py-1 file:text-center
+            file:poc-outline-none  file:poc-border-none
+            file:poc-text-white file:poc-bg-gradient-to-r file:from-cyan-500 file:poc-to-blue-500 file:hover:poc-bg-gradient-to-bl file:focus:poc-ring-4 
+            file:focus:poc-outline-none file:focus:ring-cyan-300 file:dark:focus:ring-cyan-800 file:poc-font-medium file:poc-rounded-md 
+            file:poc-text-sm file:poc-px-2 file:poc-py-1 file:poc-text-center
         "
           type="file"
           multiple={false}
@@ -97,12 +97,12 @@ export const SelectPath: React.FC<SelectPathProps> = ({
       {!isElectron && selectFolder && (
         <input
           type="text"
-          className="bg-gray-50 border border-gray-300 text-gray-900 
-        rounded-md 
-        focus:border-blue-500 block w-full p-1.5 
-        focus:border
-        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-        dark:text-white dark:focus:border-blue-400
+          className="poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
+        poc-rounded-md 
+        focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 
+        focus:poc-border
+        dark:poc-bg-gray-700 dark:poc-border-gray-600 dark:poc-placeholder-gray-400 
+        dark:poc-text-white dark:focus:poc-border-blue-400
      text-md outline-0"
           placeholder={"Please provide path"}
           value={folderPath}
@@ -117,7 +117,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
 
       {additionalInfo && (
         <p
-          className="mt-1 text-sm text-gray-500 dark:text-gray-300"
+          className="poc-mt-1 poc-text-sm poc-text-gray-500 dark:poc-text-gray-300"
           id="file_input_help"
         >
           additionalInfo

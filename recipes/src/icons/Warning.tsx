@@ -9,7 +9,7 @@ export const WarningIcon: React.FC<IconProps> = ({
   <svg
       width={size}
       height={size}
-      className={`${className} text-orange-500 dark:text-orange-200 inline pb-1`}
+      className={`${className} poc-text-orange-500 dark:poc-text-orange-200 poc-inline poc-pb-1`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

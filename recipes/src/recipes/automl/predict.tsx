@@ -18,7 +18,7 @@ export const Predict: React.FC<IRecipeProps> = ({
 
   if (variablesStatus === "loading") {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           Loading variables ...
         </p>
@@ -27,7 +27,7 @@ export const Predict: React.FC<IRecipeProps> = ({
   }
   if (variablesStatus === "loaded" && !automls.length) {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           There are no AutoML objects in your notebook. Please train AutoML or
           load AutoML from folder.
@@ -40,7 +40,7 @@ export const Predict: React.FC<IRecipeProps> = ({
     .map((v) => v.varName);
   if (variablesStatus === "loaded" && !dataFrames.length) {
     return (
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-md">
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please load example dataset
           or read data from file.
@@ -87,7 +87,11 @@ export const Predict: React.FC<IRecipeProps> = ({
 
 export const PredictRecipe: IRecipe = {
   name: "Predict with AutoML",
+  longName: "Compute predictions with AutoML",
+  parentName: "MLJAR AutoML",
   description: "Predict with AutoML.",
+  codeExplanation: "",
   ui: Predict,
   Icon: TargetArrowIcon,
+  docsUrl: "python-predict-with-automl"
 };
