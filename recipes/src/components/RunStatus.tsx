@@ -82,7 +82,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
               All good 👍
               <button
                 type="button"
-                className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-2"
+                className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-2"
                  onClick={() => addCell()}
               >
                 <PlusIcon className="poc-inline poc-pb-1" /> Let's add a new cell
@@ -113,7 +113,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
             </button> */}
               <button
                 type="button"
-                className="poc-text-white poc-bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2 poc-mx-2"
+                className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 via-cyan-500 to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2 poc-mx-2"
                 onClick={() => {
                   setShowEmail(true);
                 }}

@@ -53,7 +53,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
         >
           <button
             type="button"
-            className="poc-text-white poc-bg-gradient-to-r from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 
+            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 
           focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-md poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-my-0.5 poc-mx-0.5 poc-mr-2"
             onClick={async () => {
               const filePath = selectFolder
@@ -80,7 +80,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
         dark:poc-border-gray-600 dark:poc-placeholder-gray-400 poc-p-0.5 poc-text-base
         
             file:poc-outline-none  file:poc-border-none
-            file:poc-text-white file:poc-bg-gradient-to-r file:from-cyan-500 file:poc-to-blue-500 file:hover:poc-bg-gradient-to-bl file:focus:poc-ring-4 
+            file:poc-text-white file:poc-bg-gradient-to-r file:poc-from-cyan-500 file:poc-to-blue-500 file:hover:poc-bg-gradient-to-bl file:focus:poc-ring-4 
             file:focus:poc-outline-none file:focus:ring-cyan-300 file:dark:focus:ring-cyan-800 file:poc-font-medium file:poc-rounded-md 
             file:poc-text-sm file:poc-px-2 file:poc-py-1 file:poc-text-center
         "
@@ -102,8 +102,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
         focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 
         focus:poc-border
         dark:poc-bg-gray-700 dark:poc-border-gray-600 dark:poc-placeholder-gray-400 
-        dark:poc-text-white dark:focus:poc-border-blue-400
-     text-md outline-0"
+        dark:poc-text-white dark:focus:poc-border-blue-400"
           placeholder={"Please provide path"}
           value={folderPath}
           onChange={(e) => {

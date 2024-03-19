@@ -12,7 +12,7 @@ export const Numeric: React.FC<NumericProps> = ({
   setName,
 }: NumericProps) => {
   return (
-    <div  className="poc-mt-2">
+    <div className="poc-mt-2">
       <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
         {label}
       </label>
@@ -24,7 +24,7 @@ export const Numeric: React.FC<NumericProps> = ({
         focus:poc-border
         dark:poc-bg-gray-700 dark:poc-border-gray-600 dark:poc-placeholder-gray-400 
         dark:poc-text-white dark:focus:poc-border-blue-400
-     text-md outline-0"
+        poc-outline-0"
         value={name}
         onChange={(e) => setName(parseInt(e.target.value))}
       />
