@@ -27,16 +27,18 @@ export const SelectPath: React.FC<SelectPathProps> = ({
   const [folderPath, setFolderPath] = useState("");
   const [filePathElectron, setFilePathElectron] = useState("");
   let isElectron = false;
-  if (window.electronAPI !== undefined && window.electronAPI !== null) {
-    isElectron = true;
+  if (typeof window !== "undefined") {
+    if (window.electronAPI !== undefined && window.electronAPI !== null) {
+      isElectron = true;
+    }
   }
 
   useEffect(() => {
-    if(defaultPath) {
+    if (defaultPath) {
       setFolderPath(defaultPath);
       setFilePathElectron(defaultPath);
     }
-  }, [defaultPath])
+  }, [defaultPath]);
 
   return (
     <div className="poc-mt-2">

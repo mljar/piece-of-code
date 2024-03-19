@@ -11,8 +11,8 @@ export const DataWranglingRecipes: IRecipeSet = {
     Icon: TransformIcon,
     recipes: {
         [SelectXyRecipe.name]: SelectXyRecipe,
-        [SelectRowsRecipe.name]: SelectRowsRecipe, 
-        [SelectColsRecipe.name]: SelectColsRecipe, 
-        [SplitDataRecipe.name]: SplitDataRecipe,
+        // [SelectRowsRecipe.name]: SelectRowsRecipe, 
+        // [SelectColsRecipe.name]: SelectColsRecipe, 
+        // [SplitDataRecipe.name]: SplitDataRecipe,
     }
 };

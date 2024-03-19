@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { MultiValue } from "react-select";
+// import Select, { MultiValue } from "react-select";
 
 export type Option = {
   value: string;
@@ -25,7 +25,7 @@ export const MultiSelect: React.FC<SelectProps> = ({
         <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
         </label>
-        <Select
+        {/* <Select
           value={option}
           options={options}
           isMulti={true}
@@ -33,7 +33,7 @@ export const MultiSelect: React.FC<SelectProps> = ({
             const sel = e.map((i) => i.value);
             setOption(sel);
           }}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -120,9 +120,19 @@ export const Train: React.FC<IRecipeProps> = ({
 export const TrainRecipe: IRecipe = {
   name: "Train AutoML",
   longName: "Train AutoML in Python",
-  parentName: "MLJAR AuutoML",
-  description: "Train AutoML.",
-  codeExplanation: "",
+  parentName: "MLJAR AutoML",
+  description: `Train a full machine learning pipeline on tabular data. You don't have to apply any preprocessing on data, the AutoML will fill missing values and convert categorical, text and dates into numeric format if needed. The AutoML will perform algorithm search and tunning. Please select training mode that you would like to use and set the training time budget.
+  
+  Available modes:
+  - **Explain** - it is perfect for initial data analysis, very fast,
+  - **Perform** - good for bulding production-level pipelines, considers prediction time during optimization,
+  - **Compete** - the best model performance, it is using feature generation techniques and Stacked Ensemble.
+
+  `,
+  codeExplanation: `
+  
+  1. Create AutoML object. AutoML configuration is setup in the constructor.
+  2. Train AutoML object.`,
   ui: Train,
   Icon: EngineIcon,
   requiredPackages: [
@@ -132,5 +142,28 @@ export const TrainRecipe: IRecipe = {
       version: ">=1.1.5",
     },
   ],
-  docsUrl: "python-train-automl"
+  docsUrl: "python-train-automl",
+  defaultVariables: [
+    {
+      varName: "X",
+      varType: "DataFrame",
+      varColumns: ["col1", "col2", "col3", "col4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "y",
+      varType: "Series",
+      varColumns: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
+
 };

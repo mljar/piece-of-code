@@ -35,4 +35,5 @@ export interface IRecipe {
     requiredPackages?: IPackage[];
     docsUrl?: string;
     ui: React.FC<IRecipeProps>;
+    defaultVariables?: IVariable[];
 }

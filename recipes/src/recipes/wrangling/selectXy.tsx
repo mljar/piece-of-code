@@ -125,7 +125,29 @@ export const SelectXyRecipe: IRecipe = {
   ui: SelectXy,
   Icon: XyIcon,
   requiredPackages: [],
-  docsUrl: "python-select-training-attributes-for-machine-learning"
+  docsUrl: "python-select-training-attributes-for-machine-learning",
+  defaultVariables: [
+    {
+      varName: "df_1",
+      varType: "DataFrame",
+      varColumns: ["col1", "col2", "col3", "col4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "df_2",
+      varType: "DataFrame",
+      varColumns: ["feature1", "feature2", "feature3", "feature4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+  ],
 };
 
 export default SelectXyRecipe;
