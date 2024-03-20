@@ -19,13 +19,13 @@ const preview: Preview = {
 /* snipped for brevity */
 
 export const decorators = [
-  withThemeByClassName({
-    themes: {
-      light: 'poc-light',
-      dark: 'poc-dark',
-    },
-    defaultTheme: 'poc-light',
-  }),
+  // withThemeByClassName({
+  //   themes: {
+  //     light: 'poc-light',
+  //     dark: 'poc-dark',
+  //   },
+  //   defaultTheme: 'poc-light',
+  // }),
 ];
 
 export default preview;

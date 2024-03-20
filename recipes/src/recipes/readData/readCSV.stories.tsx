@@ -17,7 +17,7 @@ export const ReadCSVForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <ReadCSV data-testId="InputField-id" {...args} />
+    <ReadCSV {...args} />
   </>
 );
 ReadCSVForm.args = {

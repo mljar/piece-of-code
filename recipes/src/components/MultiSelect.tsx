@@ -1,5 +1,5 @@
-import React from "react";
-// import Select, { MultiValue } from "react-select";
+import React, { useState } from "react";
+import { MultiSelect as MultiSelectLib } from "react-multi-select-component";
 
 export type Option = {
   value: string;
@@ -25,15 +25,29 @@ export const MultiSelect: React.FC<SelectProps> = ({
         <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
         </label>
-        {/* <Select
-          value={option}
+        <MultiSelectLib
+          className="poc-border 
+          poc-rounded-md poc-block poc-w-full 
+         poc-bg-gray-50 
+         poc-border-gray-300 
+         poc-text-gray-900 
+         focus:poc-border-blue-500 
+         focus:poc-border
+         dark:poc-bg-gray-700 
+         dark:poc-border-gray-600 
+         dark:poc-placeholder-gray-400 
+         dark:poc-text-white 
+         poc-outline-none
+         "
           options={options}
-          isMulti={true}
-          onChange={(e) => {
+          value={option}
+          onChange={(e: any[]) => {
             const sel = e.map((i) => i.value);
             setOption(sel);
           }}
-        /> */}
+          labelledBy="Select"
+          hasSelectAll={true}
+        />
       </div>
     </div>
   );

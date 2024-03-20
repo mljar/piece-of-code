@@ -17,7 +17,7 @@ export const ExampleDataForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <ExampleData data-testId="InputField-id" {...args} />
+    <ExampleData {...args} />
   </>
 );
 ExampleDataForm.args = {

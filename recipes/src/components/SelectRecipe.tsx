@@ -121,7 +121,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <div className="poc-w-full">
             {topButtons}
             <div
-              className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
+              className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
             >
               {executionSteps.length > 0 && (
                 <RunStatus
@@ -149,7 +149,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //       <div className="poc-flex-none" style={{ width: "72px" }}>
   //         {leftButtons}
   //       </div>
-  //       <div className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+  //       <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
   //         <NextStepError ename={previousErrorName} evalue={previousErroValue} />
   //       </div>
   //     </div>
@@ -286,7 +286,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
 
       {/* {showRecipeUI && (
         <div className="has-tooltip">
-          <span className="tooltip poc-rounded poc-shadow-lg poc-p-1 bg-slate-800 poc-text-gray-50 poc--mt-7 poc-text-sm">
+          <span className="tooltip poc-rounded poc-shadow-lg poc-p-1 poc-bg-slate-800 poc-text-gray-50 poc--mt-7 poc-text-sm">
             Toggle menu view
           </span>
           <button
@@ -410,7 +410,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       </div>
       <div className="poc-w-full">
         {executionSteps.length > 0 && topButtons}
-        <div className="poc-bg-white dark:bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
             <div
               className="md:poc-flex"

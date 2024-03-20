@@ -17,8 +17,14 @@ export const SelectXyStory: Story = (
 ) => (
   <>
     <SelectXy {...args} />
+    <div className="poc-dark">
+      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+        <SelectXy {...args} />
+      </div>
+    </div>
   </>
 );
+
 SelectXyStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
@@ -56,7 +62,6 @@ SelectXyStory.args = {
     },
   ],
 };
-
 
 export const SelectXyEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps

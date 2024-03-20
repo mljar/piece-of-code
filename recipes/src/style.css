@@ -1,3 +1,18 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.rmsc {
+  --rmsc-main: transparent !important;
+  --rmsc-bg: transparent !important;
+  --rmsc-border: transparent !important;
+};
+
+.poc-dark .rmsc .dropdown-content {
+  background-color: #333 !important;
+}
+
+.rmsc .dropdown-content {
+  background-color: #eee !important;
+  color: black !important;
+}
