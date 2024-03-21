@@ -16,7 +16,6 @@
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "react-multi-select-component": "^4.3.4",
     "react-tooltip": "^5.26.3"
   },
   "peerDependencies": {

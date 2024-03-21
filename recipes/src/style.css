@@ -6,13 +6,29 @@
   --rmsc-main: transparent !important;
   --rmsc-bg: transparent !important;
   --rmsc-border: transparent !important;
+  z-index: 2147483647 !important;
+  overflow:visible !important;
 };
 
 .poc-dark .rmsc .dropdown-content {
   background-color: #333 !important;
+  z-index: 2147483647 !important;
+  overflow:visible !important;
 }
 
 .rmsc .dropdown-content {
   background-color: #eee !important;
   color: black !important;
+  z-index: 2147483647 !important;
+  overflow:visible !important;
+}
+
+.rmsc .dropdown-content .panel-content {
+  z-index: 2147483647 !important;
+  overflow: visible !important;
+}
+
+.rmsc .dropdown-heading .dropdown-heading-value {
+  z-index: 2147483647 !important;
+  overflow: visible !important;
 }

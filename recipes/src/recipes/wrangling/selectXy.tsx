@@ -32,6 +32,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   const [allCols, setAllCols] = useState([] as string[]);
   const [xCols, setXCols] = useState([] as string[]);
   const [yCol, setYCol] = useState("");
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     if (df === "") {
@@ -94,9 +95,16 @@ export const SelectXy: React.FC<IRecipeProps> = ({
           />
           <MultiSelect
             label={"Select X columns"}
-            option={xCols.map((x) => ({ value: x, label: x }))}
-            options={allCols.map((c) => ({ value: c, label: c }))}
-            setOption={setXCols}
+            selection={xCols}
+            allOptions={allCols}
+            setSelection={(opts: string[]) => {
+              // please don't ask me why I have used here a counter
+              // it was 2 hard days that I was searching for right multi-select widget
+              // it is working for now, let's enjoy
+              // God bless you!
+              setCounter(counter + 1);
+              setXCols(opts);
+            }}
           />
           <Variable
             label={"Target vector variable name"}
@@ -124,7 +132,9 @@ export const SelectXyRecipe: IRecipe = {
   codeExplanation: "",
   ui: SelectXy,
   Icon: XyIcon,
-  requiredPackages: [],
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
   docsUrl: "python-select-training-attributes-for-machine-learning",
   defaultVariables: [
     {
