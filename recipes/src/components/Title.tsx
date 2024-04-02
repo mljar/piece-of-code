@@ -15,7 +15,7 @@ export const Title: React.FC<TitleProps> = ({
   setAdvanced,
 }: TitleProps) => {
   return (
-    <h3 className="poc-text-lg poc-font-bold poc-text-gray-900 dark:poc-text-white">
+    <h3 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white">
       {Icon && <Icon className="poc-inline poc-pb-1" />}
       {label}
       {/* <div className="poc-inline poc-items-center poc-float-right">

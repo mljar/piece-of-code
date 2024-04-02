@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { IPackage, IRecipeSet } from "../recipes/base";
+import markdownit from "markdown-it";
+
 import { WalkIcon } from "../icons/Walk";
 import { IconProps } from "../icons/props";
 import { BookIcon } from "../icons/Book";
@@ -9,6 +11,21 @@ import { Tooltip } from "react-tooltip";
 import { PackageIcon } from "../icons/Package";
 import { ErrorIcon } from "../icons/Error";
 import { SpinnerIcon } from "../icons/Spinner";
+
+const md = markdownit();
+
+// Remember the old renderer if overridden, or proxy to the default renderer.
+var defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
+  return self.renderToken(tokens, idx, options);
+};
+
+md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+  // Add a new `target` attribute, or replace the value of the existing one.
+  tokens[idx].attrSet('target', '_blank');
+
+  // Pass the token to the default renderer.
+  return defaultRender(tokens, idx, options, env, self);
+};
 
 export interface IWelcomeProps {
   title?: string;
@@ -31,16 +48,10 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   checkedPackages,
   installPackage,
 }: IWelcomeProps) => {
-  
   //
 
-
   packages?.forEach((p: IPackage) => {
-    if (
-      checkPackage &&
-      checkedPackages &&
-      !(p.importName in checkedPackages)
-    ) {
+    if (checkPackage && checkedPackages && !(p.importName in checkedPackages)) {
       checkPackage(p.importName);
     }
   });
@@ -71,15 +82,21 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         className="poc-flex poc-items-center poc-mb-4"
         key={`${p.installationName}${p.version}`}
       >
-        <Tooltip id="package-icon-tooltip" className="poc-text-base"/>
+        <Tooltip id="package-icon-tooltip" className="poc-text-base" />
         <div
           data-tooltip-id="package-icon-tooltip"
           data-tooltip-content={tooltipMsg}
         >
-          {status === "available" && <SuccessIcon className="poc-inline poc-pt-1" />}
+          {status === "available" && (
+            <SuccessIcon className="poc-inline poc-pt-1" />
+          )}
           {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
-          {status === "unknown" && <WarningIcon className="poc-inline poc-pt-1" />}
-          {status === "install" && <SpinnerIcon className="poc-inline poc-p-1" />}
+          {status === "unknown" && (
+            <WarningIcon className="poc-inline poc-pt-1" />
+          )}
+          {status === "install" && (
+            <SpinnerIcon className="poc-inline poc-p-1" />
+          )}
 
           <label className="poc-text-gray-900 dark:poc-text-gray-300">
             {p.installationName}
@@ -109,9 +126,8 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   });
   return (
     <div>
-      <h3 className="poc-text-lg   poc-text-gray-900 dark:poc-text-white poc-mb-2">
+      <h3 className="poc-text-lg   poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
         {Icon && <Icon className="poc-inline poc-pb-1" />} {title && title}
-        
         {docsLink && (
           <div className="poc-inline poc-items-center poc-float-right">
             <a
@@ -128,13 +144,20 @@ export const Welcome: React.FC<IWelcomeProps> = ({
             </a>
           </div>
         )}
-        
       </h3>
-      {description && <p className="poc-mb-2 poc-text-base">{description}</p>}
+      {/* {description && <p className="poc-mb-2 poc-text-base">{description}</p>} */}
+      {description && (
+        <div
+          className="poc-prose poc-max-w-none"
+          dangerouslySetInnerHTML={{
+            __html: md.render(description),
+          }}
+        ></div>
+      )}
 
       {packages && packages.length > 0 && (
         <div>
-          <h4 className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-mb-1">
+          <h4 className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-mb-1 poc-font-medium">
             <PackageIcon className="poc-inline poc-pb-1" /> Required Packages
           </h4>
           {packagesList}

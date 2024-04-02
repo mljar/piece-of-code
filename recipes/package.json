@@ -16,6 +16,8 @@
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.12",
+    "markdown-it": "^14.1.0",
     "react-tooltip": "^5.26.3"
   },
   "peerDependencies": {
@@ -34,6 +36,8 @@
     "@storybook/react": "^8.0.2",
     "@storybook/react-webpack5": "^8.0.2",
     "@storybook/test": "^8.0.2",
+    "@types/markdown-it": "^13.0.7",
+    "@types/mime": "^4.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/storybook__react": "^5.2.1",

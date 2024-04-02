@@ -419,20 +419,20 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               // poc-transition: "opacity 1000ms, visibility 1000ms"}}
             >
               <ul
-                className="poc-flex-none md:poc-w-52 space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:me-2 poc-mb-2 md:poc-mb-0"
+                className="poc-flex-none md:poc-w-52 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
                 style={{ maxHeight: "250px", overflowY: "auto" }}
               >
                 {tabs}
               </ul>
               {showSubTabs && (
                 <ul
-                  className="poc-flex-none md:poc-w-52 space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:me-2 poc-mb-2 md:poc-mb-0"
+                  className="poc-flex-none md:poc-w-52 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
                   style={{ maxHeight: "250px", overflowY: "auto" }}
                 >
                   {subTabs}
                 </ul>
               )}
-              <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
+              <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
                 {welcomeMsg}
               </div>
             </div>
@@ -457,7 +457,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             <div>
               <hr className="poc-m-2" />
               <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
-                <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2">
+                <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
                   <PackageIcon className="poc-inline poc-pb-1" /> Install packages
                 </h3>
                 <p className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pb-1">
