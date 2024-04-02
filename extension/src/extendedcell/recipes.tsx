@@ -169,8 +169,8 @@ export class SelectRecipeWidget extends ReactWidget {
   }
 
   public setCheckedPackages(pkgs: Record<string, string>) {
-    console.log('set checked packages');
-    console.log({ pkgs });
+    //console.log('set checked packages');
+    //console.log({ pkgs });
     this._checkedPackages = pkgs;
     this.updateWidget();
   }

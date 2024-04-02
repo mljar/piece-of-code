@@ -80,7 +80,7 @@ export class RecipeWidgetsRegistry {
           });
       }
       const element = document.getElementById('jp-MainLogo');
-      console.log(element);
+      // console.log(element);
       if (element) {
         element.innerHTML = mIcon.svgstr;
       }
@@ -198,7 +198,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   setPackages(packages: string[]): void {
-    console.log('setPackages', packages);
+    // console.log('setPackages', packages);
     this._packages = packages;
   }
 
@@ -233,7 +233,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     this.supplementPackages();
 
     if (this._packages.length) {
-      console.log('runCell', this._packages);
+      // console.log('runCell', this._packages);
       //
       // import packages and run code
       //
@@ -241,7 +241,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       const promise = RecipeWidgetsRegistry.getInstance().runFirstCell();
       promise?.then(() => {
         const errorName = this.checkFirstCellOutput();
-        console.log('check first cell', errorName);
+        // console.log('check first cell', errorName);
         if (errorName === '') {
           // no error with package import let's run code
           RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
@@ -305,7 +305,6 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   insertCellAtTop() {
-    console.log('insert cell at top', this._packages);
     // insert cell at the top of the notebook
     // if there is only one cell in the notebook
     if (!this._packages) {
@@ -316,14 +315,22 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       const cells = nb?.model?.cells;
       if (cells) {
         if (cells.length == 1) {
-          nb?.model?.sharedModel.insertCell(0, { cell_type: 'code', source: '' })
+          nb?.model?.sharedModel.insertCell(0, { cell_type: 'code', source: '# import packages' })
+        } else {
+          // check if there are any imports in the first cell
+          // if not then we need to insert cell above for imports
+          let firstCellSrc = cells.get(0).sharedModel.getSource();
+          if(!firstCellSrc.includes("import")) {
+            nb?.model?.sharedModel.insertCell(0, { cell_type: 'code', source: '# import packages' })
+          }
         }
+
       }
     }
   }
 
   supplementPackages() {
-    console.log('supplement packages', this._packages);
+    // console.log('supplement packages', this._packages);
     if (!this._packages) {
       return;
     }
