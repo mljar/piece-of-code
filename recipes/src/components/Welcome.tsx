@@ -11,6 +11,7 @@ import { Tooltip } from "react-tooltip";
 import { PackageIcon } from "../icons/Package";
 import { ErrorIcon } from "../icons/Error";
 import { SpinnerIcon } from "../icons/Spinner";
+import { QuestionIcon } from "../icons/Question";
 
 const md = markdownit();
 
@@ -92,7 +93,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
           )}
           {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
           {status === "unknown" && (
-            <WarningIcon className="poc-inline poc-pt-1" />
+            <QuestionIcon className="poc-inline poc-pt-0.5" />
           )}
           {status === "install" && (
             <SpinnerIcon className="poc-inline poc-p-1" />

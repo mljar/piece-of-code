@@ -275,7 +275,6 @@ export class VariableInspector {
   }
 
   async getVariables() {
-    console.log('get variables');
     try {
       this.checkPackageManager();
 
@@ -283,12 +282,10 @@ export class VariableInspector {
       this._setVariables([]);
 
       let code = '';
-      console.log(this._notebookId);
-      console.log(notebooksInitialized);
+      // console.log(this._notebookId);
+      // console.log(notebooksInitialized);
       if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
-        console.log('init getVariables');
         code += initCode + '\n\n';
-
       }
       code += getVars;
       await this._notebook?.sessionContext.ready;
@@ -297,7 +294,7 @@ export class VariableInspector {
         code,
         store_history: false,
       });
-      console.log({ future });
+      // console.log({ future });
       if (future) {
         future.onIOPub = this._onIOPub;
       }
@@ -308,7 +305,7 @@ export class VariableInspector {
   }
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
-    console.log(msg);
+    //console.log(msg);
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'execute_result':
@@ -321,7 +318,7 @@ export class VariableInspector {
           }
         }
         const content = msg.content as ContentData;
-        console.log(content);
+        //console.log(content);
         try {
           let contentDisplay: string = content.data["text/plain"] as string;
           contentDisplay = contentDisplay.slice(1, -1);
@@ -329,9 +326,9 @@ export class VariableInspector {
             .replace(/\\"/g, '"')
             .replace(/\\'/g, "'");
 
-          console.log('get variables', contentDisplay);
+          //console.log('get variables', contentDisplay);
           const variables: IVariable[] = JSON.parse(contentDisplay);
-          console.log(variables);
+          //console.log(variables);
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
           if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
@@ -389,7 +386,7 @@ export class VariableInspector {
           version: string;
         }
         try {
-          console.log('check package', content.text);
+          // console.log('check package', content.text);
           const p: IPackage = JSON.parse(content.text);
 
           if (this._notebookId) {
@@ -422,7 +419,7 @@ export class VariableInspector {
   }
 
   private _installPackagePackageManager(installationName: string, importName: string, packageManager: 'conda' | 'pip') {
-    console.log('Install', importName, 'with', packageManager);
+    // console.log('Install', importName, 'with', packageManager);
     if (this._notebookId) {
       if (!(this._notebookId in checkedPackages)) {
         checkedPackages[this._notebookId] = { [importName]: 'install' }
@@ -477,7 +474,7 @@ export class VariableInspector {
     if (this._notebookId && this._notebookId in notebookPackageManager) {
       return;
     }
-    console.log('Check package manager');
+    // console.log('Check package manager');
     let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
       code: checkIfConda,
       store_history: false,
