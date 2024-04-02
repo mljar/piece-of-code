@@ -68,32 +68,36 @@ export default function MultiSelectDropdown({
     );
   });
 
+  let borderClass = "poc-border-gray-300 dark:poc-border-gray-600";
+  if (showOptions) {
+    borderClass = "poc-border-blue-500 dark:poc-border-blue-400";
+  }
   return (
     <div>
       <div
-        className="poc-cursor-pointer poc-px-2 poc-py-1
+        className={
+          `poc-cursor-pointer poc-px-2 poc-py-1
         poc-bg-gray-50   poc-text-gray-900 
         poc-rounded-md 
          poc-block poc-w-full poc-p-1.5 
-        
         dark:poc-bg-gray-700  dark:poc-placeholder-gray-400 
         dark:poc-text-white 
         poc-outline-0
         poc-border
-        poc-border-gray-300 focus:poc-border-blue-500
-        dark:poc-border-gray-600 dark:focus:poc-border-blue-400"
+        ` + borderClass
+        }
         onClick={() => {
           setShowOptions(!showOptions);
         }}
       >
         {showOptions && (
           <span className="poc-text-gray-500 dark:poc-text-slate-300 poc-pr-2">
-            ▼
+            ▲
           </span>
         )}
         {!showOptions && (
           <span className="poc-text-gray-500 dark:poc-text-slate-300 poc-pr-2">
-            ▲
+            ▼
           </span>
         )}
 
@@ -107,7 +111,10 @@ export default function MultiSelectDropdown({
       </div>
 
       {showOptions && (
-        <div className="poc-relative poc-border poc-max-h-60 poc-overflow-y-auto">
+        <div
+          className="poc-relative poc-border poc-max-h-60 poc-overflow-y-auto poc-rounded-md"
+          style={{ marginTop: "1px" }}
+        >
           <button
             type="button"
             className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
