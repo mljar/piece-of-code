@@ -6,6 +6,7 @@ import { WriteCSVRecipe } from "./writeCSV";
 
 export const WriteDataRecipes: IRecipeSet = {
     name: "Write data",
+    docsUrl: "python-write-data",
     description: "Collection of recipies to save your data into files.",
     Icon: FilePencilIcon,
     recipes: {

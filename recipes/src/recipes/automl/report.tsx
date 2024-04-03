@@ -67,4 +67,23 @@ export const AutoMLReportRecipe: IRecipe = {
   ui: AutoMLReport,
   Icon: ReportIcon,
   docsUrl: "python-display-automl-report",
+  requiredPackages: [
+    {
+      importName: "supervised",
+      installationName: "mljar-supervised",
+      version: ">=1.1.5",
+    },
+  ],
+  defaultVariables: [
+    {
+      varName: "automl",
+      varType: "AutoML",
+      varColumns: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };

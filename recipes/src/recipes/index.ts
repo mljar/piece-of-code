@@ -10,7 +10,7 @@ import { AutoMLRecipes } from "./automl";
 import { WidgetsRecipes } from "./widgets";
 
 export const allRecipes: Record<string, IRecipeSet> = {
-    [PythonRecipes.name]: PythonRecipes,
+    // [PythonRecipes.name]: PythonRecipes,
     // [MarkdownRecipes.name]: MarkdownRecipes,
     [ReadDataRecipes.name]: ReadDataRecipes,
     // [WriteDataRecipes.name]: WriteDataRecipes,
@@ -20,3 +20,24 @@ export const allRecipes: Record<string, IRecipeSet> = {
     [AutoMLRecipes.name]: AutoMLRecipes,
     // [WidgetsRecipes.name]: WidgetsRecipes,
 }
+
+export const urlList = Object.entries(allRecipes).map((objs) => {
+    const name = objs[0];
+    const recipeSet = objs[1];
+    let recipeUrls = Object.entries(recipeSet.recipes).map((rs) => {
+      const recipe = rs[1];
+      return {
+        name: recipe.name,
+        docsUrl: recipe.docsUrl,
+        parentName: recipe.parentName,
+        description: recipe.description.split(' ').splice(0, 40).join(' '),
+      };
+    });
+    recipeUrls.unshift({
+      name,
+      docsUrl: recipeSet.docsUrl,
+      parentName: '',
+      description: recipeSet.description.split(' ').splice(0, 40).join(' '),
+    });
+    return recipeUrls;
+  });

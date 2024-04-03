@@ -47,5 +47,12 @@ export const LoadAutoMLRecipe: IRecipe = {
   codeExplanation: "",
   ui: LoadAutoML,
   Icon: FolderOpenIcon,
-  docsUrl: "python-load-automl"
+  docsUrl: "python-load-automl",
+  requiredPackages: [
+    {
+      importName: "supervised",
+      installationName: "mljar-supervised",
+      version: ">=1.1.5",
+    },
+  ],
 };

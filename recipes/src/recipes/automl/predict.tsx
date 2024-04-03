@@ -93,5 +93,34 @@ export const PredictRecipe: IRecipe = {
   codeExplanation: "",
   ui: Predict,
   Icon: TargetArrowIcon,
-  docsUrl: "python-predict-with-automl"
+  docsUrl: "python-predict-with-automl",
+  requiredPackages: [
+    {
+      importName: "supervised",
+      installationName: "mljar-supervised",
+      version: ">=1.1.5",
+    },
+  ],
+  defaultVariables: [
+    {
+      varName: "X",
+      varType: "DataFrame",
+      varColumns: ["col1", "col2", "col3", "col4"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "automl",
+      varType: "AutoML",
+      varColumns: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };

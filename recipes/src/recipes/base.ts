@@ -13,6 +13,7 @@ export interface IRecipeProps {
 
 export interface IRecipeSet {
     name: string;
+    docsUrl: string;
     description: string;
     Icon?: React.FC<IconProps>;
     docsLink?: string;

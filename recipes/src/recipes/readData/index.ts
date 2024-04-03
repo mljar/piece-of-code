@@ -8,6 +8,7 @@ import { ExampleDataRecipe } from "./exampleData";
 
 export const ReadDataRecipes: IRecipeSet = {
     name: "Read data",
+    docsUrl: "read-data",
     description: "Collection of recipies to load data from external sources into your program. You can read data from file, url or database.",
     Icon: OpenBookIcon,
     recipes: {

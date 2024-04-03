@@ -15,4 +15,4 @@ export { IRecipeProps } from "./recipes/base";
 
 export { SuccessIcon } from "./icons/Success";
 
-export { allRecipes } from "./recipes";
+export { allRecipes, urlList } from "./recipes";

@@ -103,6 +103,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
         poc-rounded-md 
         focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 
         focus:poc-border
+        poc-outline-0
         dark:poc-bg-gray-700 dark:poc-border-gray-600 dark:poc-placeholder-gray-400 
         dark:poc-text-white dark:focus:poc-border-blue-400"
           placeholder={"Please provide path"}
