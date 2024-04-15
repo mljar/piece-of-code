@@ -7,6 +7,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { Numeric } from "../../components/Numeric";
 import { SelectPath } from "../../components/SelectPath";
+import { MultiSelect } from "../../components/MultiSelect";
 
 export const Train: React.FC<IRecipeProps> = ({
   setCode,
@@ -27,6 +28,53 @@ export const Train: React.FC<IRecipeProps> = ({
 
   const [name, setName] = useState("automl");
   const [resultsPath, setResultsPath] = useState("auto");
+  const [advanced, setAdvanced] = useState(false);
+  const allAlgorithms = [
+    "Baseline",
+    "Linear",
+    "Decision Tree",
+    "Random Forest",
+    "Extra Trees",
+    "XGBoost",
+    "LightGBM",
+    "CatBoost",
+    "Neural Network",
+    "Nearest Neighbors",
+  ];
+  const explainAlgorithms = [
+    "Baseline",
+    "Linear",
+    "Decision Tree",
+    "Random Forest",
+    "XGBoost",
+    "Neural Network",
+  ];
+  const performAlgorithms = [
+    "Linear",
+    "Random Forest",
+    "XGBoost",
+    "LightGBM",
+    "CatBoost",
+    "Neural Network",
+  ];
+  const competeAlgorithms = [
+    "Decision Tree",
+    "Random Forest",
+    "Extra Trees",
+    "XGBoost",
+    "LightGBM",
+    "CatBoost",
+    "Neural Network",
+    "Nearest Neighbors",
+  ];
+  const [algorithms, setAlgorithms] = useState([
+    "Baseline",
+    "Linear",
+    "Decision Tree",
+    "Random Forest",
+    "XGBoost",
+    "Neural Network",
+  ]);
   let matrices = [] as string[];
   let vectors = [] as string[];
 
@@ -49,6 +97,16 @@ export const Train: React.FC<IRecipeProps> = ({
   const [trainingTime, setTrainingTime] = useState(300);
 
   useEffect(() => {
+    if (mode === "Explain") {
+      setAlgorithms(explainAlgorithms);
+    } else if (mode === "Performance") {
+      setAlgorithms(performAlgorithms);
+    } else if (mode === "Compete") {
+      setAlgorithms(competeAlgorithms);
+    }
+  }, [mode]);
+
+  useEffect(() => {
     setPackages(["from supervised import AutoML"]);
 
     if (X === "" || y === "") {
@@ -61,17 +119,44 @@ export const Train: React.FC<IRecipeProps> = ({
     if (resultsPath !== "auto") {
       src += `, results_path="${resultsPath}"`;
     }
+
+    if (algorithms.length > 0) {
+      let includeAlgorithms = false;
+      if (mode === "Explain") {
+        if (JSON.stringify(algorithms) !== JSON.stringify(explainAlgorithms)) {
+          includeAlgorithms = true;
+        }
+      } else if (mode === "Perform") {
+        if (JSON.stringify(algorithms) !== JSON.stringify(performAlgorithms)) {
+          includeAlgorithms = true;
+        }
+      } else if (mode === "Compete") {
+        if (JSON.stringify(algorithms) !== JSON.stringify(competeAlgorithms)) {
+          includeAlgorithms = true;
+        }
+      }
+      if (includeAlgorithms) {
+        src += `, algorithms=["${algorithms.join("\", \"")}"]`;
+      }
+    }
+
     src += `)\n`;
     src += `# train automl\n`;
     src += `${name}.fit(${X}, ${y})`;
 
     setCode(src);
-  }, [name, resultsPath, mode, trainingTime, X, y]);
+  }, [name, resultsPath, mode, trainingTime, X, y, algorithms]);
 
   return (
     <div>
-      <Title Icon={EngineIcon} label={"Train AutoML"} />
-      <div className="grid md:grid-cols-2 md:gap-4">
+      
+      <Title
+        Icon={EngineIcon}
+        label={"Train AutoML"}
+        advanced={advanced}
+        setAdvanced={setAdvanced}
+      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-4">
         <Variable
           label={"AutoML variable name"}
           name={name}
@@ -82,9 +167,10 @@ export const Train: React.FC<IRecipeProps> = ({
           setPath={setResultsPath}
           selectFolder={true}
           defaultPath="auto"
+          tooltip={"The 'auto' means automatically create a new directory for results."}
         />
       </div>
-      <div className="grid md:grid-cols-2 md:gap-4">
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-4">
         <div>
           <Select
             label={"X training matrix (pandas.DataFrame)"}
@@ -113,6 +199,16 @@ export const Train: React.FC<IRecipeProps> = ({
           />
         </div>
       </div>
+      {advanced && (
+        <>
+          <MultiSelect
+            label={"Algorithms to be trained"}
+            selection={algorithms}
+            allOptions={allAlgorithms}
+            setSelection={setAlgorithms}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -129,6 +225,7 @@ export const TrainRecipe: IRecipe = {
   - **Compete** - the best model performance, it is using feature generation techniques and Stacked Ensemble.
 
   `,
+  shortDescription: "Train Machine Learning pipeline with AutoML in Python",
   codeExplanation: `
   
   1. Create AutoML object. AutoML configuration is setup in the constructor.
@@ -139,7 +236,7 @@ export const TrainRecipe: IRecipe = {
     {
       importName: "supervised",
       installationName: "mljar-supervised",
-      version: ">=1.1.5",
+      version: ">=1.1.7",
     },
   ],
   docsUrl: "python-train-automl",
@@ -165,5 +262,4 @@ export const TrainRecipe: IRecipe = {
       isWidget: false,
     },
   ],
-
 };

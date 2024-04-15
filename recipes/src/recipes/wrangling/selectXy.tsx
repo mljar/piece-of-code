@@ -97,14 +97,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
             label={"Select X columns"}
             selection={xCols}
             allOptions={allCols}
-            setSelection={(opts: string[]) => {
-              // please don't ask me why I have used here a counter
-              // it was 2 hard days that I was searching for right multi-select widget
-              // it is working for now, let's enjoy
-              // God bless you!
-              setCounter(counter + 1);
-              setXCols(opts);
-            }}
+            setSelection={setXCols}
           />
           <Variable
             label={"Target vector variable name"}
@@ -125,10 +118,12 @@ export const SelectXy: React.FC<IRecipeProps> = ({
 
 export const SelectXyRecipe: IRecipe = {
   name: "Select X,y",
-  longName: "Select training attributes and target for ML",
+  longName: "Select training attributes and target",
   parentName: "Data wrangling",
   description:
     "Select X,y for Machine Learning model training. The `X` matrix is used as model input, whereas `y` vector is used as model target.",
+  shortDescription:
+    "Select training attributes and target for Machine Learning model training.",
   codeExplanation: "",
   ui: SelectXy,
   Icon: XyIcon,

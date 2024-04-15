@@ -63,6 +63,7 @@ export const AutoMLReportRecipe: IRecipe = {
   longName: "Display AutoML report",
   parentName: "MLJAR AutoML",
   description: "Display AutoML report from training. You can click on the model name in the leaderboard to check each model details.",
+  shortDescription: "Display AutoML report from training with details about each model.",
   codeExplanation: "",
   ui: AutoMLReport,
   Icon: ReportIcon,

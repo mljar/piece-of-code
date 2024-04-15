@@ -14,6 +14,7 @@ export const SplitDataRecipe: IRecipe = {
   longName: "Split dataset to train and test",
   parentName: "Data wrangling",
   description: "Split data",
+  shortDescription: "Split data",
   codeExplanation: "",
   ui: SplitData,
   docsUrl: "python-split-data-train-test",

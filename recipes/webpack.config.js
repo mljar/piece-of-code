@@ -17,6 +17,9 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
+  performance: {
+    hints: false
+  },
   module: {
     rules: [
       {

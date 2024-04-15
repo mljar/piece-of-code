@@ -14,6 +14,7 @@ export const SelectRowsRecipe: IRecipe = {
   longName: "Select rows from Pandas DataFrame",
   parentName: "Data wrangling",
   description: "Select rows from dataframe.",
+  shortDescription: "Select rows from dataframe.",
   codeExplanation: "",
   ui: SelectRows,
   docsUrl: "python-select-rows-pandas-dataframe"

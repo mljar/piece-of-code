@@ -76,6 +76,7 @@ export const ReadCSVRecipe: IRecipe = {
   parentName: "Read data",
   description:
     "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
+  shortDescription: "Read CSV file in Python using Pandas package",
   codeExplanation: "",
   ui: ReadCSV,
   Icon: FileCsvIcon,

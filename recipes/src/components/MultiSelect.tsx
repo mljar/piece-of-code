@@ -14,7 +14,7 @@ export default function MultiSelectDropdown({
   const [showOptions, setShowOptions] = useState(false);
 
   const handleChange = (opt: string) => {
-    const newOption = selection;
+    let newOption = [...selection];
     if (selection.includes(opt)) {
       const index = newOption.indexOf(opt, 0);
       if (index > -1) {
@@ -30,7 +30,7 @@ export default function MultiSelectDropdown({
     return (
       <span
         key={s}
-        className="poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-me-1 poc-text-sm
+        className="poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-my-0.5 poc-me-1 poc-text-sm
         poc-font-medium poc-text-blue-800 poc-bg-blue-100 poc-rounded dark:poc-bg-slate-900 dark:poc-text-slate-50"
       >
         {s}
@@ -48,7 +48,7 @@ export default function MultiSelectDropdown({
       >
         {isSelected && (
           <span
-            className={`poc-cursor-pointer poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-me-1 poc-text-sm
+            className={`poc-cursor-pointer poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-my-0.5 poc-me-1 poc-text-sm
             poc-font-medium poc-text-blue-600 poc-bg-blue-100 poc-rounded dark:poc-bg-slate-900
              dark:poc-text-slate-50 `}
           >
@@ -57,7 +57,7 @@ export default function MultiSelectDropdown({
         )}
         {!isSelected && (
           <span
-            className={`poc-cursor-pointer poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-me-1 poc-text-sm
+            className={`poc-cursor-pointer poc-inline-flex poc-items-center poc-px-2 poc-py-1 poc-my-0.5 poc-me-1 poc-text-sm
             poc-font-medium poc-text-blue-800 poc-rounded dark:poc-text-slate-50 
             poc-border poc-border-blue-100 dark:poc-border-slate-800`}
           >
@@ -159,7 +159,7 @@ export default function MultiSelectDropdown({
 interface SelectProps {
   label: string;
   selection: string[]; // selected value
-  allOptions: string[]; // array of title, value
+  allOptions: string[];
   setSelection: (opts: string[]) => void;
 }
 

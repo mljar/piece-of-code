@@ -12,6 +12,7 @@ export const ReadExcelRecipe: IRecipe = {
   longName: "Read data from Excel file",
   parentName: "Read data",
   description: "Load Excel file into dataframe.",
+  shortDescription: "Load Excel file into dataframe.",
   codeExplanation: "",
   ui: ReadExcel,
   Icon: SpreadsheetIcon,

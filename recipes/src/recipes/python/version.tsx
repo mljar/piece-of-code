@@ -29,13 +29,13 @@ export const CheckPythonVersionRecipe: IRecipe = {
   name: "Display Python version",
   longName: "Display Python version",
   parentName: "Python",
-  description:
-    "Display Python version in the current notebook.",
+  description: "Display Python version in the current notebook.",
+  shortDescription: "Display Python version in the current notebook.",
   codeExplanation: "",
   ui: CheckPythonVersion,
   Icon: PythonIcon,
   requiredPackages: [],
-  docsUrl: "python-check-version"
+  docsUrl: "python-check-version",
 };
 
 export default CheckPythonVersionRecipe;

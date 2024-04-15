@@ -14,6 +14,7 @@ export const SelectColsRecipe: IRecipe = {
   longName: "Select columns from Pandas DataFrame",
   parentName: "Data wrangling",
   description: "Select columns from dataframe.",
+  shortDescription: "Select columns from dataframe.",
   ui: SelectCols,
   codeExplanation: "",
   // icon: IconTableColumn

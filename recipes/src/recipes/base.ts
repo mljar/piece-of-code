@@ -13,11 +13,14 @@ export interface IRecipeProps {
 
 export interface IRecipeSet {
     name: string;
+    longName: string;
     docsUrl: string;
     description: string;
+    shortDescription: string;
     Icon?: React.FC<IconProps>;
     docsLink?: string;
     recipes: Record<string, IRecipe>;
+    tags?: string[];
 }
 
 export interface IPackage {
@@ -31,6 +34,8 @@ export interface IRecipe {
     longName: string;
     parentName: string;
     description: string;
+    shortDescription: string;
+    tags?: string[];
     codeExplanation: string;
     Icon?: React.FC<IconProps>;
     requiredPackages?: IPackage[];

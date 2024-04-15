@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FileCsvIcon } from "../icons/FileCsv";
-import { BookIcon } from "../icons/Book";
-import { IconProps } from "../icons/props";
+import { InfoIcon } from "../icons/Info";
+import { Tooltip } from "react-tooltip";
 
 interface SelectPathProps {
   label: string;
@@ -9,6 +8,7 @@ interface SelectPathProps {
   setPath?: React.Dispatch<React.SetStateAction<string>>;
   selectFolder?: boolean;
   defaultPath?: string;
+  tooltip?: string;
 }
 
 declare global {
@@ -23,6 +23,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
   setPath,
   selectFolder = false,
   defaultPath,
+  tooltip = "",
 }: SelectPathProps) => {
   const [folderPath, setFolderPath] = useState("");
   const [filePathElectron, setFilePathElectron] = useState("");
@@ -42,8 +43,21 @@ export const SelectPath: React.FC<SelectPathProps> = ({
 
   return (
     <div className="poc-mt-2">
+      {tooltip !== "" && (
+        <Tooltip id="select-path-tooltip" className="poc-text-base" />
+      )}
       <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
         {label}
+
+        {tooltip !== "" && (
+          <div
+            data-tooltip-id="select-path-tooltip"
+            data-tooltip-content={tooltip}
+            className="poc-inline"
+          >
+            <InfoIcon />
+          </div>
+        )}
       </label>
 
       {isElectron && (

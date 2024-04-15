@@ -43,7 +43,8 @@ export const LoadAutoMLRecipe: IRecipe = {
   name: "Load AutoML",
   longName: "Load AutoML models from disk",
   parentName: "MLJAR AutoML",
-  description: "You can load AutoML models from disk and use the to compute predictions on new data.",
+  description: "You can load AutoML models from disk and use them to compute predictions on new data.",
+  shortDescription: "Load AutoML models from disk and use them to compute predictions on new data.",
   codeExplanation: "",
   ui: LoadAutoML,
   Icon: FolderOpenIcon,
@@ -52,7 +53,7 @@ export const LoadAutoMLRecipe: IRecipe = {
     {
       importName: "supervised",
       installationName: "mljar-supervised",
-      version: ">=1.1.5",
+      version: ">=1.1.7",
     },
   ],
 };
