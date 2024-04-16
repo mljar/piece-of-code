@@ -21,7 +21,7 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
       src += `print(${now})\n`;
     } else {
       src += `# display current time without date\n`;
-      src += `print(${now}.time())\n`;
+      src += `print(${now}.time())`;
     }
     setCode(src);
     setPackages(["import datetime"]);

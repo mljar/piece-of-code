@@ -22,7 +22,7 @@ export const FileWrite: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
       mode = "wb";
     }
     src += `with open(r"${myFile}", "${mode}") as fout:\n`;
-    src += `    fout.write("${text}")\n`;
+    src += `    fout.write("${text}")`;
     setCode(src);
   }, [myFile, text, binary]);
 

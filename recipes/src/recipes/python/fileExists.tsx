@@ -20,7 +20,7 @@ export const FileExists: React.FC<IRecipeProps> = ({
     src += `if ${exists}:\n`;
     src += `    print(f"File ${myFile} exists")\n`;
     src += `else:\n`;
-    src += `    print(f"File ${myFile} does not exists")\n`;
+    src += `    print(f"File ${myFile} does not exists")`;
     setCode(src);
     setPackages(["from os.path import exists"]);
   }, [exists, myFile]);

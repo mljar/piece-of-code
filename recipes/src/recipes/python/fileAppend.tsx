@@ -23,7 +23,7 @@ export const FileAppend: React.FC<IRecipeProps> = ({
         mode = 'ab';
     }
     src += `with open(r"${myFile}", "${mode}") as fin:\n`;
-    src += `    fin.write("${text}")\n`;
+    src += `    fin.write("${text}")`;
     setCode(src);
   }, [myFile, text, binary]);
 

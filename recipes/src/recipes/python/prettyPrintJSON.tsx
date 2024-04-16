@@ -42,7 +42,7 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# display json or dict\n`;
-    src += `json.dumps(${myDict}, indent=4)\n`;
+    src += `json.dumps(${myDict}, indent=4)`;
     setCode(src);
     setPackages(["import json"]);
   }, [myDict]);
