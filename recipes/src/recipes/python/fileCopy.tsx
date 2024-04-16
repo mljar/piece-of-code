@@ -55,20 +55,19 @@ export const FileCopy: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 };
 
 export const FileCopyRecipe: IRecipe = {
-  name: "Delete file",
-  longName: "Delete file in Python",
+  name: "Copy file",
+  longName: "Copy file in Python",
   parentName: "Python",
-  description: "Check if file exists and if yes, then delete file.",
-  shortDescription: "Check if file exists and if yes, then delete file.",
+  description: "Copy file in Python. Source file can be coppied to new file path or to new directory.",
+  shortDescription: "Copy file in Python. Source file can be coppied to new file path or to new directory.",
   codeExplanation: `
-1. Check if file exists in the file system.
-2. Delete file if present.
+1. Copy file to new destination.
   `,
-  tags: ["file", "delete", "remove"],
+  tags: ["file", "copy"],
   ui: FileCopy,
   Icon: FileShredderIcon,
   requiredPackages: [],
-  docsUrl: "python-delete-file",
+  docsUrl: "python-copy-file",
 };
 
 export default FileCopyRecipe;
