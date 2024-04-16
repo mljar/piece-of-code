@@ -57,6 +57,7 @@ export const FileExistsRecipe: IRecipe = {
   Icon: FileUnknownIcon,
   requiredPackages: [],
   docsUrl: "python-check-file-exists",
+  tags: ["file"],
 };
 
 export default FileExistsRecipe;

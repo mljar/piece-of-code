@@ -59,6 +59,7 @@ export const ListFilesRecipe: IRecipe = {
   Icon: FolderOpenIcon,
   requiredPackages: [],
   docsUrl: "python-list-files-in-directory",
+  tags: ["file"],
 };
 
 export default ListFilesRecipe;
