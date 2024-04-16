@@ -21,6 +21,7 @@ import { SpinnerIcon } from "../icons/Spinner";
 import { Tooltip } from "react-tooltip";
 
 import "../style.css";
+import BuyLicense from "./BuyLicense";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -120,9 +121,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <div className="poc-flex-none" style={{ width: "72px" }}></div>
           <div className="poc-w-full">
             {topButtons}
-            <div
-              className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
-            >
+            <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
               {executionSteps.length > 0 && (
                 <RunStatus
                   steps={executionSteps}
@@ -171,7 +170,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           setSelectedRecipe("");
         }}
       >
-        {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />} {recipeSet.name}
+        {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />}{" "}
+        {recipeSet.name}
       </a>
     </li>
   ));
@@ -359,10 +359,16 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           data-tooltip-content={tooltipMsg}
           className="poc-inline"
         >
-          {status === "available" && <SuccessIcon className="poc-inline poc-pt-1" />}
+          {status === "available" && (
+            <SuccessIcon className="poc-inline poc-pt-1" />
+          )}
           {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
-          {status === "unknown" && <WarningIcon className="poc-inline poc-pt-1" />}
-          {status === "install" && <SpinnerIcon className="poc-inline poc-p-1" />}
+          {status === "unknown" && (
+            <WarningIcon className="poc-inline poc-pt-1" />
+          )}
+          {status === "install" && (
+            <SpinnerIcon className="poc-inline poc-p-1" />
+          )}
 
           <label className="poc-text-gray-900 dark:poc-text-gray-300">
             {p.installationName}
@@ -412,30 +418,33 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         {executionSteps.length > 0 && topButtons}
         <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
-            <div
-              className="md:poc-flex"
-              // style={{opacity: showNav? "1": "0",
-              // visibility: showNav? "poc-visible":"poc-hidden",
-              // poc-transition: "opacity 1000ms, visibility 1000ms"}}
-            >
-              <ul
-                className="poc-flex-none md:poc-w-52 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
-                style={{ maxHeight: "250px", overflowY: "auto" }}
+            <>
+              <BuyLicense />
+              <div
+                className="md:poc-flex"
+                // style={{opacity: showNav? "1": "0",
+                // visibility: showNav? "poc-visible":"poc-hidden",
+                // poc-transition: "opacity 1000ms, visibility 1000ms"}}
               >
-                {tabs}
-              </ul>
-              {showSubTabs && (
                 <ul
                   className="poc-flex-none md:poc-w-52 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
                   style={{ maxHeight: "250px", overflowY: "auto" }}
                 >
-                  {subTabs}
+                  {tabs}
                 </ul>
-              )}
-              <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
-                {welcomeMsg}
+                {showSubTabs && (
+                  <ul
+                    className="poc-flex-none md:poc-w-52 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
+                    style={{ maxHeight: "250px", overflowY: "auto" }}
+                  >
+                    {subTabs}
+                  </ul>
+                )}
+                <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
+                  {welcomeMsg}
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {RecipeUI && showRecipeUI && (
@@ -458,7 +467,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               <hr className="poc-m-2" />
               <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
                 <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
-                  <PackageIcon className="poc-inline poc-pb-1" /> Install packages
+                  <PackageIcon className="poc-inline poc-pb-1" /> Install
+                  packages
                 </h3>
                 <p className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pb-1">
                   Please install below packages to use this code recipe.
