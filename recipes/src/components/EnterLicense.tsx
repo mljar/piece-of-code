@@ -2,15 +2,6 @@ import React, { useEffect, useState } from "react";
 import { SpinnerIcon } from "../icons/Spinner";
 import { SuccessIcon } from "../icons/Success";
 import { ErrorIcon } from "../icons/Error";
-import { WarningIcon } from "../icons/Warning";
-import { PlusIcon } from "../icons/Plus";
-import { BoltIcon } from "../icons/Bolt";
-import { ChatIcon } from "../icons/Chat";
-import { MailIcon } from "../icons/Mail";
-import ExecutionStatus from "./ExecutionStatus";
-import { LicenseIcon } from "../icons/License";
-import { DesktopIcon } from "../icons/Desktop";
-import { XIcon } from "../icons/X";
 import { KeyIcon } from "../icons/Key";
 
 export interface IEnterLicenseProps {
@@ -100,28 +91,42 @@ export const EnterLicense: React.FC<IEnterLicenseProps> = ({
         </div>
 
         <div className="poc-pt-1">
-          <button
-            type="button"
-            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center "
-            onClick={async () => {
-              try {
-                if (isElectron) {
-                  setCheckState("loading");
-                  const isPro =
-                    await window.electronAPI.validateLicense(license);
-                  if (isPro) {
-                    setCheckState("valid");
-                  } else {
-                    setCheckState("invalid");
+          {checkState !== "valid" && (
+            <button
+              type="button"
+              className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center "
+              onClick={async () => {
+                try {
+                  if (isElectron) {
+                    setCheckState("loading");
+                    const isPro =
+                      await window.electronAPI.validateLicense(license);
+                    if (isPro) {
+                      setCheckState("valid");
+                    } else {
+                      setCheckState("invalid");
+                    }
                   }
+                } catch (error) {
+                  setCheckState("error");
                 }
-              } catch (error) {
-                setCheckState("error");
-              }
-            }}
-          >
-            OK
-          </button>
+              }}
+            >
+              OK
+            </button>
+          )}
+          {checkState === "valid" && (
+            <button
+              type="button"
+              className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center "
+              onClick={() => {
+                setShowEnterLicense(false);
+              }}
+            >
+              Close
+            </button>
+          )}
+
           <button
             type="button"
             className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"

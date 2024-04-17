@@ -1,13 +1,4 @@
 import React, { useState } from "react";
-import { SpinnerIcon } from "../icons/Spinner";
-import { SuccessIcon } from "../icons/Success";
-import { ErrorIcon } from "../icons/Error";
-import { WarningIcon } from "../icons/Warning";
-import { PlusIcon } from "../icons/Plus";
-import { BoltIcon } from "../icons/Bolt";
-import { ChatIcon } from "../icons/Chat";
-import { MailIcon } from "../icons/Mail";
-import ExecutionStatus from "./ExecutionStatus";
 import { LicenseIcon } from "../icons/License";
 import { DesktopIcon } from "../icons/Desktop";
 import { XIcon } from "../icons/X";
