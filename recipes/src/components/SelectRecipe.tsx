@@ -22,6 +22,7 @@ import { Tooltip } from "react-tooltip";
 
 import "../style.css";
 import BuyLicense from "./BuyLicense";
+import { EnterLicense } from "./EnterLicense";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -42,6 +43,12 @@ export interface ISelectRecipeProps {
   clearExecutionSteps: () => void;
 }
 
+declare global {
+  interface Window {
+    electronAPI: any;
+  }
+}
+
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   previousCode,
   previousErrorName,
@@ -60,6 +67,14 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   installPackage,
   clearExecutionSteps,
 }: ISelectRecipeProps) => {
+  
+  let isElectron = false;
+  if (typeof window !== "undefined") {
+    if (window.electronAPI !== undefined && window.electronAPI !== null) {
+      isElectron = true;
+    }
+  }
+
   const [overwriteExistingCode, setOverwriteExistingCode] = useState(false);
   const [showNav, setShowNav] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -67,6 +82,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [executed, setExecuted] = useState(previousExecutionCount !== 0);
+
+  const [showBuyLicense, setShowBuyLicense] = useState(
+    isElectron && Math.random() < 0.95
+  );
+  const [showEnterLicense, setShowEnterLicense] = useState(false);
 
   useEffect(() => {
     setExecuted(previousExecutionCount !== 0);
@@ -85,6 +105,17 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       }
     }
   }, [executionSteps]);
+
+  if (showEnterLicense) {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}></div>
+        <div className="poc-w-full">
+          <EnterLicense setShowEnterLicense={setShowEnterLicense} />
+        </div>
+      </div>
+    );
+  }
 
   const topButtons = (
     <TopButtons
@@ -419,7 +450,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
             <>
-              <BuyLicense />
+              {showBuyLicense && (
+                <BuyLicense
+                  setShowBuyLicense={setShowBuyLicense}
+                  setShowEnterLicense={setShowEnterLicense}
+                />
+              )}
               <div
                 className="md:poc-flex"
                 // style={{opacity: showNav? "1": "0",
