@@ -82,6 +82,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [executed, setExecuted] = useState(previousExecutionCount !== 0);
 
+  const [license, setLicense] = useState("");
   const [showBuyLicense, setShowBuyLicense] = useState(false);
   const [showEnterLicense, setShowEnterLicense] = useState(false);
 
@@ -90,6 +91,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       if (isElectron) {
         const savedLicense = await window.electronAPI.getLicense();
         if (savedLicense !== "") {
+          setLicense(savedLicense);
           setShowBuyLicense(false);
         } else {
           if (Math.random() < 0.1) {
@@ -251,6 +253,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       description={
         "What is your next step? Please select code recipe from the left sidebar."
       }
+      setShowEnterLicense={(isElectron && license === "") ? setShowEnterLicense : undefined}
     />
   );
   if (selectedRecipeSet !== "" && selectedRecipe == "") {

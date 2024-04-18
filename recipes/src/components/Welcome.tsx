@@ -12,17 +12,20 @@ import { PackageIcon } from "../icons/Package";
 import { ErrorIcon } from "../icons/Error";
 import { SpinnerIcon } from "../icons/Spinner";
 import { QuestionIcon } from "../icons/Question";
+import { KeyIcon } from "../icons/Key";
 
 const md = markdownit();
 
 // Remember the old renderer if overridden, or proxy to the default renderer.
-var defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
-  return self.renderToken(tokens, idx, options);
-};
+var defaultRender =
+  md.renderer.rules.link_open ||
+  function (tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
 
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   // Add a new `target` attribute, or replace the value of the existing one.
-  tokens[idx].attrSet('target', '_blank');
+  tokens[idx].attrSet("target", "_blank");
 
   // Pass the token to the default renderer.
   return defaultRender(tokens, idx, options, env, self);
@@ -37,6 +40,7 @@ export interface IWelcomeProps {
   checkPackage?: (pkg: string) => void;
   checkedPackages?: Record<string, string>;
   installPackage?: (installationName: string, importName: string) => void;
+  setShowEnterLicense?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Welcome: React.FC<IWelcomeProps> = ({
@@ -48,6 +52,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   checkPackage,
   checkedPackages,
   installPackage,
+  setShowEnterLicense,
 }: IWelcomeProps) => {
   //
 
@@ -162,6 +167,19 @@ export const Welcome: React.FC<IWelcomeProps> = ({
             <PackageIcon className="poc-inline poc-pb-1" /> Required Packages
           </h4>
           {packagesList}
+        </div>
+      )}
+      {setShowEnterLicense !== undefined && (
+        <div className="poc-pt-2">
+          <a
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-2 poc-text-center"
+            onClick={() => {
+              setShowEnterLicense(true);
+            }}
+          >
+            <KeyIcon className="poc-inline poc-pb-1" /> Enter license
+          </a>
         </div>
       )}
     </div>
