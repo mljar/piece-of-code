@@ -18,7 +18,7 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
     src += `${now} = datetime.datetime.now()\n`;
     if (showDate) {
       src += `# display current time\n`;
-      src += `print(${now})\n`;
+      src += `print(${now})`;
     } else {
       src += `# display current time without date\n`;
       src += `print(${now}.time())`;

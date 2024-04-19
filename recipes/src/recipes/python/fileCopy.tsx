@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { SelectPath } from "../../components/SelectPath";
-import { FileShredderIcon } from "../../icons/FileShredder";
 import { FilesIcon } from "../../icons/Files";
 import { Toggle } from "../../components/Toggle";
 
@@ -65,7 +64,7 @@ export const FileCopyRecipe: IRecipe = {
   `,
   tags: ["file", "copy"],
   ui: FileCopy,
-  Icon: FileShredderIcon,
+  Icon: FilesIcon,
   requiredPackages: [],
   docsUrl: "python-copy-file",
 };
