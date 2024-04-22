@@ -32,7 +32,6 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   const [allCols, setAllCols] = useState([] as string[]);
   const [xCols, setXCols] = useState([] as string[]);
   const [yCol, setYCol] = useState("");
-  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     if (df === "") {

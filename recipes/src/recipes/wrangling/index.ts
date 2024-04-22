@@ -16,7 +16,7 @@ export const DataWranglingRecipes: IRecipeSet = {
     recipes: {
         [SelectXyRecipe.name]: SelectXyRecipe,
         // [SelectRowsRecipe.name]: SelectRowsRecipe, 
-        // [SelectColsRecipe.name]: SelectColsRecipe, 
+        [SelectColsRecipe.name]: SelectColsRecipe, 
         // [SplitDataRecipe.name]: SplitDataRecipe,
     }
 };

@@ -1,31 +1,31 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { SelectXy } from "./selectXy";
+import { SelectCols } from "./selectCols";
 
-const meta: Meta<typeof SelectXy> = {
-  component: SelectXy,
-  title: "CodePieces/wrangling/selectXy",
+const meta: Meta<typeof SelectCols> = {
+  component: SelectCols,
+  title: "CodePieces/wrangling/SelectCols",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof SelectXy>;
+type Story = StoryObj<typeof SelectCols>;
 
-export const SelectXyStory: Story = (
+export const SelectColsStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <SelectXy {...args} />
+    <SelectCols {...args} />
     <div className="poc-dark">
       <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <SelectXy {...args} />
+        <SelectCols {...args} />
       </div>
     </div>
   </>
 );
 
-SelectXyStory.args = {
+SelectColsStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
@@ -63,14 +63,14 @@ SelectXyStory.args = {
   ],
 };
 
-export const SelectXyEmptyDfStory: Story = (
+export const SelectColsEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <SelectXy {...args} />
+    <SelectCols {...args} />
   </>
 );
-SelectXyEmptyDfStory.args = {
+SelectColsEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",

@@ -1,10 +1,13 @@
 import React from "react";
+import { Tooltip } from "react-tooltip";
+import { InfoIcon } from "../icons/Info";
 
 interface SelectProps {
   label: string;
   option: string; // selected value
   options: [string, string][]; // array of title, value
   setOption: React.Dispatch<React.SetStateAction<string>>;
+  tooltip?: string;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -12,18 +15,37 @@ export const Select: React.FC<SelectProps> = ({
   option,
   options,
   setOption,
+  tooltip,
 }: SelectProps) => {
   const optionsElements = options.map((option) => {
     const label = option[0];
     const value = option[1];
-    return <option value={value} key={`${value}`}>{label}</option>;
+    return (
+      <option value={value} key={`${value}`}>
+        {label}
+      </option>
+    );
   });
+
   return (
     <div>
       <div className="poc-mt-2">
+        {tooltip !== "" && (
+          <Tooltip id="select-widget-tooltip" className="poc-text-base" />
+        )}
         <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
+          {tooltip !== "" && (
+            <div
+              data-tooltip-id="select-path-tooltip"
+              data-tooltip-content={tooltip}
+              className="poc-inline"
+            >
+              <InfoIcon />
+            </div>
+          )}
         </label>
+
         <select
           value={option}
           onChange={(e) => setOption(e.target.value)}

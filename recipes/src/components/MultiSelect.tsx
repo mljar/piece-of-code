@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function MultiSelectDropdown({
+function MultiSelectDropdown({
   selection,
   allOptions,
   setSelection,
