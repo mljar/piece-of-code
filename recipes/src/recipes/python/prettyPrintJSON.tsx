@@ -67,7 +67,7 @@ export const PrettyPrintJSONRecipe: IRecipe = {
   description: `Pretty print JSON or dict objects in Python. It is much easier to understand JSON objects that have nice indentation.`,
   shortDescription: "Pretty print JSON in Python",
   codeExplanation: `
-1. Display JSON with pretty indentation.
+The above code displays JSON with pretty indentation (4 spaces).
   `,
   tags: ["json"],
   ui: PrettyPrintJSON,

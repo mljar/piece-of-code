@@ -34,7 +34,7 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
         tooltip={"Usually environment variables are in all capital letters"}
       />
       <Variable
-        label={"Assing environment variable to Python variable"}
+        label={"Assign environment variable to Python variable"}
         name={myVar}
         setName={setMyVar}
         tooltip={"Value of environment variable will be assigned to Python variable"}
@@ -48,17 +48,15 @@ export const EnvironmentVarsRecipe: IRecipe = {
   longName: "Access environment variable in Python",
   parentName: "Python",
   description: "Access environment variable in Python",
-  shortDescription: "Get and display current working directory in Python",
+  shortDescription: "Access environment variable in Python",
   codeExplanation: `
 1. Get environment variable.
 2. If variable is not empty it is displayed.
 
 Additionally, you can set default value when get value from **environ** dictionary. For example:
-
 \`\`\`
 my_var = os.envrion.get("MY_ENV_VARIABLE", "some_default_value")
 \`\`\`
-
 To list all environment variables, please use:
 \`\`\`
 print(os.environ)

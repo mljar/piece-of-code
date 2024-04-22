@@ -49,6 +49,8 @@ export const ReadJSONRecipe: IRecipe = {
   codeExplanation: `
 1. Load JSON file to dict.
 2. Print dict object with indentation.
+
+It is a good practice to check if file exists before reading it. There is **Check if file exists** recipe available.
   `,
   tags: ["json"],
   ui: ReadJSON,

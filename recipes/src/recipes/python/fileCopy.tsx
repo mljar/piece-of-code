@@ -61,6 +61,9 @@ export const FileCopyRecipe: IRecipe = {
   shortDescription: "Copy file in Python. Source file can be coppied to new file path or to new directory.",
   codeExplanation: `
 1. Copy file to new destination.
+
+Please note that in this recipe you can select a file in the User Interface, which already means that file must exits. What to do, if file doesn't exist?
+Please select some other file in the same or similar directory, and manually edit the file path in the code.
   `,
   tags: ["file", "copy"],
   ui: FileCopy,

@@ -1,6 +1,6 @@
 {
   "name": "@mljar/recipes",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/bundle.js",
   "types": "dist/index.d.ts",

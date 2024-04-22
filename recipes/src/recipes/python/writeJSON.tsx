@@ -75,7 +75,7 @@ export const WriteJSONRecipe: IRecipe = {
   description: `Save JSON object to file in Python.`,
   shortDescription: "Save JSON object to file in Python.",
   codeExplanation: `
-1. Save dict object to file.
+The above code saves dict object to file. The **utf-8** encoding is used.
   `,
   tags: ["json"],
   ui: WriteJSON,
