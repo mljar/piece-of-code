@@ -41,6 +41,7 @@ export interface IWelcomeProps {
   checkedPackages?: Record<string, string>;
   installPackage?: (installationName: string, importName: string) => void;
   setShowEnterLicense?: React.Dispatch<React.SetStateAction<boolean>>;
+  tags?: string[];
 }
 
 export const Welcome: React.FC<IWelcomeProps> = ({
@@ -53,6 +54,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   checkedPackages,
   installPackage,
   setShowEnterLicense,
+  tags,
 }: IWelcomeProps) => {
   //
 
@@ -130,6 +132,18 @@ export const Welcome: React.FC<IWelcomeProps> = ({
       </div>
     );
   });
+
+  const tagElements = tags?.map((t) => {
+    return (
+      <span
+        key={`tag-${t}`}
+        className="poc-bg-blue-100 poc-text-blue-800 poc-text-xs poc-font-medium poc-me-2 poc-px-2.5 poc-py-0.5 poc-rounded dark:poc-bg-blue-900 dark:poc-text-blue-300"
+      >
+        {t}
+      </span>
+    );
+  });
+
   return (
     <div>
       <h3 className="poc-text-lg   poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
@@ -182,6 +196,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
           </a>
         </div>
       )}
+      {tagElements && <div>{tagElements}</div>}
     </div>
   );
 };

@@ -84,6 +84,7 @@ export const ReadCSVRecipe: IRecipe = {
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
   docsUrl: "python-read-csv",
+  tags: ["csv", "pandas"],
 };
 
 export default ReadCSV;

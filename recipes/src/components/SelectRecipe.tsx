@@ -253,7 +253,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       description={
         "What is your next step? Please select code recipe from the left sidebar."
       }
-      setShowEnterLicense={(isElectron && license === "") ? setShowEnterLicense : undefined}
+      setShowEnterLicense={
+        isElectron && license === "" ? setShowEnterLicense : undefined
+      }
     />
   );
   if (selectedRecipeSet !== "" && selectedRecipe == "") {
@@ -263,6 +265,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         title={recipeSet.name}
         Icon={recipeSet.Icon}
         description={recipeSet.description}
+        tags={recipeSet.tags}
       />
     );
   }
@@ -282,6 +285,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         checkPackage={checkPackage}
         checkedPackages={checkedPackages}
         installPackage={installPackage}
+        tags={recipe.tags}
       />
     );
     RecipeUI = recipe.ui;
