@@ -48,7 +48,7 @@ export const ReadFeatherRecipe: IRecipe = {
 Please check [pandas.read_feather](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_feather.html) for more parameters.
   `,
   shortDescription: `Load Feather file in Python code.`,
-  tags: ["feather"],
+  tags: ["feather", "pandas"],
   codeExplanation: `
 1. Read Feather file from provided path.
 2. Display first rows of data.  

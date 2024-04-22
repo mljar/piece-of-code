@@ -46,7 +46,7 @@ export const ReadSpssRecipe: IRecipe = {
   
 Please check [pandas.read_spss](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_spss.html) for more parameters.`,
   shortDescription: `Load SPSS file in Python code.`,
-  tags: ["spss"],
+  tags: ["spss", "pandas"],
   codeExplanation: `
 1. Read SPSS file from provided path.
 2. Display first rows of data.  

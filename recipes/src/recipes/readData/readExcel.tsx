@@ -79,7 +79,7 @@ export const ReadExcelRecipe: IRecipe = {
     
 Please check [pandas.read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) for more parameters.`,
   shortDescription: "Load Excel file into Pandas DataFrame.",
-  tags: ["excel", "spreadsheet"],
+  tags: ["excel", "spreadsheet", "pandas"],
   codeExplanation: `
 1. Read Excel file from provided path.
 2. Display first rows of data.  

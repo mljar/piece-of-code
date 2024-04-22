@@ -85,7 +85,7 @@ You can select from three datasets:
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
   docsUrl: "python-load-example-dataset",
-  tags: ["sample", "example", "dataset"],
+  tags: ["sample", "example", "dataset", "pandas"],
 };
 
 export default ExampleDataRecipe;

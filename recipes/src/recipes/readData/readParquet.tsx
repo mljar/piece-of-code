@@ -46,7 +46,7 @@ export const ReadParquetRecipe: IRecipe = {
   
 Please check [pandas.read_parquet](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_parquet.html) for more parameters.`,
   shortDescription: `Load Parquet file in Python code.`,
-  tags: ["parquet"],
+  tags: ["parquet", "pandas"],
   codeExplanation: `
 1. Read Parquet file from provided path.
 2. Display first rows of data.  

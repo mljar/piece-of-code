@@ -13,6 +13,7 @@ import { ErrorIcon } from "../icons/Error";
 import { SpinnerIcon } from "../icons/Spinner";
 import { QuestionIcon } from "../icons/Question";
 import { KeyIcon } from "../icons/Key";
+import { SettingsIcon } from "../icons/Settings";
 
 const md = markdownit();
 
@@ -164,6 +165,19 @@ export const Welcome: React.FC<IWelcomeProps> = ({
             </a>
           </div>
         )}
+        {setShowEnterLicense !== undefined && (
+          <div className="poc-inline poc-items-center poc-float-right">
+            <span
+              className="poc-text-sm poc-font-mono hover:poc-underline hover:poc-cursor-pointer"
+              onClick={() => {
+                setShowEnterLicense(true);
+              }}
+            >
+              <SettingsIcon className="poc-inline poc-py-1" />
+              Settings
+            </span>
+          </div>
+        )}
       </h3>
       {/* {description && <p className="poc-mb-2 poc-text-base">{description}</p>} */}
       {description && (
@@ -183,19 +197,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
           {packagesList}
         </div>
       )}
-      {setShowEnterLicense !== undefined && (
-        <div className="poc-pt-2">
-          <a
-            type="button"
-            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-2 poc-text-center"
-            onClick={() => {
-              setShowEnterLicense(true);
-            }}
-          >
-            <KeyIcon className="poc-inline poc-pb-1" /> Enter license
-          </a>
-        </div>
-      )}
+      
       {tagElements && <div>{tagElements}</div>}
     </div>
   );

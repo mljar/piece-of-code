@@ -490,7 +490,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                 </ul>
                 {showSubTabs && (
                   <ul
-                    className="poc-flex-none md:poc-w-62 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
+                    className="poc-flex-none poc-w-64 poc-space-y poc-space-y-2 poc-text-sm poc-font-medium poc-text-gray-500 dark:poc-text-gray-400 md:poc-me-2 poc-mb-2 md:poc-mb-0"
                     style={{ maxHeight: "250px", overflowY: "auto" }}
                   >
                     {subTabs}
