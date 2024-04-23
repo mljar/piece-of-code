@@ -11,6 +11,7 @@ import { ReadParquetRecipe } from "./readParquet";
 import { ReadSasRecipe } from "./readSas";
 import { ReadXmlRecipe } from "./readXml";
 import { ReadHtmlRecipe } from "./readHtml";
+import { ReadPickleRecipe } from "./readPickle";
 
 export const ReadDataRecipes: IRecipeSet = {
     name: "Read data",
@@ -26,6 +27,7 @@ export const ReadDataRecipes: IRecipeSet = {
         [ReadCSVRecipe.name]: ReadCSVRecipe,
         [ReadExcelRecipe.name]: ReadExcelRecipe,
         [ReadXmlRecipe.name]: ReadXmlRecipe,
+        [ReadPickleRecipe.name]: ReadPickleRecipe,
         [ReadHtmlRecipe.name]: ReadHtmlRecipe,
         [ReadParquetRecipe.name]: ReadParquetRecipe,
         [ReadSpssRecipe.name]: ReadSpssRecipe,
