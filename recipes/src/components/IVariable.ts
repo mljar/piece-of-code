@@ -8,6 +8,7 @@ interface IVariable {
   isMatrix: boolean;
   isWidget: boolean;
   varColumns: string[];
+  varColumnTypes: string[];
 }
 
 export default IVariable;

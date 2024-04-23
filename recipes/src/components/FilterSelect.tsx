@@ -2,27 +2,36 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import { InfoIcon } from "../icons/Info";
 
-interface SelectProps {
+interface FilterSelectProps {
   label: string;
-  option: string; // selected value
-  options: [string, string][]; // array of title, value
+  varType: string;
+  option: string;
   setOption: React.Dispatch<React.SetStateAction<string>>;
   tooltip?: string;
 }
 
-export const Select: React.FC<SelectProps> = ({
+export const FilterSelect: React.FC<FilterSelectProps> = ({
   label,
+  varType,
   option,
-  options,
   setOption,
   tooltip = "",
-}: SelectProps) => {
+}: FilterSelectProps) => {
+  let options = [];
+  if (varType === "numeric") {
+    options = ["==", ">=", ">", "<=", "<"];
+  } else {
+    options = ["==", "contains"];
+  }
+
+  console.log(varType, options);
+
   const optionsElements = options.map((option) => {
-    const label = option[0];
-    const value = option[1];
+    const c = option;
+    console.log("option", c);
     return (
-      <option value={value} key={`${value}`}>
-        {label}
+      <option value={c} key={`filter-${label}-${c}`}>
+        {c}
       </option>
     );
   });

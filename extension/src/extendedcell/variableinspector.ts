@@ -93,6 +93,12 @@ def _jupyterlab_variableinspector_getcolumnsof(x):
         return list(x.columns)
     return []
 
+def _jupyterlab_variableinspector_getcolumntypesof(x):
+    if __pd and isinstance(x, __pd.DataFrame):
+        return [str(t) for t in x.dtypes]
+    return []
+
+
 def _jupyterlab_variableinspector_getcontentof(x):
     # returns content in a friendly way for python variables
     # pandas and numpy
@@ -178,6 +184,7 @@ def _jupyterlab_variableinspector_dict_list():
             'isMatrix': _jupyterlab_variableinspector_is_matrix(eval(_v)),
             'isWidget': _jupyterlab_variableinspector_is_widget(type(eval(_v))),
             'varColumns': _jupyterlab_variableinspector_getcolumnsof(eval(_v)),
+            'varColumnTypes': _jupyterlab_variableinspector_getcolumntypesof(eval(_v)),
         }
         for _v in values if keep_cond(_v)
     ]

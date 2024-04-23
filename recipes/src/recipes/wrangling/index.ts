@@ -1,5 +1,4 @@
 import { IRecipeSet } from "../base";
-import { SelectRowsRecipe } from "./seletRows";
 import { SelectColsRecipe } from "./selectCols";
 import { SplitDataRecipe } from "./splitData";
 import { SelectXyRecipe } from "./selectXy";

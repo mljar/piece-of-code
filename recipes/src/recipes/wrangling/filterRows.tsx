@@ -7,8 +7,10 @@ import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 import { MultiSelect } from "../../components/MultiSelect";
 import { TableRowIcon } from "../../icons/TableRow";
+import { FilterIcon } from "../../icons/Filter";
+import { FilterSelect } from "../../components/FilterSelect";
 
-export const SelectCols: React.FC<IRecipeProps> = ({
+export const FilterRows: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -28,41 +30,61 @@ export const SelectCols: React.FC<IRecipeProps> = ({
     .filter((v) => v.varType === "DataFrame")
     .map((v) => v.varName);
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
-  const [newDf, setNewDf] = useState("df2");
+  const [newDf, setNewDf] = useState("df_filtered");
   const [allCols, setAllCols] = useState([] as string[]);
-  const [xCols, setXCols] = useState([] as string[]);
+  const [col, setCol] = useState("");
+  const [condition, setCondition] = useState("==");
+  const [varType, setVarType] = useState("numeric");
+  const [val, setVal] = useState("0");
+  const [varDict, setVarDict] = useState({} as Record<string, string>);
 
   useEffect(() => {
     if (df === "") {
-      setXCols([]);
+      setCol("");
     } else {
-      const colList = variables
-        .filter((v) => v.varName === df)
-        .map((v) => v.varColumns);
-      if (colList.length) {
-        const cols = colList[0];
-        setAllCols(cols);
-        setXCols(cols.slice(0, cols.length - 1));
-      }
+      try {
+        const variable = variables.filter((v) => v.varName === df)[0];
+        setAllCols(variable.varColumns);
+        setCol(variable.varColumns[0]);
+        setVarDict(
+          Object.fromEntries(
+            variable.varColumns.map((k, i) => [k, variable.varColumnTypes[i]])
+          )
+        );
+      } catch (error) {}
     }
   }, [df]);
 
   useEffect(() => {
-    if (!xCols) {
+    if (col !== "") {
+      setVarType(varDict[col] === "object" ? "object" : "numeric");
+    }
+  }, [col, varDict]);
+
+  useEffect(() => {
+    if (df === "" || col === "") {
       return;
     }
-    const xColsStr = '"' + xCols.join('", "') + '"';
-    let src = `# select columns\n`;
-    src += `${newDf} = ${df}[[${xColsStr}]]\n`;
-    src += `# display new data shape\n`;
+    let src = `# filter rows\n`;
+    if (varType === "numeric") {
+      src += `${newDf} = ${df}[${df}["${col}"] ${condition} ${val}]\n`;
+    } else if (varType === "object") {
+      if (condition === "contains") {
+        src += `${newDf} = ${df}[${df}["${col}"].str.contains("${val}")]\n`;
+      } else {
+        src += `${newDf} = ${df}[${df}["${col}"] ${condition} "${val}"]\n`;
+      }
+    }
+    src += `# display filtered data shape\n`;
     src += `print(f"${newDf} shape is {${newDf}.shape}")`;
+
     setCode(src);
     setPackages(["import pandas as pd"]);
-  }, [df, xCols, newDf]);
+  }, [df, col, newDf, condition, val, varType]);
 
   return (
     <div>
-      <Title Icon={TableColumnIcon} label={"Select columns in DataFrame"} />
+      <Title Icon={FilterIcon} label={"Filter rows in DataFrame"} />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -76,7 +98,7 @@ export const SelectCols: React.FC<IRecipeProps> = ({
             option={df}
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
-            tooltip="DataFrame from which we will select columns."
+            tooltip="DataFrame from which we will filter rows."
           />
           <Variable
             label={"New DataFrame"}
@@ -84,29 +106,38 @@ export const SelectCols: React.FC<IRecipeProps> = ({
             setName={setNewDf}
             tooltip="You can use the same name as for input DataFrame but its value will be overwritten."
           />
-          <MultiSelect
-            label={"Select columns"}
-            selection={xCols}
-            allOptions={allCols}
-            setSelection={setXCols}
-          />
+          <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
+            <Select
+              label={"Column"}
+              option={col}
+              setOption={setCol}
+              options={allCols.map((a) => [a, a])}
+            />
+            <FilterSelect
+              label={"Condition"}
+              option={condition}
+              setOption={setCondition}
+              varType={varType}
+            />
+            <Variable label={"Value"} name={val} setName={setVal} />
+          </div>
         </>
       )}
     </div>
   );
 };
 
-export const SelectColsRecipe: IRecipe = {
-  name: "Select Columns",
-  longName: "Select columns from Pandas DataFrame",
+export const FilterRowsRecipe: IRecipe = {
+  name: "Filter rows",
+  longName: "Filter rows in Pandas DataFrame",
   parentName: "Data wrangling",
-  description: "Select columns from dataframe.",
-  shortDescription: "Select columns from dataframe.",
-  ui: SelectCols,
+  description: `Filter rows in Pandas DataFrame based on condition. You can select a column and apply condition on it. Please be aware that there are different conditions for numeric and categorical columns.`,
+  shortDescription: "Filter rows in Pandas DataFrame based on condition.",
+  ui: FilterRows,
   codeExplanation: "",
-  Icon: TableColumnIcon,
-  docsUrl: "pandas-select-columns",
-  tags: ["column", "pandas", "filter"],
+  Icon: FilterIcon,
+  docsUrl: "pandas-filter-rows",
+  tags: ["rows", "pandas", "filter"],
   defaultVariables: [
     {
       varName: "df_1",
@@ -133,4 +164,4 @@ export const SelectColsRecipe: IRecipe = {
   ],
 };
 
-export default SelectColsRecipe;
+export default FilterRowsRecipe;

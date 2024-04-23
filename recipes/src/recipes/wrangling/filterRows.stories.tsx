@@ -1,39 +1,51 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { Train } from "./train";
+import { FilterRows } from "./filterRows";
 
-const meta: Meta<typeof Train> = {
-  component: Train,
-  title: "CodePieces/AutoML/Train",
+const meta: Meta<typeof FilterRows> = {
+  component: FilterRows,
+  title: "CodePieces/wrangling/FilterRows",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof Train>;
+type Story = StoryObj<typeof FilterRows>;
 
-export const TrainStory: Story = (
+export const FilterRowsStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <Train {...args} />
+    <FilterRows {...args} />
+    {/* <div className="poc-dark">
+      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+        <FilterRows {...args} />
+      </div>
+    </div> */}
   </>
 );
 
-TrainStory.args = {
+FilterRowsStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
-  // dataFramesColumns: {
-  //   df: ["col1", "col2", "col3", "col4"],
-  //   df2: ["feature1", "feature2", "feature3", "feature4"],
-  // },
   variablesStatus: "loaded",
   variables: [
     {
       varName: "X",
       varType: "DataFrame",
-      varColumns: ["col1", "col2", "col3", "col4"],
-      varColumnTypes: ["int", "int", "int", "int"],
+      varColumns: ["col1", "col2", "col3-object", "col4"],
+      varColumnTypes: ["int", "int", "object", "int"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "X2",
+      varType: "DataFrame",
+      varColumns: ["feature1", "feature2-object", "feature3", "feature4"],
+      varColumnTypes: ["int", "object", "int", "int"],
       varSize: "",
       varShape: "",
       varContent: "",
@@ -54,16 +66,14 @@ TrainStory.args = {
   ],
 };
 
-
-export const TrainEmptyStory: Story = (
+export const FilterRowsEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <Train {...args} />
+    <FilterRows {...args} />
   </>
 );
-
-TrainEmptyStory.args = {
+FilterRowsEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
