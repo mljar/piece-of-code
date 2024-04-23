@@ -198,7 +198,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         </div>
       )}
       
-      {tagElements && <div>{tagElements}</div>}
+      {tagElements && <div className="poc-py-2">{tagElements}</div>}
     </div>
   );
 };

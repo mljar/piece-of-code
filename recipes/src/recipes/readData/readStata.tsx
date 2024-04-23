@@ -3,7 +3,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
-import { LayoutGridIcon } from "../../icons/LayoutGrid";
+import { StataIcon } from "../../icons/Stata";
 
 export const ReadStata: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [name, setName] = useState("df");
@@ -24,7 +24,7 @@ export const ReadStata: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   return (
     <div>
       <Title
-        Icon={LayoutGridIcon}
+        Icon={StataIcon}
         label={"Read Stata file"}
       />
       <Variable
@@ -51,6 +51,6 @@ Please check [pandas.read_stata](https://pandas.pydata.org/pandas-docs/stable/re
 2. Display first rows of data.  
   `,
   ui: ReadStata,
-  Icon: LayoutGridIcon,
+  Icon: StataIcon,
   docsUrl: "python-read-stata",
 };

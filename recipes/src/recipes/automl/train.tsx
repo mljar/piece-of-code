@@ -170,7 +170,7 @@ export const Train: React.FC<IRecipeProps> = ({
           tooltip={"The 'auto' means automatically create a new directory for results."}
         />
       </div>
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-4">
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <div>
           <Select
             label={"X training matrix (pandas.DataFrame)"}

@@ -3,6 +3,7 @@ import { SelectColsRecipe } from "./selectCols";
 import { SplitDataRecipe } from "./splitData";
 import { SelectXyRecipe } from "./selectXy";
 import { TransformIcon } from "../../icons/Transform";
+import FilterRowsRecipe from "./filterRows";
 
 export const DataWranglingRecipes: IRecipeSet = {
     name: "Data wrangling",
@@ -14,8 +15,8 @@ export const DataWranglingRecipes: IRecipeSet = {
     Icon: TransformIcon,
     recipes: {
         [SelectXyRecipe.name]: SelectXyRecipe,
-        // [SelectRowsRecipe.name]: SelectRowsRecipe, 
         [SelectColsRecipe.name]: SelectColsRecipe, 
-        // [SplitDataRecipe.name]: SplitDataRecipe,
+        [FilterRowsRecipe.name]: FilterRowsRecipe, 
+        [SplitDataRecipe.name]: SplitDataRecipe,
     }
 };

@@ -1,31 +1,31 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { SelectXy } from "./selectXy";
+import { SplitData } from "./splitData";
 
-const meta: Meta<typeof SelectXy> = {
-  component: SelectXy,
-  title: "CodePieces/wrangling/selectXy",
+const meta: Meta<typeof SplitData> = {
+  component: SplitData,
+  title: "CodePieces/wrangling/SplitData",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof SelectXy>;
+type Story = StoryObj<typeof SplitData>;
 
-export const SelectXyStory: Story = (
+export const SplitDataStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <SelectXy {...args} />
-    <div className="poc-dark">
+    <SplitData {...args} />
+    {/* <div className="poc-dark">
       <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <SelectXy {...args} />
+        <SplitData {...args} />
       </div>
-    </div>
+    </div> */}
   </>
 );
 
-SelectXyStory.args = {
+SplitDataStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
@@ -33,8 +33,8 @@ SelectXyStory.args = {
     {
       varName: "X",
       varType: "DataFrame",
-      varColumns: ["col1", "col2", "col3", "col4"],
-      varColumnTypes: ["int", "int", "int", "int"],
+      varColumns: ["col1", "col2", "col3-object", "col4"],
+      varColumnTypes: ["int", "int", "object", "int"],
       varSize: "",
       varShape: "",
       varContent: "",
@@ -44,8 +44,8 @@ SelectXyStory.args = {
     {
       varName: "X2",
       varType: "DataFrame",
-      varColumns: ["feature1", "feature2", "feature3", "feature4"],
-      varColumnTypes: ["int", "int", "int", "int"],
+      varColumns: ["feature1", "feature2-object", "feature3", "feature4"],
+      varColumnTypes: ["int", "object", "int", "int"],
       varSize: "",
       varShape: "",
       varContent: "",
@@ -66,14 +66,14 @@ SelectXyStory.args = {
   ],
 };
 
-export const SelectXyEmptyDfStory: Story = (
+export const SplitDataEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <SelectXy {...args} />
+    <SplitData {...args} />
   </>
 );
-SelectXyEmptyDfStory.args = {
+SplitDataEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",

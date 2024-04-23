@@ -7,13 +7,19 @@ interface NumericProps {
   name: number;
   setName: React.Dispatch<React.SetStateAction<number>>;
   tooltip?: string;
+  step?: number;
+  minValue?: number;
+  maxValue?: number;
 }
 
 export const Numeric: React.FC<NumericProps> = ({
   label,
   name,
   setName,
-  tooltip,
+  tooltip = "",
+  step = 1,
+  minValue,
+  maxValue,
 }: NumericProps) => {
   return (
     <div className="poc-mt-2">
@@ -42,7 +48,10 @@ export const Numeric: React.FC<NumericProps> = ({
         dark:poc-text-white dark:focus:poc-border-blue-400
         poc-outline-0"
         value={name}
-        onChange={(e) => setName(parseInt(e.target.value))}
+        onChange={(e) => setName(parseFloat(e.target.value))}
+        step={step}
+        min={minValue}
+        max={maxValue}
       />
     </div>
   );

@@ -3,7 +3,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
-import { SIcon } from "../../icons/S";
+import { SasIcon } from "../../icons/Sas";
 
 export const ReadSas: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [name, setName] = useState("df");
@@ -23,7 +23,7 @@ export const ReadSas: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 
   return (
     <div>
-      <Title Icon={SIcon} label={"Read SAS file"} />
+      <Title Icon={SasIcon} label={"Read SAS file"} />
       <Variable
         label={"Allocate DataFrame to variable"}
         name={name}
@@ -51,6 +51,6 @@ Please check [pandas.read_sas](https://pandas.pydata.org/pandas-docs/stable/refe
 2. Display first rows of data.  
   `,
   ui: ReadSas,
-  Icon: SIcon,
+  Icon: SasIcon,
   docsUrl: "python-read-sas",
 };

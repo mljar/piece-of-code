@@ -80,6 +80,7 @@ export const AutoMLReportRecipe: IRecipe = {
       varName: "automl",
       varType: "AutoML",
       varColumns: [],
+      varColumnTypes: [],
       varSize: "",
       varShape: "",
       varContent: "",
