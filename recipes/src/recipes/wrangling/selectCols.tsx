@@ -6,14 +6,13 @@ import { TableColumnIcon } from "../../icons/TableColumn";
 import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 import { MultiSelect } from "../../components/MultiSelect";
-import { TableRowIcon } from "../../icons/TableRow";
 
 export const SelectCols: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
-}) => {
+}) => { 
   if (variablesStatus === "loaded" && !variables.length) {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -27,6 +26,7 @@ export const SelectCols: React.FC<IRecipeProps> = ({
   const dataFrames = variables
     .filter((v) => v.varType === "DataFrame")
     .map((v) => v.varName);
+
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [newDf, setNewDf] = useState("df2");
   const [allCols, setAllCols] = useState([] as string[]);

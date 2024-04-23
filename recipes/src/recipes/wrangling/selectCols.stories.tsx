@@ -77,5 +77,17 @@ SelectColsEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
-  variables: [],
+  variables: [
+    {
+      varName: "y",
+      varType: "Series",
+      varColumns: [],
+      varColumnTypes: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
