@@ -496,7 +496,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                     {subTabs}
                   </ul>
                 )}
-                <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
+                <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
+                style={{ maxHeight: "250px", overflowY: "auto" }}
+                >
                   {welcomeMsg}
                 </div>
               </div>
