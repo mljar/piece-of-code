@@ -130,6 +130,7 @@ export const SelectXyRecipe: IRecipe = {
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
   docsUrl: "python-select-training-attributes-for-machine-learning",
+  tags: ["ml", "machine-learning", "xy", "target"],
   defaultVariables: [
     {
       varName: "df_1",

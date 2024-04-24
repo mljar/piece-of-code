@@ -187,6 +187,7 @@ export const SplitDataRecipe: IRecipe = {
     },
   ],
   docsUrl: "sklearn-train-test-split",
+  tags: ["ml", "machine-learning", "split"],
   defaultVariables: [
     {
       varName: "df_1",

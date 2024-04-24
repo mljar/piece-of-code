@@ -4,6 +4,8 @@ import { SplitDataRecipe } from "./splitData";
 import { SelectXyRecipe } from "./selectXy";
 import { TransformIcon } from "../../icons/Transform";
 import FilterRowsRecipe from "./filterRows";
+import CheckMissingRecipe from "./checkMissing";
+import DfInfoRecipe from "./dfInfo";
 
 export const DataWranglingRecipes: IRecipeSet = {
     name: "Data wrangling",
@@ -14,9 +16,11 @@ export const DataWranglingRecipes: IRecipeSet = {
     tags: ["preprocessing", "prepare", "wrangling", "pandas"],
     Icon: TransformIcon,
     recipes: {
+        [DfInfoRecipe.name]: DfInfoRecipe,
         [SelectXyRecipe.name]: SelectXyRecipe,
-        [SelectColsRecipe.name]: SelectColsRecipe, 
-        [FilterRowsRecipe.name]: FilterRowsRecipe, 
+        [SelectColsRecipe.name]: SelectColsRecipe,
+        [FilterRowsRecipe.name]: FilterRowsRecipe,
         [SplitDataRecipe.name]: SplitDataRecipe,
+        [CheckMissingRecipe.name]: CheckMissingRecipe,
     }
 };
