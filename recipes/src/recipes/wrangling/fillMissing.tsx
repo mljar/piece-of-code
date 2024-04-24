@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
 import { AffiliateIcon } from "../../icons/Affiliate";
 import { Variable } from "../../components/Variable";
 import { Numeric } from "../../components/Numeric";
@@ -172,23 +171,20 @@ export const FillMissing: React.FC<IRecipeProps> = ({
 };
 
 export const FillMissingRecipe: IRecipe = {
-  name: "Check missing values",
-  longName: "Check missing values in Pandas DataFrame",
+  name: "Fill missing values",
+  longName: "Fill missing values in Pandas DataFrame",
   parentName: "Data wrangling",
   description: `
-Check missing values in Pandas DataFrame. This Python recipe do several things:
-
-- check if there are **any missing values** in DataFrame,
-- count **total number of missing values** in DataFrame,
-- check **missing values by each column** in DataFrame.`,
-  shortDescription: "Check and count missing values in Pandas DataFrame.",
+Fill missing values in Pandas DataFrame.`,
+  shortDescription: "Fill missing values in Pandas DataFrame.",
   codeExplanation: "",
   ui: FillMissing,
   Icon: AffiliateIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+    { importName: "sklearn", installationName: "scikit-learn", version: ">=1.0.0" },
   ],
-  docsUrl: "pandas-fill-missing-values",
+  docsUrl: "imputer-fill-missing-values",
   tags: ["pandas", "missing-values"],
   defaultVariables: [
     {
