@@ -6,6 +6,7 @@ import { TransformIcon } from "../../icons/Transform";
 import FilterRowsRecipe from "./filterRows";
 import CheckMissingRecipe from "./checkMissing";
 import DfInfoRecipe from "./dfInfo";
+import FillMissingRecipe from "./fillMissing";
 
 export const DataWranglingRecipes: IRecipeSet = {
     name: "Data wrangling",
@@ -22,5 +23,6 @@ export const DataWranglingRecipes: IRecipeSet = {
         [FilterRowsRecipe.name]: FilterRowsRecipe,
         [SplitDataRecipe.name]: SplitDataRecipe,
         [CheckMissingRecipe.name]: CheckMissingRecipe,
+        [FillMissingRecipe.name]: FillMissingRecipe,
     }
 };
