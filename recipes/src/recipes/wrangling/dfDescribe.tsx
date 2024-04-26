@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
-import { Select } from "../../components/Select";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
+import { Select } from "../../components/Select"; 
 import { InfoSquareIcon } from "../../icons/InfoSquare";
+import { FileDescriptionIcon } from "../../icons/FileDescription";
 
-export const DfInfo: React.FC<IRecipeProps> = ({
+export const DfDescribe: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -28,15 +28,15 @@ export const DfInfo: React.FC<IRecipeProps> = ({
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
 
   useEffect(() => {
-    let src = `# display datafame information\n`;
-    src += `${df}.info()\n`;
+    let src = `# display datafame statistics\n`;
+    src += `${df}.describe()\n`;
     setCode(src);
     setPackages(["import pandas as pd"]);
   }, [df]);
 
   return (
     <div>
-      <Title Icon={InfoSquareIcon} label={"DataFrame information"} />
+      <Title Icon={InfoSquareIcon} label={"DataFrame statistics"} />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -57,21 +57,21 @@ export const DfInfo: React.FC<IRecipeProps> = ({
   );
 };
 
-export const DfInfoRecipe: IRecipe = {
-  name: "DataFrame info",
-  longName: "Pandas DataFrame information",
+export const DfDescribeRecipe: IRecipe = {
+  name: "DataFrame describe",
+  longName: "Pandas DataFrame describe",
   parentName: "Data wrangling",
-  description: `Display information about DataFrame columns, non-null counts, data types and memory usage.`,
+  description: `Display statistical description for numeric columns in DataFrame. There are displayed values like: count, mean, std, min, max 25, 50 and 75 percentiles.`,
   shortDescription:
-    "Check information about DataFrame columns, non-nulls, types and memory usage.",
+    "Display statistical description for numeric columns in DataFrame.",
   codeExplanation: "",
-  ui: DfInfo,
-  Icon: InfoSquareIcon,
+  ui: DfDescribe,
+  Icon: FileDescriptionIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  tags: ["pandas", "info"],
-  docsUrl: "pandas-dataframe-info",
+  tags: ["pandas", "describe"],
+  docsUrl: "pandas-dataframe-describe",
   defaultVariables: [
     {
       varName: "df_1",
@@ -98,4 +98,4 @@ export const DfInfoRecipe: IRecipe = {
   ],
 };
 
-export default DfInfoRecipe;
+export default DfDescribeRecipe;

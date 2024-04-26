@@ -10,6 +10,7 @@ import FillMissingRecipe from "./fillMissing";
 import FillMissingReuseRecipe from "./fillMissingReuse";
 import CategoricalToIntRecipe from "./categoricalToInt";
 import EncoderReuseRecipe from "./encoderReuse";
+import DfDescribeRecipe from "./dfDescribe";
 
 export const DataWranglingRecipes: IRecipeSet = {
     name: "Data wrangling",
@@ -21,6 +22,7 @@ export const DataWranglingRecipes: IRecipeSet = {
     Icon: TransformIcon,
     recipes: {
         [DfInfoRecipe.name]: DfInfoRecipe,
+        [DfDescribeRecipe.name]: DfDescribeRecipe,
         [SelectXyRecipe.name]: SelectXyRecipe,
         [SelectColsRecipe.name]: SelectColsRecipe,
         [FilterRowsRecipe.name]: FilterRowsRecipe,
