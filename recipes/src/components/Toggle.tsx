@@ -44,6 +44,7 @@ export const Toggle: React.FC<ToggleProps> = ({
           onChange={(e) => {
             setValue(!value);
           }}
+          aria-label={`Checkbox for ${label}`}
         />
         <div
           className="poc-w-9 poc-h-5 poc-bg-gray-200 peer-focus:poc-outline-none   peer-focus:poc-ring-4 

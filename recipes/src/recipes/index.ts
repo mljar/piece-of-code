@@ -6,6 +6,7 @@ import { WriteDataRecipes } from "./writeData";
 import { DataWranglingRecipes } from "./wrangling";
 // import { ChartsRecipes } from "./charts";
 // import { MLRecipes } from "./ml";
+import { ScikitLearnRecipes } from "./scikitLearn";
 import { AutoMLRecipes } from "./automl";
 // import { WidgetsRecipes } from "./widgets";
 
@@ -17,6 +18,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [DataWranglingRecipes.name]: DataWranglingRecipes,
   // [ChartsRecipes.name]: ChartsRecipes,
   // [MLRecipes.name]: MLRecipes,
+  [ScikitLearnRecipes.name]: ScikitLearnRecipes,
   [AutoMLRecipes.name]: AutoMLRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }

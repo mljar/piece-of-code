@@ -88,7 +88,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
     }
     return (
       <div
-        className="poc-flex poc-items-center poc-mb-4"
+        className="poc-flex poc-items-center "
         key={`${p.installationName}${p.version}`}
       >
         <Tooltip id="package-icon-tooltip" className="poc-text-base" />
@@ -191,13 +191,13 @@ export const Welcome: React.FC<IWelcomeProps> = ({
 
       {packages && packages.length > 0 && (
         <div>
-          <h4 className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-mb-1 poc-font-medium">
+          <h4 className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-mb-1 poc-font-medium poc-mt-2">
             <PackageIcon className="poc-inline poc-pb-1" /> Required Packages
           </h4>
           {packagesList}
         </div>
       )}
-      
+
       {tagElements && <div className="poc-py-2">{tagElements}</div>}
     </div>
   );

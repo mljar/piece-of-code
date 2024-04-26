@@ -174,14 +174,14 @@ export const MultiSelect: React.FC<SelectProps> = ({
       <div className="poc-mt-2">
         <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
-        </label>
 
-        <MultiSelectDropdown
-          selection={selection}
-          allOptions={allOptions}
-          setSelection={setSelection}
-          prompt="Please select"
-        />
+          <MultiSelectDropdown
+            selection={selection}
+            allOptions={allOptions}
+            setSelection={setSelection}
+            prompt="Please select"
+          />
+        </label>
       </div>
     </div>
   );

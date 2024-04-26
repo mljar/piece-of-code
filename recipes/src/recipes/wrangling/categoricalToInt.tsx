@@ -147,7 +147,7 @@ There are two options to handle unknown values during transformation:
 - raise error when new unknown value is present during transofmration,
 - assign contant value for unknown values, for example -1.
 
-The object that is used for preprocessing is called encoder. In this recipe, we are using <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html" target="_blank" rel="noopener noreferrer">OrdinalEncoder from scikit-learn</a>.
+The object that is used for preprocessing is called encoder. In this recipe, we are using [OrdinalEncoder from scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html).
 
 You can use encoder object on new dataset. Please check **Save to pickle** recipe to save the object for later use.
     `,

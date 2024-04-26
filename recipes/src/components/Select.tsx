@@ -44,12 +44,11 @@ export const Select: React.FC<SelectProps> = ({
               <InfoIcon />
             </div>
           )}
-        </label>
 
-        <select
-          value={option}
-          onChange={(e) => setOption(e.target.value)}
-          className="poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
+          <select
+            value={option}
+            onChange={(e) => setOption(e.target.value)}
+            className="poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
           poc-bg-gray-50 
           poc-border-gray-300 
           poc-text-gray-900 
@@ -61,9 +60,11 @@ export const Select: React.FC<SelectProps> = ({
           dark:poc-text-white 
           poc-outline-none
           "
-        >
-          {optionsElements}
-        </select>
+            aria-label={`Select input for ${label}`}
+          >
+            {optionsElements}
+          </select>
+        </label>
       </div>
     </div>
   );
