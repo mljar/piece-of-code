@@ -7,6 +7,9 @@ import FilterRowsRecipe from "./filterRows";
 import CheckMissingRecipe from "./checkMissing";
 import DfInfoRecipe from "./dfInfo";
 import FillMissingRecipe from "./fillMissing";
+import FillMissingReuseRecipe from "./fillMissingReuse";
+import CategoricalToIntRecipe from "./categoricalToInt";
+import EncoderReuseRecipe from "./encoderReuse";
 
 export const DataWranglingRecipes: IRecipeSet = {
     name: "Data wrangling",
@@ -24,5 +27,8 @@ export const DataWranglingRecipes: IRecipeSet = {
         [SplitDataRecipe.name]: SplitDataRecipe,
         [CheckMissingRecipe.name]: CheckMissingRecipe,
         [FillMissingRecipe.name]: FillMissingRecipe,
+        [FillMissingReuseRecipe.name]: FillMissingReuseRecipe,
+        [CategoricalToIntRecipe.name]: CategoricalToIntRecipe,
+        [EncoderReuseRecipe.name]: EncoderReuseRecipe,
     }
 };

@@ -6,8 +6,9 @@ import { Select } from "../../components/Select";
 import { AffiliateIcon } from "../../icons/Affiliate";
 import { Variable } from "../../components/Variable";
 import { Numeric } from "../../components/Numeric";
+import { CategoryIcon } from "../../icons/Category";
 
-export const FillMissingReuse: React.FC<IRecipeProps> = ({
+export const EncoderReuse: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -27,46 +28,50 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
     .filter((v) => v.varType === "DataFrame")
     .map((v) => v.varName);
 
-  const imputers = variables
-    .filter((v) => v.varType === "KNNImputer" || v.varType === "SimpleImputer")
+  const encoders = variables
+    .filter(
+      (v) => v.varType === "OrdinalEncoder" || v.varType === "OneHotEncoder"
+    )
     .map((v) => v.varName);
 
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [allCols, setAllCols] = useState([] as string[]);
-    const [imputer, setImputer] = useState(imputers.length ? imputers[0] : "");
-
+  const [encoder, setEncoder] = useState(encoders.length ? encoders[0] : "");
 
   useEffect(() => {
-    let src = `# fill missing data using imputer\n`;
-    src += `${df}[${imputer}.feature_names_in_] = ${imputer}.transform(${df}[${imputer}.feature_names_in_])\n`;
+    let src = `# convert categorical columns\n`;
+    src += `${df}[${encoder}.feature_names_in_] = ${encoder}.transform(${df}[${encoder}.feature_names_in_])\n`;
     setCode(src);
-  }, [df, imputer]);
+  }, [df, encoder]);
 
   return (
     <div>
-      <Title Icon={AffiliateIcon} label={"Use imputer to fill missing values"} />
+      <Title
+        Icon={CategoryIcon}
+        label={"Use encoder to convert categoricals"}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
           reading data from file, url or database.
         </p>
       )}
-      {imputer === "" && (
+      {encoder === "" && (
         <p className="text-base text-gray-800 dark:text-white">
-          There are no imputers (SimpleImpute or KNNImpute) in your notebook.
-          Please fit imputer by filling missing values in DataFrame.
+          There are no encoders (OrdinalEncoder) in your notebook. Please fit
+          encoder by converting categoricals to integers.
         </p>
       )}
-      {df !== "" && imputer !== "" && (
+      {df !== "" && encoder !== "" && (
         <>
           <Select
-            label={"Select imputer"}
-            option={imputer}
-            options={imputers.map((d) => [d, d])}
-            setOption={setImputer}
+            label={"Select encoder"}
+            option={encoder}
+            options={encoders.map((d) => [d, d])}
+            setOption={setEncoder}
           />
           <Select
-            label={"DataFrame to fill missing values"}
+            label={"Select DataFrame"}
             option={df}
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
@@ -77,15 +82,15 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
   );
 };
 
-export const FillMissingReuseRecipe: IRecipe = {
-  name: "Use imputer on new data",
-  longName: "Use missing values imputer on new data",
+export const EncoderReuseRecipe: IRecipe = {
+  name: "Use categoricals encoder on new data",
+  longName: "Use categoricals encoder on new data",
   parentName: "Data wrangling",
-  description: `Use previously fitted imputer on new data.`,
-  shortDescription: `Use previously fitted imputer on new data.`,
+  description: `Use previously fitted categoricals encoder on new data. Please just select encoder and DataFrame to convert categoricals. The encoder has information about which columns where present during fit and will convert only fitted columns. In case of new values, unseen during fit, the handle method selected during encoder initialization will be applied. Good luck!`,
+  shortDescription: `Use previously fitted categoricals encoder on new data.`,
   codeExplanation: "",
-  ui: FillMissingReuse,
-  Icon: AffiliateIcon,
+  ui: EncoderReuse,
+  Icon: CategoryIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
     {
@@ -94,23 +99,12 @@ export const FillMissingReuseRecipe: IRecipe = {
       version: ">=1.0.0",
     },
   ],
-  docsUrl: "sklearn-use-imputer-on-new-data",
-  tags: ["pandas", "missing-values"],
+  docsUrl: "sklearn-use-categoricals- encoder-on-new-data",
+  tags: ["pandas", "categorical"],
   defaultVariables: [
     {
-      varName: "simple_imputer",
-      varType: "SimpleImputer",
-      varColumns: [],
-      varColumnTypes: [],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: true,
-      isWidget: false,
-    },
-    {
-      varName: "knn_imputer",
-      varType: "KNNImputer",
+      varName: "my_encode",
+      varType: "OrdinalEncoder",
       varColumns: [],
       varColumnTypes: [],
       varSize: "",
@@ -144,4 +138,4 @@ export const FillMissingReuseRecipe: IRecipe = {
   ],
 };
 
-export default FillMissingReuseRecipe;
+export default EncoderReuseRecipe;
