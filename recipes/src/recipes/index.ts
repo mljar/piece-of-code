@@ -6,6 +6,7 @@ import { WriteDataRecipes } from "./writeData";
 import { DataWranglingRecipes } from "./wrangling";
 // import { ChartsRecipes } from "./charts";
 // import { MLRecipes } from "./ml";
+import { MatplotlibRecipes } from "./matplotlib";
 import { ScikitLearnRecipes } from "./scikitLearn";
 import { AutoMLRecipes } from "./automl";
 // import { WidgetsRecipes } from "./widgets";
@@ -18,6 +19,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [DataWranglingRecipes.name]: DataWranglingRecipes,
   // [ChartsRecipes.name]: ChartsRecipes,
   // [MLRecipes.name]: MLRecipes,
+  [MatplotlibRecipes.name]: MatplotlibRecipes,
   [ScikitLearnRecipes.name]: ScikitLearnRecipes,
   [AutoMLRecipes.name]: AutoMLRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
@@ -52,6 +54,7 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
 }).flat();
 
 import axios from "axios";
+import { MatplotlibIcon } from "../icons/Matplotlib";
 if (process.env.STORYBOOK_UPDATE_DB) {
   console.log("Update server data");
   console.log(urlList);
