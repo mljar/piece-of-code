@@ -1,6 +1,7 @@
 import { IRecipeSet } from "../base";
 
 import { MatplotlibIcon } from "../../icons/Matplotlib";
+import ScatterPlotRecipe from "./scatter";
 
 export const MatplotlibRecipes: IRecipeSet = {
     name: "matplotlib",
@@ -10,7 +11,7 @@ export const MatplotlibRecipes: IRecipeSet = {
     shortDescription: "We will do a lot of plots with matplotlib.",
     tags: ["matplotlib"],
     Icon: MatplotlibIcon,
-    recipes: { 
-        
+    recipes: {
+        [ScatterPlotRecipe.name]: ScatterPlotRecipe,
     }
 };

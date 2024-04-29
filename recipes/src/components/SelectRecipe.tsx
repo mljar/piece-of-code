@@ -81,10 +81,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
   const [executed, setExecuted] = useState(previousExecutionCount !== 0);
-
   const [license, setLicense] = useState("");
   const [showBuyLicense, setShowBuyLicense] = useState(false);
   const [showEnterLicense, setShowEnterLicense] = useState(false);
+  const [keepOpen, setKeepOpen] = useState(false);
 
   useEffect(() => {
     async function getLicense() {
@@ -149,6 +149,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   );
 
   if (
+    !keepOpen &&
     executed &&
     previousCode !== "" &&
     //previousErrorName === "" &&
@@ -182,24 +183,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       );
     }
   }
-
-  // if (
-  //   executed &&
-  //   previousCode !== "" &&
-  //   previousErrorName !== "" &&
-  //   !overwriteExistingCode
-  // ) {
-  //   return (
-  //     <div className="poc-flex">
-  //       <div className="poc-flex-none" style={{ width: "72px" }}>
-  //         {leftButtons}
-  //       </div>
-  //       <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-  //         <NextStepError ename={previousErrorName} evalue={previousErroValue} />
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   const ActiveTabClass =
     "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-text-white poc-bg-blue-500 poc-rounded-lg poc-w-full dark:poc-bg-blue-600";
@@ -309,6 +292,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     executionSteps.length === 0 &&
     installPackages.length === 0
   ) {
+    showRecipeUI = true;
+  }
+  if (keepOpen) {
     showRecipeUI = true;
   }
 
@@ -463,10 +449,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   return (
     <div className="poc-flex">
       <div className="poc-flex-none" style={{ width: "72px" }}>
-        {executionSteps.length === 0 && leftButtons}
+        {(executionSteps.length === 0 || keepOpen) && leftButtons}
       </div>
       <div className="poc-w-full">
-        {executionSteps.length > 0 && topButtons}
+        {executionSteps.length > 0 && !keepOpen && topButtons}
         <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
             <>
@@ -496,8 +482,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                     {subTabs}
                   </ul>
                 )}
-                <div className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
-                style={{ maxHeight: "250px", overflowY: "auto" }}
+                <div
+                  className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
+                  style={{ maxHeight: "250px", overflowY: "auto" }}
                 >
                   {welcomeMsg}
                 </div>
@@ -516,6 +503,11 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                   setPackages={setPackages}
                   variablesStatus={variablesStatus}
                   variables={variables}
+                  runCell={() => {
+                    runCell();
+                    setExecuted(false);
+                  }}
+                  setKeepOpen={setKeepOpen}
                 />
               </div>
             </div>
@@ -537,7 +529,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             </div>
           )}
 
-          {executionSteps.length > 0 && (
+          {!keepOpen && executionSteps.length > 0 && (
             <RunStatus
               steps={executionSteps}
               errorName={previousErrorName}

@@ -9,6 +9,8 @@ export interface IRecipeProps {
     setPackages: (packages: string[]) => void;
     variablesStatus: "loading" | "loaded" | "error" | "unknown";
     variables: IVariable[];
+    runCell?: () => void;
+    setKeepOpen?: (keepOpen: boolean) => void;
 }
 
 export interface IRecipeSet {
