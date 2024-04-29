@@ -513,8 +513,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
               tooltip="Switch it if you would like to automatically rereun cell on code change"
             />
             <div className="poc-pt-4">
-              
-
               <button
                 data-tooltip-id="top-buttons-tooltip"
                 data-tooltip-content="Add new cell below"
@@ -554,9 +552,21 @@ export const ScatterPlotRecipe: IRecipe = {
   name: "Scatter plot",
   longName: "Scatter plot in matplotlib",
   parentName: "matplotlib",
-  description: `Scatter plot`,
-  shortDescription: "Scatter plot",
-  codeExplanation: ``,
+  description: `Create a scatter plot in matplotlib based on your data. You can add plot several series of scatters in one figure. For each serie, you can select color, size and transparency (alpha). Please provide label for scatters to create legend. You can also produce scatter plot with colors assigned to selected categorical column. In this case, only first scatter is displayed.
+
+  Please check **Advanced** options to change plot style, set title, axis labels and control legend position.
+  `,
+  shortDescription:
+    "Create and customize scatter plot for your data. You can set color, size, transparency for scatter. There can be several scatters in one figure.",
+  codeExplanation: `
+1. Please select DataFrame.
+2. Please select columns for x and y axis. You can set colot, size and transparency for each scatter. There can be several scatters in the plot.
+3. You can color points in the scatter based on categorical column from your DataFrame. Please check all options on **Color** widget. In the case of coloring by value, only one scatter (the first one) can be displayed in the figure.
+4. Please check **Advanced** options. 
+5. You can set title and axis labels there.
+6. If you wouldlike to control position of legend in your plot, you can do this in **Advanced** options. The default value is **best**, which means that matplotlib will search for position that do not overlay chart points.
+7. You can apply different style for scatter figure.
+`,
   ui: ScatterPlot,
   Icon: ChartScatterIcon,
   requiredPackages: [
@@ -572,19 +582,8 @@ export const ScatterPlotRecipe: IRecipe = {
     {
       varName: "X",
       varType: "DataFrame",
-      varColumns: ["col1", "col2-object", "col3-object", "col4"],
-      varColumnTypes: ["int", "object", "object", "int"],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: true,
-      isWidget: false,
-    },
-    {
-      varName: "y",
-      varType: "Series",
-      varColumns: ["target"],
-      varColumnTypes: ["int"],
+      varColumns: ["col1", "col2", "col3-object", "col4"],
+      varColumnTypes: ["int", "int", "object", "int"],
       varSize: "",
       varShape: "",
       varContent: "",
