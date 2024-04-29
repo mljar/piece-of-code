@@ -16,6 +16,8 @@ import EnvironmentVarsRecipe from "./environmentVars";
 import FileDeleteRecipe from "./fileDelete";
 import FolderDeleteRecipe from "./folderDelete";
 import FileCopyRecipe from "./fileCopy";
+import AddDotEnvVarRecipe from "./addDotEnvVar";
+import LoadDotEnvVarRecipe from "./LoadDotEnvVar";
 
 export const PythonRecipes: IRecipeSet = {
     name: "Python",
@@ -30,6 +32,8 @@ export const PythonRecipes: IRecipeSet = {
         [CurrentTimeRecipe.name]: CurrentTimeRecipe,
         [CurrentDirectoryRecipe.name]: CurrentDirectoryRecipe,
         [EnvironmentVarsRecipe.name]: EnvironmentVarsRecipe,
+        [AddDotEnvVarRecipe.name]: AddDotEnvVarRecipe,
+        [LoadDotEnvVarRecipe.name]: LoadDotEnvVarRecipe,
         [RandomIntegerRecipe.name]: RandomIntegerRecipe,
         [TimeDelayRecipe.name]: TimeDelayRecipe,
         [FileExistsRecipe.name]: FileExistsRecipe,
