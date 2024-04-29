@@ -26,9 +26,9 @@ export const Variable: React.FC<VariableProps> = ({
           <div
             data-tooltip-id="select-path-tooltip"
             data-tooltip-content={tooltip}
-            className="poc-inline"
+            className="poc-inline "
           >
-            <InfoIcon />
+            <InfoIcon className="poc-absolute" />
           </div>
         )}
         <input

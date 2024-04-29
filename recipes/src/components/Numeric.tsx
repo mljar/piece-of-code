@@ -34,7 +34,7 @@ export const Numeric: React.FC<NumericProps> = ({
             data-tooltip-content={tooltip}
             className="poc-inline"
           >
-            <InfoIcon />
+            <InfoIcon  className="poc-absolute"/>
           </div>
         )}
 

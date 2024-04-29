@@ -28,7 +28,7 @@ export const Toggle: React.FC<ToggleProps> = ({
             data-tooltip-content={tooltip}
             className="poc-inline"
           >
-            <InfoIcon />
+            <InfoIcon  className="poc-absolute"/>
           </div>
         )}
       </label>

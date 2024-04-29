@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { XyIcon } from "../../icons/Xy";
@@ -14,6 +14,18 @@ import { ChartScatterIcon } from "../../icons/ChartScatter";
 import { PlayIcon } from "../../icons/Play";
 import { CakeOffIcon } from "../../icons/CakeOff";
 import { CakeIcon } from "../../icons/Cake";
+import { PlusIcon } from "../../icons/Plus";
+import { TrashIcon } from "../../icons/Trash";
+import { Tooltip } from "react-tooltip";
+
+type SeriesType = {
+  x: string;
+  y: string;
+  color: string;
+  size: number;
+  alpha: number;
+  label: string;
+};
 
 export const ScatterPlot: React.FC<IRecipeProps> = ({
   setCode,
@@ -41,8 +53,27 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
 
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [allCols, setAllCols] = useState([] as string[]);
-  const [xData, setXData] = useState("");
-  const [yData, setYData] = useState("");
+  const allColors = [
+    "tab:blue",
+    "tab:orange",
+    "tab:green",
+    "tab:red",
+    "tab:purple",
+    "tab:brown",
+    "tab:pink",
+    "tab:gray",
+    "tab:olive",
+    "tab:cyan",
+  ];
+  const [objectCols, setObjectCols] = useState([] as string[]);
+  const [colorBy, setColorBy] = useState([] as string[]);
+  const [series, setSeries] = useState([] as SeriesType[]);
+
+  // const [xData, setXData] = useState("");
+  // const [yData, setYData] = useState("");
+  // const [color, setColor] = useState(allColors[0]);
+  // const [size, setSize] = useState(1);
+  // const [alpha, setAlpha] = useState(1);
 
   const [title, setTitle] = useState("");
   const [xLabel, setXLabel] = useState("");
@@ -81,6 +112,20 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     "tableau-colorblind10",
   ];
   const [style, setStyle] = useState("default");
+  const legendPositions = [
+    "best",
+    "upper right",
+    "upper left",
+    "lower left",
+    "lower right",
+    "right",
+    "center left",
+    "center right",
+    "lower center",
+    "upper center",
+    "center",
+  ];
+  const [legendPosition, setLegendPosition] = useState(legendPositions[0]);
   const [automatic, setAutomatic] = useState(false);
 
   useEffect(() => {
@@ -92,42 +137,101 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (df === "") {
       setAllCols([]);
-      setXData("");
-      setYData("");
+      setSeries([]);
     } else {
       try {
-        setXData("");
-        setYData("");
+        setSeries([]);
         const variable = variables.filter((v) => v.varName === df)[0];
         let cols: string[] = [];
+        let objCols: string[] = [];
         for (let i = 0; i < variable.varColumns.length; i++) {
           if (variable.varColumnTypes[i] !== "object") {
             cols.push(variable.varColumns[i]);
-            if (cols.length === 1) {
-              setXData(cols[0]);
-              setYData(cols[0]);
-            }
-            if (cols.length === 2) {
-              setYData(cols[1]);
-            }
+          } else {
+            objCols.push(variable.varColumns[i]);
           }
         }
         setAllCols(cols);
+        setObjectCols(objCols);
+        setColorBy(objCols.map((col) => `Color by ${col}`));
+
+        if (cols.length > 0) {
+          setSeries([
+            {
+              x: cols[0],
+              y: cols[cols.length > 1 ? 1 : 0],
+              color: allColors[0],
+              size: 1,
+              alpha: 1,
+              label: "",
+            },
+          ]);
+        }
       } catch (error) {}
     }
   }, [df]);
 
   useEffect(() => {
-    if (df === "" || xData === "" || yData === "") {
-      return;
-    }
+    // if (df === "" || xData === "" || yData === "") {
+    //   return;
+    // }
     let src = `# make a scatter plot\n`;
+    // if (xGrid || yGrid) {
+    //   src += `plt.rcParams['axes.axisbelow'] = True\n`;
+    // }
+    let showLegend = false;
+
+    let doColorBy = false;
+    let colorByCol = "";
+    series.map((serie) => {
+      console.log(
+        serie.color,
+        colorBy,
+        serie.color in colorBy,
+        colorBy.includes(serie.color)
+      );
+      if (colorBy.includes(serie.color)) {
+        doColorBy = true;
+        colorByCol = serie.color.slice(9);
+      }
+    });
+    if (doColorBy) {
+      showLegend = true;
+      src += `labels = ${df}["${colorByCol}"].unique().tolist()\n`;
+      src += `colors = list(mcolors.TABLEAU_COLORS.keys())\n`;
+      src += `color_map = {l: colors[i%len(colors)] for i,l in enumerate(labels)}\n`;
+    }
+
     let tab = "";
     if (style !== "default") {
       src += `with plt.style.context("${style}"):\n`;
       tab = "    ";
     }
-    src += `${tab}plt.scatter(${df}["${xData}"], ${df}["${yData}"])\n`;
+
+    series.map((serie, index) => {
+      if (index > 0 && doColorBy) {
+        return;
+      }
+      src += `${tab}plt.scatter(${df}["${serie.x}"], ${df}["${serie.y}"]`;
+
+      if (doColorBy) {
+        src += `, color=${df}["${colorByCol}"].map(color_map)`;
+      } else {
+        src += `, color="${serie.color}"`;
+      }
+
+      if (serie.alpha !== 1) {
+        src += `, alpha=${serie.alpha}`;
+      }
+      if (serie.size !== 1) {
+        src += `, s=${serie.size}`;
+      }
+      if (serie.label !== "") {
+        src += `, label="${serie.label}"`;
+        showLegend = true;
+      }
+      src += `)\n`;
+    });
 
     // size
 
@@ -139,6 +243,14 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
 
     // more series
 
+    if (xGrid && yGrid) {
+      src += `plt.grid()\n`;
+    } else if (xGrid) {
+      src += `plt.grid(axis="x")\n`;
+    } else if (yGrid) {
+      src += `plt.grid(axis="y")\n`;
+    }
+
     if (title !== "") {
       src += `plt.title("${title}")\n`;
     }
@@ -148,20 +260,175 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     if (yLabel !== "") {
       src += `plt.ylabel("${yLabel}")\n`;
     }
-    if (xGrid && yGrid) {
-      src += `plt.grid()\n`;
-    } else if (xGrid) {
-      src += `plt.grid(axis="x")\n`;
-    } else if (yGrid) {
-      src += `plt.grid(axis="y")\n`;
+    if (showLegend) {
+      if (doColorBy) {
+        src += `handles = [Line2D([0], [0], marker='o', color='w', markerfacecolor=v, label=k, markersize=8) for k, v in color_map.items()]\n`;
+        src += `plt.legend(handles=handles, loc="${legendPosition}")\n`;
+      } else {
+        src += `plt.legend(loc="${legendPosition}")\n`;
+      }
     }
     src += `plt.show()`;
     setCode(src);
-    setPackages(["import matplotlib.pyplot as plt"]);
+    if (doColorBy) {
+      setPackages([
+        "import matplotlib.pyplot as plt",
+        "from matplotlib.lines import Line2D",
+        "import matplotlib.colors as mcolors",
+      ]);
+    } else {
+      setPackages(["import matplotlib.pyplot as plt"]);
+    }
     if (automatic && runCell) {
       runCell();
     }
-  }, [df, xData, yData, title, xLabel, yLabel, xGrid, yGrid, style]);
+  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition]);
+
+  const seriesElements = series.map((serie, index) => {
+    function setXData(value: SetStateAction<string>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, x: value.toString() }
+        )
+      );
+    }
+    function setYData(value: SetStateAction<string>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, y: value.toString() }
+        )
+      );
+    }
+    function setColor(value: SetStateAction<string>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, color: value.toString() }
+        )
+      );
+    }
+    function setLabel(value: SetStateAction<string>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, label: value.toString() }
+        )
+      );
+    }
+    function setSize(value: SetStateAction<number>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, size: value.valueOf() as number }
+        )
+      );
+    }
+    function setAlpha(value: SetStateAction<number>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, alpha: value.valueOf() as number }
+        )
+      );
+    }
+
+    return (
+      <div
+        className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
+        key={`plot-serie-${index}`}
+      >
+        <div className="poc-col-span-2">
+          <Select
+            label={"Select x-axis data"}
+            option={serie.x}
+            options={allCols.map((d) => [d, d])}
+            setOption={setXData}
+          />
+        </div>
+        <div className="poc-col-span-2">
+          <Select
+            label={"Select y-axis data"}
+            option={serie.y}
+            options={allCols.map((c) => [c, c])}
+            setOption={setYData}
+          />
+        </div>
+        <div className="poc-col-span-2">
+          <Variable
+            label="Label"
+            name={serie.label}
+            setName={setLabel}
+            tooltip="Label is used in legend, please left blank to not include legend"
+          />
+        </div>
+        <div className="poc-col-span-2">
+          <Select
+            label={"Select color"}
+            option={serie.color}
+            options={
+              index === 0
+                ? [...allColors, ...colorBy].map((c) => [c, c])
+                : allColors.map((c) => [c, c])
+            }
+            setOption={setColor}
+          />
+        </div>
+        <div className="poc-col-span-1">
+          <Numeric label="Set size" name={serie.size} setName={setSize} />
+        </div>
+        <div className="poc-col-span-1">
+          <Numeric
+            label="Set alpha"
+            name={serie.alpha}
+            setName={setAlpha}
+            minValue={0.01}
+            maxValue={1}
+            step={0.01}
+          />
+        </div>
+        <div className="">
+          <div className=" poc-inline">
+            <button
+              data-tooltip-id="matplotlib-tooltip"
+              data-tooltip-content="Add data series"
+              type="button"
+              className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-mt-7"
+              onClick={() =>
+                setSeries([
+                  ...series,
+                  {
+                    x: allCols[0],
+                    y: allCols[allCols.length > 1 ? 1 : 0],
+                    color: allColors[0],
+                    size: 1,
+                    alpha: 1,
+                    label: "",
+                  },
+                ])
+              }
+            >
+              {<PlusIcon className="poc-inline poc-pb-1" />}
+            </button>
+          </div>
+
+          {series.length > 1 && (
+            <div className=" poc-inline poc-mx-1">
+              <button
+                data-tooltip-id="matplotlib-tooltip"
+                data-tooltip-content="Delete series"
+                type="button"
+                className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1  poc-text-center  disabled:poc-text-gray-300"
+                onClick={() => {
+                  let aa = [...series];
+                  aa.splice(index, 1);
+                  setSeries(aa);
+                }}
+                disabled={series.length === 1}
+              >
+                {<TrashIcon className="poc-inline poc-pb-1" />}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -185,29 +452,32 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
-          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-            <Select
-              label={"Select x-axis data"}
-              option={xData}
-              options={allCols.map((d) => [d, d])}
-              setOption={setXData}
-            />
-            <Select
-              label={"Select y-axis data"}
-              option={yData}
-              options={allCols.map((c) => [c, c])}
-              setOption={setYData}
-            />
-          </div>
+          <Tooltip
+            id="matplotlib-tooltip"
+            place="top"
+            positionStrategy="fixed"
+            offset={5}
+            style={{ zIndex: "10001" }}
+          />
+          {seriesElements}
 
           {advanced && (
             <>
-              <Select
-                label={"Plot style"}
-                option={style}
-                options={allStyles.map((c) => [c, c])}
-                setOption={setStyle}
-              />
+              <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                <Select
+                  label={"Plot style"}
+                  option={style}
+                  options={allStyles.map((c) => [c, c])}
+                  setOption={setStyle}
+                />
+                <Select
+                  label={"Legend position"}
+                  option={legendPosition}
+                  options={legendPositions.map((c) => [c, c])}
+                  setOption={setLegendPosition}
+                  tooltip="Legend is only displayed if labels are filled with values"
+                />
+              </div>
               <Variable label="Plot title" name={title} setName={setTitle} />
               <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable

@@ -41,7 +41,7 @@ export const Select: React.FC<SelectProps> = ({
               data-tooltip-content={tooltip}
               className="poc-inline"
             >
-              <InfoIcon />
+              <InfoIcon className="poc-absolute"/>
             </div>
           )}
 
