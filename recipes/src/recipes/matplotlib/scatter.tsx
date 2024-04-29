@@ -172,24 +172,16 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
-    // if (df === "" || xData === "" || yData === "") {
-    //   return;
-    // }
-    let src = `# make a scatter plot\n`;
-    // if (xGrid || yGrid) {
-    //   src += `plt.rcParams['axes.axisbelow'] = True\n`;
-    // }
+    if (df === "" || series.length === 0) {
+      return;
+    }
+    let src = ``;
+
     let showLegend = false;
 
     let doColorBy = false;
     let colorByCol = "";
     series.map((serie) => {
-      console.log(
-        serie.color,
-        colorBy,
-        serie.color in colorBy,
-        colorBy.includes(serie.color)
-      );
       if (colorBy.includes(serie.color)) {
         doColorBy = true;
         colorByCol = serie.color.slice(9);
@@ -197,6 +189,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     });
     if (doColorBy) {
       showLegend = true;
+      src += `# create mapping between values and colors\n`;
       src += `labels = ${df}["${colorByCol}"].unique().tolist()\n`;
       src += `colors = list(mcolors.TABLEAU_COLORS.keys())\n`;
       src += `color_map = {l: colors[i%len(colors)] for i,l in enumerate(labels)}\n`;
@@ -204,8 +197,11 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
 
     let tab = "";
     if (style !== "default") {
+      src += `# apply style and create scatter\n`;
       src += `with plt.style.context("${style}"):\n`;
       tab = "    ";
+    } else {
+      src += `# create scatter\n`;
     }
 
     series.map((serie, index) => {
@@ -242,7 +238,9 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     // figure size ?
 
     // more series
-
+    if (xGrid || yGrid) {
+      src += `# add grid\n`;
+    }
     if (xGrid && yGrid) {
       src += `plt.grid()\n`;
     } else if (xGrid) {
@@ -261,6 +259,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
       src += `plt.ylabel("${yLabel}")\n`;
     }
     if (showLegend) {
+      src += `# add legend box\n`;
       if (doColorBy) {
         src += `handles = [Line2D([0], [0], marker='o', color='w', markerfacecolor=v, label=k, markersize=8) for k, v in color_map.items()]\n`;
         src += `plt.legend(handles=handles, loc="${legendPosition}")\n`;
@@ -268,6 +267,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
         src += `plt.legend(loc="${legendPosition}")\n`;
       }
     }
+    src += `# display plot\n`;
     src += `plt.show()`;
     setCode(src);
     if (doColorBy) {
@@ -513,25 +513,13 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
               tooltip="Switch it if you would like to automatically rereun cell on code change"
             />
             <div className="poc-pt-4">
-              <button
-                data-tooltip-id="top-buttons-tooltip"
-                data-tooltip-content="Run code"
-                type="button"
-                className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center poc-mx-1"
-                onClick={() => {
-                  if (runCell) {
-                    runCell();
-                  }
-                }}
-              >
-                {<PlayIcon className="poc-inline poc-p-1" />}Run code
-              </button>
+              
 
               <button
                 data-tooltip-id="top-buttons-tooltip"
                 data-tooltip-content="Add new cell below"
                 type="button"
-                className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center "
+                className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center  poc-float-right"
                 onClick={() => {
                   if (setKeepOpen) {
                     setKeepOpen(false);
@@ -540,6 +528,19 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
               >
                 <CakeIcon className="poc-inline poc-pb-1" />
                 Chart is ok, hide recipe
+              </button>
+              <button
+                data-tooltip-id="top-buttons-tooltip"
+                data-tooltip-content="Run code"
+                type="button"
+                className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center poc-mx-1 poc-float-right"
+                onClick={() => {
+                  if (runCell) {
+                    runCell();
+                  }
+                }}
+              >
+                {<PlayIcon className="poc-inline poc-p-1" />}Run code
               </button>
             </div>
           </div>
