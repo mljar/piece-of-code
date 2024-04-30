@@ -244,9 +244,15 @@ const checkPackageCode = (pkg: string): string =>
   `
 from importlib import __import__
 try:
-    print('{' + f'"package": "${pkg}", "version": "{__import__("${pkg}").__version__}"' + '}')
-except ImportError:
-  print('{"package": "${pkg}", "version": "error"}')`;
+    try:
+        print('{' + f'"package": "${pkg}", "version": "{__import__(f"${pkg}").__version__}"' + '}')
+    except AttributeError:
+        print('{' + f'"package": "${pkg}", "version": "{__import__(f"${pkg}").version.__version__}"' + '}')
+    except ImportError:
+        print('{"package": "${pkg}", "version": "error"}')
+except Exception:
+    print('{"package": "${pkg}", "version": "error"}')
+`;
 
 
 const installPackageConda = (pkg: string): string =>

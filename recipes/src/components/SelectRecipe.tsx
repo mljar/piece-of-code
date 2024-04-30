@@ -23,6 +23,7 @@ import { Tooltip } from "react-tooltip";
 import "../style.css";
 import BuyLicense from "./BuyLicense";
 import { EnterLicense } from "./EnterLicense";
+import { QuestionIcon } from "../icons/Question";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -401,7 +402,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           )}
           {status === "error" && <ErrorIcon className="poc-inline poc-p-1" />}
           {status === "unknown" && (
-            <WarningIcon className="poc-inline poc-pt-1" />
+            <QuestionIcon className="poc-inline poc-pt-0.5" />
           )}
           {status === "install" && (
             <SpinnerIcon className="poc-inline poc-p-1" />

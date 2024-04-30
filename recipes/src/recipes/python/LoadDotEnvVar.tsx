@@ -11,7 +11,7 @@ export const LoadDotEnvVar: React.FC<IRecipeProps> = ({
 }) => {
   useEffect(() => {
     let src = `# load .env to environment variables\n`;
-    src += `_ = load_dotenv()\n`;
+    src += `_ = load_dotenv()`;
     setCode(src);
     setPackages(["from dotenv import load_dotenv"]);
   }, []);
@@ -47,8 +47,8 @@ export const LoadDotEnvVarRecipe: IRecipe = {
       version: ">=1.0.1",
     },
   ],
-  docsUrl: "python-access-environment-variables",
-  tags: ["env", "environment"],
+  docsUrl: "python-load-.env",
+  tags: [".env", "environment"],
 };
 
 export default LoadDotEnvVarRecipe;
