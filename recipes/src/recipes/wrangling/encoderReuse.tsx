@@ -99,7 +99,7 @@ export const EncoderReuseRecipe: IRecipe = {
       version: ">=1.0.0",
     },
   ],
-  docsUrl: "sklearn-use-categoricals- encoder-on-new-data",
+  docsUrl: "sklearn-use-categoricals-encoder-on-new-data",
   tags: ["pandas", "categorical"],
   defaultVariables: [
     {
