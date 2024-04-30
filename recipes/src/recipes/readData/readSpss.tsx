@@ -54,4 +54,7 @@ Please check [pandas.read_spss](https://pandas.pydata.org/pandas-docs/stable/ref
   ui: ReadSpss,
   Icon: SumIcon,
   docsUrl: "python-read-spss",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

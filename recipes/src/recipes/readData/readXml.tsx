@@ -53,4 +53,7 @@ Please check [pandas.read_xml](https://pandas.pydata.org/pandas-docs/stable/refe
   ui: ReadXml,
   Icon: XmlIcon,
   docsUrl: "python-read-xml",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

@@ -54,4 +54,7 @@ export const ReadPickleRecipe: IRecipe = {
   ui: ReadPickle,
   Icon: CucumberIcon,
   docsUrl: "python-load-pickle",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

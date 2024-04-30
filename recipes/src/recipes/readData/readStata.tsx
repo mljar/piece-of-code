@@ -53,4 +53,7 @@ Please check [pandas.read_stata](https://pandas.pydata.org/pandas-docs/stable/re
   ui: ReadStata,
   Icon: StataIcon,
   docsUrl: "python-read-stata",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

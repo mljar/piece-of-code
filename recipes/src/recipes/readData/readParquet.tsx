@@ -54,4 +54,7 @@ Please check [pandas.read_parquet](https://pandas.pydata.org/pandas-docs/stable/
   ui: ReadParquet,
   Icon: DashboardIcon,
   docsUrl: "python-read-parquet",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

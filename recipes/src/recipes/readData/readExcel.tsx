@@ -87,4 +87,7 @@ Please check [pandas.read_excel](https://pandas.pydata.org/pandas-docs/stable/re
   ui: ReadExcel,
   Icon: XlsIcon,
   docsUrl: "python-read-excel",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

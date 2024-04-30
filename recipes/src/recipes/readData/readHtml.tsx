@@ -50,4 +50,7 @@ Please check [pandas.read_html](https://pandas.pydata.org/pandas-docs/stable/ref
   ui: ReadHtml,
   Icon: HtmlIcon,
   docsUrl: "python-read-html",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

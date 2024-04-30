@@ -53,4 +53,7 @@ Please check [pandas.read_sas](https://pandas.pydata.org/pandas-docs/stable/refe
   ui: ReadSas,
   Icon: SasIcon,
   docsUrl: "python-read-sas",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };

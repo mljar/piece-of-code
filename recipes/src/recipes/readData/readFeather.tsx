@@ -56,4 +56,7 @@ Please check [pandas.read_feather](https://pandas.pydata.org/pandas-docs/stable/
   ui: ReadFeather,
   Icon: FeatherIcon,
   docsUrl: "python-read-feather",
+  requiredPackages: [
+    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+  ],
 };
