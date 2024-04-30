@@ -8,9 +8,9 @@ import { RobotIcon } from "../../icons/Robot";
 export const AutoMLRecipes: IRecipeSet = {
   name: "MLJAR AutoML",
   longName: "AutoML in Python",
-  docsUrl: "mljar-automl",
-  description: "Use MLJAR AutoML to train ML pipeline on tabular data.",
-  shortDescription: "Train AutoML models in Python",
+  docsUrl: "python-automl",
+  description: "Use MLJAR AutoML to train Machine Learning pipeline on tabular data.",
+  shortDescription: "Train MLJAR AutoML in Python with no-code.",
   tags: ["automl", "mljar"],
   Icon: RobotIcon,
   recipes: {

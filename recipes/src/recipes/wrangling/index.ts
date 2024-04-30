@@ -18,7 +18,7 @@ export const DataWranglingRecipes: IRecipeSet = {
     longName: "Data wrangling in Python",
     docsUrl: "data-wrangling",
     description: "Prepare and preprocess your data. You will find here code recipes for data joining, spliting, filtering and more!",
-    shortDescription: "Prepare and preprocess your data in Python",
+    shortDescription: "Prepare and preprocess your data in Python.",
     tags: ["preprocessing", "prepare", "wrangling", "pandas"],
     Icon: TransformIcon,
     recipes: {

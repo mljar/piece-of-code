@@ -10,7 +10,7 @@ export const WriteDataRecipes: IRecipeSet = {
     longName: "Write data in Python",
     docsUrl: "python-write-data",
     description: "Collection of recipies to save your data into files.",
-    shortDescription: "Write your results to hard drive",
+    shortDescription: "Save your results to file.",
     tags: ["write-data", "save-data", "pandas", "pickle"],
     Icon: FilePencilIcon,
     recipes: {

@@ -5,10 +5,10 @@ import ScatterPlotRecipe from "./scatter";
 
 export const MatplotlibRecipes: IRecipeSet = {
     name: "matplotlib",
-    longName: "matplotlib recipes",
+    longName: "Matplotlib",
     docsUrl: "matplotlib",
-    description: `Let's do some charts.`,
-    shortDescription: "We will do a lot of plots with matplotlib.",
+    description: `Create matplotlib charts in Python with no-code UI.`,
+    shortDescription: "Create matplotlib plots with no-code UI.",
     tags: ["matplotlib"],
     Icon: MatplotlibIcon,
     recipes: {

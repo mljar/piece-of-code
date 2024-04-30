@@ -67,7 +67,7 @@ export const FileReadRecipe: IRecipe = {
   ui: FileRead,
   Icon: FileDownloadIcon,
   requiredPackages: [],
-  docsUrl: "python-write-to-file",
+  docsUrl: "python-read-file",
 };
 
 export default FileReadRecipe;

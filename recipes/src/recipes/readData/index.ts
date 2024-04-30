@@ -19,7 +19,7 @@ export const ReadDataRecipes: IRecipeSet = {
     docsUrl: "read-data",
     description: `Collection of recipies to load data from external files into your program. Python can load files in many formats: CSV, XLS, XLSX, JSON and many more. 
     `,
-    shortDescription: `Recipes to load data in Python`,
+    shortDescription: `Read files in Python.`,
     tags: ["read-data", "pandas"],
     Icon: OpenBookIcon,
     recipes: {
