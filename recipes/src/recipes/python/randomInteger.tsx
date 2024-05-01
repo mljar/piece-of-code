@@ -48,7 +48,7 @@ export const RandomIntegerRecipe: IRecipe = {
   longName: "Generate random integer in Python",
   parentName: "Python",
   description: `Generate random integer in Python. Returns a random integer N such that lower <= N <= higher.`,
-  shortDescription: "Generate random integers in Python.",
+  shortDescription: "Generate random integers in Python",
   codeExplanation: `
 1. Generate random integer from selected range.
   `,

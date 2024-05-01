@@ -40,7 +40,7 @@ export const FolderDeleteRecipe: IRecipe = {
   longName: "Delete directory in Python",
   parentName: "Python",
   description: "Check if directory exists and if yes, then delete it.",
-  shortDescription: "Check if directory exists and if yes, then delete it.",
+  shortDescription: "Check if directory exists and if yes, then delete it",
   codeExplanation: `
 1. Check if directory exists in the file system.
 2. Delete directory if present.

@@ -58,7 +58,7 @@ export const FileCopyRecipe: IRecipe = {
   longName: "Copy file in Python",
   parentName: "Python",
   description: "Copy file in Python. Source file can be coppied to new file path or to new directory.",
-  shortDescription: "Copy file in Python. Source file can be coppied to new file path or to new directory.",
+  shortDescription: "Copy file in Python",
   codeExplanation: `
 1. Copy file to new destination.
 

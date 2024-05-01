@@ -7,9 +7,6 @@ import { FileShredderIcon } from "../../icons/FileShredder";
 
 export const FileDelete: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
   const [myFile, setMyFile] = useState("file_name");
-  const [text, setText] = useState("hello!");
-  const [advanced, setAdvanced] = useState(false);
-  const [binary, setBinary] = useState(false);
 
   useEffect(() => {
     let src = `# open a file in write mode\n`;
@@ -44,7 +41,7 @@ export const FileDeleteRecipe: IRecipe = {
   longName: "Delete file in Python",
   parentName: "Python",
   description: "Check if file exists and if yes, then delete file.",
-  shortDescription: "Check if file exists and if yes, then delete file.",
+  shortDescription: "Check if file exists and if yes, then delete file",
   codeExplanation: `
 1. Check if file exists in the file system.
 2. Delete file if present.

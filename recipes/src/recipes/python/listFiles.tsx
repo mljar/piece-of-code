@@ -53,7 +53,7 @@ export const ListFilesRecipe: IRecipe = {
   parentName: "Python",
   description:
     "Create and display list with all files in the selected directory with Python code.",
-  shortDescription: "Create and display list with all files in directory.",
+  shortDescription: "List all files in directory",
   codeExplanation: "",
   ui: ListFiles,
   Icon: FolderOpenIcon,

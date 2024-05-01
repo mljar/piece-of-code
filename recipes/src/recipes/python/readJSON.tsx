@@ -45,7 +45,7 @@ export const ReadJSONRecipe: IRecipe = {
   longName: "Read JSON file to dict in Python",
   parentName: "Python",
   description: `Read JSON file to dict in Python.`,
-  shortDescription: "Read JSON file to dict in Python.",
+  shortDescription: "Read JSON file to dict in Python",
   codeExplanation: `
 1. Load JSON file to dict.
 2. Print dict object with indentation.

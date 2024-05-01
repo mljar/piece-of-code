@@ -44,7 +44,7 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
 };
 
 export const EnvironmentVarsRecipe: IRecipe = {
-  name: "Access environment variable",
+  name: "Get environment variable",
   longName: "Access environment variable in Python",
   parentName: "Python",
   description: "Access environment variable in Python",

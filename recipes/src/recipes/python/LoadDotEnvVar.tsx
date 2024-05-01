@@ -29,7 +29,7 @@ export const LoadDotEnvVarRecipe: IRecipe = {
   parentName: "Python",
   description: "Load secrets from .env file to environment variables in Python",
   shortDescription:
-    "Load secrets from .env file to environment variable in Python",
+    "Load secrets from .env file to environment variable",
   codeExplanation: `
 1. Call **load_dotenv()** function from **dotenv** package.
 2. You can access your variables with code: 
