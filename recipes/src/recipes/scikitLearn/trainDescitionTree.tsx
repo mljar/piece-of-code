@@ -223,7 +223,7 @@ Fitted object can be used to compute predictions. If you want to persist your De
   ui: TrainDecisionTree,
   Icon: TreeIcon,
   requiredPackages: [
-    { importName: "sklearn", installationName: "sklearn", version: ">=1.0.0" },
+    { importName: "sklearn", installationName: "scikit-learn", version: ">=1.0.0" },
   ],
   docsUrl: "python-train-decision-tree",
   tags: ["decision-tree", "classification", "regression"],

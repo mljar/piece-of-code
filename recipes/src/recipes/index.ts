@@ -31,6 +31,7 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
   const recipeSet = objs[1];
   let recipeUrls = Object.entries(recipeSet.recipes).map((rs) => {
     const recipe = rs[1];
+
     return {
       name: recipe.name,
       longName: recipe.longName,
@@ -38,7 +39,11 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
       parentName: recipe.parentName,
       description: recipe.description,
       shortDescription: recipe.shortDescription,
-      tags: recipe.tags?.join(",")
+      tags: recipe.tags === undefined ? "" : recipe.tags?.join(","),
+      packages: recipe.requiredPackages === undefined ? "" : recipe.requiredPackages?.map(p => `${p.installationName}${p.version}`).join(","),
+      variables: recipe.defaultVariables === undefined ? "" : recipe.defaultVariables?.map(v => `${v.varName}@${v.varType}`).join(","),
+      code: "",
+      codeExplanation: recipe.codeExplanation,
     };
   });
   recipeUrls.unshift({
@@ -48,13 +53,16 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
     parentName: '',
     description: recipeSet.description,
     shortDescription: recipeSet.shortDescription,
-    tags: recipeSet.tags?.join(",")
+    tags: recipeSet.tags === undefined ? "" : recipeSet.tags?.join(","),
+    packages: "",
+    variables: "",
+    code: "",
+    codeExplanation: "",
   });
   return recipeUrls;
 }).flat();
 
 import axios from "axios";
-import { MatplotlibIcon } from "../icons/Matplotlib";
 if (process.env.STORYBOOK_UPDATE_DB) {
   console.log("Update server data");
   console.log(urlList);
