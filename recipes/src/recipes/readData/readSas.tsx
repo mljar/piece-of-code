@@ -44,7 +44,7 @@ export const ReadSasRecipe: IRecipe = {
   description: `Load SAS file in Python code. 
 
 Please check [pandas.read_sas](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_sas.html) for more parameters.`,
-  shortDescription: `Load SAS file in Python code.`,
+  shortDescription: `Load SAS file in Python code`,
   tags: ["sas", "pandas"],
   codeExplanation: `
 1. Read Stata file from provided path.

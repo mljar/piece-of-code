@@ -132,7 +132,7 @@ export const DfDisplayRecipe: IRecipe = {
 - first rows from DataFrame (head),
 - last rows from DataFrame (tail),
 - rows from select range.`,
-  shortDescription: "Display rows from Pandas DataFrame.",
+  shortDescription: "Display rows from Pandas DataFrame",
   codeExplanation: "",
   ui: DfDisplay,
   Icon: TableIcon,

@@ -87,7 +87,7 @@ export const EncoderReuseRecipe: IRecipe = {
   longName: "Use categoricals encoder on new data",
   parentName: "Data wrangling",
   description: `Use previously fitted categoricals encoder on new data. Please just select encoder and DataFrame to convert categoricals. The encoder has information about which columns where present during fit and will convert only fitted columns. In case of new values, unseen during fit, the handle method selected during encoder initialization will be applied. Good luck!`,
-  shortDescription: `Use previously fitted categoricals encoder on new data.`,
+  shortDescription: `Use previously fitted categoricals encoder on new data`,
   codeExplanation: "",
   ui: EncoderReuse,
   Icon: CategoryIcon,

@@ -122,7 +122,7 @@ export const SelectXyRecipe: IRecipe = {
   description:
     "Select X,y for Machine Learning model training. The `X` matrix is used as model input, whereas `y` vector is used as model target.",
   shortDescription:
-    "Select training attributes and target for Machine Learning model training.",
+    "Select training attributes and target for Machine Learning model training",
   codeExplanation: "",
   ui: SelectXy,
   Icon: XyIcon,

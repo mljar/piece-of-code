@@ -45,7 +45,7 @@ export const ReadPickleRecipe: IRecipe = {
   parentName: "Read data",
   description: `Load Pickle file in Python code. Pickle can be used to store any Python object. Loaded content will be assigned to Python variable.  
   `,
-  shortDescription: `Load Pickle file in Python code.`,
+  shortDescription: `Load Pickle file in Python code`,
   tags: ["pickle"],
   codeExplanation: `
 1. Read pickle file from provided path.

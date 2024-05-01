@@ -41,7 +41,7 @@ export const ReadHtmlRecipe: IRecipe = {
   description: `Load HTML file in Python code. 
   
 Please check [pandas.read_html](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_html.html) for more parameters.`,
-  shortDescription: `Load HTML file in Python code.`,
+  shortDescription: `Load HTML file in Python code`,
   tags: ["html", "pandas"],
   codeExplanation: `
 1. Read XML file from provided path.

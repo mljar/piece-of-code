@@ -44,7 +44,7 @@ export const ReadStataRecipe: IRecipe = {
   description: `Load Stata file in Python code. 
   
 Please check [pandas.read_stata](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_stata.html) for more parameters.`,
-  shortDescription: `Load Stata file in Python code.`,
+  shortDescription: `Load Stata file in Python code`,
   tags: ["stata", "pandas"],
   codeExplanation: `
 1. Read Stata file from provided path.

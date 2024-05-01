@@ -63,7 +63,7 @@ export const DfDescribeRecipe: IRecipe = {
   parentName: "Data wrangling",
   description: `Display statistical description for numeric columns in DataFrame. There are displayed values like: count, mean, std, min, max 25, 50 and 75 percentiles.`,
   shortDescription:
-    "Display statistical description for numeric columns in DataFrame.",
+    "Display statistical description for numeric columns in DataFrame",
   codeExplanation: "",
   ui: DfDescribe,
   Icon: FileDescriptionIcon,

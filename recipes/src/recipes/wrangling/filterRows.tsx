@@ -132,7 +132,7 @@ export const FilterRowsRecipe: IRecipe = {
   longName: "Filter rows in Pandas DataFrame",
   parentName: "Data wrangling",
   description: `Filter rows in Pandas DataFrame based on condition. You can select a column and apply condition on it. Please be aware that there are different conditions for numeric and categorical columns.`,
-  shortDescription: "Filter rows in Pandas DataFrame based on condition.",
+  shortDescription: "Filter rows in Pandas DataFrame based on condition",
   ui: FilterRows,
   codeExplanation: `
 1. Select a column and apply a filtering condition to its values. Only rows that fulfill the condition will be present in the DataFrame.

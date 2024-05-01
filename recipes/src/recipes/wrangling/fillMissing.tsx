@@ -186,7 +186,7 @@ export const FillMissingRecipe: IRecipe = {
   parentName: "Data wrangling",
   description: `
 Fill missing values in Pandas DataFrame.`,
-  shortDescription: "Fill missing values in Pandas DataFrame.",
+  shortDescription: "Fill missing values in Pandas DataFrame",
   codeExplanation: "",
   ui: FillMissing,
   Icon: AffiliateIcon,

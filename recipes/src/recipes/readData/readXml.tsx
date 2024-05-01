@@ -44,7 +44,7 @@ export const ReadXmlRecipe: IRecipe = {
   description: `Load XML file in Python code. 
   
 Please check [pandas.read_xml](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_xml.html) for more parameters.`,
-  shortDescription: `Load XML file in Python code.`,
+  shortDescription: `Load XML file in Python code`,
   tags: ["xml", "pandas"],
   codeExplanation: `
 1. Read XML file from provided path.

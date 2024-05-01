@@ -44,7 +44,7 @@ export const LoadAutoMLRecipe: IRecipe = {
   longName: "Load AutoML models from disk",
   parentName: "MLJAR AutoML",
   description: "You can load AutoML models from disk and use them to compute predictions on new data.",
-  shortDescription: "Load AutoML models from disk and use them to compute predictions on new data.",
+  shortDescription: "Load AutoML models from disk and use them to compute predictions on new data",
   codeExplanation: "",
   ui: LoadAutoML,
   Icon: FolderOpenIcon,

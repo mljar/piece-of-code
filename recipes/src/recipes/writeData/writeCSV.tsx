@@ -86,7 +86,7 @@ export const WriteCSVRecipe: IRecipe = {
   parentName: "Write data",
   description:
     "Write your Pandas DataFrame into CSV file. If CSV file path doesn't exist please select similar path and modify in the code the path that you want.",
-  shortDescription: "Write your Pandas DataFrame into CSV file.",
+  shortDescription: "Write your Pandas DataFrame into CSV file",
   codeExplanation: ``,
   ui: WriteCSV,
   Icon: FileCsvIcon,

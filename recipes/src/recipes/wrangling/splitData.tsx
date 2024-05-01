@@ -172,7 +172,7 @@ export const SplitDataRecipe: IRecipe = {
   longName: "Split data into train and test subsets",
   parentName: "Data wrangling",
   description: `Split data into train and test subsets. Please specify the train size ratio. Typical values for train size is in range 0.6 to 0.9, but your might vary. The rest of data samples are used for testing. You have option to control data shuffle and stratification in **Advanced** options. You can specify the random seed to control reproducibility.`,
-  shortDescription: "Split data into train and test subsets.",
+  shortDescription: "Split data into train and test subsets",
   codeExplanation: `
 1. Split data into train and test subsets.  
 2. Display shapes of new data sets.

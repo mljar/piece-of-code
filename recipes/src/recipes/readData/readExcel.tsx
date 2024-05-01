@@ -78,7 +78,7 @@ export const ReadExcelRecipe: IRecipe = {
   description: `Load Excel file into Pandas DataFrame. Please check **Advanced** settings. You can select Sheet by name or by integer index, which is zero-indexed. You can also specify number of rows to skip when file reading.
     
 Please check [pandas.read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) for more parameters.`,
-  shortDescription: "Load Excel file into Pandas DataFrame.",
+  shortDescription: "Load Excel file into Pandas DataFrame",
   tags: ["excel", "spreadsheet", "pandas"],
   codeExplanation: `
 1. Read Excel file from provided path.

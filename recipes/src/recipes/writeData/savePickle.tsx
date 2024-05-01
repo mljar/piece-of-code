@@ -66,7 +66,7 @@ export const SavePickleRecipe: IRecipe = {
   longName: "Write any Python object to Pickle file",
   parentName: "Write data",
   description: `You can save any Python object to Pickle file. If your output file doesn't exist, please similar path and do adjustment to path in the code.`,
-  shortDescription: "Write Python object to Pickle file.",
+  shortDescription: "Write Python object to Pickle file",
   codeExplanation: ``,
   ui: SavePickle,
   Icon: CucumberIcon,

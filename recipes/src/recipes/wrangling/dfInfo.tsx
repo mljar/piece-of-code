@@ -63,7 +63,7 @@ export const DfInfoRecipe: IRecipe = {
   parentName: "Data wrangling",
   description: `Display information about DataFrame columns, non-null counts, data types and memory usage.`,
   shortDescription:
-    "Check information about DataFrame columns, non-nulls, types and memory usage.",
+    "Check information about DataFrame columns, non-nulls, types and memory usage",
   codeExplanation: "",
   ui: DfInfo,
   Icon: InfoSquareIcon,

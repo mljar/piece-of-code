@@ -82,7 +82,7 @@ export const FillMissingReuseRecipe: IRecipe = {
   longName: "Use missing values imputer on new data",
   parentName: "Data wrangling",
   description: `Use previously fitted imputer on new data.`,
-  shortDescription: `Use previously fitted imputer on new data.`,
+  shortDescription: `Use previously fitted imputer on new data`,
   codeExplanation: "",
   ui: FillMissingReuse,
   Icon: AffiliateIcon,

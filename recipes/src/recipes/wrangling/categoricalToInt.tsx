@@ -152,7 +152,7 @@ The object that is used for preprocessing is called encoder. In this recipe, we 
 You can use encoder object on new dataset. Please check **Save to pickle** recipe to save the object for later use.
     `,
   shortDescription:
-    "Convert features with non-numeric values (categoricals) to integers.",
+    "Convert features with non-numeric values (categoricals) to integers",
   codeExplanation: "",
   ui: CategoricalToInt,
   Icon: CategoryIcon,

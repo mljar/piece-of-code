@@ -557,7 +557,7 @@ export const ScatterPlotRecipe: IRecipe = {
   Please check **Advanced** options to change plot style, set title, axis labels and control legend position.
   `,
   shortDescription:
-    "Create and customize scatter plot for your data. You can set color, size, transparency for scatter. There can be several scatters in one figure.",
+    "Create and customize scatter plot for your data. You can set color, size, transparency for scatter. There can be several scatters in one figure",
   codeExplanation: `
 1. Please select DataFrame.
 2. Please select columns for x and y axis. You can set colot, size and transparency for each scatter. There can be several scatters in the plot.

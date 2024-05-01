@@ -73,7 +73,7 @@ Check missing values in Pandas DataFrame. This Python recipe do several things:
 - count **total number of missing values** in DataFrame,
 - check **missing values by each column** in DataFrame.`,
   shortDescription:
-    "Check and count missing values in Pandas DataFrame.",
+    "Check and count missing values in Pandas DataFrame",
   codeExplanation: "",
   ui: CheckMissing,
   Icon: QuestionMarkIcon,

@@ -213,7 +213,7 @@ export const TrainDecisionTreeRecipe: IRecipe = {
   Decision Tree model can be persisted to hard disk in pickle format. 
     `,
   shortDescription:
-    "Train Decision Tree in Python. Algorithm can be used in classification and regression tasks.",
+    "Train Decision Tree in Python. Algorithm can be used in classification and regression tasks",
   codeExplanation: `
 1. Initialize Decision Tree object. 
 2. Fit model on provided data.    

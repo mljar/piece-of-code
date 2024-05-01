@@ -90,7 +90,7 @@ export const PredictRecipe: IRecipe = {
   longName: "Compute predictions with AutoML",
   parentName: "MLJAR AutoML",
   description: "Compute predictions on new data with AutoML.",
-  shortDescription: "Compute predictions on new data with AutoML.",
+  shortDescription: "Compute predictions on new data with AutoML",
   codeExplanation: "",
   ui: Predict,
   Icon: TargetArrowIcon,
