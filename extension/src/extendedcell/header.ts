@@ -142,6 +142,17 @@ export class RecipeWidgetsRegistry {
     }
     return undefined;
   }
+
+  public saveNotebook() {
+    if (this._commands) {
+      const promise = this._commands.execute(
+        'docmanager:save'
+      );
+      promise.then(() => {
+      });
+    }
+  }
+
   public addWidget(cellId: string, widget: SelectRecipeWidget) {
     this._widgets[cellId] = widget;
   }
@@ -175,6 +186,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   private _packages: string[] = [];
   private _executionSteps: [string, ExecutionStatus][] = [];
   private _variableInspector: VariableInspector | undefined;
+  private _meta: any = {};
 
   constructor() {
     super();
@@ -257,14 +269,29 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       //
       RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
     }
+    // save metadata
+    console.log("save metadata");
+    if (this.cell) {
+      if (this._meta) {
+        let meta = this.cell.model.sharedModel.getMetadata();
+        meta["mljar"] = this._meta;
+        this.cell.model.sharedModel.setMetadata(meta);
+      }
+    }
+  }
 
-
-
-
+  setMeta(m: any) {
+    console.log('setMeta');
+    console.log(m);
+    if (m) {
+      this._meta = m;
+    }
+    console.log('set');
   }
 
   checkOutput(): string {
     if (this.cell) {
+      RecipeWidgetsRegistry.getInstance().saveNotebook();
       return this.checkCellOutput(this.cell.model.sharedModel.toJSON(), 'Run code');
     }
     return '';
@@ -320,7 +347,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           // check if there are any imports in the first cell
           // if not then we need to insert cell above for imports
           let firstCellSrc = cells.get(0).sharedModel.getSource();
-          if(!firstCellSrc.includes("import")) {
+          if (!firstCellSrc.includes("import")) {
             nb?.model?.sharedModel.insertCell(0, { cell_type: 'code', source: '# import packages' })
           }
         }
@@ -414,6 +441,9 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     if (cell) {
 
       if (this.selectRecipe === undefined) {
+
+        let meta = cell.model.sharedModel.getMetadata();
+
         const executionCount = this.getExecutionCount(cell);
         this.selectRecipe = new SelectRecipeWidget(
           cell,
@@ -423,7 +453,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.deleteCell.bind(this),
           this.addCell.bind(this),
           executionCount,
-
+          meta["mljar"],
+          this.setMeta.bind(this),
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {

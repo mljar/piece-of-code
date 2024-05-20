@@ -32,6 +32,8 @@ interface Props {
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
   clearExecutionSteps: () => void;
+  meta: any;
+  setMeta: (m: any) => void;
 }
 
 const SelectRecipeComponent = ({
@@ -51,7 +53,9 @@ const SelectRecipeComponent = ({
   checkPackage,
   checkedPackages,
   installPackage,
-  clearExecutionSteps
+  clearExecutionSteps,
+  meta,
+  setMeta
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -80,6 +84,8 @@ const SelectRecipeComponent = ({
         checkedPackages={checkedPackages}
         installPackage={installPackage}
         clearExecutionSteps={clearExecutionSteps}
+        meta={meta}
+        setMeta={setMeta}
       />
     </div>
   );
@@ -108,6 +114,9 @@ export class SelectRecipeWidget extends ReactWidget {
     importName: string
   ) => void;
 
+  private _meta: any;
+  private _setMeta: (m: any) => void;
+
   constructor(
     cell: Cell<ICellModel>,
     setCode: (src: string) => void,
@@ -115,7 +124,9 @@ export class SelectRecipeWidget extends ReactWidget {
     runCell: () => void,
     deleteCell: () => void,
     addCell: () => void,
-    executionCount: number
+    executionCount: number,
+    meta: any,
+    setMeta: (m: any) => void
   ) {
     super();
     this.addClass('jp-react-widget');
@@ -129,6 +140,8 @@ export class SelectRecipeWidget extends ReactWidget {
     this._checkPackage = (pkg: string) => {};
     this._checkedPackages = {};
     this._installPackage = (installationName: string, importName: string) => {};
+    this._meta = meta;
+    this._setMeta = setMeta;
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
@@ -204,6 +217,8 @@ export class SelectRecipeWidget extends ReactWidget {
               checkedPackages={this._checkedPackages}
               installPackage={this._installPackage}
               clearExecutionSteps={() => this.setExecutionSteps([])}
+              meta={this._meta}
+              setMeta={this._setMeta}
             />
           );
         }}

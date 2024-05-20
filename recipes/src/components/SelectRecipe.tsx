@@ -42,6 +42,8 @@ export interface ISelectRecipeProps {
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
   clearExecutionSteps: () => void;
+  meta: any;
+  setMeta: (m: any) => void;
 }
 
 declare global {
@@ -67,6 +69,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   checkedPackages,
   installPackage,
   clearExecutionSteps,
+  meta,
+  setMeta,
 }: ISelectRecipeProps) => {
   let isElectron = false;
   if (typeof window !== "undefined") {
@@ -509,6 +513,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                     setExecuted(false);
                   }}
                   setKeepOpen={setKeepOpen}
+                  meta={meta}
+                  setMeta={setMeta}
                 />
               </div>
             </div>

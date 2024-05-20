@@ -11,6 +11,8 @@ export interface IRecipeProps {
     variables: IVariable[];
     runCell?: () => void;
     setKeepOpen?: (keepOpen: boolean) => void;
+    meta?: any;
+    setMeta?: (m: any) => void;
 }
 
 export interface IRecipeSet {

@@ -9,6 +9,8 @@ import { FileSmileIcon } from "../../icons/FileSmile";
 export const ExampleData: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  meta,
+  setMeta,
 }) => {
   const [name, setName] = useState("df");
   const datasetOptions: [string, string][] = [
@@ -20,6 +22,13 @@ export const ExampleData: React.FC<IRecipeProps> = ({
     ],
   ];
   const [dataset, setDataset] = useState(datasetOptions[0][1]);
+
+  useEffect(() => {
+    if (meta) {
+      if (meta["name"]) setName(meta["name"]);
+      if (meta["dataset"]) setDataset(meta["dataset"]);
+    }
+  }, [meta]);
 
   useEffect(() => {
     let url = "";
@@ -42,10 +51,16 @@ export const ExampleData: React.FC<IRecipeProps> = ({
     }
 
     src += ")\n";
-    src += `# display first rows\n`
-    src += `${name}.head()`
+    src += `# display first rows\n`;
+    src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMeta) {
+      setMeta({
+        name,
+        dataset,
+      });
+    }
   }, [name, dataset]);
 
   return (
@@ -70,8 +85,7 @@ export const ExampleDataRecipe: IRecipe = {
   name: "Sample datasets",
   longName: "Load sample dataset",
   parentName: "Read data",
-  description:
-    `Read example dataset to pandas DataFrame. Datasets are loaded from GitHub repository [datasets-for-start](https://github.com/pplonski/datasets-for-start), you need an internet connection to load them. 
+  description: `Read example dataset to pandas DataFrame. Datasets are loaded from GitHub repository [datasets-for-start](https://github.com/pplonski/datasets-for-start), you need an internet connection to load them. 
 
 You can select from three datasets:
  - Iris dataset - it can be used in multi-class classification tasks, 
