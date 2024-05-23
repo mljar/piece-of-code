@@ -6,11 +6,13 @@ import { FileCsvIcon } from "../../icons/FileCsv";
 import { Select } from "../../components/Select";
 import { FileSmileIcon } from "../../icons/FileSmile";
 
+const DOCS_URL = "python-load-example-dataset";
+
 export const ExampleData: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
-  meta,
-  setMeta,
+  metadata,
+  setMetadata,
 }) => {
   const [name, setName] = useState("df");
   const datasetOptions: [string, string][] = [
@@ -24,11 +26,13 @@ export const ExampleData: React.FC<IRecipeProps> = ({
   const [dataset, setDataset] = useState(datasetOptions[0][1]);
 
   useEffect(() => {
-    if (meta) {
-      if (meta["name"]) setName(meta["name"]);
-      if (meta["dataset"]) setDataset(meta["dataset"]);
+    console.log({ metadata });
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      // if (metadata["dataset"]) setDataset(metadata["dataset"]);
     }
-  }, [meta]);
+  }, [metadata]);
 
   useEffect(() => {
     let url = "";
@@ -55,17 +59,22 @@ export const ExampleData: React.FC<IRecipeProps> = ({
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
-    if (setMeta) {
-      setMeta({
+    if (setMetadata) {
+      setMetadata({
         name,
         dataset,
+        docsUrl: DOCS_URL,
       });
     }
   }, [name, dataset]);
 
   return (
     <div>
-      <Title Icon={FileSmileIcon} label={"Example Data"} />
+      <Title
+        Icon={FileSmileIcon}
+        label={"Sample datasets"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Allocate DataFrame to variable"}
         name={name}
@@ -98,7 +107,7 @@ You can select from three datasets:
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsUrl: "python-load-example-dataset",
+  docsUrl: DOCS_URL,
   tags: ["sample", "example", "dataset", "pandas"],
 };
 

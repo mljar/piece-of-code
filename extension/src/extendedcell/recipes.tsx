@@ -84,8 +84,8 @@ const SelectRecipeComponent = ({
         checkedPackages={checkedPackages}
         installPackage={installPackage}
         clearExecutionSteps={clearExecutionSteps}
-        meta={meta}
-        setMeta={setMeta}
+        metadata={meta}
+        setMetadata={setMeta}
       />
     </div>
   );

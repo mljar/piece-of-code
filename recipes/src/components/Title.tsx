@@ -1,11 +1,14 @@
 import React from "react";
 import { IconProps } from "../icons/props";
+import { BookIcon } from "../icons/Book";
+import { ExternalLinkIcon } from "../icons/ExternalLink";
 
 interface TitleProps {
   label: string;
   Icon?: React.FC<IconProps>;
   advanced?: boolean;
   setAdvanced?: React.Dispatch<React.SetStateAction<boolean>>;
+  docsUrl?: string;
 }
 
 export const Title: React.FC<TitleProps> = ({
@@ -13,25 +16,15 @@ export const Title: React.FC<TitleProps> = ({
   Icon,
   advanced,
   setAdvanced,
+  docsUrl,
 }: TitleProps) => {
   return (
     <h3 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white">
       {Icon && <Icon className="poc-inline poc-pb-1" />}
       {label}
-      {/* <div className="poc-inline poc-items-center poc-float-right">
-        <a
-          className="poc-text-blue-500 hover:poc-text-blue-700 
-          poc-font-medium poc-text-sm poc-text-center 
-          poc-inline-flex poc-items-center dark:poc-bg-blue-600 
-          dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800"
-          href=""
-        >
-          <BookIcon className="" /> <span className="poc-pb-0.5">Docs</span>
-          <span className="poc-sr-only">Docs</span>
-        </a>
-      </div> */}
+
       {setAdvanced && (
-        <div className="poc-inline poc-items-center poc-float-right poc-px-2">
+        <div className="poc-inline poc-items-center poc-float-right poc-px-2 poc-pt-1">
           <label
             className="poc-relative poc-inline-flex 
                           poc-items-center poc-cursor-pointer"
@@ -58,6 +51,22 @@ export const Title: React.FC<TitleProps> = ({
               Advanced
             </span>
           </label>
+        </div>
+      )}
+      {docsUrl && (
+        <div className="poc-relative poc-float-right">
+          <a
+            className="poc-text-blue-500 hover:poc-text-blue-700 
+          poc-font-medium poc-text-sm poc-text-center 
+          poc-inline-flex poc-items-center dark:poc-bg-blue-600 
+          dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800
+          "
+            href={docsUrl}
+          >
+            {" "}
+            Docs
+            <ExternalLinkIcon className="poc-pb-1" />
+          </a>
         </div>
       )}
     </h3>

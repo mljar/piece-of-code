@@ -18,6 +18,8 @@ import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { Tooltip } from "react-tooltip";
 
+const DOCS_URL = "matplotlib-scatter";
+
 type SeriesType = {
   x: string;
   y: string;
@@ -34,6 +36,8 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   variables,
   runCell,
   setKeepOpen,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -282,7 +286,38 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     if (automatic && runCell) {
       runCell();
     }
+    if (setMetadata) {
+      setMetadata({
+        df,
+        series,
+        title,
+        xLabel,
+        yLabel,
+        xGrid,
+        yGrid,
+        style,
+        legendPosition,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition]);
+
+  useEffect(() => {
+    console.log({ metadata });
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      // if (metadata["series"]) setSeries(metadata["series"]);
+      // if (metadata["title"]) setSeries(metadata["title"]);
+      // if (metadata["xLabel"]) setSeries(metadata["xLabel"]);
+      // if (metadata["yLabel"]) setSeries(metadata["yLabel"]);
+      // if (metadata["xGrid"]) setSeries(metadata["xGrid"]);
+      // if (metadata["yGrid"]) setSeries(metadata["yGrid"]);
+      // if (metadata["style"]) setSeries(metadata["style"]);
+      // if (metadata["legendPosition"]) setSeries(metadata["legendPosition"]);
+    }
+  }, [metadata]);
 
   const seriesElements = series.map((serie, index) => {
     function setXData(value: SetStateAction<string>): void {
@@ -437,6 +472,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
         label={"Scatter Plot"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
@@ -507,10 +543,10 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
           )}
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
             <Toggle
-              label={"Automatically rerun code on chart update"}
+              label={"Automatically run code on chart update"}
               value={automatic}
               setValue={setAutomatic}
-              tooltip="Switch it if you would like to automatically rereun cell on code change"
+              tooltip="Switch it if you would like to automatically run cell on code change"
             />
             <div className="poc-pt-4">
               <button
@@ -576,7 +612,7 @@ export const ScatterPlotRecipe: IRecipe = {
       version: ">=3.8.4",
     },
   ],
-  docsUrl: "matplotlib-scatter",
+  docsUrl: DOCS_URL,
   tags: ["matplotlib", "scatter"],
   defaultVariables: [
     {
