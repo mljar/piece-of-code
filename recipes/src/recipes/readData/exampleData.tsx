@@ -25,8 +25,7 @@ export const ExampleData: React.FC<IRecipeProps> = ({
   ];
   const [dataset, setDataset] = useState(datasetOptions[0][1]);
 
-  useEffect(() => {
-    console.log({ metadata });
+  useEffect(() => { 
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["name"]) setName(metadata["name"]);

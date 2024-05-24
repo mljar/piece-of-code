@@ -19,7 +19,7 @@ export const Title: React.FC<TitleProps> = ({
   docsUrl,
 }: TitleProps) => {
   return (
-    <h3 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white">
+    <h2 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white">
       {Icon && <Icon className="poc-inline poc-pb-1" />}
       {label}
 
@@ -56,7 +56,7 @@ export const Title: React.FC<TitleProps> = ({
       {docsUrl && (
         <div className="poc-relative poc-float-right">
           <a
-            className="poc-text-blue-500 hover:poc-text-blue-700 
+            className="poc-text-blue-700 hover:poc-text-blue-800 
           poc-font-medium poc-text-sm poc-text-center 
           poc-inline-flex poc-items-center dark:poc-bg-blue-600 
           dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800
@@ -69,6 +69,6 @@ export const Title: React.FC<TitleProps> = ({
           </a>
         </div>
       )}
-    </h3>
+    </h2>
   );
 };

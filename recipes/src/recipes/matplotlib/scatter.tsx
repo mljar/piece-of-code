@@ -304,7 +304,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition]);
 
   useEffect(() => {
-    console.log({ metadata });
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["df"]) setDf(metadata["df"]);
