@@ -19,7 +19,7 @@ export const Title: React.FC<TitleProps> = ({
   docsUrl,
 }: TitleProps) => {
   return (
-    <h2 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white">
+    <h2 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white poc-pb-1">
       {Icon && <Icon className="poc-inline poc-pb-1" />}
       {label}
 

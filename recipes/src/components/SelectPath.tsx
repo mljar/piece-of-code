@@ -53,7 +53,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
           <div
             data-tooltip-id="select-path-tooltip"
             data-tooltip-content={tooltip}
-            className="poc-inline"
+            className="poc-inline poc-absolute"
           >
             <InfoIcon />
           </div>

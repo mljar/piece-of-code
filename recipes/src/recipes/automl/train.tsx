@@ -185,7 +185,7 @@ export const Train: React.FC<IRecipeProps> = ({
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-4">
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Variable
           label={"AutoML variable name"}
           name={name}

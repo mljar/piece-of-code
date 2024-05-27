@@ -7,11 +7,15 @@ import { Select } from "../../components/Select";
 import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
 
+const DOCS_URL = "python-select-training-attributes-for-machine-learning";
+
 export const SelectXy: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -68,7 +72,29 @@ export const SelectXy: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        xCols,
+        yCol,
+        x,
+        y,
+        variables: variables.filter((v) => v.varType === "DataFrame"),
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, xCols, yCol, x, y]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["xCols"]) setXCols(metadata["xCols"]);
+      if (metadata["yCol"]) setYCol(metadata["yCol"]);
+      if (metadata["x"]) setX(metadata["x"]);
+      if (metadata["y"]) setY(metadata["y"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -129,7 +155,7 @@ export const SelectXyRecipe: IRecipe = {
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsUrl: "python-select-training-attributes-for-machine-learning",
+  docsUrl: DOCS_URL,
   tags: ["ml", "machine-learning", "xy", "target"],
   defaultVariables: [
     {

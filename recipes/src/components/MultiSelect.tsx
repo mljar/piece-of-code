@@ -115,37 +115,52 @@ function MultiSelectDropdown({
           className="poc-relative poc-border poc-max-h-60 poc-overflow-y-auto poc-rounded-md"
           style={{ marginTop: "1px" }}
         >
-          <button
-            type="button"
-            className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
+          <div>
+            <button
+              type="button"
+              className="poc-hidden poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
             poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-0.5 dark:poc-bg-blue-600 dark:poc-hover:bg-blue-700 focus:poc-outline-none dark:focus:poc-ring-blue-800 poc-mx-1 poc-my-1 poc-mt-2"
-            onClick={() => {
-              setShowOptions(!showOptions);
-            }}
-          >
-            OK
-          </button>
+              // onClick={() => {
+              //   console.log("ok button");
+              // i have no idea what is going on ... 
+              //   // setShowOptions(false);
+              // }}
+            >
+              OK
+            </button>
 
-          <button
-            type="button"
-            className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
+            <button
+              type="button"
+              className="  poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
+            poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-0.5 dark:poc-bg-blue-600 dark:poc-hover:bg-blue-700 focus:poc-outline-none dark:focus:poc-ring-blue-800 poc-mx-1 poc-my-1 poc-mt-2"
+              onClick={() => {
+                setShowOptions(false);
+              }}
+            >
+              OK
+            </button>
+
+            <button
+              type="button"
+              className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
             poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-0.5 dark:poc-bg-blue-600 dark:poc-hover:bg-blue-700 focus:poc-outline-none dark:focus:poc-ring-blue-800"
-            onClick={() => {
-              setSelection(allOptions);
-              setShowOptions(false);
-            }}
-          >
-            Select All
-          </button>
+              onClick={() => {
+                setSelection(allOptions);
+                setShowOptions(false);
+              }}
+            >
+              Select All
+            </button>
 
-          <button
-            type="button"
-            className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
+            <button
+              type="button"
+              className="poc-text-white poc-bg-blue-600 hover:poc-bg-blue-700 focus:poc-ring focus:poc-ring-blue-300
             poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-0.5 dark:poc-bg-blue-600 dark:poc-hover:bg-blue-700 focus:poc-outline-none dark:focus:poc-ring-blue-800 poc-mx-1"
-            onClick={() => setSelection([])}
-          >
-            Clear All
-          </button>
+              onClick={() => setSelection([])}
+            >
+              Clear All
+            </button>
+          </div>
 
           <div className="poc-w-full dark:poc-text-slate-50 poc-p-1">
             {optionsElements}
@@ -174,7 +189,6 @@ export const MultiSelect: React.FC<SelectProps> = ({
       <div className="poc-mt-2">
         <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
           {label}
-
           <MultiSelectDropdown
             selection={selection}
             allOptions={allOptions}

@@ -25,14 +25,6 @@ export const ExampleData: React.FC<IRecipeProps> = ({
   ];
   const [dataset, setDataset] = useState(datasetOptions[0][1]);
 
-  useEffect(() => { 
-    if (metadata) {
-      if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["name"]) setName(metadata["name"]);
-      if (metadata["dataset"]) setDataset(metadata["dataset"]);
-    }
-  }, [metadata]);
-
   useEffect(() => {
     let url = "";
     if (dataset === "iris") {
@@ -66,6 +58,14 @@ export const ExampleData: React.FC<IRecipeProps> = ({
       });
     }
   }, [name, dataset]);
+
+  useEffect(() => { 
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["dataset"]) setDataset(metadata["dataset"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
