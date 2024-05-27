@@ -5,7 +5,14 @@ import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 import { StataIcon } from "../../icons/Stata";
 
-export const ReadStata: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-stata";
+
+export const ReadStata: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.dta");
 
@@ -19,13 +26,29 @@ export const ReadStata: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
       <Title
         Icon={StataIcon}
         label={"Read Stata file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Allocate DataFrame to variable"}
@@ -52,7 +75,7 @@ Please check [pandas.read_stata](https://pandas.pydata.org/pandas-docs/stable/re
   `,
   ui: ReadStata,
   Icon: StataIcon,
-  docsUrl: "python-read-stata",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

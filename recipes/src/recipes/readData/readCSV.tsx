@@ -6,7 +6,9 @@ import { FileCsvIcon } from "../../icons/FileCsv";
 import { SelectPath } from "../../components/SelectPath";
 import { Select } from "../../components/Select";
 
-export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-csv";
+
+export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages, metadata, setMetadata }) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
 
@@ -35,7 +37,25 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 
     setCode(src);
     setPackages(["import pandas as pd"]);
+
+    if (setMetadata) {
+      setMetadata({
+        name,
+        delimiter,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath, delimiter]);
+
+  useEffect(() => { 
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["delimiter"]) setDelimiter(metadata["delimiter"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -44,6 +64,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         label={"Read CSV file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Allocate DataFrame to variable"}
@@ -83,7 +104,7 @@ export const ReadCSVRecipe: IRecipe = {
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsUrl: "python-read-csv",
+  docsUrl: DOCS_URL,
   tags: ["csv", "pandas"],
 };
 

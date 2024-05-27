@@ -6,7 +6,14 @@ import { SelectPath } from "../../components/SelectPath";
 import { LayoutGridIcon } from "../../icons/LayoutGrid";
 import { DashboardIcon } from "../../icons/Dashboard";
 
-export const ReadParquet: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-parquet";
+
+export const ReadParquet: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.parquet");
 
@@ -20,13 +27,29 @@ export const ReadParquet: React.FC<IRecipeProps> = ({ setCode, setPackages }) =>
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
       <Title
         Icon={DashboardIcon}
         label={"Read Parquet file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Allocate DataFrame to variable"}
@@ -53,7 +76,7 @@ Please check [pandas.read_parquet](https://pandas.pydata.org/pandas-docs/stable/
   `,
   ui: ReadParquet,
   Icon: DashboardIcon,
-  docsUrl: "python-read-parquet",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

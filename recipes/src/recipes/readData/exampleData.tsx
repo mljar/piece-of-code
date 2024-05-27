@@ -29,7 +29,7 @@ export const ExampleData: React.FC<IRecipeProps> = ({
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["name"]) setName(metadata["name"]);
-      // if (metadata["dataset"]) setDataset(metadata["dataset"]);
+      if (metadata["dataset"]) setDataset(metadata["dataset"]);
     }
   }, [metadata]);
 

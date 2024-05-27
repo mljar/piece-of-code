@@ -7,10 +7,14 @@ import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 // import { IconCrystalBall } from "@tabler/icons-react";
 
+const DOCS_URL = "python-predict-with-automl";
+
 export const Predict: React.FC<IRecipeProps> = ({
   setCode,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   const automls = variables
     .filter((v) => v.varType === "AutoML")
@@ -57,13 +61,35 @@ export const Predict: React.FC<IRecipeProps> = ({
     src += `${name} = ${automl}.predict(${df})\n`;
     src += `# predicted values\n`;
     src += `print(${name})`;
-
     setCode(src);
+
+    if (setMetadata) {
+      setMetadata({
+        name,
+        automl,
+        df,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, automl, df]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["automl"]) setAutoml(metadata["automl"]);
+      if (metadata["df"]) setDf(metadata["df"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={TargetArrowIcon} label="Predict with AutoML" />
+      <Title
+        Icon={TargetArrowIcon}
+        label="Predict with AutoML"
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Store predictions in variable name"}
         name={name}
@@ -94,12 +120,12 @@ export const PredictRecipe: IRecipe = {
   codeExplanation: "",
   ui: Predict,
   Icon: TargetArrowIcon,
-  docsUrl: "python-predict-with-automl",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     {
       importName: "supervised",
       installationName: "mljar-supervised",
-      version: ">=1.1.5",
+      version: ">=1.1.7",
     },
   ],
   defaultVariables: [

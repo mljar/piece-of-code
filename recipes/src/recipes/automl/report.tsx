@@ -5,12 +5,15 @@ import { ReportIcon } from "../../icons/Report";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 
+const DOCS_URL = "python-display-automl-report";
+
 export const AutoMLReport: React.FC<IRecipeProps> = ({
   setCode,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
-
   if (variablesStatus === "loading") {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -40,14 +43,31 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = `# display AutoML report\n`;
     src += `${automl}.report()`;
-    
     setCode(src);
+
+    if (setMetadata) {
+      setMetadata({
+        automl,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [automl]);
 
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["automl"]) setAutoml(metadata["automl"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={ReportIcon} label="Display AutoML report" />
+      <Title
+        Icon={ReportIcon}
+        label="Display AutoML report"
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Select
         label={"Display report for AutoML object"}
         option={automl}
@@ -62,17 +82,19 @@ export const AutoMLReportRecipe: IRecipe = {
   name: "AutoML report",
   longName: "Display AutoML report",
   parentName: "MLJAR AutoML",
-  description: "Display AutoML report from training. You can click on the model name in the leaderboard to check each model details.",
-  shortDescription: "Display AutoML report from training with details about each model",
+  description:
+    "Display AutoML report from training. You can click on the model name in the leaderboard to check each model details.",
+  shortDescription:
+    "Display AutoML report from training with details about each model",
   codeExplanation: "",
   ui: AutoMLReport,
   Icon: ReportIcon,
-  docsUrl: "python-display-automl-report",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     {
       importName: "supervised",
       installationName: "mljar-supervised",
-      version: ">=1.1.5",
+      version: ">=1.1.7",
     },
   ],
   defaultVariables: [

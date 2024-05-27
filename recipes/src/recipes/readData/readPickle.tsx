@@ -6,9 +6,13 @@ import { SelectPath } from "../../components/SelectPath";
 import { XmlIcon } from "../../icons/Xml";
 import { CucumberIcon } from "../../icons/Cucumber";
 
+const DOCS_URL = "python-load-pickle";
+
 export const ReadPickle: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [name, setName] = useState("my_obj");
   const [filePath, setFilePath] = useState("data.pickle");
@@ -24,17 +28,39 @@ export const ReadPickle: React.FC<IRecipeProps> = ({
     src += `print(${name})`;
     setCode(src);
     setPackages(["import pickle"]);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={CucumberIcon} label={"Load Pickle file"} />
+      <Title
+        Icon={CucumberIcon}
+        label={"Load Pickle file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Allocate Pickle to variable"}
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select Pickle (*.pickle) file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select Pickle (*.pickle) file"}
+        setPath={setFilePath}
+      />
     </div>
   );
 };
@@ -53,7 +79,7 @@ export const ReadPickleRecipe: IRecipe = {
   `,
   ui: ReadPickle,
   Icon: CucumberIcon,
-  docsUrl: "python-load-pickle",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

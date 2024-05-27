@@ -6,7 +6,14 @@ import { SelectPath } from "../../components/SelectPath";
 import { LayoutGridIcon } from "../../icons/LayoutGrid";
 import { SumIcon } from "../../icons/Sum";
 
-export const ReadSpss: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-spss";
+
+export const ReadSpss: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.sav");
 
@@ -20,13 +27,29 @@ export const ReadSpss: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
       <Title
         Icon={SumIcon}
         label={"Read SPSS file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Allocate DataFrame to variable"}
@@ -53,7 +76,7 @@ Please check [pandas.read_spss](https://pandas.pydata.org/pandas-docs/stable/ref
   `,
   ui: ReadSpss,
   Icon: SumIcon,
-  docsUrl: "python-read-spss",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

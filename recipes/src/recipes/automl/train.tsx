@@ -9,11 +9,15 @@ import { Numeric } from "../../components/Numeric";
 import { SelectPath } from "../../components/SelectPath";
 import { MultiSelect } from "../../components/MultiSelect";
 
+const DOCS_URL = "python-train-automl";
+
 export const Train: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -108,7 +112,6 @@ export const Train: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     setPackages(["from supervised import AutoML"]);
-
     if (X === "" || y === "") {
       return;
     }
@@ -136,25 +139,51 @@ export const Train: React.FC<IRecipeProps> = ({
         }
       }
       if (includeAlgorithms) {
-        src += `, algorithms=["${algorithms.join("\", \"")}"]`;
+        src += `, algorithms=["${algorithms.join('", "')}"]`;
       }
     }
 
     src += `)\n`;
     src += `# train automl\n`;
     src += `${name}.fit(${X}, ${y})`;
-
     setCode(src);
+
+    if (setMetadata) {
+      setMetadata({
+        name,
+        resultsPath,
+        mode,
+        trainingTime,
+        X,
+        y,
+        algorithms,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, resultsPath, mode, trainingTime, X, y, algorithms]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["resultsPath"]) setResultsPath(metadata["resultsPath"]);
+      if (metadata["mode"]) setMode(metadata["mode"]);
+      if (metadata["trainingTime"]) setTrainingTime(metadata["trainingTime"]);
+      if (metadata["X"]) setX(metadata["X"]);
+      if (metadata["y"]) setY(metadata["y"]);
+      if (metadata["algorithms"]) setX(metadata["algorithms"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      
       <Title
         Icon={EngineIcon}
         label={"Train AutoML"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-4">
         <Variable
@@ -167,7 +196,9 @@ export const Train: React.FC<IRecipeProps> = ({
           setPath={setResultsPath}
           selectFolder={true}
           defaultPath="auto"
-          tooltip={"The 'auto' means automatically create a new directory for results."}
+          tooltip={
+            "The 'auto' means automatically create a new directory for results."
+          }
         />
       </div>
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -239,7 +270,7 @@ export const TrainRecipe: IRecipe = {
       version: ">=1.1.7",
     },
   ],
-  docsUrl: "python-train-automl",
+  docsUrl: DOCS_URL,
   defaultVariables: [
     {
       varName: "X",

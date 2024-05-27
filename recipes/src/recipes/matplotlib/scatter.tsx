@@ -307,14 +307,14 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["df"]) setDf(metadata["df"]);
-      // if (metadata["series"]) setSeries(metadata["series"]);
-      // if (metadata["title"]) setSeries(metadata["title"]);
-      // if (metadata["xLabel"]) setSeries(metadata["xLabel"]);
-      // if (metadata["yLabel"]) setSeries(metadata["yLabel"]);
-      // if (metadata["xGrid"]) setSeries(metadata["xGrid"]);
-      // if (metadata["yGrid"]) setSeries(metadata["yGrid"]);
-      // if (metadata["style"]) setSeries(metadata["style"]);
-      // if (metadata["legendPosition"]) setSeries(metadata["legendPosition"]);
+      if (metadata["series"]) setSeries(metadata["series"]);
+      if (metadata["title"]) setTitle(metadata["title"]);
+      if (metadata["xLabel"]) setXLabel(metadata["xLabel"]);
+      if (metadata["yLabel"]) setYLabel(metadata["yLabel"]);
+      if (metadata["xGrid"]) setXGrid(metadata["xGrid"]);
+      if (metadata["yGrid"]) setYGrid(metadata["yGrid"]);
+      if (metadata["style"]) setStyle(metadata["style"]);
+      if (metadata["legendPosition"]) setLegendPosition(metadata["legendPosition"]);
     }
   }, [metadata]);
 

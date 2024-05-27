@@ -7,9 +7,13 @@ import { LayoutGridIcon } from "../../icons/LayoutGrid";
 import { DashboardIcon } from "../../icons/Dashboard";
 import { FeatherIcon } from "../../icons/Feather";
 
+const DOCS_URL = "python-read-feather";
+
 export const ReadFeather: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.feather");
@@ -24,11 +28,31 @@ export const ReadFeather: React.FC<IRecipeProps> = ({
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FeatherIcon} label={"Read Feather file"} />
+      <Title
+        Icon={FeatherIcon}
+        label={"Read Feather file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Allocate DataFrame to variable"}
         name={name}
@@ -55,7 +79,7 @@ Please check [pandas.read_feather](https://pandas.pydata.org/pandas-docs/stable/
   `,
   ui: ReadFeather,
   Icon: FeatherIcon,
-  docsUrl: "python-read-feather",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

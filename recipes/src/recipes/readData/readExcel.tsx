@@ -7,7 +7,14 @@ import { SelectPath } from "../../components/SelectPath";
 import { Numeric } from "../../components/Numeric";
 import { XlsIcon } from "../../icons/Xls";
 
-export const ReadExcel: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-excel";
+
+export const ReadExcel: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
   const [sheet, setSheet] = useState("0");
@@ -35,7 +42,27 @@ export const ReadExcel: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
 
     setCode(src);
     setPackages(["import pandas as pd"]);
+
+    if (setMetadata) {
+      setMetadata({
+        name,
+        sheet,
+        skipRows,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath, sheet, skipRows]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["sheet"]) setSheet(metadata["sheet"]);
+      if (metadata["skipRows"]) setSkipRows(metadata["skipRows"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -44,6 +71,7 @@ export const ReadExcel: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         label={"Read Excel file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Allocate DataFrame to variable"}
@@ -86,7 +114,7 @@ Please check [pandas.read_excel](https://pandas.pydata.org/pandas-docs/stable/re
   `,
   ui: ReadExcel,
   Icon: XlsIcon,
-  docsUrl: "python-read-excel",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],

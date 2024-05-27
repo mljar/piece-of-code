@@ -6,9 +6,13 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 
+const DOCS_URL = "python-load-automl";
+
 export const LoadAutoML: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [automl, setAutoml] = useState("automl");
   const [folder, setFolder] = useState("");
@@ -19,11 +23,30 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
     src += `print("AutoML object ${automl} created")`;
     setCode(src);
     setPackages(["from supervised import AutoML"]);
+    if (setMetadata) {
+      setMetadata({
+        automl,
+        folder,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [automl, folder]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["automl"]) setAutoml(metadata["automl"]);
+      if (metadata["folder"]) setFolder(metadata["folder"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FolderOpenIcon} label={"Load AutoML from disk"} />
+      <Title
+        Icon={FolderOpenIcon}
+        label={"Load AutoML from disk"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
 
       <Variable
         label={"AutoML object name"}
@@ -43,12 +66,14 @@ export const LoadAutoMLRecipe: IRecipe = {
   name: "Load AutoML",
   longName: "Load AutoML models from disk",
   parentName: "MLJAR AutoML",
-  description: "You can load AutoML models from disk and use them to compute predictions on new data.",
-  shortDescription: "Load AutoML models from disk and use them to compute predictions on new data",
+  description:
+    "You can load AutoML models from disk and use them to compute predictions on new data.",
+  shortDescription:
+    "Load AutoML models from disk and use them to compute predictions on new data",
   codeExplanation: "",
   ui: LoadAutoML,
   Icon: FolderOpenIcon,
-  docsUrl: "python-load-automl",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     {
       importName: "supervised",

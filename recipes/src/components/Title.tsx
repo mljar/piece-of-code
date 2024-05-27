@@ -58,8 +58,8 @@ export const Title: React.FC<TitleProps> = ({
           <a
             className="poc-text-blue-700 hover:poc-text-blue-800 
           poc-font-medium poc-text-sm poc-text-center 
-          poc-inline-flex poc-items-center dark:poc-bg-blue-600 
-          dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800
+          poc-inline-flex poc-items-center dark:poc-text-white 
+          dark:hover:poc-text-blue-100 dark:focus:poc-ring-blue-800
           "
             href={docsUrl}
           >

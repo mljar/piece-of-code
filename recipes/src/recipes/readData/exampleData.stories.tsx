@@ -18,9 +18,15 @@ export const ExampleDataForm: Story = (
 ) => (
   <>
     <ExampleData {...args} />
+    <div className="poc-dark">
+      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+        <ExampleData {...args} />
+      </div>
+    </div>
   </>
 );
 ExampleDataForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  metadata: {},
 };

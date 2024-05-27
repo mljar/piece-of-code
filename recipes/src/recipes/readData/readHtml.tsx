@@ -5,7 +5,14 @@ import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 import { HtmlIcon } from "../../icons/Html";
 
-export const ReadHtml: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-html";
+
+export const ReadHtml: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.xml");
 
@@ -19,11 +26,30 @@ export const ReadHtml: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `${name}.head()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        filePath,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={HtmlIcon} label={"Read HTML file"} />
+      <Title
+        Icon={HtmlIcon}
+        label={"Read HTML file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Allocate DataFrame to variable"}
         name={name}
@@ -49,7 +75,7 @@ Please check [pandas.read_html](https://pandas.pydata.org/pandas-docs/stable/ref
   `,
   ui: ReadHtml,
   Icon: HtmlIcon,
-  docsUrl: "python-read-html",
+  docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
