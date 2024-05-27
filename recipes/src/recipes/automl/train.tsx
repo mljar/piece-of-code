@@ -139,7 +139,7 @@ export const Train: React.FC<IRecipeProps> = ({
         }
       }
       if (includeAlgorithms) {
-        src += `, algorithms=["${algorithms.join('", "')}"]`;
+        src += `,\n    algorithms=[\n        "${algorithms.join('",\n        "')}"\n    ]`;
       }
     }
 
