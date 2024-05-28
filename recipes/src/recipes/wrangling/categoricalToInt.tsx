@@ -8,11 +8,15 @@ import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
 import { CategoryIcon } from "../../icons/Category";
 
+const DOCS_URL = "python-convert-categorical-to-integer";
+
 export const CategoricalToInt: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -76,11 +80,40 @@ export const CategoricalToInt: React.FC<IRecipeProps> = ({
     src += `${d}`;
     setCode(src);
     setPackages(["from sklearn.preprocessing import OrdinalEncoder"]);
+
+    if (setMetadata) {
+      setMetadata({
+        df,
+        xCols,
+        encoder,
+        handleUnknown,
+        encodedMissingValue,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, xCols, encoder, handleUnknown, encodedMissingValue]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["xCols"]) setXCols(metadata["xCols"]);
+      if (metadata["encoder"]) setEncoder(metadata["encoder"]);
+      if (metadata["handleUnknown"])
+        setHandleUnknown(metadata["handleUnknown"]);
+      if (metadata["encodedMissingValue"])
+        setEncodedMissingValue(metadata["encodedMissingValue"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={CategoryIcon} label={"Categorical to integer"} />
+      <Title
+        Icon={CategoryIcon}
+        label={"Categorical to integer"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -160,7 +193,7 @@ You can use encoder object on new dataset. Please check **Save to pickle** recip
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
     { importName: "sklearn", installationName: "sklearn", version: ">=1.0.0" },
   ],
-  docsUrl: "python-convert-categorical-to-integer",
+  docsUrl: DOCS_URL,
   tags: ["pandas", "categorical"],
   defaultVariables: [
     {

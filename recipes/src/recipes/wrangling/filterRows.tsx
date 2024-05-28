@@ -10,11 +10,15 @@ import { TableRowIcon } from "../../icons/TableRow";
 import { FilterIcon } from "../../icons/Filter";
 import { FilterSelect } from "../../components/FilterSelect";
 
+const DOCS_URL = "pandas-filter-rows";
+
 export const FilterRows: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -80,11 +84,39 @@ export const FilterRows: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        col,
+        newDf,
+        condition,
+        val,
+        varType,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, col, newDf, condition, val, varType]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["col"]) setCol(metadata["col"]);
+      if (metadata["newDf"]) setNewDf(metadata["newDf"]);
+      if (metadata["condition"]) setCondition(metadata["condition"]);
+      if (metadata["val"]) setVal(metadata["val"]);
+      if (metadata["varType"]) setCol(metadata["varType"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FilterIcon} label={"Filter rows in DataFrame"} />
+      <Title
+        Icon={FilterIcon}
+        label={"Filter rows in DataFrame"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by

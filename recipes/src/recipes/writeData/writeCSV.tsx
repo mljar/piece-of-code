@@ -7,11 +7,15 @@ import { Select } from "../../components/Select";
 import { SelectPath } from "../../components/SelectPath";
 import { Toggle } from "../../components/Toggle";
 
+const DOCS_URL = "pandas-write-csv";
+
 export const WriteCSV: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -35,14 +39,33 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = `# write DataFrame to CSV\n`;
     src += `${df}.to_csv(r"${filePath}")\n`;
-    src += `print(f"DataFrame saved at ${filePath}"`
-    if(!index) {
+    src += `print(f"DataFrame saved at ${filePath}"`;
+    if (!index) {
       src += `, index=False`;
     }
     src += `)`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+
+    if (setMetadata) {
+      setMetadata({
+        df,
+        filePath,
+        index,
+        variables: variables.filter((v) => v.varType === "DataFrame"),
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, filePath, index]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["index"]) setIndex(metadata["index"]);
+    }
+  }, [metadata]);
 
   return (
     <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -51,6 +74,7 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
         label={"Write CSV"}
         //advanced={advanced}
         //setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
@@ -93,7 +117,7 @@ export const WriteCSVRecipe: IRecipe = {
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsUrl: "pandas-write-csv",
+  docsUrl: DOCS_URL,
   tags: ["pandas", "csv"],
   defaultVariables: [
     {

@@ -8,11 +8,15 @@ import { Variable } from "../../components/Variable";
 import { Numeric } from "../../components/Numeric";
 import { MultiSelect } from "../../components/MultiSelect";
 
+const DOCS_URL = "imputer-fill-missing-values";
+
 export const FillMissing: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -115,11 +119,41 @@ export const FillMissing: React.FC<IRecipeProps> = ({
     src += `print("Filled columns")\n`;
     src += `${d}`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        name,
+        df,
+        xCols,
+        varType,
+        imputer,
+        constant,
+        kNN,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [name, df, xCols, varType, imputer, constant, kNN]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["name"]) setName(metadata["name"]);
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["xCols"]) setXCols(metadata["xCols"]);
+      if (metadata["varType"]) setVarType(metadata["varType"]);
+      if (metadata["imputer"]) setImputer(metadata["imputer"]);
+      if (metadata["constant"]) setConstant(metadata["constant"]);
+      if (metadata["kNN"]) setKNN(metadata["kNN"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={AffiliateIcon} label={"Fill missing values"} />
+      <Title
+        Icon={AffiliateIcon}
+        label={"Fill missing values"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -198,7 +232,7 @@ Fill missing values in Pandas DataFrame.`,
       version: ">=1.0.0",
     },
   ],
-  docsUrl: "imputer-fill-missing-values",
+  docsUrl: DOCS_URL,
   tags: ["pandas", "missing-values"],
   defaultVariables: [
     {

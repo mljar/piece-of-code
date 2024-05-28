@@ -5,11 +5,15 @@ import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { QuestionMarkIcon } from "../../icons/QuestionMark";
 
+const DOCS_URL = "pandas-check-missing-values";
+
 export const CheckMissing: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -34,14 +38,32 @@ export const CheckMissing: React.FC<IRecipeProps> = ({
     src += `total_missing = ${df}.isnull().sum().sum()\n`;
     src += `print(f"Total count of missing values: {total_missing}")\n`;
     src += `# missing values for each column\n`;
-    src += `${df}.isnull().sum()`
+    src += `${df}.isnull().sum()`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={QuestionMarkIcon} label={"Check and count missing values"} />
+      <Title
+        Icon={QuestionMarkIcon}
+        label={"Check and count missing values"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -72,15 +94,14 @@ Check missing values in Pandas DataFrame. This Python recipe do several things:
 - check if there are **any missing values** in DataFrame,
 - count **total number of missing values** in DataFrame,
 - check **missing values by each column** in DataFrame.`,
-  shortDescription:
-    "Check and count missing values in Pandas DataFrame",
+  shortDescription: "Check and count missing values in Pandas DataFrame",
   codeExplanation: "",
   ui: CheckMissing,
   Icon: QuestionMarkIcon,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
-  docsUrl: "pandas-check-missing-values",
+  docsUrl: DOCS_URL,
   tags: ["pandas", "missing-values"],
   defaultVariables: [
     {

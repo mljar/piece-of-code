@@ -8,11 +8,15 @@ import { SelectPath } from "../../components/SelectPath";
 import { Toggle } from "../../components/Toggle";
 import { CucumberIcon } from "../../icons/Cucumber";
 
+const DOCS_URL = "python-save-pickle";
+
 export const SavePickle: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -34,11 +38,31 @@ export const SavePickle: React.FC<IRecipeProps> = ({
     src += `print(f"Object ${df} saved at ${filePath}"`;
     setCode(src);
     setPackages(["import pickle"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        filePath,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, filePath]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+    }
+  }, [metadata]);
 
   return (
     <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-      <Title Icon={CucumberIcon} label={"Save Python object to Pickle"} />
+      <Title
+        Icon={CucumberIcon}
+        label={"Save Python object to Pickle"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no objects in your notebook. Please create some :-)
@@ -71,7 +95,7 @@ export const SavePickleRecipe: IRecipe = {
   ui: SavePickle,
   Icon: CucumberIcon,
   requiredPackages: [],
-  docsUrl: "python-save-pickle",
+  docsUrl: DOCS_URL,
   tags: ["pickle"],
   defaultVariables: [
     {

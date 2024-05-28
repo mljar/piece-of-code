@@ -98,7 +98,11 @@ export const SelectXy: React.FC<IRecipeProps> = ({
 
   return (
     <div>
-      <Title Icon={XyIcon} label={"Select X,y"} />
+      <Title
+        Icon={XyIcon}
+        label={"Select X,y"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by

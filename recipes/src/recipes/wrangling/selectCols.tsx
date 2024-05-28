@@ -7,12 +7,16 @@ import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 import { MultiSelect } from "../../components/MultiSelect";
 
+const DOCS_URL = "pandas-select-columns";
+
 export const SelectCols: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
-}) => { 
+  metadata,
+  setMetadata,
+}) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -58,11 +62,33 @@ export const SelectCols: React.FC<IRecipeProps> = ({
     src += `print(f"${newDf} shape is {${newDf}.shape}")`;
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        xCols,
+        newDf,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, xCols, newDf]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["xCols"]) setXCols(metadata["xCols"]);
+      if (metadata["newDf"]) setNewDf(metadata["newDf"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={TableColumnIcon} label={"Select columns in DataFrame"} />
+      <Title
+        Icon={TableColumnIcon}
+        label={"Select columns in DataFrame"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -105,7 +131,7 @@ export const SelectColsRecipe: IRecipe = {
   ui: SelectCols,
   codeExplanation: "",
   Icon: TableColumnIcon,
-  docsUrl: "pandas-select-columns",
+  docsUrl: DOCS_URL,
   tags: ["column", "pandas", "filter"],
   defaultVariables: [
     {

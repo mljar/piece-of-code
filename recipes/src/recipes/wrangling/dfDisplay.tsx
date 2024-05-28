@@ -6,11 +6,15 @@ import { Select } from "../../components/Select";
 import { TableIcon } from "../../icons/Table";
 import { Numeric } from "../../components/Numeric";
 
+const DOCS_URL = "pandas-display-dataframe";
+
 export const DfDisplay: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -65,11 +69,37 @@ export const DfDisplay: React.FC<IRecipeProps> = ({
     }
     setCode(src);
     setPackages(["import pandas as pd"]);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        display,
+        rows,
+        startRow,
+        endRow,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, display, rows, startRow, endRow]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["display"]) setDisplay(metadata["display"]);
+      if (metadata["rows"]) setRows(metadata["rows"]);
+      if (metadata["startRow"]) setStartRow(metadata["startRow"]);
+      if (metadata["endRow"]) setEndRow(metadata["endRow"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={TableIcon} label={"Display DataFrame"} />
+      <Title
+        Icon={TableIcon}
+        label={"Display DataFrame"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -140,7 +170,7 @@ export const DfDisplayRecipe: IRecipe = {
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
   ],
   tags: ["pandas", "head", "tail"],
-  docsUrl: "pandas-display-dataframe",
+  docsUrl: DOCS_URL,
   defaultVariables: [
     {
       varName: "df_1",

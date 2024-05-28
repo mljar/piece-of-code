@@ -7,11 +7,15 @@ import { AffiliateIcon } from "../../icons/Affiliate";
 import { Variable } from "../../components/Variable";
 import { Numeric } from "../../components/Numeric";
 
+const DOCS_URL = "sklearn-use-imputer-on-new-data";
+
 export const FillMissingReuse: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -33,18 +37,37 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
 
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [allCols, setAllCols] = useState([] as string[]);
-    const [imputer, setImputer] = useState(imputers.length ? imputers[0] : "");
-
+  const [imputer, setImputer] = useState(imputers.length ? imputers[0] : "");
 
   useEffect(() => {
     let src = `# fill missing data using imputer\n`;
     src += `${df}[${imputer}.feature_names_in_] = ${imputer}.transform(${df}[${imputer}.feature_names_in_])\n`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        df,
+        imputer,
+        variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [df, imputer]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["imputer"]) setImputer(metadata["imputer"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={AffiliateIcon} label={"Use imputer to fill missing values"} />
+      <Title
+        Icon={AffiliateIcon}
+        label={"Use imputer to fill missing values"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
@@ -94,7 +117,7 @@ export const FillMissingReuseRecipe: IRecipe = {
       version: ">=1.0.0",
     },
   ],
-  docsUrl: "sklearn-use-imputer-on-new-data",
+  docsUrl: DOCS_URL,
   tags: ["pandas", "missing-values"],
   defaultVariables: [
     {

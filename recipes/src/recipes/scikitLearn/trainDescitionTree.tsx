@@ -11,11 +11,15 @@ import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
 
+const DOCS_URL = "python-train-decision-tree";
+
 export const TrainDecisionTree: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -89,6 +93,21 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
     src += `# fit algorithm\n`;
     src += `${model}.fit(${df}, ${target})`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        model,
+        mlTask,
+        df,
+        target,
+        criterion,
+        minSamplesLeaf,
+        minSamplesSplit,
+        maxDepth,
+        seed,
+        variables: variables,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [
     model,
     mlTask,
@@ -101,6 +120,23 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
     seed,
   ]);
 
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["model"]) setModel(metadata["model"]);
+      if (metadata["mlTask"]) setMlTask(metadata["mlTask"]);
+      if (metadata["df"]) setDf(metadata["df"]);
+      if (metadata["target"]) setTarget(metadata["target"]);
+      if (metadata["criterion"]) setCriterion(metadata["criterion"]);
+      if (metadata["minSamplesLeaf"])
+        setMinSamplesLeaf(metadata["minSamplesLeaf"]);
+      if (metadata["minSamplesSplit"])
+        setMinSamplesSplit(metadata["minSamplesSplit"]);
+      if (metadata["maxDepth"]) setMaxDepth(metadata["maxDepth"]);
+      if (metadata["seed"]) setSeed(metadata["seed"]);
+    }
+  }, [metadata]);
+
   return (
     <div>
       <Title
@@ -108,6 +144,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
         label={"Train Decision Tree"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
@@ -223,9 +260,13 @@ Fitted object can be used to compute predictions. If you want to persist your De
   ui: TrainDecisionTree,
   Icon: TreeIcon,
   requiredPackages: [
-    { importName: "sklearn", installationName: "scikit-learn", version: ">=1.0.0" },
+    {
+      importName: "sklearn",
+      installationName: "scikit-learn",
+      version: ">=1.0.0",
+    },
   ],
-  docsUrl: "python-train-decision-tree",
+  docsUrl: DOCS_URL,
   tags: ["decision-tree", "classification", "regression"],
   defaultVariables: [
     {
