@@ -6,7 +6,14 @@ import { CalendarClockIcon } from "../../icons/CalendarClock";
 import { HourGlassIcon } from "../../icons/HourGlass";
 import { Numeric } from "../../components/Numeric";
 
-export const TimeDelay: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-time-delay";
+
+export const TimeDelay: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [myDelay, setMyDelay] = useState(3);
 
   useEffect(() => {
@@ -14,11 +21,28 @@ export const TimeDelay: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `time.sleep(${myDelay})`;
     setCode(src);
     setPackages(["import datetime"]);
+    if (setMetadata) {
+      setMetadata({
+        myDelay,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myDelay]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myDelay"]) setMyDelay(metadata["myDelay"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={HourGlassIcon} label={"Add time delay"} />
+      <Title
+        Icon={HourGlassIcon}
+        label={"Add time delay"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Numeric
         label={"Delay time in seconds"}
         name={myDelay}
@@ -41,7 +65,7 @@ export const TimeDelayRecipe: IRecipe = {
   ui: TimeDelay,
   Icon: CalendarClockIcon,
   requiredPackages: [],
-  docsUrl: "python-time-delay",
+  docsUrl: DOCS_URL,
 };
 
 export default TimeDelayRecipe;

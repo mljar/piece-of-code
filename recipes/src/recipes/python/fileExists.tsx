@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { Title } from "../../components/Title"; 
+import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 import { FileUnknownIcon } from "../../icons/FileUnknown";
 
+const DOCS_URL = "python-check-file-exists";
+
 export const FileExists: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [exists, setExists] = useState("my_file_exists");
   const [myFile, setMyFile] = useState("file_name");
-  
+
   useEffect(() => {
     let src = `# check if file exists and assign this information to variable\n`;
     src += `${exists} = exists(r"${myFile}")\n`;
@@ -23,11 +27,30 @@ export const FileExists: React.FC<IRecipeProps> = ({
     src += `    print(f"File ${myFile} does not exists")`;
     setCode(src);
     setPackages(["from os.path import exists"]);
+    if (setMetadata) {
+      setMetadata({
+        exists,
+        myFile,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [exists, myFile]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["exists"]) setExists(metadata["exists"]);
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FileUnknownIcon} label={"Check if file exists"} />
+      <Title
+        Icon={FileUnknownIcon}
+        label={"Check if file exists"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"File exists variable"}
         name={exists}
@@ -56,7 +79,7 @@ export const FileExistsRecipe: IRecipe = {
   ui: FileExists,
   Icon: FileUnknownIcon,
   requiredPackages: [],
-  docsUrl: "python-check-file-exists",
+  docsUrl: DOCS_URL,
   tags: ["file"],
 };
 

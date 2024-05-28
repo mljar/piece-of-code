@@ -5,9 +5,13 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { DesktopIcon } from "../../icons/Desktop";
 
+const DOCS_URL = "python-access-environment-variables";
+
 export const EnvironmentVars: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [myEnvVar, setMyEnvVar] = useState("MY_ENV_VARIABLE");
   const [myVar, setMyVar] = useState("my_var");
@@ -17,16 +21,35 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
     src += `${myVar} = os.environ.get("${myEnvVar}")\n`;
     src += `# print environment variable\n`;
     src += `if ${myVar} is not None:\n`;
-    src += `    print(f"My environment variable is {${myVar}}")\n`
+    src += `    print(f"My environment variable is {${myVar}}")\n`;
     src += `else:\n`;
     src += `    print("Sorry, environment variable not found")`;
     setCode(src);
     setPackages(["import os"]);
+    if (setMetadata) {
+      setMetadata({
+        myEnvVar,
+        myVar,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myEnvVar, myVar]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myEnvVar"]) setMyEnvVar(metadata["myEnvVar"]);
+      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={DesktopIcon} label={"Get environment variable"} />
+      <Title
+        Icon={DesktopIcon}
+        label={"Get environment variable"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Environment variable name"}
         name={myEnvVar}
@@ -37,7 +60,9 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
         label={"Assign environment variable to Python variable"}
         name={myVar}
         setName={setMyVar}
-        tooltip={"Value of environment variable will be assigned to Python variable"}
+        tooltip={
+          "Value of environment variable will be assigned to Python variable"
+        }
       />
     </div>
   );
@@ -65,7 +90,7 @@ print(os.environ)
   ui: EnvironmentVars,
   Icon: DesktopIcon,
   requiredPackages: [],
-  docsUrl: "python-access-environment-variables",
+  docsUrl: DOCS_URL,
   tags: ["env", "environment"],
 };
 

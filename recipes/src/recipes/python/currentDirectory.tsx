@@ -7,9 +7,13 @@ import { Toggle } from "../../components/Toggle";
 import { CalendarClockIcon } from "../../icons/CalendarClock";
 import { FolderOpenIcon } from "../../icons/FolderOpen";
 
+const DOCS_URL = "python-get-working-directory";
+
 export const CurrentDirectory: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [myVar, setMyVar] = useState("working_dir");
 
@@ -20,11 +24,28 @@ export const CurrentDirectory: React.FC<IRecipeProps> = ({
     src += `print(f"Current working directory is {${myVar}}")`;
     setCode(src);
     setPackages(["import os"]);
+    if (setMetadata) {
+      setMetadata({
+        myVar,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myVar]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FolderOpenIcon} label={"Get working directory"} />
+      <Title
+        Icon={FolderOpenIcon}
+        label={"Get working directory"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Current working directory"}
         name={myVar}
@@ -47,7 +68,7 @@ export const CurrentDirectoryRecipe: IRecipe = {
   ui: CurrentDirectory,
   Icon: FolderOpenIcon,
   requiredPackages: [],
-  docsUrl: "python-get-working-directory",
+  docsUrl: DOCS_URL,
   tags: ["directory", "folder"],
 };
 

@@ -7,7 +7,14 @@ import { SelectPath } from "../../components/SelectPath";
 import { Toggle } from "../../components/Toggle";
 import { FileDownloadIcon } from "../../icons/FileDownload";
 
-export const FileRead: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-file";
+
+export const FileRead: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [myFile, setMyFile] = useState("file_name");
   const [content, setContent] = useState("content");
   const [advanced, setAdvanced] = useState(false);
@@ -22,9 +29,26 @@ export const FileRead: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `with open(r"${myFile}", "${mode}") as fin:\n`;
     src += `    ${content} = fin.read()\n`;
     src += `# display file content\n`;
-    src += `print(${content})`
+    src += `print(${content})`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        content,
+        binary,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFile, content, binary]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["content"]) setContent(metadata["content"]);
+      if (metadata["binary"]) setBinary(metadata["binary"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -33,6 +57,7 @@ export const FileRead: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         label={"Write to file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
 
       <SelectPath
@@ -67,7 +92,7 @@ export const FileReadRecipe: IRecipe = {
   ui: FileRead,
   Icon: FileDownloadIcon,
   requiredPackages: [],
-  docsUrl: "python-read-file",
+  docsUrl: DOCS_URL,
 };
 
 export default FileReadRecipe;

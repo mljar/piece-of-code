@@ -7,9 +7,13 @@ import { SelectPath } from "../../components/SelectPath";
 import { FilePlusIcon } from "../../icons/FilePlus";
 import { Toggle } from "../../components/Toggle";
 
+const DOCS_URL = "python-append-to-file";
+
 export const FileAppend: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata
 }) => {
   const [myFile, setMyFile] = useState("file_name");
   const [text, setText] = useState("hello!");
@@ -25,7 +29,24 @@ export const FileAppend: React.FC<IRecipeProps> = ({
     src += `with open(r"${myFile}", "${mode}") as fin:\n`;
     src += `    fin.write("${text}")`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        text,
+        binary,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFile, text, binary]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["text"]) setText(metadata["text"]);
+      if (metadata["binary"]) setBinary(metadata["binary"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -34,6 +55,7 @@ export const FileAppend: React.FC<IRecipeProps> = ({
         label={"Append to file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
 
       <SelectPath
@@ -69,7 +91,7 @@ export const FileAppendRecipe: IRecipe = {
   ui: FileAppend,
   Icon: FilePlusIcon,
   requiredPackages: [],
-  docsUrl: "python-append-to-file",
+  docsUrl: DOCS_URL,
 };
 
 export default FileAppendRecipe;

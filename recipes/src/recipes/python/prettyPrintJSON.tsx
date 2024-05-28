@@ -9,11 +9,15 @@ import { FilePencilIcon } from "../../icons/FilePencil";
 import { JSONIcon } from "../../icons/JSON";
 import { Select } from "../../components/Select";
 
+const DOCS_URL = "python-pretty-print-json";
+
 export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   const myDicts = variables
     .filter((v) => v.varType === "dict")
@@ -45,11 +49,28 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
     src += `json.dumps(${myDict}, indent=4)`;
     setCode(src);
     setPackages(["import json"]);
+    if (setMetadata) {
+      setMetadata({
+        myDict,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myDict]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myDict"]) setMyDict(metadata["myDict"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={JSONIcon} label={"Pretty print JSON"} />
+      <Title
+        Icon={JSONIcon}
+        label={"Pretty print JSON"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Select
         label={"Select JSON (dict) object"}
         option={myDict}
@@ -73,7 +94,7 @@ The above code displays JSON with pretty indentation (4 spaces).
   ui: PrettyPrintJSON,
   Icon: JSONIcon,
   requiredPackages: [],
-  docsUrl: "python-pretty-print-json",
+  docsUrl: DOCS_URL,
   defaultVariables: [
     {
       varName: "my_dict",

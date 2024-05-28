@@ -5,9 +5,13 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { DesktopIcon } from "../../icons/Desktop";
 
+const DOCS_URL = "python-add-.env-variable";
+
 export const AddDotEnvVar: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [myEnvVar, setMyEnvVar] = useState("MY_ENV_VARIABLE");
   const [myVar, setMyVar] = useState("my_var");
@@ -19,14 +23,33 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
     src += `with open(".env", mode) as fout:\n`;
     src += `    fout.write("${myEnvVar}=${myVar}\\n")\n`;
     src += `print("Secret saved in .env file")\n`;
-    src += `print("Please remove this code cell and save notebook, be safe!")`
+    src += `print("Please remove this code cell and save notebook, be safe!")`;
     setCode(src);
     setPackages(["import os"]);
+    if (setMetadata) {
+      setMetadata({
+        myEnvVar,
+        myVar,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myEnvVar, myVar]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myEnvVar"]) setMyEnvVar(metadata["myEnvVar"]);
+      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={DesktopIcon} label={"Add .env variable"} />
+      <Title
+        Icon={DesktopIcon}
+        label={"Add .env variable"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Environment variable name"}
         name={myEnvVar}
@@ -49,8 +72,11 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
           Please remove this code cell after execution!
         </span>
         <br />
-        This cell runs code that saves variables in the <b>.env</b> file in your current directory. It is used to keep secrets. Secrets can't be stored in the code for security reasons. If the cell is executed successfully, please check that you have a <b>.env</b> file, and you can safely remove this cell and save the notebook.
-         
+        This cell runs code that saves variables in the <b>.env</b> file in your
+        current directory. It is used to keep secrets. Secrets can't be stored
+        in the code for security reasons. If the cell is executed successfully,
+        please check that you have a <b>.env</b> file, and you can safely remove
+        this cell and save the notebook.
       </div>
     </div>
   );
@@ -71,7 +97,7 @@ export const AddDotEnvVarRecipe: IRecipe = {
   ui: AddDotEnvVar,
   Icon: DesktopIcon,
   requiredPackages: [],
-  docsUrl: "python-add-.env-variable",
+  docsUrl: DOCS_URL,
   tags: ["env", "environment"],
 };
 

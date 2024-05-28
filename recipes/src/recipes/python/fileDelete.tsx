@@ -5,7 +5,14 @@ import { Title } from "../../components/Title";
 import { SelectPath } from "../../components/SelectPath";
 import { FileShredderIcon } from "../../icons/FileShredder";
 
-export const FileDelete: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-delete-file";
+
+export const FileDelete: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [myFile, setMyFile] = useState("file_name");
 
   useEffect(() => {
@@ -14,17 +21,31 @@ export const FileDelete: React.FC<IRecipeProps> = ({ setCode, setPackages }) => 
     src += `    # file exists, delete it\n`;
     src += `    os.remove(r"${myFile})\n`;
     src += `else:\n`;
-    src += `    print("File not found")`
-    
+    src += `    print("File not found")`;
+
     setCode(src);
-    setPackages(["import os"])
+    setPackages(["import os"]);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFile]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
       <Title
         Icon={FileShredderIcon}
         label={"Delete file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <SelectPath
         label="Select file to be deleted"
@@ -50,7 +71,7 @@ export const FileDeleteRecipe: IRecipe = {
   ui: FileDelete,
   Icon: FileShredderIcon,
   requiredPackages: [],
-  docsUrl: "python-delete-file",
+  docsUrl: DOCS_URL,
 };
 
 export default FileDeleteRecipe;

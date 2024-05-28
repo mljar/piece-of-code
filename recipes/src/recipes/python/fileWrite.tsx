@@ -7,7 +7,14 @@ import { SelectPath } from "../../components/SelectPath";
 import { Toggle } from "../../components/Toggle";
 import { FilePencilIcon } from "../../icons/FilePencil";
 
-export const FileWrite: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-write-to-file";
+
+export const FileWrite: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [myFile, setMyFile] = useState("file_name");
   const [text, setText] = useState("hello!");
   const [advanced, setAdvanced] = useState(false);
@@ -24,7 +31,24 @@ export const FileWrite: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
     src += `with open(r"${myFile}", "${mode}") as fout:\n`;
     src += `    fout.write("${text}")`;
     setCode(src);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        text,
+        binary,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFile, text, binary]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["text"]) setText(metadata["text"]);
+      if (metadata["binary"]) setBinary(metadata["binary"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
@@ -33,6 +57,7 @@ export const FileWrite: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
         label={"Write to file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
 
       <SelectPath
@@ -68,7 +93,7 @@ export const FileWriteRecipe: IRecipe = {
   ui: FileWrite,
   Icon: FilePencilIcon,
   requiredPackages: [],
-  docsUrl: "python-write-to-file",
+  docsUrl: DOCS_URL,
 };
 
 export default FileWriteRecipe;

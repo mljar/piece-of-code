@@ -9,22 +9,48 @@ import { FilePencilIcon } from "../../icons/FilePencil";
 import { JSONIcon } from "../../icons/JSON";
 import { Select } from "../../components/Select";
 
-export const ReadJSON: React.FC<IRecipeProps> = ({ setCode, setPackages }) => {
+const DOCS_URL = "python-read-json-from-file";
+
+export const ReadJSON: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [myFile, setMyFile] = useState("file_name");
   const [myDict, setMyDict] = useState("data_json");
-  
+
   useEffect(() => {
     let src = `# open file and load as json\n`;
     src += `${myDict} = json.load(open(r"${myFile}"))\n`;
     src += "# display loaded JSON\n";
-    src += `print(json.dumps(${myDict}, indent=4))`
+    src += `print(json.dumps(${myDict}, indent=4))`;
     setCode(src);
     setPackages(["import json"]);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        myDict,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFile, myDict]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["myDict"]) setMyDict(metadata["myDict"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={JSONIcon} label={"Read JSON from file"} />
+      <Title
+        Icon={JSONIcon}
+        label={"Read JSON from file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <SelectPath
         label="Select JSON file"
         setPath={setMyFile}
@@ -56,7 +82,7 @@ It is a good practice to check if file exists before reading it. There is **Chec
   ui: ReadJSON,
   Icon: JSONIcon,
   requiredPackages: [],
-  docsUrl: "python-read-json-from-file",
+  docsUrl: DOCS_URL,
 };
 
 export default ReadJSONRecipe;

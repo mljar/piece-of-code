@@ -6,9 +6,13 @@ import { Variable } from "../../components/Variable";
 import { Dice5Icon } from "../../icons/Dice5";
 import { Numeric } from "../../components/Numeric";
 
+const DOCS_URL = "python-generate-random-integer";
+
 export const RandomInteger: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [myVar, setMyVar] = useState("my_random_number");
   const [myLower, setMyLower] = useState(0);
@@ -21,11 +25,32 @@ export const RandomInteger: React.FC<IRecipeProps> = ({
     src += `print(f"Generated random number is {${myVar}}")`;
     setCode(src);
     setPackages(["import random"]);
+    if (setMetadata) {
+      setMetadata({
+        myVar,
+        myLower,
+        myHigher,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myVar, myLower, myHigher]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+      if (metadata["myLower"]) setMyLower(metadata["myLower"]);
+      if (metadata["myHigher"]) setMyHigher(metadata["myHigher"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={Dice5Icon} label={"Generate random integer"} />
+      <Title
+        Icon={Dice5Icon}
+        label={"Generate random integer"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Variable with random number"}
         name={myVar}
@@ -56,7 +81,7 @@ export const RandomIntegerRecipe: IRecipe = {
   ui: RandomInteger,
   Icon: Dice5Icon,
   requiredPackages: [],
-  docsUrl: "python-generate-random-integer",
+  docsUrl: DOCS_URL,
 };
 
 export default RandomIntegerRecipe;

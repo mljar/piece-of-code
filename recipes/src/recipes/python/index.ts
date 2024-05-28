@@ -18,6 +18,7 @@ import FolderDeleteRecipe from "./folderDelete";
 import FileCopyRecipe from "./fileCopy";
 import AddDotEnvVarRecipe from "./addDotEnvVar";
 import LoadDotEnvVarRecipe from "./LoadDotEnvVar";
+import ListFilesRecipe from "./listFiles";
 
 export const PythonRecipes: IRecipeSet = {
     name: "Python",
@@ -37,6 +38,7 @@ export const PythonRecipes: IRecipeSet = {
         [RandomIntegerRecipe.name]: RandomIntegerRecipe,
         [TimeDelayRecipe.name]: TimeDelayRecipe,
         [FileExistsRecipe.name]: FileExistsRecipe,
+        [ListFilesRecipe.name]: ListFilesRecipe,
         [FileReadRecipe.name]: FileReadRecipe,
         [FileWriteRecipe.name]: FileWriteRecipe,
         [FileAppendRecipe.name]: FileAppendRecipe,

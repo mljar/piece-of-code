@@ -9,11 +9,15 @@ import { FilePencilIcon } from "../../icons/FilePencil";
 import { JSONIcon } from "../../icons/JSON";
 import { Select } from "../../components/Select";
 
+const DOCS_URL = "python-write-json-to-file";
+
 export const WriteJSON: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
   variables,
+  metadata,
+  setMetadata,
 }) => {
   const myDicts = variables
     .filter((v) => v.varType === "dict")
@@ -47,11 +51,31 @@ export const WriteJSON: React.FC<IRecipeProps> = ({
     src += `    json.dump(${myDict}, fout, ensure_ascii=False, indent=4)`;
     setCode(src);
     setPackages(["import json"]);
-  }, [myDict]);
+    if (setMetadata) {
+      setMetadata({
+        myFile,
+        myDict,
+        variables: variables.filter((v) => v.varType === "dict"),
+        docsUrl: DOCS_URL,
+      });
+    }
+  }, [myDict, myFile]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["myDict"]) setMyDict(metadata["myDict"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={JSONIcon} label={"Write JSON to file"} />
+      <Title
+        Icon={JSONIcon}
+        label={"Write JSON to file"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Select
         label={"Select JSON (dict) object"}
         option={myDict}
@@ -81,7 +105,7 @@ The above code saves dict object to file. The **utf-8** encoding is used.
   ui: WriteJSON,
   Icon: JSONIcon,
   requiredPackages: [],
-  docsUrl: "python-write-json-to-file",
+  docsUrl: DOCS_URL,
   defaultVariables: [
     {
       varName: "my_dict",

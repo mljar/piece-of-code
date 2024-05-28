@@ -5,9 +5,13 @@ import { Title } from "../../components/Title";
 import { SelectPath } from "../../components/SelectPath";
 import { FolderXIcon } from "../../icons/FolderX";
 
+const DOCS_URL = "python-delete-directory";
+
 export const FolderDelete: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [myFolder, setMyFolder] = useState("directory_path");
 
@@ -20,11 +24,28 @@ export const FolderDelete: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages(["import shutil"]);
+    if (setMetadata) {
+      setMetadata({
+        myFolder,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [myFolder]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["myFolder"]) setMyFolder(metadata["myFolder"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={FolderXIcon} label={"Delete folder"} />
+      <Title
+        Icon={FolderXIcon}
+        label={"Delete folder"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <SelectPath
         label="Select folder to be deleted"
         setPath={setMyFolder}
@@ -49,7 +70,7 @@ export const FolderDeleteRecipe: IRecipe = {
   ui: FolderDelete,
   Icon: FolderXIcon,
   requiredPackages: [],
-  docsUrl: "python-delete-directory",
+  docsUrl: DOCS_URL,
 };
 
 export default FolderDeleteRecipe;

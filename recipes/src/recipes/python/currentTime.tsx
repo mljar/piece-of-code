@@ -6,9 +6,13 @@ import { Variable } from "../../components/Variable";
 import { Toggle } from "../../components/Toggle";
 import { CalendarClockIcon } from "../../icons/CalendarClock";
 
+const DOCS_URL = "python-get-current-time";
+
 export const CurrentTime: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  metadata,
+  setMetadata,
 }) => {
   const [now, setNow] = useState("now");
   const [showDate, setShowDate] = useState(true);
@@ -25,11 +29,30 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
     }
     setCode(src);
     setPackages(["import datetime"]);
+    if (setMetadata) {
+      setMetadata({
+        now,
+        showDate,
+        docsUrl: DOCS_URL,
+      });
+    }
   }, [now, showDate]);
+
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["now"]) setNow(metadata["now"]);
+      if (metadata["showDate"]) setShowDate(metadata["showDate"]);
+    }
+  }, [metadata]);
 
   return (
     <div>
-      <Title Icon={CalendarClockIcon} label={"Get current time"} />
+      <Title
+        Icon={CalendarClockIcon}
+        label={"Get current time"}
+        docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
       <Variable
         label={"Current time variable"}
         name={now}
@@ -53,7 +76,7 @@ export const CurrentTimeRecipe: IRecipe = {
   ui: CurrentTime,
   Icon: CalendarClockIcon,
   requiredPackages: [],
-  docsUrl: "python-get-current-time",
+  docsUrl: DOCS_URL,
 };
 
 export default CurrentTimeRecipe;
