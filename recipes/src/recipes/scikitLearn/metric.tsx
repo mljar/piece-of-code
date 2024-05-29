@@ -68,7 +68,7 @@ export const Metric: React.FC<IRecipeProps> = ({
       src += `, sample_weight=${sampleWeight}`;
     }
     src += ")\n";
-    src += `print(f"${metric}: {${varName}})`;
+    src += `print(f"${metric}: {${varName}}")`;
     setCode(src);
     setPackages([`from sklearn.metrics import ${m}`]);
     if (setMetadata) {

@@ -69,6 +69,8 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
       src += `, min_samples_split=${minSamplesSplit}`;
     }
     src += `, random_state=${seed})\n`;
+    src += `# display model card\n`;
+    src += `${model}`
 
     setCode(src);
     if (setMetadata) {
