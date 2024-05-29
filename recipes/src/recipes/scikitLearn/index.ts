@@ -2,6 +2,9 @@ import { IRecipeSet } from "../base";
 
 import { ScikitLearnIcon } from "../../icons/ScikitLearn";
 import TrainDecisionTreeRecipe from "./trainDescitionTree";
+import TrainModelRecipe from "./trainModel";
+import PredictRecipe from "./predict";
+import MetricRecipe from "./metric";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -13,5 +16,8 @@ export const ScikitLearnRecipes: IRecipeSet = {
     Icon: ScikitLearnIcon,
     recipes: {
         [TrainDecisionTreeRecipe.name]: TrainDecisionTreeRecipe,
+        [TrainModelRecipe.name]: TrainModelRecipe,
+        [PredictRecipe.name]: PredictRecipe,
+        [MetricRecipe.name]: MetricRecipe,   
     }
 };

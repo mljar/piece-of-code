@@ -45,7 +45,7 @@ export const Metric: React.FC<IRecipeProps> = ({
     "RMSE": "root_mean_squared_error",
     "MAE": "mean_absolute_error",
     "R2": "r2_score",
-  };
+  } as Record<string, string>;
 
   const [advanced, setAdvanced] = useState(false);
   const [metric, setMetric] = useState(Object.keys(metricsFuncs)[0]);
@@ -61,7 +61,7 @@ export const Metric: React.FC<IRecipeProps> = ({
       return;
     }
     let src = `# compute metric\n`;
-    let m = metricsFuncs[metric];
+    let m = metricsFuncs[metric] as string;
     let varName = `metric_${metric.toLowerCase()}`;
     src += `${varName} = ${m}(${yTrue}, ${yPred}`
     if (sampleWeight !== "None") {
@@ -155,10 +155,11 @@ export const MetricRecipe: IRecipe = {
   name: "Compute Metric",
   longName: "Compute Metric",
   parentName: "Scikit-learn",
-  description: ``,
-  shortDescription: ``,
+  description: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, F1, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2. Please use advanced settings to provide sample weights for metric function.`,
+  shortDescription: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, F1, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2.`,
   codeExplanation: `
-  
+1. Compute metric to assess performance between true and predicted values.
+2. Print computed score.  
   `,
   ui: Metric,
   Icon: RulerMeasureIcon,

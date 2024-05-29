@@ -142,11 +142,14 @@ export const PredictRecipe: IRecipe = {
   name: "Compute Predictions",
   longName: "Compute Predictions",
   parentName: "Scikit-learn",
-  description: ``,
+  description: `Compute output values on provided data with Machine Learning model. Predictions are allocated to variable, so they can be later used to compute performance metrics. Additionally, class probabilities are computed for classifiers.`,
   shortDescription:
-    ``,
+    `Compute prediction on provided data with Machine Learning model. `,
   codeExplanation: `
-  
+1. Compute predictions on provided data.
+2. Compute class probabilities on provided data only for classifier model.  
+
+Predictions are allocated to variables, so can be later used to compute performance metrics.
   `,
   ui: Predict,
   Icon: CrystalBallIcon,
