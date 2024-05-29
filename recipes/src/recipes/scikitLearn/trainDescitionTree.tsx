@@ -112,7 +112,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={TreeIcon}
-        label={"Train Decision Tree"}
+        label={"Decision Tree"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -190,8 +190,8 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
 };
 
 export const TrainDecisionTreeRecipe: IRecipe = {
-  name: "Train Decision Tree",
-  longName: "Train Decision Tree in Python",
+  name: "Decision Tree",
+  longName: "Decision Tree in Python",
   parentName: "Scikit-learn",
   description: `Train Decision Tree in Python. Algorithm can be used in classification and regression tasks. Please make sure that there are no missing values in the training data and all values are numeric.
 
