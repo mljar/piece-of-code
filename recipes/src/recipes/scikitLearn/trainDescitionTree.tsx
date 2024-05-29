@@ -16,32 +16,11 @@ const DOCS_URL = "python-train-decision-tree";
 export const TrainDecisionTree: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
-  variablesStatus,
-  variables,
   metadata,
   setMetadata,
 }) => {
-  if (variablesStatus === "loaded" && !variables.length) {
-    return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
-          There are no DataFrames in your notebook. Please create DataFrame by
-          reading data from file, url or database.
-        </p>
-      </div>
-    );
-  }
   const [advanced, setAdvanced] = useState(false);
   const [model, setModel] = useState("my_tree");
-  const dataFrames = variables
-    .filter((v) => v.varType === "DataFrame")
-    .map((v) => v.varName);
-  const dataSeries = variables
-    .filter((v) => v.varType === "Series")
-    .map((v) => v.varName);
-
-  const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
-  const [target, setTarget] = useState(dataSeries.length ? dataSeries[0] : "");
 
   const mlTasks = ["Classification", "Regression"];
   const [mlTask, setMlTask] = useState(mlTasks[0]);
@@ -90,29 +69,23 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
       src += `, min_samples_split=${minSamplesSplit}`;
     }
     src += `, random_state=${seed})\n`;
-    src += `# fit algorithm\n`;
-    src += `${model}.fit(${df}, ${target})`;
+
     setCode(src);
     if (setMetadata) {
       setMetadata({
         model,
         mlTask,
-        df,
-        target,
         criterion,
         minSamplesLeaf,
         minSamplesSplit,
         maxDepth,
         seed,
-        variables: variables,
         docsUrl: DOCS_URL,
       });
     }
   }, [
     model,
     mlTask,
-    df,
-    target,
     criterion,
     minSamplesLeaf,
     minSamplesSplit,
@@ -125,8 +98,6 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["model"]) setModel(metadata["model"]);
       if (metadata["mlTask"]) setMlTask(metadata["mlTask"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["target"]) setTarget(metadata["target"]);
       if (metadata["criterion"]) setCriterion(metadata["criterion"]);
       if (metadata["minSamplesLeaf"])
         setMinSamplesLeaf(metadata["minSamplesLeaf"]);
@@ -146,95 +117,74 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      {df === "" && (
-        <p className="text-base text-gray-800 dark:text-white">
-          There are no DataFrames in your notebook. Please create DataFrame by
-          reading data from file, url or database.
-        </p>
-      )}
-      {df !== "" && (
-        <>
-          <Variable
-            label={"Assign Decision Tree to variable"}
-            name={model}
-            setName={setModel}
-            tooltip="Decision Tree model can be later reused for computing predictions on new data."
-          />
-          <Select
-            label={"Machine Learning task"}
-            option={mlTask}
-            options={mlTasks.map((d) => [d, d])}
-            setOption={setMlTask}
-          />
-          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-            <Select
-              label={"Select X (input data)"}
-              option={df}
-              options={dataFrames.map((d) => [d, d])}
-              setOption={setDf}
-            />
-            <Select
-              label={"Select y (target)"}
-              option={target}
-              options={dataSeries.map((c) => [c, c])}
-              setOption={setTarget}
-            />
-          </div>
 
-          {advanced && (
-            <>
-              <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-                <Select
-                  label={"Criterion"}
-                  option={criterion}
-                  options={criterions.map((c) => [c, c])}
-                  setOption={setCriterion}
-                  tooltip="Function to measure the quality of split."
-                />
+      <>
+        <Variable
+          label={"Assign Decision Tree to variable"}
+          name={model}
+          setName={setModel}
+          tooltip="Decision Tree model can be later reused for computing predictions on new data."
+        />
+        <Select
+          label={"Machine Learning task"}
+          option={mlTask}
+          options={mlTasks.map((d) => [d, d])}
+          setOption={setMlTask}
+        />
 
+        {advanced && (
+          <>
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+              <Select
+                label={"Criterion"}
+                option={criterion}
+                options={criterions.map((c) => [c, c])}
+                setOption={setCriterion}
+                tooltip="Function to measure the quality of split."
+              />
+
+              <Numeric
+                label={"Random state seed"}
+                name={seed}
+                setName={setSeed}
+                tooltip="Controls the randomness of the algorithm."
+              />
+
+              <Numeric
+                label={"Do not split nodes smaller than"}
+                tooltip={
+                  "Minimum number of samples required to split an internal node"
+                }
+                name={minSamplesSplit}
+                setName={setMinSamplesSplit}
+              />
+
+              <Numeric
+                label={"Minimum number of samples in leaf node"}
+                tooltip={
+                  "The minimum number of samples required to be at a leaf node."
+                }
+                name={minSamplesLeaf}
+                setName={setMinSamplesLeaf}
+              />
+
+              <Toggle
+                label={"Set max depth of tree"}
+                value={isMaxDepth}
+                setValue={setIsMaxDepth}
+                tooltip="If not selected then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples"
+              />
+              {isMaxDepth && (
                 <Numeric
-                  label={"Random state seed"}
-                  name={seed}
-                  setName={setSeed}
-                  tooltip="Controls the randomness of the algorithm."
+                  label={"Maximum depth of tree"}
+                  name={maxDepth}
+                  setName={setMaxDepth}
                 />
-
-                <Numeric
-                  label={"Do not split nodes smaller than"}
-                  tooltip={
-                    "Minimum number of samples required to split an internal node"
-                  }
-                  name={minSamplesSplit}
-                  setName={setMinSamplesSplit}
-                />
-
-                <Numeric
-                  label={"Minimum number of samples in leaf node"}
-                  tooltip={
-                    "The minimum number of samples required to be at a leaf node."
-                  }
-                  name={minSamplesLeaf}
-                  setName={setMinSamplesLeaf}
-                />
-
-                <Toggle
-                  label={"Set max depth of tree"}
-                  value={isMaxDepth}
-                  setValue={setIsMaxDepth}
-                  tooltip="If not selected then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples"
-                />
-                {isMaxDepth && (
-                  <Numeric
-                    label={"Maximum depth of tree"}
-                    name={maxDepth}
-                    setName={setMaxDepth}
-                  />
-                )}
-              </div>
-            </>
-          )}
-        </>
-      )}
+              )}
+            </div>
+          </>
+        )}
+      </>
     </div>
   );
 };
@@ -252,8 +202,7 @@ export const TrainDecisionTreeRecipe: IRecipe = {
   shortDescription:
     "Train Decision Tree in Python. Algorithm can be used in classification and regression tasks",
   codeExplanation: `
-1. Initialize Decision Tree object. 
-2. Fit model on provided data.    
+This code recipe initialize Decision Tree object. It is ready to fit or tunning.
 
 Fitted object can be used to compute predictions. If you want to persist your Decision Tree, please save it to pickle file (**Save to pickle** recipe).
   `,
@@ -268,30 +217,6 @@ Fitted object can be used to compute predictions. If you want to persist your De
   ],
   docsUrl: DOCS_URL,
   tags: ["decision-tree", "classification", "regression"],
-  defaultVariables: [
-    {
-      varName: "X",
-      varType: "DataFrame",
-      varColumns: ["col1", "col2-object", "col3-object", "col4"],
-      varColumnTypes: ["int", "object", "object", "int"],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: true,
-      isWidget: false,
-    },
-    {
-      varName: "y",
-      varType: "Series",
-      varColumns: ["target"],
-      varColumnTypes: ["int"],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: true,
-      isWidget: false,
-    },
-  ],
 };
 
 export default TrainDecisionTreeRecipe;

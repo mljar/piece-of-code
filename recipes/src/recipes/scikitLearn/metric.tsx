@@ -10,11 +10,11 @@ import { CategoryIcon } from "../../icons/Category";
 import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
-import { AcademicIcon } from "../../icons/Academic";
+import { RulerMeasureIcon } from "../../icons/RulerMeasure";
 
-const DOCS_URL = "scikit-learn-train-model";
+const DOCS_URL = "scikit-learn-compute-metric";
 
-export const TrainModel: React.FC<IRecipeProps> = ({
+export const Metric: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -32,52 +32,63 @@ export const TrainModel: React.FC<IRecipeProps> = ({
       </div>
     );
   }
-  const [advanced, setAdvanced] = useState(false);
+   
+  const metricsFuncs = {
+    "Accuracy": "accuracy_score",
+    "ROC AUC": "roc_auc_score",
+    "F1": "f1_score",
+    "Precision": "average_precision_score",
+    "Recall": "recall_score", 
+    "LogLoss": "log_loss",
+    "MCC": "matthews_corrcoef",
+    "MSE": "mean_squared_error",
+    "RMSE": "root_mean_squared_error",
+    "MAE": "mean_absolute_error",
+    "R2": "r2_score",
+  };
 
+  const [advanced, setAdvanced] = useState(false);
+  const [metric, setMetric] = useState(Object.keys(metricsFuncs)[0]);
   const dataObjects = variables.filter((v) => v.isMatrix).map((v) => v.varName);
-  const models = variables
-    .filter(
-      (v) => v.varType.includes("Classifier") || v.varType.includes("Regressor")
-    )
-    .map((v) => v.varName); 
-  const [model, setModel] = useState(models.length > 0 ? models[0] : "");
-  const [df, setDf] = useState(dataObjects.length ? dataObjects[0] : "");
-  const [target, setTarget] = useState(
+  const [yTrue, setYTrue] = useState(dataObjects.length ? dataObjects[0] : "");
+  const [yPred, setYPred] = useState(
     dataObjects.length > 1 ? dataObjects[1] : ""
   );
   const [sampleWeight, setSampleWeight] = useState("None");
 
   useEffect(() => {
-    if(model === "" || df === "") {
+    if (yTrue === "" || yPred === "") {
       return;
     }
-    let src = `# fit model\n`;
-
-    src += `${model}.fit(${df}, ${target}`;
-
+    let src = `# compute metric\n`;
+    let m = metricsFuncs[metric];
+    let varName = `metric_${metric.toLowerCase()}`;
+    src += `${varName} = ${m}(${yTrue}, ${yPred}`
     if (sampleWeight !== "None") {
       src += `, sample_weight=${sampleWeight}`;
     }
     src += ")\n";
+    src += `print(f"${metric}: {${varName}})`;
     setCode(src);
+    setPackages([`from sklearn.metrics import ${m}`]);
     if (setMetadata) {
       setMetadata({
-        model,
-        df,
-        target,
+        metric,
+        yTrue,
+        yPred,
         sampleWeight,
         variables: variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [model, df, target, sampleWeight]);
+  }, [metric, yTrue, yPred, sampleWeight]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["target"]) setTarget(metadata["target"]);
+      if (metadata["metric"]) setMetric(metadata["metric"]);
+      if (metadata["yTrue"]) setYTrue(metadata["yTrue"]);
+      if (metadata["yPred"]) setYPred(metadata["yPred"]);
       if (metadata["sampleWeight"]) setSampleWeight(metadata["sampleWeight"]);
     }
   }, [metadata]);
@@ -85,45 +96,40 @@ export const TrainModel: React.FC<IRecipeProps> = ({
   return (
     <div>
       <Title
-        Icon={AcademicIcon}
-        label={"Train Model"}
+        Icon={RulerMeasureIcon}
+        label={"Compute Metric"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      {df === "" && (
+      {(yTrue === "" || yPred === "") && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
           reading data from file, url or database.
         </p>
       )}
-      {models.length === 0 && (
-        <p className="text-base text-gray-800 dark:text-white">
-          There are no model objects available, please construct the model. For
-          example, create Decision Tree model.
-        </p>
-      )}
-      {df !== "" && (
+
+      {!(yTrue === "" || yPred === "") && (
         <>
           <Select
-            label={"Select model object for training"}
-            option={model}
-            options={models.map((d) => [d, d])}
-            setOption={setModel}
+            label={"Select metric"}
+            option={metric}
+            options={Object.keys(metricsFuncs).map((d) => [d, d])}
+            setOption={setMetric}
           />
 
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
             <Select
-              label={"Select X (input data)"}
-              option={df}
+              label={"Ground truth values"}
+              option={yTrue}
               options={dataObjects.map((d) => [d, d])}
-              setOption={setDf}
+              setOption={setYTrue}
             />
             <Select
-              label={"Select y (target)"}
-              option={target}
+              label={"Predicted values"}
+              option={yPred}
               options={dataObjects.map((c) => [c, c])}
-              setOption={setTarget}
+              setOption={setYPred}
             />
           </div>
 
@@ -145,18 +151,17 @@ export const TrainModel: React.FC<IRecipeProps> = ({
   );
 };
 
-export const TrainModelRecipe: IRecipe = {
-  name: "Train Model",
-  longName: "Train Scikit-Learn model",
+export const MetricRecipe: IRecipe = {
+  name: "Compute Metric",
+  longName: "Compute Metric",
   parentName: "Scikit-learn",
-  description: `Train Scikit-Learn model on provided data (X, y). The **X** should be DataFrame or NumPy array with input data matrix. The **y** is a target attribute, with values that will be learn by model. User can specify sample weight, which describes how important is each sample, in the advanced options. This method can train any model that implements Scikit-Learn API.`,
-  shortDescription:
-    "Train Scikit-Learn model on provided data (X, y). It can be used with any model that implements Scikit-Learn APi.",
+  description: ``,
+  shortDescription: ``,
   codeExplanation: `
-  This code fits model on training data (X, y). The training time depends on data size (number or rows and columns) and algorithm complexity.
+  
   `,
-  ui: TrainModel,
-  Icon: AcademicIcon,
+  ui: Metric,
+  Icon: RulerMeasureIcon,
   requiredPackages: [
     {
       importName: "sklearn",
@@ -165,35 +170,13 @@ export const TrainModelRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["classification", "regression", "fit"],
+  tags: ["metric", "accuracy"],
   defaultVariables: [
     {
-      varName: "my_classifier",
-      varType: "DecisionTreeClassifier",
-      varColumns: [],
-      varColumnTypes: [],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: false,
-      isWidget: false,
-    },
-    {
-      varName: "my_regressor",
-      varType: "DecisionTreeRegressor",
-      varColumns: [],
-      varColumnTypes: [],
-      varSize: "",
-      varShape: "",
-      varContent: "",
-      isMatrix: false,
-      isWidget: false,
-    },
-    {
-      varName: "X",
+      varName: "predicted",
       varType: "DataFrame",
-      varColumns: ["col1", "col2-object", "col3-object", "col4"],
-      varColumnTypes: ["int", "object", "object", "int"],
+      varColumns: ["col1"],
+      varColumnTypes: ["int"],
       varSize: "",
       varShape: "",
       varContent: "",
@@ -214,4 +197,4 @@ export const TrainModelRecipe: IRecipe = {
   ],
 };
 
-export default TrainModelRecipe;
+export default MetricRecipe;

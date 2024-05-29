@@ -1,44 +1,45 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { TrainDecisionTree } from "../scikitLearn/trainDescitionTree";
+import MetricRecipe, { Metric } from "./metric";
 
-const meta: Meta<typeof TrainDecisionTree> = {
-  component: TrainDecisionTree,
-  title: "CodePieces/Scikit-learn/TrainDecisionTree",
+const meta: Meta<typeof Metric> = {
+  component: Metric,
+  title: "CodePieces/Scikit-learn/Metric",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof TrainDecisionTree>;
+type Story = StoryObj<typeof Metric>;
 
-export const TrainDecisionTreeStory: Story = (
+export const MetricStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <TrainDecisionTree {...args} />
+    <Metric {...args} />
     <div className="poc-dark">
       <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <TrainDecisionTree {...args} />
+        <Metric {...args} />
       </div>
     </div>
   </>
 );
 
-TrainDecisionTreeStory.args = {
+MetricStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
- 
+  variablesStatus: "loaded",
+  variables: MetricRecipe.defaultVariables
 };
 
-export const TrainDecisionTreeEmptyDfStory: Story = (
+export const MetricEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <TrainDecisionTree {...args} />
+    <Metric {...args} />
   </>
 );
-TrainDecisionTreeEmptyDfStory.args = {
+MetricEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
