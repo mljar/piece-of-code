@@ -141,6 +141,17 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
               setOption={setTarget}
             />
           </div>
+          {advanced && (
+            <>
+              <Numeric
+                label={"Max depth of visualization"}
+                minValue={1}
+                maxValue={12}
+                name={depth}
+                setName={setDepth}
+              />
+            </>
+          )}
         </>
       )}
     </div>
