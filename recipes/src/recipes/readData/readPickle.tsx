@@ -22,7 +22,7 @@ export const ReadPickle: React.FC<IRecipeProps> = ({
       return;
     }
     let src = `# open pickle file and load\n`;
-    src += `with open(r"${filePath}", "rb) as fin:\n`;
+    src += `with open(r"${filePath}", "rb") as fin:\n`;
     src += `    ${name} = pickle.load(fin)\n`;
     src += `# display loaded object\n`;
     src += `print(${name})`;

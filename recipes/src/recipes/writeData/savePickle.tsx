@@ -33,7 +33,7 @@ export const SavePickle: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# save object to pickle file\n`;
-    src += `with open(r"${filePath}", "wb) as fout:\n`;
+    src += `with open(r"${filePath}", "wb") as fout:\n`;
     src += `    pickle.dump(${df}, fout)\n`;
     src += `print(f"Object ${df} saved at ${filePath}"`;
     setCode(src);
