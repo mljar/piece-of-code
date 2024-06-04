@@ -36,19 +36,18 @@ export const Importance: React.FC<IRecipeProps> = ({
   }
 
   const classifierMetricsFuncs = {
-    Accuracy: "accuracy_score",
-    "ROC AUC": "roc_auc_score",
-    F1: "f1_score",
-    Precision: "average_precision_score",
-    Recall: "recall_score",
+    Accuracy: "accuracy",
+    "ROC AUC": "roc_auc",
+    F1: "f1",
+    Precision: "average_precision",
+    Recall: "recall",
     LogLoss: "log_loss",
-    MCC: "matthews_corrcoef",
   } as Record<string, string>;
   const regressorMetricsFuncs = {
-    MSE: "mean_squared_error",
-    RMSE: "root_mean_squared_error",
-    MAE: "mean_absolute_error",
-    R2: "r2_score",
+    MSE: "neg_mean_squared_error",
+    RMSE: "neg_root_mean_squared_error",
+    MAE: "neg_mean_absolute_error",
+    R2: "r2",
   } as Record<string, string>;
 
   const [metricsFuncs, setMetricsFuncs] = useState(classifierMetricsFuncs);
@@ -83,10 +82,11 @@ export const Importance: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (isClassifier()) {
       setMetricsFuncs(classifierMetricsFuncs);
-      setMetric(classifierMetricsFuncs[0]);
+      setMetric(Object.keys(classifierMetricsFuncs)[0]);
+
     } else {
       setMetricsFuncs(regressorMetricsFuncs);
-      setMetric(regressorMetricsFuncs[0]);
+      setMetric(Object.keys(regressorMetricsFuncs)[0]);
     }
   }, [model]);
 
@@ -103,10 +103,13 @@ export const Importance: React.FC<IRecipeProps> = ({
       src += `, sample_weight=${sampleWeight}`;
     }
     src += `)\n`;
-    src += `result\n`;
+    src += `# plot importance\n`;
+    src += `sorted_idx = result.importances_mean.argsort()\n`;
+    src += `_ = plt.barh(${model}.feature_names_in_[sorted_idx], result.importances_mean[sorted_idx])\n`;
+    src += `_ = plt.xlabel("Feature importance")\n`
 
     setCode(src);
-    setPackages(["from sklearn.inspection import permutation_importance"]);
+    setPackages(["from matplotlib import pyplot as plt", "from sklearn.inspection import permutation_importance"]);
 
     if (setMetadata) {
       setMetadata({
@@ -220,20 +223,25 @@ export const Importance: React.FC<IRecipeProps> = ({
 };
 
 export const ImportanceRecipe: IRecipe = {
-  name: "Hyper Parameters Search",
-  longName: "Hyper Parameters Search",
+  name: "Feature Importance",
+  longName: "Feature Importance",
   parentName: "Scikit-learn",
   description: ``,
   shortDescription: ``,
   codeExplanation: ``,
   ui: Importance,
-  Icon: AdjustmentsIcon,
+  Icon: StarsIcon,
   requiredPackages: [
     {
       importName: "sklearn",
       installationName: "scikit-learn",
       version: ">=1.0.0",
     },
+    {
+      importName: "matplotlib",
+      installationName: "matplotlib",
+      version: ">=3.8.4",
+    }
   ],
   docsUrl: DOCS_URL,
   tags: ["metric", "accuracy"],

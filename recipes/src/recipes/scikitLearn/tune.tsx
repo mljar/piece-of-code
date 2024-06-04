@@ -35,19 +35,18 @@ export const Tune: React.FC<IRecipeProps> = ({
   }
 
   const classifierMetricsFuncs = {
-    Accuracy: "accuracy_score",
-    "ROC AUC": "roc_auc_score",
-    F1: "f1_score",
-    Precision: "average_precision_score",
-    Recall: "recall_score",
+    Accuracy: "accuracy",
+    "ROC AUC": "roc_auc",
+    F1: "f1",
+    Precision: "average_precision",
+    Recall: "recall",
     LogLoss: "log_loss",
-    MCC: "matthews_corrcoef",
   } as Record<string, string>;
   const regressorMetricsFuncs = {
-    MSE: "mean_squared_error",
-    RMSE: "root_mean_squared_error",
-    MAE: "mean_absolute_error",
-    R2: "r2_score",
+    MSE: "neg_mean_squared_error",
+    RMSE: "neg_root_mean_squared_error",
+    MAE: "neg_mean_absolute_error",
+    R2: "r2",
   } as Record<string, string>;
 
   const [metricsFuncs, setMetricsFuncs] = useState(classifierMetricsFuncs);
@@ -95,10 +94,10 @@ export const Tune: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (isClassifier()) {
       setMetricsFuncs(classifierMetricsFuncs);
-      setMetric(classifierMetricsFuncs[0]);
+      setMetric(Object.keys(classifierMetricsFuncs)[0]);
     } else {
       setMetricsFuncs(regressorMetricsFuncs);
-      setMetric(regressorMetricsFuncs[0]);
+      setMetric(Object.keys(regressorMetricsFuncs)[0]);
       setStratify("None");
     }
   }, [model]);

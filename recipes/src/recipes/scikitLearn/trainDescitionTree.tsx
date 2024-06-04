@@ -92,6 +92,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
     minSamplesLeaf,
     minSamplesSplit,
     maxDepth,
+    isMaxDepth,
     seed,
   ]);
 
