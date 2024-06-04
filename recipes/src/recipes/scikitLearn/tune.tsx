@@ -145,7 +145,7 @@ export const Tune: React.FC<IRecipeProps> = ({
       src += `)\n`;
       packages.push("from sklearn.model_selection import RandomizedSearchCV");
     } else {
-      src += `cv_search = GridSearchCV(${model}, params_grid, \n    scoring="${metricName}", cv=vs, random_state=${seed}`;
+      src += `cv_search = GridSearchCV(${model}, params_grid, \n    scoring="${metricName}", cv=vs`;
       if (verbose) {
         src += `, verbose=${verbose ? "4" : "0"}`;
       }
