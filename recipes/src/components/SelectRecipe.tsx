@@ -24,6 +24,7 @@ import "../style.css";
 import BuyLicense from "./BuyLicense";
 import { EnterLicense } from "./EnterLicense";
 import { QuestionIcon } from "../icons/Question";
+import { PythonIcon } from "../icons/Python";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -314,6 +315,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         className="poc-text-base"
       />
 
+       <div>
+          <button
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-yellow-500 
+            poc-to-blue-500 hover:poc-bg-gradient-to-bl 
+            focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 
+            dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg 
+            poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
+            onClick={() => setShowNav(!showNav)}
+          >
+            {<PythonIcon className="poc-inline poc-p-0.5" />}
+          </button>
+        </div>
+      
+      
+      
       <div>
         <button
           data-tooltip-id="left-buttons-tooltip"
@@ -326,20 +343,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </button>
       </div>
 
-      {/* {showRecipeUI && (
-        <div className="has-tooltip">
-          <span className="tooltip poc-rounded poc-shadow-lg poc-p-1 poc-bg-slate-800 poc-text-gray-50 poc--mt-7 poc-text-sm">
-            Toggle menu view
-          </span>
-          <button
-            type="button"
-            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-500 poc-to-blue-500 hover:poc-bg-gradient-to-bl focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
-            onClick={() => setShowNav(!showNav)}
-          >
-            {<HomeIcon className="poc-inline poc-p-0.5" />}
-          </button>
-        </div>
-      )} */}
+     
+      
       <div>
         <button
           data-tooltip-id="left-buttons-tooltip"

@@ -1,7 +1,7 @@
 import React from "react";
 import { IconProps } from "./props";
 
-export const TreeIcon: React.FC<IconProps> = ({
+export const TreesIcon: React.FC<IconProps> = ({
   size = 24,
   color = "currentColor",
   className = "",

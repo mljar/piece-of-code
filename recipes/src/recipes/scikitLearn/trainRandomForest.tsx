@@ -10,6 +10,7 @@ import { CategoryIcon } from "../../icons/Category";
 import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
+import { TreesIcon } from "../../icons/Trees";
 
 const DOCS_URL = "scikit-learn-random-forest";
 
@@ -192,25 +193,15 @@ export const TrainRandomForest: React.FC<IRecipeProps> = ({
   );
 };
 
-export const TrainDecisionTreeRecipe: IRecipe = {
-  name: "Decision Tree",
-  longName: "Decision Tree in Python",
+export const TrainRandomForestRecipe: IRecipe = {
+  name: "Random Forest",
+  longName: "Scikit-learn Random Forest ",
   parentName: "Scikit-learn",
-  description: `Train Decision Tree in Python. Algorithm can be used in classification and regression tasks. Please make sure that there are no missing values in the training data and all values are numeric.
-
-  Please check **Advanced** options. There are several criterions available to measure split quality. What is more, you can control the tree structure by selecting minimum number of samples for internal node split and minimum samples in the leaf. The **max depth** parameter controls the depth of the tree, if it is not set then tree is trained till all leaves are pure or there are minimum samples in the internal node. 
-
-  Decision Tree model can be persisted to hard disk in pickle format. 
-    `,
-  shortDescription:
-    "Train Decision Tree in Python. Algorithm can be used in classification and regression tasks",
-  codeExplanation: `
-This code recipe initialize Decision Tree object. It is ready to fit or tunning.
-
-Fitted object can be used to compute predictions. If you want to persist your Decision Tree, please save it to pickle file (**Save to pickle** recipe).
-  `,
+  description: ` `,
+  shortDescription: ``,
+  codeExplanation: ``,
   ui: TrainRandomForest,
-  Icon: TreeIcon,
+  Icon: TreesIcon,
   requiredPackages: [
     {
       importName: "sklearn",
