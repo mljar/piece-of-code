@@ -222,4 +222,4 @@ Fitted object can be used to compute predictions. If you want to persist your De
   tags: ["random-forest", "classification", "regression"],
 };
 
-export default TrainDecisionTreeRecipe;
+export default TrainRandomForestRecipe;

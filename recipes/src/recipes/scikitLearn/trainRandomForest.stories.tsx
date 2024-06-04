@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { TrainDecisionTree } from "../scikitLearn/trainDescitionTree";
+import { TrainDecisionTree } from "./trainDescitionTree";
 
 const meta: Meta<typeof TrainDecisionTree> = {
   component: TrainDecisionTree,
