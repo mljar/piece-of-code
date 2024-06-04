@@ -43,7 +43,7 @@ export const TrainModel: React.FC<IRecipeProps> = ({
   const [model, setModel] = useState(models.length > 0 ? models[0] : "");
   const [df, setDf] = useState(dataObjects.length ? dataObjects[0] : "");
   const [target, setTarget] = useState(
-    dataObjects.length > 1 ? dataObjects[1] : ""
+    dataObjects.length? dataObjects[dataObjects.length - 1] : ""
   );
   const [sampleWeight, setSampleWeight] = useState("None");
 

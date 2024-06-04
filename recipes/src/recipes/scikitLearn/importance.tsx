@@ -12,10 +12,11 @@ import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
 import { RulerMeasureIcon } from "../../icons/RulerMeasure";
 import { AdjustmentsIcon } from "../../icons/Adjustments";
+import { StarsIcon } from "../../icons/Stars";
 
-const DOCS_URL = "scikit-learn-hyper-parameters-search";
+const DOCS_URL = "scikit-learn-feature-importance";
 
-export const Tune: React.FC<IRecipeProps> = ({
+export const Importance: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -66,21 +67,8 @@ export const Tune: React.FC<IRecipeProps> = ({
     dataObjects.length ? dataObjects[dataObjects.length - 1] : ""
   );
   const [sampleWeight, setSampleWeight] = useState("None");
-  const RANDOMIZED_SEARCH = "Randomized Search";
-  const GRID_SEARCH = "Grid Search";
-  const searchTypes = [RANDOMIZED_SEARCH, GRID_SEARCH];
-  const [searchType, setSearchType] = useState(searchTypes[0]);
   const [iterations, setIterations] = useState(10);
-  const CROSS_VALIDATION = "Cross Validation";
-  const TIMESERIES_SPLIT = "TimeSeries Split";
-  const validations = [CROSS_VALIDATION, TIMESERIES_SPLIT];
-  const [validation, setValidation] = useState(validations[0]);
-  const [kFolds, setKFolds] = useState(5);
-  const [shuffle, setShuffle] = useState(true);
-  const [stratify, setStratify] = useState("None");
-  const [gap, setGap] = useState(0);
   const [seed, setSeed] = useState(42);
-  const [verbose, setVerbose] = useState(true);
 
   const isClassifier = () => {
     const selectedModel = variables.filter((v) => v.varName === model)[0];
@@ -99,137 +87,60 @@ export const Tune: React.FC<IRecipeProps> = ({
     } else {
       setMetricsFuncs(regressorMetricsFuncs);
       setMetric(regressorMetricsFuncs[0]);
-      setStratify("None");
     }
   }, [model]);
 
   useEffect(() => {
-    let packages = [];
-    let src = `# create validation strategy\n`;
-    if (validation === CROSS_VALIDATION) {
-      if (stratify != "None") {
-        src += `vs = StratifiedKFold(n_splits=${kFolds}, shuffle=${shuffle ? "True" : "False"}`;
-        if (shuffle) {
-          src += `, random_state=${seed}`;
-        }
-        src += `)\n`;
-        packages.push("from sklearn.model_selection import StratifiedKFold");
-      } else {
-        src += `vs = KFold(n_splits=${kFolds}, shuffle=${shuffle ? "True" : "False"}, random_state=${seed})\n`;
-        packages.push("from sklearn.model_selection import KFold");
-      }
-    } else {
-      src += `vs = TimeSeriesSplit(n_splits=${kFolds}`;
-      if (gap !== 0) {
-        src += `, gap=${gap}`;
-      }
-      src += `)\n`;
-      packages.push("from sklearn.model_selection import TimeSeriesSplit");
+    if (model === "" || df === "" || target === "") {
+      return;
     }
-
-    src += `# parameters grid for search\n`;
-    if (selectedModelType() === "DecisionTreeClassifier") {
-      src += `params_grid = {\n    "criterion": ["gini", "entropy"],\n    "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
-    } else if (selectedModelType() === "DecisionTreeRegressor") {
-      src += `params_grid = {\n    "criterion": ["squared_error", "friedman_mse"],\n "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
-    }
-
     let metricName = { ...classifierMetricsFuncs, ...regressorMetricsFuncs }[
       metric
     ] as string;
-    src += `# create search strategy\n`;
-    if (searchType === RANDOMIZED_SEARCH) {
-      src += `cv_search = RandomizedSearchCV(${model}, params_grid, \n    n_iter=${iterations}, scoring="${metricName}", cv=vs, random_state=${seed}`;
-      if (verbose) {
-        src += `, verbose=${verbose ? "4" : "0"}`;
-      }
-      src += `)\n`;
-      packages.push("from sklearn.model_selection import RandomizedSearchCV");
-    } else {
-      src += `cv_search = GridSearchCV(${model}, params_grid, \n    scoring="${metricName}", cv=vs, random_state=${seed}`;
-      if (verbose) {
-        src += `, verbose=${verbose ? "4" : "0"}`;
-      }
-      src += `)\n`;
-      packages.push("from sklearn.model_selection import GridSearchCV");
-    }
-    src += `# run search strategy\n`;
-    src += `cv_search.fit(${df}, ${target}`;
+    let src = `# compute permutation importance\n`;
+    src += `result = permutation_importance(${model}, ${df}, ${target},\n    scoring="${metricName}", n_repeats=${iterations}, random_state=${seed}`;
     if (sampleWeight !== "None") {
       src += `, sample_weight=${sampleWeight}`;
     }
     src += `)\n`;
-
-    src += `# display best parameters\n`;
-    src += `print(f"Best score {cv_search.best_score_}")\n`;
-    src += `print(f"Best params {cv_search.best_params_}")`;
+    src += `result\n`;
 
     setCode(src);
-    setPackages(packages);
+    setPackages(["from sklearn.inspection import permutation_importance"]);
 
     if (setMetadata) {
       setMetadata({
-        searchType,
         iterations,
         model,
         df,
         target,
         sampleWeight,
         metric,
-        validation,
-        kFolds,
-        shuffle,
-        stratify,
-        gap,
         seed,
-        verbose,
         variables: variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [
-    searchType,
-    iterations,
-    model,
-    df,
-    target,
-    sampleWeight,
-    metric,
-    validation,
-    kFolds,
-    shuffle,
-    stratify,
-    gap,
-    seed,
-    verbose,
-    metricsFuncs,
-  ]);
+  }, [iterations, model, df, target, sampleWeight, metric, seed, metricsFuncs]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["searchType"]) setSearchType(metadata["searchType"]);
       if (metadata["iterations"]) setIterations(metadata["iterations"]);
       if (metadata["model"]) setModel(metadata["model"]);
       if (metadata["df"]) setDf(metadata["df"]);
       if (metadata["target"]) setTarget(metadata["target"]);
       if (metadata["sampleWeight"]) setSampleWeight(metadata["sampleWeight"]);
       if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["validation"]) setValidation(metadata["validation"]);
-      if (metadata["kFolds"]) setKFolds(metadata["kFolds"]);
-      if (metadata["shuffle"]) setShuffle(metadata["shuffle"]);
-      if (metadata["stratify"]) setStratify(metadata["stratify"]);
-      if (metadata["gap"]) setGap(metadata["gap"]);
       if (metadata["seed"]) setSeed(metadata["seed"]);
-      if (metadata["verbose"]) setVerbose(metadata["verbose"]);
     }
   }, [metadata]);
 
   return (
     <div>
       <Title
-        Icon={AdjustmentsIcon}
-        label={"Hyper Parameters Search"}
+        Icon={StarsIcon}
+        label={"Feature Importance"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -249,22 +160,7 @@ export const Tune: React.FC<IRecipeProps> = ({
       {!(df === "" || target === "" || models.length === 0) && (
         <>
           <Select
-            label={"Select search strategy"}
-            option={searchType}
-            options={searchTypes.map((d) => [d, d])}
-            setOption={setSearchType}
-          />
-          {searchType === searchTypes[0] && (
-            <Numeric
-              label="Number of iterations"
-              setName={setIterations}
-              name={iterations}
-              minValue={2}
-            />
-          )}
-
-          <Select
-            label={"Select model object for tuning"}
+            label={"Select model object "}
             option={model}
             options={models.map((d) => [d, d])}
             setOption={setModel}
@@ -284,58 +180,22 @@ export const Tune: React.FC<IRecipeProps> = ({
               setOption={setTarget}
             />
           </div>
-
-          <Select
-            label={"Select metric"}
-            option={metric}
-            options={Object.keys(metricsFuncs).map((d) => [d, d])}
-            setOption={setMetric}
-          />
-
+          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+            <Numeric
+              label="Number of repeats"
+              setName={setIterations}
+              name={iterations}
+              minValue={2}
+            />
+            <Select
+              label={"Select metric"}
+              option={metric}
+              options={Object.keys(metricsFuncs).map((d) => [d, d])}
+              setOption={setMetric}
+            />
+          </div>
           {advanced && (
             <>
-              <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-                <Select
-                  label={"Validation strategy"}
-                  option={validation}
-                  options={validations.map((d) => [d, d])}
-                  setOption={setValidation}
-                />
-                <Numeric
-                  label={"Number of folds"}
-                  name={kFolds}
-                  setName={setKFolds}
-                  minValue={2}
-                />
-              </div>
-              {validation === validations[0] && (
-                <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-                  <Toggle
-                    label="Shuffle samples"
-                    setValue={setShuffle}
-                    value={shuffle}
-                  />
-
-                  {!isClassifier() && (
-                    <Select
-                      label={"Stratify"}
-                      option={stratify}
-                      options={["None"].concat(dataObjects).map((d) => [d, d])}
-                      setOption={setStratify}
-                    />
-                  )}
-                </div>
-              )}
-              {validation === validations[1] && (
-                <Numeric
-                  label={
-                    "Number of samples to exclude from the end of training set"
-                  }
-                  name={kFolds}
-                  setName={setKFolds}
-                  minValue={2}
-                />
-              )}
               <Select
                 label={"Sample weight"}
                 option={sampleWeight}
@@ -344,15 +204,13 @@ export const Tune: React.FC<IRecipeProps> = ({
                 }
                 setOption={setSampleWeight}
               />
-              {(shuffle || validation === RANDOMIZED_SEARCH) && (
-                <Numeric
-                  label={"Random number generator seed"}
-                  name={seed}
-                  setName={setSeed}
-                  minValue={42}
-                />
-              )}
-              <Toggle label="Verbose" setValue={setVerbose} value={verbose} />
+
+              <Numeric
+                label={"Random number generator seed"}
+                name={seed}
+                setName={setSeed}
+                minValue={42}
+              />
             </>
           )}
         </>
@@ -361,14 +219,14 @@ export const Tune: React.FC<IRecipeProps> = ({
   );
 };
 
-export const TuneRecipe: IRecipe = {
+export const ImportanceRecipe: IRecipe = {
   name: "Hyper Parameters Search",
   longName: "Hyper Parameters Search",
   parentName: "Scikit-learn",
   description: ``,
   shortDescription: ``,
   codeExplanation: ``,
-  ui: Tune,
+  ui: Importance,
   Icon: AdjustmentsIcon,
   requiredPackages: [
     {
@@ -427,4 +285,4 @@ export const TuneRecipe: IRecipe = {
   ],
 };
 
-export default TuneRecipe;
+export default ImportanceRecipe;

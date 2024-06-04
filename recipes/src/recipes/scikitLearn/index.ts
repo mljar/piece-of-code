@@ -6,6 +6,8 @@ import TrainModelRecipe from "./trainModel";
 import PredictRecipe from "./predict";
 import MetricRecipe from "./metric";
 import VisualizeDecisionTreeRecipe from "./visualizeDecisionTree";
+import TuneRecipe from "./tune";
+import ImportanceRecipe from "./importance";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -19,7 +21,9 @@ export const ScikitLearnRecipes: IRecipeSet = {
         [TrainDecisionTreeRecipe.name]: TrainDecisionTreeRecipe,
         [TrainModelRecipe.name]: TrainModelRecipe,
         [PredictRecipe.name]: PredictRecipe,
-        [MetricRecipe.name]: MetricRecipe,   
+        [MetricRecipe.name]: MetricRecipe,
         [VisualizeDecisionTreeRecipe.name]: VisualizeDecisionTreeRecipe,
+        [TuneRecipe.name]: TuneRecipe,
+        [ImportanceRecipe.name]: ImportanceRecipe,
     }
 };
