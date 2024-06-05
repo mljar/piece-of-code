@@ -70,7 +70,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
     }
     src += `, random_state=${seed})\n`;
     src += `# display model card\n`;
-    src += `${model}`
+    src += `${model}`;
 
     setCode(src);
     if (setMetadata) {
@@ -80,6 +80,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
         criterion,
         minSamplesLeaf,
         minSamplesSplit,
+        isMaxDepth,
         maxDepth,
         seed,
         docsUrl: DOCS_URL,
@@ -106,6 +107,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
         setMinSamplesLeaf(metadata["minSamplesLeaf"]);
       if (metadata["minSamplesSplit"])
         setMinSamplesSplit(metadata["minSamplesSplit"]);
+      if (metadata["isMaxDepth"]) setIsMaxDepth(metadata["isMaxDepth"]);
       if (metadata["maxDepth"]) setMaxDepth(metadata["maxDepth"]);
       if (metadata["seed"]) setSeed(metadata["seed"]);
     }
@@ -160,6 +162,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
                 }
                 name={minSamplesSplit}
                 setName={setMinSamplesSplit}
+                minValue={2}
               />
 
               <Numeric
@@ -169,6 +172,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
                 }
                 name={minSamplesLeaf}
                 setName={setMinSamplesLeaf}
+                minValue={1}
               />
 
               <Toggle
@@ -182,6 +186,7 @@ export const TrainDecisionTree: React.FC<IRecipeProps> = ({
                   label={"Maximum depth of tree"}
                   name={maxDepth}
                   setName={setMaxDepth}
+                  minValue={1}
                 />
               )}
             </div>
