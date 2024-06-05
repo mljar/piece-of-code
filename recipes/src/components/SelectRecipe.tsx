@@ -144,6 +144,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         setOverwriteExistingCode(true);
         clearExecutionSteps();
         setShowNav(true);
+        setPythonOnly(false);
       }}
       runCell={() => {
         runCell();
@@ -153,6 +154,15 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       deleteCell={deleteCell}
     />
   );
+  const [pythonOnly, setPythonOnly] = useState(false);
+  if (pythonOnly) {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}></div>
+        <div className="poc-w-full">{topButtons}</div>
+      </div>
+    );
+  }
 
   if (
     !keepOpen &&
@@ -315,22 +325,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         className="poc-text-base"
       />
 
-       <div>
-          <button
-            type="button"
-            className="poc-text-white poc-bg-gradient-to-r poc-from-yellow-500 
-            poc-to-blue-500 hover:poc-bg-gradient-to-bl 
+      <div>
+        <button
+          data-tooltip-id="left-buttons-tooltip"
+          data-tooltip-content="Python only, hide Piece of Code"
+          type="button"
+          className="poc-text-white poc-bg-gradient-to-r poc-from-yellow-400 
+            poc-to-yellow-500 hover:poc-bg-gradient-to-bl 
             focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 
             dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg 
             poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
-            onClick={() => setShowNav(!showNav)}
-          >
-            {<PythonIcon className="poc-inline poc-p-0.5" />}
-          </button>
-        </div>
-      
-      
-      
+          onClick={() => setPythonOnly(true)}
+        >
+          {<PythonIcon className="poc-inline poc-p-0.5" />}
+        </button>
+      </div>
+
       <div>
         <button
           data-tooltip-id="left-buttons-tooltip"
@@ -343,8 +353,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </button>
       </div>
 
-     
-      
       <div>
         <button
           data-tooltip-id="left-buttons-tooltip"

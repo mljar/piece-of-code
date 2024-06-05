@@ -23,7 +23,7 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
   deleteCell,
 }: INextStepEditProps) => {
   return (
-    <div className="poc-border-none poc-text-base poc-text-gray-500 dark:poc-text-gray-400 poc-rounded-md">
+    <div className="poc-border-none poc-text-base poc-text-gray-500 dark:poc-text-gray-400 poc-rounded-md poc-pt-1">
       <Tooltip
         id="top-buttons-tooltip"
         place="top"
@@ -57,23 +57,24 @@ export const NextStepEdit: React.FC<INextStepEditProps> = ({
         <div className="poc-inline">
           <button
             data-tooltip-id="top-buttons-tooltip"
-            data-tooltip-content="Open Piece of Code and overwrite with new code"
-            type="button"
-            className="poc-text-white poc-bg-gradient-to-r poc-from-teal-400 poc-via-teal-500 poc-to-teal-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-teal-300 dark:focus:ring-teal-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
-            onClick={() => letsOverwrite()}
-          >
-            <CakeIcon className="poc-inline poc-pb-1" />
-          </button>
-        </div>
-        <div className="poc-inline">
-          <button
-            data-tooltip-id="top-buttons-tooltip"
             data-tooltip-content="Delete cell"
             type="button"
             className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
             onClick={() => deleteCell()}
           >
             {<TrashIcon className="poc-inline poc-pb-1" />}
+          </button>
+        </div>
+        <div className="poc-inline">
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Open Piece of Code and overwrite with new code"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-yellow-400 
+            poc-to-yellow-500 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-teal-300 dark:focus:ring-teal-800 poc-font-medium poc-rounded-t-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-mx-1"
+            onClick={() => letsOverwrite()}
+          >
+            <CakeIcon className="poc-inline poc-pb-1" />
           </button>
         </div>
       </div>
