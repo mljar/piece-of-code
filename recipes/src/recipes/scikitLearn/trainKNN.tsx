@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
 
 import { Numeric } from "../../components/Numeric";
-import { Toggle } from "../../components/Toggle";
-import { TreesIcon } from "../../icons/Trees";
 import { TopologyStarIcon } from "../../icons/TopologyStar";
 
 const DOCS_URL = "scikit-learn-k-nearest-neighbors";
@@ -156,9 +152,11 @@ export const TrainKNNRecipe: IRecipe = {
   name: "k-Nearest Neighbors",
   longName: "Scikit-learn k-Nearest Neighbors",
   parentName: "Scikit-learn",
-  description: ` `,
-  shortDescription: ``,
-  codeExplanation: ``,
+  description: `Create k-Nearest Neighbors (k-NN) model for classification or regression. The performance of this model mainly depends on number of neighbors and metric used to compute distance. After model creation please fit it with data.`,
+  shortDescription: `Create k-Nearest Neighbors (k-NN) model for classification or regression.`,
+  codeExplanation: `
+  Create model for training with k-Nearest Neighbors algorithm. The speed of training greatly depends on data size, both on rows and columns number.
+`,
   ui: TrainKNN,
   Icon: TopologyStarIcon,
   requiredPackages: [

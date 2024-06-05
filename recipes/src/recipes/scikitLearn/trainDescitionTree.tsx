@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
 import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
 
 import { Numeric } from "../../components/Numeric";
@@ -276,9 +274,12 @@ export const TrainRandomForestRecipe: IRecipe = {
   name: "Random Forest",
   longName: "Scikit-learn Random Forest ",
   parentName: "Scikit-learn",
-  description: ` `,
-  shortDescription: ``,
-  codeExplanation: ``,
+  description: `Create Random Forest model for classification or regression task. Please check **Advanced** options to set hyper parameters values. After model creation model should be fitted on data.`,
+  shortDescription: `Create Random Forest model for classification or regression task. In Advanced options are available hyper parameters values to set.`,
+  codeExplanation: `
+Create model for Random Forest algorithm with selected hyper parameters. 
+
+Please be aware that training time greatly depends on number of trees in the model and data size.`,
   ui: TrainRandomForest,
   Icon: TreesIcon,
   requiredPackages: [

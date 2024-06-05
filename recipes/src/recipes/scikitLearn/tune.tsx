@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
-import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
-import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
-import { RulerMeasureIcon } from "../../icons/RulerMeasure";
 import { AdjustmentsIcon } from "../../icons/Adjustments";
 
 const DOCS_URL = "scikit-learn-hyper-parameters-search";
@@ -375,16 +369,25 @@ export const TuneRecipe: IRecipe = {
   name: "Hyper Parameters Search",
   longName: "Hyper Parameters Search",
   parentName: "Scikit-learn",
-  description: ``,
-  shortDescription: ``,
-  codeExplanation: ``,
+  description: `Search for best hyper parameters for your model and data. There are available two approached for search. The **Randomized Search** that will draw combination of parameters and evaluate them. The **Grid Search** that will check **each** combination of parameters. The Randomized Search is faster because it is not checking all possible combinations of parameters. 
+  
+  Please select the model that you would like to tune and recipe will propose set of hyper parameters to tune. You can set cross validation strategy and evaluation metric. If verbose output is selected, each iteration will be printed. You can use best hyper parameters to train a model on full dataset.`,
+  shortDescription: `Search for best hyper parameters for your model. There are available two approached for searchL Radomized Search and Grid Search. You can set cross validation strategy and evaluation metric.`,
+  codeExplanation: `
+1. Create validation strategy.
+2. Setup grid with parameters that will be checked.
+3. Create search strategy object. 
+4. Run hyper parameters search by fitting to the data.
+5. Display best performing score and parameters.
+
+Please aware that this step might be time consuming because for each hyper parameters combination a model is fitted. What is more, model is fitted with cross validation, so the fit is called for each iteration of cross validation as well.`,
   ui: Tune,
   Icon: AdjustmentsIcon,
   requiredPackages: [
     {
       importName: "sklearn",
       installationName: "scikit-learn",
-      version: ">=1.0.0",
+      version: ">=1.5.0",
     },
   ],
   docsUrl: DOCS_URL,

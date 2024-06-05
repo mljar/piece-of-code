@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
-import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
-import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
-import { Toggle } from "../../components/Toggle";
 import { BinaryTreeIcon } from "../../icons/BinaryTree";
 
 const DOCS_URL = "visualize-decision-tree-dtreeviz";
@@ -162,9 +156,10 @@ export const VisualizeDecisionTreeRecipe: IRecipe = {
   name: "Visualize Decision Tree",
   longName: "Visualize Decision Tree",
   parentName: "Scikit-learn",
-  description: ` `,
-  shortDescription: " ",
-  codeExplanation: ``,
+  description: `Please select your Decision Tree and visualize it. Visualization works for classifier and regressor trees. You can set max depth of visualization in **Advanced** options. Please be aware that tree deeper than 5 levels are not readable. For better visualization, please train shallow tree or limit max depth during visualization.`,
+  shortDescription:
+    "Visualize selected Decision Tree. Both classifier and regressor can be visualized.",
+  codeExplanation: `Creates matplotlib figure with Decision Tree visualization.`,
   ui: VisualizeDecisionTree,
   Icon: BinaryTreeIcon,
   requiredPackages: [
@@ -180,7 +175,7 @@ export const VisualizeDecisionTreeRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["classification", "regression", "fit"],
+  tags: ["decision-tree"],
   defaultVariables: [
     {
       varName: "my_classifier",

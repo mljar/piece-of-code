@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
-import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
-import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
-import { Toggle } from "../../components/Toggle";
-import { RulerMeasureIcon } from "../../icons/RulerMeasure";
-import { AdjustmentsIcon } from "../../icons/Adjustments";
 import { StarsIcon } from "../../icons/Stars";
 
 const DOCS_URL = "scikit-learn-feature-importance";
@@ -83,7 +75,6 @@ export const Importance: React.FC<IRecipeProps> = ({
     if (isClassifier()) {
       setMetricsFuncs(classifierMetricsFuncs);
       setMetric(Object.keys(classifierMetricsFuncs)[0]);
-
     } else {
       setMetricsFuncs(regressorMetricsFuncs);
       setMetric(Object.keys(regressorMetricsFuncs)[0]);
@@ -106,10 +97,13 @@ export const Importance: React.FC<IRecipeProps> = ({
     src += `# plot importance\n`;
     src += `sorted_idx = result.importances_mean.argsort()\n`;
     src += `_ = plt.barh(${model}.feature_names_in_[sorted_idx], result.importances_mean[sorted_idx])\n`;
-    src += `_ = plt.xlabel("Feature importance")\n`
+    src += `_ = plt.xlabel("Feature importance")\n`;
 
     setCode(src);
-    setPackages(["from matplotlib import pyplot as plt", "from sklearn.inspection import permutation_importance"]);
+    setPackages([
+      "from matplotlib import pyplot as plt",
+      "from sklearn.inspection import permutation_importance",
+    ]);
 
     if (setMetadata) {
       setMetadata({
@@ -226,22 +220,26 @@ export const ImportanceRecipe: IRecipe = {
   name: "Feature Importance",
   longName: "Feature Importance",
   parentName: "Scikit-learn",
-  description: ``,
-  shortDescription: ``,
-  codeExplanation: ``,
+  description: `Compute feature importance for any model (can be classifier or regressor). This approach compute score for original data. Then it shuffle each feature and compute the change in the score. The featuers that after shuffling change the score the most are the most important. This method can be used with any predictive model that implements Scikit-learn API.`,
+  shortDescription: `Compute feature importance for any model (can be classifier or regressor) using permutation importance approach.`,
+  codeExplanation: `
+1. Compute permutation importance for features.
+2. Display results in matplotlib horizontal bar.
+
+This step can be time consuming in case of large data or complex algorithm that has large prediction time.`,
   ui: Importance,
   Icon: StarsIcon,
   requiredPackages: [
     {
       importName: "sklearn",
       installationName: "scikit-learn",
-      version: ">=1.0.0",
+      version: ">=1.5.0",
     },
     {
       importName: "matplotlib",
       installationName: "matplotlib",
       version: ">=3.8.4",
-    }
+    },
   ],
   docsUrl: DOCS_URL,
   tags: ["metric", "accuracy"],

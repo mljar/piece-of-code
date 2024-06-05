@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
-import { TreeIcon } from "../../icons/Tree";
-import { Numeric } from "../../components/Numeric";
-import { Toggle } from "../../components/Toggle";
 import { CrystalBallIcon } from "../../icons/CrystalBall";
 
 const DOCS_URL = "scikit-learn-predict";
@@ -143,8 +137,7 @@ export const PredictRecipe: IRecipe = {
   longName: "Compute Predictions",
   parentName: "Scikit-learn",
   description: `Compute output values on provided data with Machine Learning model. Predictions are allocated to variable, so they can be later used to compute performance metrics. Additionally, class probabilities are computed for classifiers.`,
-  shortDescription:
-    `Compute prediction on provided data with Machine Learning model. `,
+  shortDescription: `Compute prediction on provided data with Machine Learning model. `,
   codeExplanation: `
 1. Compute predictions on provided data.
 2. Compute class probabilities on provided data only for classifier model.  
@@ -157,7 +150,7 @@ Predictions are allocated to variables, so can be later used to compute performa
     {
       importName: "sklearn",
       installationName: "scikit-learn",
-      version: ">=1.0.0",
+      version: ">=1.5.0",
     },
   ],
   docsUrl: DOCS_URL,
