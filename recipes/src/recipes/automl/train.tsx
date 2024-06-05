@@ -99,6 +99,28 @@ export const Train: React.FC<IRecipeProps> = ({
   ] as [string, string][];
   const [mode, setMode] = useState("Explain");
   const [trainingTime, setTrainingTime] = useState(300);
+  const metrics = [
+    "auto",
+    "logloss",
+    "auc",
+    "f1",
+    "average_precision",
+    "accuracy",
+    "rmse",
+    "mse",
+    "mae",
+    "r2",
+    "mape",
+    "spearman",
+    "pearson",
+  ];
+  const [metric, setMetric] = useState("auto");
+  const [trainEnsemble, setTrainEnsemble] = useState("yes");
+  const [stackModels, setStackModels] = useState("auto");
+  const [featuresSelection, setFeaturesSelection] = useState("auto");
+  const [goldenFeatures, setGoldenFeatures] = useState("auto");
+  const [kMeansFeatures, setKMeansFeatures] = useState("auto");
+  const [boostOnErrors, setBoostOnErrors] = useState("auto");
 
   useEffect(() => {
     if (mode === "Explain") {
@@ -121,6 +143,29 @@ export const Train: React.FC<IRecipeProps> = ({
     src += `, mode="${mode}"`;
     if (resultsPath !== "auto") {
       src += `, results_path="${resultsPath}"`;
+    }
+    if (metric !== "auto") {
+      src += `, eval_metric="${metric}"`;
+    }
+    if (trainEnsemble === "no") {
+      src += `, train_ensemble=False`;
+    }
+
+    if (stackModels !== "auto") {
+      src += `, stack_models=${stackModels == "yes" ? "True" : "False"}`;
+    }
+
+    if (featuresSelection !== "auto") {
+      src += `, features_selection=${featuresSelection == "yes" ? "True" : "False"}`;
+    }
+    if (goldenFeatures !== "auto") {
+      src += `, golden_features=${goldenFeatures == "yes" ? "True" : "False"}`;
+    }
+    if (kMeansFeatures !== "auto") {
+      src += `, kmeans_features=${kMeansFeatures == "yes" ? "True" : "False"}`;
+    }
+    if (boostOnErrors !== "auto") {
+      src += `, boost_on_errors=${boostOnErrors == "yes" ? "True" : "False"}`;
     }
 
     if (algorithms.length > 0) {
@@ -157,11 +202,33 @@ export const Train: React.FC<IRecipeProps> = ({
         X,
         y,
         algorithms,
+        metric,
+        trainEnsemble,
+        stackModels,
+        goldenFeatures,
+        kMeansFeatures,
+        featuresSelection,
+        boostOnErrors,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [name, resultsPath, mode, trainingTime, X, y, algorithms]);
+  }, [
+    name,
+    resultsPath,
+    mode,
+    trainingTime,
+    X,
+    y,
+    algorithms,
+    metric,
+    trainEnsemble,
+    stackModels,
+    goldenFeatures,
+    kMeansFeatures,
+    featuresSelection,
+    boostOnErrors,
+  ]);
 
   useEffect(() => {
     if (metadata) {
@@ -172,7 +239,19 @@ export const Train: React.FC<IRecipeProps> = ({
       if (metadata["trainingTime"]) setTrainingTime(metadata["trainingTime"]);
       if (metadata["X"]) setX(metadata["X"]);
       if (metadata["y"]) setY(metadata["y"]);
-      if (metadata["algorithms"]) setX(metadata["algorithms"]);
+      if (metadata["algorithms"]) setAlgorithms(metadata["algorithms"]);
+      if (metadata["metric"]) setMetric(metadata["metric"]);
+      if (metadata["trainEnsemble"])
+        setTrainEnsemble(metadata["trainEnsemble"]);
+      if (metadata["stackModels"]) setStackModels(metadata["stackModels"]);
+      if (metadata["goldenFeatures"])
+        setGoldenFeatures(metadata["goldenFeatures"]);
+      if (metadata["featuresSelection"])
+        setFeaturesSelection(metadata["featuresSelection"]);
+      if (metadata["kMeansFeatures"])
+        setKMeansFeatures(metadata["kMeansFeatures"]);
+      if (metadata["boostOnErrors"])
+        setBoostOnErrors(metadata["boostOnErrors"]);
     }
   }, [metadata]);
 
@@ -204,13 +283,13 @@ export const Train: React.FC<IRecipeProps> = ({
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <div>
           <Select
-            label={"X training matrix (pandas.DataFrame)"}
+            label={"X (input data)"}
             option={X}
             options={matrices.map((m) => [m, m])}
             setOption={setX}
           />
           <Select
-            label={"y training vector (pandas.Series)"}
+            label={"y (target vector)"}
             option={y}
             options={vectors.map((m) => [m, m])}
             setOption={setY}
@@ -238,6 +317,57 @@ export const Train: React.FC<IRecipeProps> = ({
             allOptions={allAlgorithms}
             setSelection={setAlgorithms}
           />
+          <Select
+            label={"Evaluation metric"}
+            option={metric}
+            options={metrics.map((m) => [m, m])}
+            setOption={setMetric}
+          />
+          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+            <Select
+              label={"Train ensemble"}
+              option={trainEnsemble}
+              options={["yes", "no"].map((m) => [m, m])}
+              setOption={setTrainEnsemble}
+            />
+            <Select
+              label={"Stack models"}
+              option={stackModels}
+              options={["auto", "yes", "no"].map((m) => [m, m])}
+              setOption={setStackModels}
+            />
+          </div>
+          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+            <Select
+              label={"Features selection"}
+              option={featuresSelection}
+              options={["auto", "yes", "no"].map((m) => [m, m])}
+              setOption={setFeaturesSelection}
+              tooltip="Run feature selection for best models"
+            />
+            <Select
+              label={"Golden features"}
+              option={goldenFeatures}
+              options={["auto", "yes", "no"].map((m) => [m, m])}
+              setOption={setGoldenFeatures}
+              tooltip="Combine features with mathematical operators to create golden features with great predictive power"
+            />
+            <Select
+              label={"k-Means features"}
+              option={kMeansFeatures}
+              options={["auto", "yes", "no"].map((m) => [m, m])}
+              setOption={setKMeansFeatures}
+              tooltip="Create new features using k-Means"
+            />
+
+            <Select
+              label={"Boost on errors"}
+              option={boostOnErrors}
+              options={["auto", "yes", "no"].map((m) => [m, m])}
+              setOption={setBoostOnErrors}
+              tooltip="Train models with sample weight increased when the model response is incorrect"
+            />
+          </div>
         </>
       )}
     </div>
