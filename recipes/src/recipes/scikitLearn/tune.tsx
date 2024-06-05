@@ -128,9 +128,20 @@ export const Tune: React.FC<IRecipeProps> = ({
 
     src += `# parameters grid for search\n`;
     if (selectedModelType() === "DecisionTreeClassifier") {
-      src += `params_grid = {\n    "criterion": ["gini", "entropy"],\n    "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
+      src += `params_grid = {\n    "criterion": ["gini", "entropy", "log_loss"],\n    "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
     } else if (selectedModelType() === "DecisionTreeRegressor") {
-      src += `params_grid = {\n    "criterion": ["squared_error", "friedman_mse"],\n "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
+      src += `params_grid = {\n    "criterion": ["squared_error", "friedman_mse", "absolute_error", "poisson"],\n    "max_depth": [2, 3, 4, 5, 6, 7, 8]\n}\n`;
+    } else if (selectedModelType() === "RandomForestClassifier") {
+      src += `params_grid = {\n    "n_estimators": [10, 20, 50, 100, 200, 500],\n    "criterion": ["gini", "entropy", "log_loss"],\n    "max_depth": [None, 2, 5, 10],\n    "max_features": ["sqrt", "log2", None, 0.1, 0.2, 0.5, 0.8, 1.0]}\n`;
+    } else if (selectedModelType() === "RandomForestRegressor") {
+      src += `params_grid = {\n    "n_estimators": [10, 20, 50, 100, 200, 500],\n    "criterion": ["squared_error", "friedman_mse", "absolute_error", "poisson"],\n    "max_depth": [None, 2, 5, 10],\n    "max_features": ["sqrt", "log2", None, 0.1, 0.2, 0.5, 0.8, 1.0]}\n`;
+    } else if (
+      selectedModelType() === "KNeighborsClassifier" ||
+      selectedModelType() === "KNeighborsRegressor"
+    ) {
+      src += `params_grid = {\n    "n_neighbors": [1, 2, 5, 10, 15, 20],\n    "weights": ["uniform", "distance"],\n    "metric": ["euclidean", "manhattan", "cosine", "haversine"]}\n`;
+    } else {
+      src += `# please define yours params grid\nparams_grid = {}\n`;
     }
 
     let metricName = { ...classifierMetricsFuncs, ...regressorMetricsFuncs }[
@@ -402,7 +413,7 @@ export const TuneRecipe: IRecipe = {
       isWidget: false,
     },
     {
-      varName: "my_classifier",
+      varName: "tree_classifier",
       varType: "DecisionTreeClassifier",
       varColumns: [],
       varColumnTypes: [],
@@ -413,8 +424,52 @@ export const TuneRecipe: IRecipe = {
       isWidget: false,
     },
     {
-      varName: "my_regressor",
+      varName: "tree_regressor",
       varType: "DecisionTreeRegressor",
+      varColumns: [],
+      varColumnTypes: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "forest_classifier",
+      varType: "RandomForestClassifier",
+      varColumns: [],
+      varColumnTypes: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "forest_regressor",
+      varType: "RandomForestRegressor",
+      varColumns: [],
+      varColumnTypes: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "knn_classifier",
+      varType: "KNeighborsClassifier",
+      varColumns: [],
+      varColumnTypes: [],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "knn_regressor",
+      varType: "KNeighborsRegressor",
       varColumns: [],
       varColumnTypes: [],
       varSize: "",
