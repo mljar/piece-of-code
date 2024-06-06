@@ -153,6 +153,42 @@ export class RecipeWidgetsRegistry {
     }
   }
 
+  public renderMarkdown() {
+    console.log("Line 157 renderMarkdown");
+    if (this._commands) {
+      const promise = this._commands.execute(
+        'notebook:change-cell-to-markdown'
+      );
+      promise.then(() => {
+        if (this._commands) {
+          const promise = this._commands.execute(
+            'notebook:enter-edit-mode'
+          );
+          promise.then(() => {
+            this._commands?.execute(
+              '@mljar/pieceofcode:runcurrentcell'
+            );
+          });
+        }
+      });
+    }
+  }
+
+  // public changeCellToCode() {
+  //   if (this._commands) {
+  //     const promise = this._commands.execute(
+  //       'notebook:change-cell-to-code'
+  //     );
+  //     promise.then(() => {
+  //       if (this._commands) {
+  //         this._commands.execute(
+  //           "notebook:enter-edit-mode"
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
+
   public addWidget(cellId: string, widget: SelectRecipeWidget) {
     this._widgets[cellId] = widget;
   }
@@ -235,6 +271,12 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   }
 
   runCell(): void {
+    console.log("Line 274 runCell", this._renderMarkdown);
+    if (this._renderMarkdown) {
+      RecipeWidgetsRegistry.getInstance().renderMarkdown();
+      this.addExecutionStep("Render", ExecutionStatus.Success);
+      return;
+    }
 
     this.selectRecipe?.setPreviousError('', '');
 
@@ -278,6 +320,17 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         this.cell.model.sharedModel.setMetadata(meta);
       }
     }
+  }
+  private _renderMarkdown = false;
+
+  changeCellToMarkdown() {
+    this._renderMarkdown = true;
+    //RecipeWidgetsRegistry.getInstance().changeCellToMarkdown();
+  }
+
+  changeCellToCode() {
+    this._renderMarkdown = false;
+    //RecipeWidgetsRegistry.getInstance().changeCellToCode();
   }
 
   setMeta(m: any) {
@@ -455,6 +508,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           executionCount,
           meta["mljar"],
           this.setMeta.bind(this),
+          this.changeCellToMarkdown.bind(this),
+          this.changeCellToCode.bind(this),
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {
@@ -516,65 +571,77 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       //   // this.selectRecipe?.setExecutionSteps([]);
       // });
 
-      cell.inputArea?.node.addEventListener('focusin', () => {
-
-        if (this._cellId) {
-          RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
-        }
-
-        RecipeWidgetsRegistry.getInstance().hideAll();
-
-        this._packages = [];
-
-        if (getAlwaysOpen()) {
-          this.selectRecipe?.setPreviousCode(
-            cell.model.sharedModel.getSource()
-          );
-          const [errorName, errorValue] = this.getErrorNameAndValue(cell.model.sharedModel.toJSON());
-          this.selectRecipe?.setPreviousError(errorName, errorValue);
-          const executionCount = this.getExecutionCount(cell);
-          this.selectRecipe?.setPreviousExecutionCount(executionCount);
-          this.selectRecipe?.updateWidget();
-          //this.selectRecipe?.update();
-          this._variableInspector?.getVariables();
+      if (cell.model.sharedModel.cell_type === "markdown") {
+        cell.node.addEventListener('focusin', () => {
+          console.log("focusin node", cell.model.sharedModel.cell_type);
+          RecipeWidgetsRegistry.getInstance().hideAll();
 
           this.selectRecipe?.show();
-        }
+        });
+      }
+      if (cell.model.sharedModel.cell_type === "code") {
+        cell.inputArea?.node.addEventListener('focusin', () => {
 
-        // console.log(cell.model.sharedModel.toJSON());
+          console.log("focusin inputArea", cell.model.sharedModel.cell_type);
 
-        // this.setCode("hejka");
-        const nb = this.notebook;
-
-        // let future = nb?.sessionContext.session?.kernel?.requestExecute({
-        //   code: "2+2",
-        //   store_history: false,
-        // });
-        // if (future) {
-        //   future.onIOPub = this._onIOPub;
-        // }
-
-        //nb?.sessionContext.
-
-        const cells = nb?.model?.cells;
-        // const sharedModel = nb?.model?.sharedModel;
-        // sharedModel?.insertCell(0, {
-        //   cell_type: "code",
-        //   source: "hejka"
-        // });
-
-        if (cells) {
-          // cells.get(0).sharedModel.setSource("hejka");
-          for (let i = 0; i < cells?.length; i++) {
-            // console.log(cells.get(i).sharedModel.source)
-            //console.log(cells.get(i).id);
-            //console.log(cells.get(i).sharedModel.getMetadata());
-            //let m = cells.get(i).sharedModel.getMetadata();
-            //m['showPoC'] = true;
-            //cells.get(i).sharedModel.setMetadata(m);
+          if (this._cellId) {
+            RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
           }
-        }
-      });
+
+          RecipeWidgetsRegistry.getInstance().hideAll();
+
+          this._packages = [];
+
+          if (getAlwaysOpen()) {
+            this.selectRecipe?.setPreviousCode(
+              cell.model.sharedModel.getSource()
+            );
+            const [errorName, errorValue] = this.getErrorNameAndValue(cell.model.sharedModel.toJSON());
+            this.selectRecipe?.setPreviousError(errorName, errorValue);
+            const executionCount = this.getExecutionCount(cell);
+            this.selectRecipe?.setPreviousExecutionCount(executionCount);
+            this.selectRecipe?.updateWidget();
+            //this.selectRecipe?.update();
+            this._variableInspector?.getVariables();
+
+            this.selectRecipe?.show();
+          }
+
+          // console.log(cell.model.sharedModel.toJSON());
+
+          // this.setCode("hejka");
+          // const nb = this.notebook;
+
+          // // let future = nb?.sessionContext.session?.kernel?.requestExecute({
+          // //   code: "2+2",
+          // //   store_history: false,
+          // // });
+          // // if (future) {
+          // //   future.onIOPub = this._onIOPub;
+          // // }
+
+          // //nb?.sessionContext.
+
+          // const cells = nb?.model?.cells;
+          // // const sharedModel = nb?.model?.sharedModel;
+          // // sharedModel?.insertCell(0, {
+          // //   cell_type: "code",
+          // //   source: "hejka"
+          // // });
+
+          // if (cells) {
+          //   // cells.get(0).sharedModel.setSource("hejka");
+          //   for (let i = 0; i < cells?.length; i++) {
+          //     // console.log(cells.get(i).sharedModel.source)
+          //     //console.log(cells.get(i).id);
+          //     //console.log(cells.get(i).sharedModel.getMetadata());
+          //     //let m = cells.get(i).sharedModel.getMetadata();
+          //     //m['showPoC'] = true;
+          //     //cells.get(i).sharedModel.setMetadata(m);
+          //   }
+          // }
+        });
+      }
     }
   }
 

@@ -24,6 +24,14 @@ export const RunStatusForm: Story = (
       runCell={() => {}}
       addCell={() => {}}
       deleteCell={() => {}}
+      markdown={true}
+    />
+    <TopButtons
+      letsOverwrite={() => console.log("lets overwrite")}
+      runCell={() => {}}
+      addCell={() => {}}
+      deleteCell={() => {}}
+      markdown={false}
     />
   </>
 );

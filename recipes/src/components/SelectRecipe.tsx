@@ -45,6 +45,9 @@ export interface ISelectRecipeProps {
   clearExecutionSteps: () => void;
   metadata: any;
   setMetadata: (m: any) => void;
+  changeCellToMarkdown: () => void;
+  changeCellToCode: () => void;
+  cellType: string;
 }
 
 declare global {
@@ -72,6 +75,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   clearExecutionSteps,
   metadata,
   setMetadata,
+  changeCellToMarkdown,
+  changeCellToCode,
+  cellType,
 }: ISelectRecipeProps) => {
   let isElectron = false;
   if (typeof window !== "undefined") {
@@ -152,14 +158,41 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       }}
       addCell={addCell}
       deleteCell={deleteCell}
+      markdown={false}
     />
   );
+  const topButtonsMarkdown = (
+    <TopButtons
+      letsOverwrite={() => {
+        setOverwriteExistingCode(true);
+        clearExecutionSteps();
+        setShowNav(true);
+        setPythonOnly(false);
+      }}
+      runCell={() => {
+        runCell();
+        setExecuted(true);
+      }}
+      addCell={addCell}
+      deleteCell={deleteCell}
+      markdown={true}
+    />
+  );
+
   const [pythonOnly, setPythonOnly] = useState(false);
   if (pythonOnly) {
     return (
       <div className="poc-flex">
         <div className="poc-flex-none" style={{ width: "72px" }}></div>
         <div className="poc-w-full">{topButtons}</div>
+      </div>
+    );
+  }
+  if (cellType === "markdown") {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}></div>
+        <div className="poc-w-full">{topButtonsMarkdown}</div>
       </div>
     );
   }
@@ -372,6 +405,10 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           type="button"
           className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-me-2  poc-mb-2 poc-ml-4"
           onClick={() => {
+            console.log(selectedRecipeSet, cellType);
+            if (selectedRecipeSet === "Markdown") {
+              changeCellToMarkdown();
+            }
             runCell();
             setExecuted(true);
           }}

@@ -369,10 +369,10 @@ export const TuneRecipe: IRecipe = {
   name: "Hyper Parameters Search",
   longName: "Hyper Parameters Search",
   parentName: "Scikit-learn",
-  description: `Search for best hyper parameters for your model and data. There are available two approached for search. The **Randomized Search** that will draw combination of parameters and evaluate them. The **Grid Search** that will check **each** combination of parameters. The Randomized Search is faster because it is not checking all possible combinations of parameters. 
+  description: `Search for the best hyper parameters for your model and data. There are available two approached for search. The **Randomized Search** that will draw combination of parameters and evaluate them. The **Grid Search** that will check **each** combination of parameters. The Randomized Search is faster because it is not checking all possible combinations of parameters. 
   
   Please select the model that you would like to tune and recipe will propose set of hyper parameters to tune. You can set cross validation strategy and evaluation metric. If verbose output is selected, each iteration will be printed. You can use best hyper parameters to train a model on full dataset.`,
-  shortDescription: `Search for best hyper parameters for your model. There are available two approached for searchL Radomized Search and Grid Search. You can set cross validation strategy and evaluation metric.`,
+  shortDescription: `Search for the best hyper parameters for your model. There are available two approached for tunning Radomized Search and Grid Search. You can set cross validation strategy and evaluation metric.`,
   codeExplanation: `
 1. Create validation strategy.
 2. Setup grid with parameters that will be checked.

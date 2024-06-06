@@ -1,6 +1,6 @@
 import { IRecipeSet } from "./base";
 import { PythonRecipes } from "./python";
-// import { MarkdownRecipes } from "./markdown";
+import { MarkdownRecipes } from "./markdown";
 import { ReadDataRecipes } from "./readData";
 import { WriteDataRecipes } from "./writeData";
 import { DataWranglingRecipes } from "./wrangling";
@@ -13,7 +13,7 @@ import { AutoMLRecipes } from "./automl";
 
 export const allRecipes: Record<string, IRecipeSet> = {
   [PythonRecipes.name]: PythonRecipes,
-  // [MarkdownRecipes.name]: MarkdownRecipes,
+  [MarkdownRecipes.name]: MarkdownRecipes,
   [ReadDataRecipes.name]: ReadDataRecipes,
   [WriteDataRecipes.name]: WriteDataRecipes,
   [DataWranglingRecipes.name]: DataWranglingRecipes,

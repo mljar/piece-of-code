@@ -182,12 +182,16 @@ export const Welcome: React.FC<IWelcomeProps> = ({
       {/* {description && <p className="poc-mb-2 poc-text-base">{description}</p>} */}
       {description && (
         <div
-          className="poc-prose poc-max-w-none"
+          className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base"
           dangerouslySetInnerHTML={{
             __html: md.render(description),
           }}
         ></div>
       )}
+
+{/* 
+prose-md prose-headings:font-heading prose-headings:leading-tighter container prose prose-headings:font-bold prose-headings:tracking-tighter prose-a:text-primary-600 prose-img:rounded-md prose-img:shadow-xl dark:prose-invert
+       dark:prose-headings:text-slate-300 dark:prose-a:text-primary-400 mt-8 max-w-full */}
 
       {packages && packages.length > 0 && (
         <div>

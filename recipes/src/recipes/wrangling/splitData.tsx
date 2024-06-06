@@ -216,7 +216,7 @@ export const SplitDataRecipe: IRecipe = {
     {
       importName: "sklearn",
       installationName: "scikit-learn",
-      version: ">=1.4.2",
+      version: ">=1.5.0",
     },
   ],
   docsUrl: DOCS_URL,

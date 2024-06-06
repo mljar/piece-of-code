@@ -34,6 +34,8 @@ interface Props {
   clearExecutionSteps: () => void;
   meta: any;
   setMeta: (m: any) => void;
+  changeCellToMarkdown: () => void;
+  changeCellToCode: () => void;
 }
 
 const SelectRecipeComponent = ({
@@ -55,7 +57,9 @@ const SelectRecipeComponent = ({
   installPackage,
   clearExecutionSteps,
   meta,
-  setMeta
+  setMeta,
+  changeCellToMarkdown,
+  changeCellToCode,
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -64,6 +68,8 @@ const SelectRecipeComponent = ({
   // cell.model.contentChanged.connect(() => {
   //   setPreviousCode(cell.model.sharedModel.getSource());
   // }, cell);
+
+  console.log(cell.model.sharedModel.cell_type);
 
   return (
     <div>
@@ -86,6 +92,9 @@ const SelectRecipeComponent = ({
         clearExecutionSteps={clearExecutionSteps}
         metadata={meta}
         setMetadata={setMeta}
+        changeCellToMarkdown={changeCellToMarkdown}
+        changeCellToCode={changeCellToCode}
+        cellType={cell.model.sharedModel.cell_type}
       />
     </div>
   );
@@ -116,6 +125,8 @@ export class SelectRecipeWidget extends ReactWidget {
 
   private _meta: any;
   private _setMeta: (m: any) => void;
+  private _changeCellToMarkdown: () => void;
+  private _changeCellToCode: () => void;
 
   constructor(
     cell: Cell<ICellModel>,
@@ -126,7 +137,9 @@ export class SelectRecipeWidget extends ReactWidget {
     addCell: () => void,
     executionCount: number,
     meta: any,
-    setMeta: (m: any) => void
+    setMeta: (m: any) => void,
+    changeCellToMarkdown: () => void,
+    changeCellToCode: () => void
   ) {
     super();
     this.addClass('jp-react-widget');
@@ -142,6 +155,8 @@ export class SelectRecipeWidget extends ReactWidget {
     this._installPackage = (installationName: string, importName: string) => {};
     this._meta = meta;
     this._setMeta = setMeta;
+    this._changeCellToMarkdown = changeCellToMarkdown;
+    this._changeCellToCode = changeCellToCode;
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
@@ -219,6 +234,8 @@ export class SelectRecipeWidget extends ReactWidget {
               clearExecutionSteps={() => this.setExecutionSteps([])}
               meta={this._meta}
               setMeta={this._setMeta}
+              changeCellToMarkdown={this._changeCellToMarkdown}
+              changeCellToCode={this._changeCellToCode}
             />
           );
         }}
