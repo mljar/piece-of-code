@@ -59,14 +59,15 @@ export const CategoricalToInt: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
+    setPackages(["from sklearn.preprocessing import OrdinalEncoder"]);
     if (!xCols) {
       return;
     }
     let src = `# initialize encoder\n`;
-    src += `${encoder} = OridnalEncoder(`;
+    src += `${encoder} = OrdinalEncoder(`;
     if (handleUnknown === allHandleUnknowns[0]) {
       src += `handle_unknown="use_encoded_value"`;
-      src += `, encoded_missing_value=${encodedMissingValue}`;
+      src += `, unknown_value=${encodedMissingValue}`;
     } else {
       src += `handle_unknown="error"`;
     }

@@ -58,7 +58,7 @@ export const TrainModel: React.FC<IRecipeProps> = ({
     if (sampleWeight !== "None") {
       src += `, sample_weight=${sampleWeight}`;
     }
-    src += ")\n";
+    src += ")";
     setCode(src);
     if (setMetadata) {
       setMetadata({

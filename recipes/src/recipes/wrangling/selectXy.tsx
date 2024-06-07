@@ -68,7 +68,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
     src += `${y} = ${df}[y_col]\n`;
     src += `# display data shapes\n`;
     src += `print(f"${x} shape is {${x}.shape}")\n`;
-    src += `print(f"${y} shape is {${y}.shape}")\n`;
+    src += `print(f"${y} shape is {${y}.shape}")`;
 
     setCode(src);
     setPackages(["import pandas as pd"]);

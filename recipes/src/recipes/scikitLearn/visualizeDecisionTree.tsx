@@ -68,6 +68,7 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
     setPackages([
       "import matplotlib.pyplot as plt",
       "from sklearn.tree import plot_tree",
+      "import numpy as np"
     ]);
     if (setMetadata) {
       setMetadata({

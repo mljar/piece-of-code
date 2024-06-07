@@ -68,7 +68,7 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   }, [metadata]);
 
   return (
-    <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+    <div>
       <Title
         Icon={FileCsvIcon}
         label={"Write CSV"}

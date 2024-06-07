@@ -32,12 +32,13 @@ export const SavePickle: React.FC<IRecipeProps> = ({
   const [filePath, setFilePath] = useState("my_data.pickle");
 
   useEffect(() => {
+    setPackages(["import pickle"]);
     let src = `# save object to pickle file\n`;
     src += `with open(r"${filePath}", "wb") as fout:\n`;
     src += `    pickle.dump(${df}, fout)\n`;
     src += `print(f"Object ${df} saved at ${filePath}"`;
     setCode(src);
-    setPackages(["import pickle"]);
+    
     if (setMetadata) {
       setMetadata({
         df,
@@ -57,7 +58,7 @@ export const SavePickle: React.FC<IRecipeProps> = ({
   }, [metadata]);
 
   return (
-    <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+    <div>
       <Title
         Icon={CucumberIcon}
         label={"Save Python object to Pickle"}
