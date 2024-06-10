@@ -15,8 +15,7 @@ export const Predict: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
-}) => {
-  console.log(variables);
+}) => { 
   if (
     variables === undefined ||
     (variablesStatus === "loaded" && !variables.length)

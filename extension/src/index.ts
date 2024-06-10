@@ -34,7 +34,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           };
           updateSettings();
           settings.changed.connect(updateSettings);
-          console.log('pieceofcode settings loaded:', settings.composite);
+          // console.log('pieceofcode settings loaded:', settings.composite);
         })
         .catch(reason => {
           console.error('Failed to load settings for pieceofcode.', reason);

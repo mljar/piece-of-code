@@ -40,8 +40,7 @@ export const DfDisplay: React.FC<IRecipeProps> = ({
   const [rows, setRows] = useState(5);
   const [startRow, setStartRow] = useState(0);
   const [endRow, setEndRow] = useState(10);
-
-  console.log(nRows);
+ 
   useEffect(() => {
     if (df === "") {
       setNRows(1);
