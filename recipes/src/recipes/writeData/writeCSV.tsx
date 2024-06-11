@@ -37,13 +37,16 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   const [filePath, setFilePath] = useState("my_data.csv");
 
   useEffect(() => {
+    if(df === "") {
+      return;
+    }
     let src = `# write DataFrame to CSV\n`;
-    src += `${df}.to_csv(r"${filePath}")\n`;
-    src += `print(f"DataFrame saved at ${filePath}"`;
+    src += `${df}.to_csv(r"${filePath}"`;
     if (!index) {
       src += `, index=False`;
     }
-    src += `)`;
+    src += `)\n`;
+    src += `print(r"DataFrame saved at ${filePath}")`;
     setCode(src);
     setPackages(["import pandas as pd"]);
 

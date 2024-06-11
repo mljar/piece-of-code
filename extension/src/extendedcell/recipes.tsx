@@ -69,8 +69,6 @@ const SelectRecipeComponent = ({
   //   setPreviousCode(cell.model.sharedModel.getSource());
   // }, cell);
 
-  console.log(cell.model.sharedModel.cell_type);
-
   return (
     <div>
       <SelectRecipe

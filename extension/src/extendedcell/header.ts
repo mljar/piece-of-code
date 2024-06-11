@@ -78,7 +78,7 @@ export class RecipeWidgetsRegistry {
             console.error('Failed to hide status bar', reason);
           });
       }
-      const element = document.getElementById('jp-MainLogo'); 
+      const element = document.getElementById('jp-MainLogo');
       if (element) {
         element.innerHTML = mIcon.svgstr;
       }
@@ -151,7 +151,7 @@ export class RecipeWidgetsRegistry {
     }
   }
 
-  public renderMarkdown() { 
+  public renderMarkdown() {
     if (this._commands) {
       const promise = this._commands.execute(
         'notebook:change-cell-to-markdown'
@@ -242,7 +242,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     cell.model.sharedModel.setSource(src);
   }
 
-  setPackages(packages: string[]): void { 
+  setPackages(packages: string[]): void {
     this._packages = packages;
   }
 
@@ -266,7 +266,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     this.selectRecipe?.setExecutionSteps(this._executionSteps);
   }
 
-  runCell(): void { 
+  runCell(): void {
     if (this._renderMarkdown) {
       RecipeWidgetsRegistry.getInstance().renderMarkdown();
       this.addExecutionStep("Render", ExecutionStatus.Success);
@@ -281,14 +281,14 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
     this.supplementPackages();
 
-    if (this._packages.length) { 
+    if (this._packages.length) {
       //
       // import packages and run code
       //
       this.addExecutionStep('Import packages', ExecutionStatus.Wait)
       const promise = RecipeWidgetsRegistry.getInstance().runFirstCell();
       promise?.then(() => {
-        const errorName = this.checkFirstCellOutput(); 
+        const errorName = this.checkFirstCellOutput();
         if (errorName === '') {
           // no error with package import let's run code
           RecipeWidgetsRegistry.getInstance().runCell(this.addExecutionStep.bind(this), this.checkOutput.bind(this));
@@ -316,11 +316,11 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   private _renderMarkdown = false;
 
   changeCellToMarkdown() {
-    this._renderMarkdown = true; 
+    this._renderMarkdown = true;
   }
 
   changeCellToCode() {
-    this._renderMarkdown = false; 
+    this._renderMarkdown = false;
   }
 
   setMeta(m: any) {
@@ -374,7 +374,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   insertCellAtTop() {
     // insert cell at the top of the notebook
     // if there is only one cell in the notebook
-    if (!this._packages) {
+    if (this._packages.length === 0) {
       return;
     }
     const nb = this.notebook;
@@ -406,7 +406,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     if (this._packages.length === 1 && this._packages[0] === "") {
       return;
     }
-    
+
     const nb = this.notebook;
     if (nb) {
       const cells = nb?.model?.cells;
@@ -443,13 +443,13 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   //   return;
   // };
 
-  protected getErrorNameAndValue(output: nbformat.IBaseCell): [string, string] { 
+  protected getErrorNameAndValue(output: nbformat.IBaseCell): [string, string] {
     if (output) {
       if (output.cell_type === 'code') {
-        let outputs = output.outputs as any[]; 
-        if (outputs !== null && outputs !== undefined) { 
+        let outputs = output.outputs as any[];
+        if (outputs !== null && outputs !== undefined) {
           if (outputs.length) {
-            const { output_type, ename, evalue } = outputs[0]; 
+            const { output_type, ename, evalue } = outputs[0];
             if (output_type === 'error') {
               return [ename, evalue];
             }
@@ -477,7 +477,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
     RecipeWidgetsRegistry.getInstance().checkLabShell();
 
-    const cell = this.parent as Cell<ICellModel>; 
+    const cell = this.parent as Cell<ICellModel>;
     if (cell) {
       if (this.selectRecipe === undefined) {
         let meta = cell.model.sharedModel.getMetadata();
@@ -627,7 +627,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   //https://github.com/jupyterlab/extension-examples/tree/main/signals
   //private _stateChanged = new Signal<ButtonWidget, ICount>(this);
 
-  private get cell(): Cell<ICellModel> | null { 
+  private get cell(): Cell<ICellModel> | null {
     return this.parent instanceof Cell ? this.parent : null;
   }
 
