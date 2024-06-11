@@ -88,7 +88,7 @@ export const Predict: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={CrystalBallIcon}
-        label={"Train Model"}
+        label={"Compute predictions"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       {df === "" && (
@@ -156,7 +156,7 @@ Predictions are allocated to variables, so can be later used to compute performa
   tags: ["classification", "regression", "fit"],
   defaultVariables: [
     {
-      varName: "my_classifies",
+      varName: "my_classifier",
       varType: "DecisionTreeClassifier",
       varColumns: [],
       varColumnTypes: [],
