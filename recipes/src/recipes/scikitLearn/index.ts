@@ -11,6 +11,8 @@ import ImportanceRecipe from "./importance";
 import TrainRandomForestRecipe from "./trainRandomForest";
 import TrainKNNRecipe from "./trainKNN";
 import ConfusionMatrixRecipe from "./confusionMatrix";
+import RocCurveRecipe from "./rocCurve";
+import PrecisionRecallRecipe from "./precisionRecall";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -31,5 +33,7 @@ export const ScikitLearnRecipes: IRecipeSet = {
         [ImportanceRecipe.name]: ImportanceRecipe,
         [MetricRecipe.name]: MetricRecipe,
         [ConfusionMatrixRecipe.name]: ConfusionMatrixRecipe,
+        [RocCurveRecipe.name]: RocCurveRecipe,
+        [PrecisionRecallRecipe.name]: PrecisionRecallRecipe,
     }
 };

@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { Toggle } from "../../components/Toggle";
-import { BorderAllIcon } from "../../icons/BorderAll";
+import { EaseOutIcon } from "../../icons/EaseOut";
 
-const DOCS_URL = "plot-confusion-matrix";
+const DOCS_URL = "plot-roc-curve";
 
-export const ConfusionMatrix: React.FC<IRecipeProps> = ({
+export const RocCurve: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -36,14 +35,13 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
   const [predictions, setPredictions] = useState(
     dataObjects.length ? dataObjects[dataObjects.length - 1] : ""
   );
-  const [normalize, setNormalize] = useState(false);
-
+  
   useEffect(() => {
     if (target === "" || predictions === "") {
       return;
     }
-    let src = `# plot confusion matrix\n`;
-    src += `_ = skplt.metrics.plot_confusion_matrix(${target}, ${predictions}, normalize=${normalize ? "True" : "False"})`;
+    let src = `# plot ROC curve\n`;
+    src += `_ = skplt.metrics.plot_roc(${target}, ${predictions})`;
 
     setCode(src);
     setPackages(["import scikitplot as skplt"]);
@@ -51,27 +49,25 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
       setMetadata({
         target,
         predictions,
-        normalize,
         variables: variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [target, predictions, normalize]);
+  }, [target, predictions]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["target"]) setTarget(metadata["target"]);
       if (metadata["predictions"]) setPredictions(metadata["predictions"]);
-      if (metadata["normalize"]) setNormalize(metadata["normalize"]);
     }
   }, [metadata]);
 
   return (
     <div>
       <Title
-        Icon={BorderAllIcon}
-        label={"Confusion Matrix"}
+        Icon={EaseOutIcon}
+        label={"ROC Curve"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       {(target === "" || predictions === "") && (
@@ -90,34 +86,30 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
               setOption={setTarget}
             />
             <Select
-              label={"Predicted labels"}
+              label={"Predicted probabilites"}
               option={predictions}
               options={dataObjects.map((c) => [c, c])}
               setOption={setPredictions}
             />
-          </div>
-          <Toggle
-            label="Normalize values in the matrix"
-            setValue={setNormalize}
-            value={normalize}
-          />
+          </div> 
         </>
       )}
     </div>
   );
 };
 
-export const ConfusionMatrixRecipe: IRecipe = {
-  name: "Confusion Matrix",
-  longName: "Plot Confusion Matrix",
+export const RocCurveRecipe: IRecipe = {
+  name: "ROC Curve",
+  longName: "Plot ROC Curve",
   parentName: "Scikit-learn",
-  description: `Visualize the performance of your Machine Learning model with a confusion matrix. It is a fundamental tool in evaluating 
-  classification models, providing insights into model predictions. You can display total count of responses in the matrix, or if you toggle **Normalize** then it will be showing the ratio.
-  `,
-  shortDescription: `Visualize the performance of your Machine Learning model with a confusion matrix.`,
-  codeExplanation: `Produce a plot of confusion matrix. This code can be used with binary and multi-class classification tasks.`,
-  ui: ConfusionMatrix,
-  Icon: BorderAllIcon,
+  description: `Evaluate the performance of your classification model with this Python code 
+  snippet that plots an ROC (Receiver Operating Characteristic) curve. An ROC curve is a 
+  powerful tool for assessing the quality of a classifier, providing insights into its 
+  ability to distinguish between classes.`,
+  shortDescription: `Evaluate the performance of classifier with ROC (Receiver Operating Characteristic) curve.`,
+  codeExplanation: `Plot ROC curve.`,
+  ui: RocCurve,
+  Icon: EaseOutIcon,
   requiredPackages: [
     {
       importName: "scikit-plot",
@@ -126,7 +118,7 @@ export const ConfusionMatrixRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["confusion-matrix", "classification"],
+  tags: ["roc-curve", "classification"],
   defaultVariables: [
     {
       varName: "y",
@@ -153,4 +145,4 @@ export const ConfusionMatrixRecipe: IRecipe = {
   ],
 };
 
-export default ConfusionMatrixRecipe;
+export default RocCurveRecipe;
