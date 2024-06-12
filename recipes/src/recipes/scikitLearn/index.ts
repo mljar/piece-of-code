@@ -10,6 +10,7 @@ import TuneRecipe from "./tune";
 import ImportanceRecipe from "./importance";
 import TrainRandomForestRecipe from "./trainRandomForest";
 import TrainKNNRecipe from "./trainKNN";
+import ConfusionMatrixRecipe from "./confusionMatrix";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -25,9 +26,10 @@ export const ScikitLearnRecipes: IRecipeSet = {
         [TrainKNNRecipe.name]: TrainKNNRecipe,
         [TrainModelRecipe.name]: TrainModelRecipe,
         [PredictRecipe.name]: PredictRecipe,
-        [MetricRecipe.name]: MetricRecipe,
         [VisualizeDecisionTreeRecipe.name]: VisualizeDecisionTreeRecipe,
         [TuneRecipe.name]: TuneRecipe,
         [ImportanceRecipe.name]: ImportanceRecipe,
+        [MetricRecipe.name]: MetricRecipe,
+        [ConfusionMatrixRecipe.name]: ConfusionMatrixRecipe,
     }
 };
