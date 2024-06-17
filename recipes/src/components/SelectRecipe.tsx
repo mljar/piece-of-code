@@ -25,6 +25,9 @@ import BuyLicense from "./BuyLicense";
 import { EnterLicense } from "./EnterLicense";
 import { QuestionIcon } from "../icons/Question";
 import { PythonIcon } from "../icons/Python";
+import { MessagesIcon } from "../icons/Messages";
+import { Chat } from "./Chat";
+import { CakeIcon } from "../icons/Cake";
 
 export interface ISelectRecipeProps {
   previousCode: string;
@@ -178,8 +181,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       markdown={true}
     />
   );
-
+  const [showChat, setShowChat] = useState(false);
   const [pythonOnly, setPythonOnly] = useState(false);
+
   if (pythonOnly) {
     return (
       <div className="poc-flex">
@@ -358,6 +362,42 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         className="poc-text-base"
       />
 
+      {!showChat && (
+        <div>
+          <button
+            data-tooltip-id="left-buttons-tooltip"
+            data-tooltip-content="AI Assistant"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-blue-400 
+            poc-to-blue-500 hover:poc-bg-gradient-to-bl 
+            focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 
+            dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg 
+            poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
+            onClick={() => setShowChat(true)}
+          >
+            {<MessagesIcon className="poc-inline poc-p-0.5" />}
+          </button>
+        </div>
+      )}
+
+      {showChat && (
+        <div>
+          <button
+            data-tooltip-id="left-buttons-tooltip"
+            data-tooltip-content="Piece of Code"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-blue-400 
+            poc-to-blue-500 hover:poc-bg-gradient-to-bl 
+            focus:poc-ring-4 focus:poc-outline-none focus:ring-cyan-300 
+            dark:focus:ring-cyan-800 poc-font-medium poc-rounded-lg 
+            poc-text-sm poc-px-5 poc-py-1.5 poc-text-center me-2 poc-mb-2 poc-ml-4"
+            onClick={() => setShowChat(false)}
+          >
+            {<CakeIcon className="poc-inline poc-p-0.5" />}
+          </button>
+        </div>
+      )}
+
       <div>
         <button
           data-tooltip-id="left-buttons-tooltip"
@@ -500,6 +540,21 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //   },
   //   [showNav]
   // );
+
+  if (showChat) {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}>
+          {leftButtons}
+        </div>
+        <div className="poc-w-full">
+          <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+            <Chat />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="poc-flex">
