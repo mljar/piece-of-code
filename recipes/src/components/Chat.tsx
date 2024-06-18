@@ -1,37 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IPackage, IRecipeSet } from "../recipes/base";
 import markdownit from "markdown-it";
 import { SendIcon } from "../icons/Send";
 import ollama from "ollama/browser";
+import { PlayerStopIcon } from "../icons/PlayerStop";
 
 const md = markdownit();
 
-// Remember the old renderer if overridden, or proxy to the default renderer.
-var defaultRender =
-  md.renderer.rules.link_open ||
-  function (tokens, idx, options, env, self) {
-    return self.renderToken(tokens, idx, options);
-  };
+export interface IChatProps {
+  setCode: (src: string) => void;
+}
 
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-  // Add a new `target` attribute, or replace the value of the existing one.
-  tokens[idx].attrSet("target", "_blank");
+var stopStreaming = false;
 
-  // Pass the token to the default renderer.
-  return defaultRender(tokens, idx, options, env, self);
-};
-
-export interface IChatProps {}
-
-export const Chat: React.FC<IChatProps> = ({}: IChatProps) => {
+export const Chat: React.FC<IChatProps> = ({ setCode }: IChatProps) => {
   const [streaming, setStreaming] = useState(false);
   const [lastMsg, setLastMsg] = useState(``);
+  const [checkingLLM, setCheckingLLM] = useState(true);
+  const [isLLMRunning, setIsLLMRunning] = useState(false);
+  const [isLlama3Running, setIsLlama3Running] = useState(false);
+  //const [stopStreaming, setStopStreaming] = useState(false);
+
+  const isOllamaRunning = async () => {
+    try {
+      const response = await ollama.list();
+      setIsLLMRunning(true);
+      response.models.forEach((m: any) => {
+        if (m.name.includes("llama3")) {
+          setIsLlama3Running(true);
+        }
+      });
+    } catch (error) {}
+    setCheckingLLM(false);
+  };
+
+  useEffect(() => {
+    isOllamaRunning();
+  }, []);
+
   const lama = async (prompt: string) => {
+    setStreaming(true);
+    setMsgs([...msgs, prompt]);
     const messages = [
       {
         role: "system",
         content:
-          "You are AI assistant in MLJAR Studio application. You help to write Python code. Please return ONLY python code.",
+          "You are AI assistant in MLJAR Studio application. You help to write Python code. Please return ONLY python code, dont return code output. Always use markdown format",
       },
       { role: "user", content: prompt },
     ];
@@ -41,30 +55,65 @@ export const Chat: React.FC<IChatProps> = ({}: IChatProps) => {
       stream: true,
     });
     let fullResponse = "";
-    setStreaming(true);
+
     for await (const part of response) {
+      if (stopStreaming) {
+        stopStreaming = false;
+        setStreaming(false);
+        break;
+      }
       fullResponse += part.message.content;
       setLastMsg(fullResponse);
+      const blockStart = fullResponse.search("```");
+      
+      if (blockStart !== -1) {
+        const blockEnd = fullResponse.slice(blockStart+1).search("```");
+        
+        let start = blockStart + 3;
+        const blockPython = fullResponse.search("```python");
+        if(blockPython !== -1) {
+          start = blockStart + 9;
+        }
+
+        if (blockEnd !== -1) {
+          setCode(fullResponse.slice(start, blockEnd));
+        } else {
+          setCode(fullResponse.slice(start));
+        }
+      }
+      if (bottomDivRef.current) {
+        bottomDivRef.current.scrollIntoView({
+          behavior: "auto",
+          block: "end",
+          inline: "end",
+        });
+      }
     }
     setStreaming(false);
-    console.log(msgs);
-    setMsgs([...msgs, fullResponse]);
+    stopStreaming = false;
+    setMsgs([...msgs, prompt, fullResponse]);
   };
 
-  //lama();
+  const [msgs, setMsgs] = useState([] as string[]);
+  const [msg, setMsg] = useState("example pandas data frame");
 
-  const [msgs, setMsgs] = useState([
-    //"helloo",
-    // "test",
-    // "asdfasdf",
-    // "test",
-    // "asdfasdf",
-    // "test",
-    // "asdfasdf",
-    // "test",
-    // "asdfasdf",
-  ] as string[]);
-  const [msg, setMsg] = useState("");
+  const aiResponse = (m: string, index: number) => {
+    return (
+      <div key={`msg-${index}`} className="poc-py-2 poc-my-2 poc-self-end">
+        <div
+          className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base
+          prose-p:poc-leading-6 prose-p:poc-py-1 prose-p:poc-my-1 
+          prose-pre:poc-py-1 prose-pre:poc-my-1
+          prose-ul:poc-py-1 prose-ul:poc-my-1
+          prose-ol:poc-py-1 prose-ol:poc-my-1
+          prose-li:poc-py-1 prose-li:poc-my-1 prose-li:poc-leading-6 poc-prose-sm"
+          dangerouslySetInnerHTML={{
+            __html: md.render(m),
+          }}
+        ></div>
+      </div>
+    );
+  };
 
   const msgsElements = msgs.map((m, index) => {
     if (index % 2 === 0) {
@@ -77,23 +126,56 @@ export const Chat: React.FC<IChatProps> = ({}: IChatProps) => {
         </div>
       );
     } else {
-      return (
-        <div key={`msg-${index}`} className="poc-p-2 poc-my-2 poc-self-end">
-          <div
-            className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base
-            prose-p:poc-leading-6 prose-p:poc-py-1 prose-p:poc-my-1 
-            prose-pre:poc-py-1 prose-pre:poc-my-1
-            prose-ul:poc-py-1 prose-ul:poc-my-1
-            prose-ol:poc-py-1 prose-ol:poc-my-1
-            prose-li:poc-py-1 prose-li:poc-my-1 prose-li:poc-leading-6 poc-prose-sm"
-            dangerouslySetInnerHTML={{
-              __html: md.render(m),
-            }}
-          ></div>
-        </div>
-      );
+      return aiResponse(m, index);
     }
   });
+
+  const bottomDivRef = useRef<null | HTMLDivElement>(null);
+
+  if (checkingLLM) {
+    return (
+      <div
+        className="poc-flex poc-items-center poc-justify-center  "
+        style={{ minHeight: "266px", maxHeight: "266px" }}
+      >
+        <pre>Loading AI Assistant ...</pre>
+      </div>
+    );
+  }
+
+  if (!isLLMRunning) {
+    return (
+      <div
+        className="poc-flex poc-items-center poc-justify-center  "
+        style={{ minHeight: "266px", maxHeight: "266px" }}
+      >
+        <pre>
+          Can't detect ollama running.
+          <br />
+          Please check https://ollama.com/ to download ollama.
+          <br />
+          You can do it!
+        </pre>
+      </div>
+    );
+  }
+
+  if (!isLlama3Running) {
+    return (
+      <div
+        className="poc-flex poc-items-center poc-justify-center  "
+        style={{ minHeight: "266px", maxHeight: "266px" }}
+      >
+        <pre>
+          Can't detect llama3 model.
+          <br />
+          Please check https://ollama.com/ to run llama3 model.
+          <br />
+          You can do it!
+        </pre>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -109,49 +191,58 @@ export const Chat: React.FC<IChatProps> = ({}: IChatProps) => {
           style={{ maxHeight: "266px" }}
         >
           {msgsElements}
-
-          {streaming && (
-            <div className="poc-p-2 poc-my-2 poc-self-end">
-              <div
-                className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-sm
-            prose-p:poc-leading-6 prose-p:poc-py-1 prose-p:poc-my-1 
-            prose-pre:poc-py-1 prose-pre:poc-my-1
-            prose-ul:poc-py-1 prose-ul:poc-my-1
-            prose-ol:poc-py-1 prose-ol:poc-my-1
-            prose-li:poc-py-1 prose-li:poc-my-1 prose-li:poc-leading-6 poc-prose-sm
-             "
-                dangerouslySetInnerHTML={{
-                  __html: md.render(lastMsg),
-                }}
-              ></div>
-            </div>
-          )}
+          {streaming && <>{aiResponse(lastMsg, 1010101)}</>}
+          <div ref={bottomDivRef} />
         </div>
 
         <div className="poc-p-0 poc-bg-gray-200">
           <div className="">
             <div className="poc-w-full poc-border-t poc-relative poc-bg-gray-50 dark:poc-bg-gray-700">
-              <button
-                className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
-                onClick={() => {
-                  if (msg !== "") {
-                    setMsgs([...msgs, msg]);
-                    lama(msg);
-                    setMsg("");
-                  }
-                }}
-                disabled={msg === ""}
-              >
-                {" "}
-                <SendIcon className="poc-inline" />
-              </button>
+              {!streaming && (
+                <button
+                  className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
+                  onClick={() => {
+                    if (msg !== "") {
+                      lama(msg);
+                      setMsg("");
+                    }
+                  }}
+                  disabled={msg === ""}
+                >
+                  {" "}
+                  <SendIcon className="poc-inline" />
+                </button>
+              )}
+
+              {streaming && (
+                <button
+                  className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
+                  onClick={() => {
+                    stopStreaming = true;
+                    console.log("stop");
+                  }}
+                >
+                  {" "}
+                  <PlayerStopIcon className="poc-inline" />
+                </button>
+              )}
+
               <input
-                type="textarea"
+                type="text"
                 className="poc-peer poc-w-11/12  poc-bg-gray-50 poc-text-gray-900
              poc-p-4  poc-outline-0 dark:poc-bg-gray-700   dark:poc-placeholder-gray-400 dark:poc-text-white"
                 placeholder={"Write prompt ..."}
                 value={msg}
-                onChange={(e) => setMsg(e.target.value)}
+                onChange={(e) => {
+                  setMsg(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    lama(msg);
+                    setMsg("");
+                    e.preventDefault();
+                  }
+                }}
                 aria-label={`Input chat`}
               />
             </div>

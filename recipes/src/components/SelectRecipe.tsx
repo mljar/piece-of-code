@@ -549,7 +549,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </div>
         <div className="poc-w-full">
           <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-            <Chat />
+            <Chat setCode={setCode} />
           </div>
         </div>
       </div>

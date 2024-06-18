@@ -18,7 +18,7 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.5.12",
     "markdown-it": "^14.1.0",
-    "ollama": "^0.5.1",
+    "ollama": "^0.5.2",
     "react-tooltip": "^5.26.3"
   },
   "peerDependencies": {

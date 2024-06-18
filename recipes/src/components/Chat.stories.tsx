@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IChatProps, Chat } from "./Chat";
 
-
 const meta: Meta<typeof Chat> = {
   component: Chat,
   title: "CodePieces/Chat",
@@ -21,7 +20,6 @@ export const ChatForm: Story = (
   </>
 );
 
-
 ChatForm.args = {
-  
+  setCode: (src: string) => console.log(src),
 };
