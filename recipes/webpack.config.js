@@ -15,7 +15,7 @@ module.exports = {
     globalObject: 'this'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx'],
   },
   performance: {
     hints: false
@@ -60,7 +60,7 @@ module.exports = {
   ],
   externals: {
     'react': 'react',
-    'react-dom': 'react-dom',
+    'react-dom': 'react-dom'
   }
 };
 

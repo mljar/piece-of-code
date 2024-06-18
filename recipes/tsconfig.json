@@ -2,12 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "es2015", "es2017"],
-    "module": "commonjs",
+    "module": "NodeNext", 
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "moduleResolution": "NodeNext"
   },
   "include": ["src/**/*.tsx"],
   "exclude": ["node_modules"]
