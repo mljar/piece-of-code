@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IPackage, IRecipeSet } from "../recipes/base";
 import { WalkIcon } from "../icons/Walk";
-import { IconProps } from "../icons/props";
 import { Welcome } from "./Welcome";
 import { allRecipes } from "../recipes";
 import { PlayIcon } from "../icons/Play";
-import { HomeIcon } from "../icons/Home";
 import { TrashIcon } from "../icons/Trash";
 import RunStatus from "./RunStatus";
 import TopButtons from "./TopButtons";
@@ -14,7 +12,6 @@ import { PlusIcon } from "../icons/Plus";
 import IVariable from "./IVariable";
 import ExecutionStatus from "./ExecutionStatus";
 import { PackageIcon } from "../icons/Package";
-import { WarningIcon } from "../icons/Warning";
 import { ErrorIcon } from "../icons/Error";
 import { SuccessIcon } from "../icons/Success";
 import { SpinnerIcon } from "../icons/Spinner";
@@ -549,7 +546,14 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         </div>
         <div className="poc-w-full">
           <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-            <Chat setCode={setCode} />
+            <Chat
+              variablesStatus={variablesStatus}
+              variables={variables}
+              setCode={setCode}
+              metadata={metadata}
+              setMetadata={setMetadata}
+              isStatic={false}
+            />
           </div>
         </div>
       </div>

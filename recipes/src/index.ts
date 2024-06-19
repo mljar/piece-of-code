@@ -16,3 +16,5 @@ export { IRecipeProps } from "./recipes/base";
 export { SuccessIcon } from "./icons/Success";
 
 export { allRecipes, urlList } from "./recipes";
+
+export { Chat } from './components/Chat';

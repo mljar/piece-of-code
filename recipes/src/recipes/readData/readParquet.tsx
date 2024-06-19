@@ -18,15 +18,16 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
   const [filePath, setFilePath] = useState("data.parquet");
 
   useEffect(() => {
+    setPackages(["import pandas as pd"]);
     if (name === "" || filePath === "") {
       return;
     }
-    let src = `# read data from Stata file\n`;
+    let src = `# read data from parquet file\n`;
     src += `${name} = pd.read_parquet(r"${filePath}")\n`;
     src += `# display first rows\n`;
     src += `${name}.head()`;
     setCode(src);
-    setPackages(["import pandas as pd"]);
+    
     if (setMetadata) {
       setMetadata({
         name,
