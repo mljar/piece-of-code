@@ -9,6 +9,8 @@ import { ChatIcon } from "../icons/Chat";
 import { MailIcon } from "../icons/Mail";
 import ExecutionStatus from "./ExecutionStatus";
 import { WandIcon } from "../icons/Wand";
+import { Chat } from "./Chat";
+import IVariable from "./IVariable";
 
 // export enum ExecutionStatus {
 //   Wait = "Wait",
@@ -22,6 +24,12 @@ export interface IRunStatusProps {
   errorName: string;
   errorValue: string;
   addCell: () => void;
+  //
+  variablesStatus: "loading" | "loaded" | "error" | "unknown";
+  variables: IVariable[];
+  setCode: (src: string) => void;
+  metadata: any;
+  setMetadata: (m: any) => void;
 }
 
 export const RunStatus: React.FC<IRunStatusProps> = ({
@@ -29,8 +37,15 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
   errorName,
   errorValue,
   addCell,
+  variablesStatus,
+  variables,
+  setCode,
+  metadata,
+  setMetadata
 }: IRunStatusProps) => {
   const [showEmail, setShowEmail] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+
   const elements = steps.map((step) => {
     const label = step[0];
     const status = step[1];
@@ -66,17 +81,32 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     steps.filter((step) => step[1] === ExecutionStatus.Success).length ==
     steps.length;
 
+  console.log(showChat)
+  if(showChat) {
+    return (<div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+      <Chat
+              variablesStatus={variablesStatus}
+              variables={variables}
+              setCode={setCode}
+              metadata={metadata}
+              setMetadata={setMetadata}
+              isStatic={false}
+              fixError={``}
+      />
+    </div>);
+  }
+
   return (
     <div className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pl-2">
       <div className="poc-grid poc-grid-cols-4 poc-gap-4">
+        {errorName === "" &&
         <div>
           <label className="poc-block poc-text-lg poc-font-medium ">
             <BoltIcon className="poc-inline poc-pb-1" />
             Execution status
           </label>
           {elements}
-        </div>
-
+        </div>}
         {allSuccess && (
           <div className="poc-col-span-3">
             <p className="poc-py-2 poc-text-base">
@@ -92,8 +122,9 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
             </p>
           </div>
         )}
+
         {errorName !== "" && (
-          <div className="poc-border poc-p-2 poc-border-red-300 poc-rounded-md poc-text-base poc-col-span-3">
+          <div className="poc-border poc-p-2 poc-border-red-300 poc-rounded-md poc-text-base poc-col-span-4">
             <p className="poc-block poc-text-lg poc-font-medium poc-text-red-600 ">
               Some problems with code ...
             </p>
@@ -106,10 +137,11 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
               {errorValue}
             </pre>
 
-            <p className="poc-pt-1"> 
+            <div className="poc-pt-2"> 
               <button
                 type="button"
                 className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2"
+                onClick={() => setShowChat(true)}
               >
                 <WandIcon className="poc-inline poc-pb-1" /> Ask AI Assistant
               </button>
@@ -122,7 +154,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
               >
                 <MailIcon className="poc-inline poc-pb-1" /> Email us
               </button>
-            </p>
+            </div>
             {showEmail && (
               <p className="poc-text-base">
                 Our email address is <b>contact@mljar.com</b> please include the

@@ -17,6 +17,7 @@ export interface IChatProps {
   metadata: any;
   setMetadata: (m: any) => void;
   isStatic: boolean;
+  fixError?: string;
 }
 
 var stopStreaming = false;
@@ -28,6 +29,7 @@ export const Chat: React.FC<IChatProps> = ({
   metadata,
   setMetadata,
   isStatic,
+  fixError,
 }: IChatProps) => {
   const [streaming, setStreaming] = useState(false);
   const [lastMsg, setLastMsg] = useState(``);
@@ -162,7 +164,7 @@ export const Chat: React.FC<IChatProps> = ({
   }, [metadata]);
 
   const [msgs, setMsgs] = useState([] as string[]);
-  const [msg, setMsg] = useState("example pandas data frame");
+  const [msg, setMsg] = useState(fixError? fixError : "");
 
   const aiResponse = (m: string, index: number) => {
     return (

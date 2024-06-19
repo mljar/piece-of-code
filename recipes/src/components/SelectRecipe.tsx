@@ -225,6 +225,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                   errorName={previousErrorName}
                   errorValue={previousErroValue}
                   addCell={addCell}
+                  //
+                  variablesStatus={variablesStatus}
+                  variables={variables}
+                  setCode={setCode}
+                  metadata={metadata}
+                  setMetadata={setMetadata}
                 />
               )}
             </div>
@@ -651,6 +657,13 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               errorName={previousErrorName}
               errorValue={previousErroValue}
               addCell={addCell}
+              //
+
+              variablesStatus={variablesStatus}
+              variables={variables}
+              setCode={setCode}
+              metadata={metadata}
+              setMetadata={setMetadata}
             />
           )}
         </div>
