@@ -14,7 +14,7 @@ export const CheckPythonVersion: React.FC<IRecipeProps> = ({
 }) => {
   useEffect(() => {
     let src = `# check python version\n`;
-    src += `print(sys.version)\n`;
+    src += `print(sys.version)`;
     setCode(src);
     setPackages(["import sys"]);
     if (setMetadata) {

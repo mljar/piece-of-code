@@ -433,9 +433,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   //     case 'execute_result':
   //     case 'display_data':
   //     case 'update_display_data':
-
   //       // console.log(msg.content);
-
   //       break;
   //     default:
   //       break;
@@ -448,8 +446,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       if (output.cell_type === 'code') {
         let outputs = output.outputs as any[];
         if (outputs !== null && outputs !== undefined) {
-          if (outputs.length) {
-            const { output_type, ename, evalue } = outputs[0];
+          for (let i = 0; i < outputs.length; i += 1) {
+            const { output_type, ename, evalue } = outputs[i];
             if (output_type === 'error') {
               return [ename, evalue];
             }

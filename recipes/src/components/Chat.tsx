@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { IPackage, IRecipeSet } from "../recipes/base";
 import markdownit from "markdown-it";
 import { SendIcon } from "../icons/Send";
@@ -36,9 +36,19 @@ export const Chat: React.FC<IChatProps> = ({
   const [checkingLLM, setCheckingLLM] = useState(true);
   const [isLLMRunning, setIsLLMRunning] = useState(false);
   const [isLlama3Running, setIsLlama3Running] = useState(false);
+  const elementRef = useRef<null | HTMLDivElement>(null);
+  const scrollToElement = () => {
+    const { current } = elementRef;
+    if (current !== null) {
+      console.log("scroll");
+      current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const getVariablesDesc = () => {
-    console.log(variables);
+    if (variables === undefined) {
+      return "";
+    }
     const descs = variables.map((v) => {
       let d = `${v.varName} is type of ${v.varType}`;
       if (v.isMatrix) {
@@ -75,7 +85,16 @@ export const Chat: React.FC<IChatProps> = ({
     if (!isStatic) {
       isOllamaRunning();
     }
-  }, []);
+  }, [isStatic]);
+
+  const [askedToFix, setAskedToFix] = useState(false);
+
+  useEffect(() => {
+    if (isLlama3Running && fixError !== undefined && !askedToFix) {
+      setAskedToFix(true);
+      lama(fixError);
+    }
+  }, [isLlama3Running, fixError, askedToFix]);
 
   const lama = async (prompt: string) => {
     const varDesc = getVariablesDesc();
@@ -85,7 +104,7 @@ export const Chat: React.FC<IChatProps> = ({
     let messages = [
       {
         role: "system",
-        content: `You are AI assistant in MLJAR Studio application. You help to write Python code. Please return ONLY python code, dont return code output. Always use markdown format.`,
+        content: `You are AI assistant in MLJAR Studio application. You help to write Python code. Please return ONLY python code. Please DO NOT return output with code evaluation, unless asked to. Always use markdown format.`,
       },
     ];
     if (varDesc !== "") {
@@ -100,8 +119,6 @@ export const Chat: React.FC<IChatProps> = ({
       }
     });
     messages.push({ role: "user", content: prompt });
-
-    console.log(messages);
 
     const response = await ollama.chat({
       model: "llama3",
@@ -118,35 +135,14 @@ export const Chat: React.FC<IChatProps> = ({
       }
       fullResponse += part.message.content;
       setLastMsg(fullResponse);
-      const blockStart = fullResponse.search("```");
-
-      if (blockStart !== -1) {
-        const blockEnd = fullResponse.slice(blockStart + 1).search("```");
-
-        let start = blockStart + 3;
-        const blockPython = fullResponse.search("```python");
-        if (blockPython !== -1) {
-          start = blockStart + 9;
-        }
-
-        if (blockEnd !== -1) {
-          setCode(fullResponse.slice(start, blockEnd));
-        } else {
-          setCode(fullResponse.slice(start));
-        }
-      }
-      if (bottomDivRef.current) {
-        bottomDivRef.current.scrollIntoView({
-          behavior: "auto",
-          block: "end",
-          inline: "end",
-        });
-      }
+      scrollToElement();
     }
+
+    setLastMsg(fullResponse);
     setStreaming(false);
     stopStreaming = false;
     setMsgs([...msgs, prompt, fullResponse]);
-    console.log("set metadata", setMetadata);
+
     if (setMetadata) {
       setMetadata({
         msgs: [...msgs, prompt, fullResponse],
@@ -154,7 +150,29 @@ export const Chat: React.FC<IChatProps> = ({
         docsUrl: DOCS_URL,
       });
     }
+    scrollToElement();
   };
+
+  useEffect(() => {
+    const blockStart = lastMsg.search("```");
+
+    if (blockStart !== -1) {
+      const blockEnd = lastMsg.slice(blockStart + 1).search("```");
+
+      // add 1 char for new line
+      let start = blockStart + 4;
+      const blockPython = lastMsg.search("```python");
+      if (blockPython !== -1) {
+        start = blockStart + 10;
+      }
+
+      if (blockEnd !== -1) {
+        setCode(lastMsg.slice(start, blockEnd));
+      } else {
+        setCode(lastMsg.slice(start));
+      }
+    }
+  }, [lastMsg]);
 
   useEffect(() => {
     if (metadata) {
@@ -164,7 +182,7 @@ export const Chat: React.FC<IChatProps> = ({
   }, [metadata]);
 
   const [msgs, setMsgs] = useState([] as string[]);
-  const [msg, setMsg] = useState(fixError? fixError : "");
+  const [msg, setMsg] = useState("");
 
   const aiResponse = (m: string, index: number) => {
     return (
@@ -189,7 +207,7 @@ export const Chat: React.FC<IChatProps> = ({
       return (
         <div
           key={`msg-${index}`}
-          className="poc-inline poc-p-2 poc-my-2 poc-bg-blue-100 poc-rounded-md poc-text-sm"
+          className="poc-inline poc-p-1.5 poc-my-2 poc-bg-blue-100 poc-rounded-md poc-text-sm"
         >
           {m}
         </div>
@@ -199,12 +217,7 @@ export const Chat: React.FC<IChatProps> = ({
     }
   });
 
-  const bottomDivRef = useRef<null | HTMLDivElement>(null);
-
-  
-
   if (!isStatic) {
-
     if (checkingLLM) {
       return (
         <div
@@ -215,7 +228,7 @@ export const Chat: React.FC<IChatProps> = ({
         </div>
       );
     }
-    
+
     if (!isLLMRunning) {
       return (
         <div
@@ -257,19 +270,20 @@ export const Chat: React.FC<IChatProps> = ({
       style={{ minHeight: "266px", maxHeight: "266px" }}
     >
       <div
-        className="poc-flex poc-flex-col poc-w-full poc-max-w-full"
+        className="poc-flex poc-flex-col poc-w-full poc-max-w-full poc-p-4 poc-border"
         style={{ minHeight: "266px", maxHeight: "266px" }}
+        ref={elementRef}
       >
         <div
-          className="poc-flex-1 poc-p-4 poc-overflow-y-auto "
+          className="poc-flex-1 poc-p-4 poc-overflow-y-auto poc-border-2 poc-border-red-400 "
           style={{ maxHeight: "266px" }}
+          
         >
           {msgsElements}
           {streaming && lastMsg !== "" && <>{aiResponse(lastMsg, 1010101)}</>}
           {streaming && lastMsg === "" && (
-            <>{aiResponse("Waiting for AI response ...", 1010101)}</>
+            <>{aiResponse("Waiting for AI response ...", 1010101)} </>
           )}
-          <div ref={bottomDivRef} />
         </div>
 
         {!isStatic && (

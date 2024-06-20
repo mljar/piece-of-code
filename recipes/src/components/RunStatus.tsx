@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SpinnerIcon } from "../icons/Spinner";
 import { SuccessIcon } from "../icons/Success";
 import { ErrorIcon } from "../icons/Error";
@@ -30,6 +30,8 @@ export interface IRunStatusProps {
   setCode: (src: string) => void;
   metadata: any;
   setMetadata: (m: any) => void;
+  previousCode: string;
+  showBorder: boolean;
 }
 
 export const RunStatus: React.FC<IRunStatusProps> = ({
@@ -41,10 +43,19 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
   variables,
   setCode,
   metadata,
-  setMetadata
+  setMetadata,
+  previousCode,
+  showBorder,
 }: IRunStatusProps) => {
+
   const [showEmail, setShowEmail] = useState(false);
   const [showChat, setShowChat] = useState(false);
+
+  useEffect(() => {
+    // if there is any update in steps, please hide chat, 
+    // probably we are executing a cell
+    setShowChat(false);
+  }, [steps]);
 
   const elements = steps.map((step) => {
     const label = step[0];
@@ -81,32 +92,43 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
     steps.filter((step) => step[1] === ExecutionStatus.Success).length ==
     steps.length;
 
-  console.log(showChat)
-  if(showChat) {
-    return (<div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-      <Chat
-              variablesStatus={variablesStatus}
-              variables={variables}
-              setCode={setCode}
-              metadata={metadata}
-              setMetadata={setMetadata}
-              isStatic={false}
-              fixError={``}
-      />
-    </div>);
+  if (showChat) {
+    return (
+      <div className={showBorder? 
+       "poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md": ""
+        
+      }>
+        <Chat
+          variablesStatus={variablesStatus}
+          variables={variables}
+          setCode={(src: string) => {}}
+          metadata={undefined}
+          setMetadata={(m: any) => {}}
+          isStatic={false}
+          fixError={`Explain ${errorName} ${errorValue} for code \n\`\`\`\n${previousCode}\n\`\`\``}
+        />
+      </div>
+    );
   }
+  
+  const borderClass = showBorder
+    ? "poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
+    : "poc-p-2";
 
   return (
-    <div className="poc-text-base poc-text-gray-900 dark:poc-text-white poc-pl-2">
+    <div
+      className={`poc-text-base poc-text-gray-900 dark:poc-text-white ${borderClass}`}
+    >
       <div className="poc-grid poc-grid-cols-4 poc-gap-4">
-        {errorName === "" &&
-        <div>
-          <label className="poc-block poc-text-lg poc-font-medium ">
-            <BoltIcon className="poc-inline poc-pb-1" />
-            Execution status
-          </label>
-          {elements}
-        </div>}
+        {errorName === "" && (
+          <div>
+            <label className="poc-block poc-text-lg poc-font-medium ">
+              <BoltIcon className="poc-inline poc-pb-1" />
+              Execution status
+            </label>
+            {elements}
+          </div>
+        )}
         {allSuccess && (
           <div className="poc-col-span-3">
             <p className="poc-py-2 poc-text-base">
@@ -123,8 +145,9 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
           </div>
         )}
 
+        {/* poc-border-t poc-border-l poc-border-r poc-border-red-300 poc-rounded-t-md */}
         {errorName !== "" && (
-          <div className="poc-border poc-p-2 poc-border-red-300 poc-rounded-md poc-text-base poc-col-span-4">
+          <div className=" poc-p-2  poc-text-base poc-col-span-4">
             <p className="poc-block poc-text-lg poc-font-medium poc-text-red-600 ">
               Some problems with code ...
             </p>
@@ -137,7 +160,7 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
               {errorValue}
             </pre>
 
-            <div className="poc-pt-2"> 
+            <div className="poc-pt-2">
               <button
                 type="button"
                 className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-my-2"

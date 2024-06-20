@@ -25,7 +25,7 @@ export const SelectRecipeForm: Story = (
 SelectRecipeForm.args = {
   previousCode: "",
   previousErrorName: "",
-  previousErroValue: "",
+  previousErrorValue: "",
   previousExecutionCount: 0,
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
@@ -53,7 +53,7 @@ export const SelectRecipeExecuted: Story = (
 SelectRecipeExecuted.args = {
   previousCode: "print(1)",
   previousErrorName: "",
-  previousErroValue: "",
+  previousErrorValue: "",
   previousExecutionCount: 1,
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),

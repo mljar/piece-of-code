@@ -73,8 +73,8 @@ const SelectRecipeComponent = ({
     <div>
       <SelectRecipe
         previousCode={previousCode}
-        previousErroValue={previousErrorName}
-        previousErrorName={previousErrorValue}
+        previousErrorName={previousErrorName}
+        previousErrorValue={previousErrorValue}
         previousExecutionCount={previousExecutionCount}
         setCode={setCode}
         setPackages={setPackages}

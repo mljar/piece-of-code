@@ -46,15 +46,15 @@ RunStatusForm.args = {
   ],
   errorName: "",
   errorValue: "",
-  addCell: () => {},
+  addCell: () => {}, 
 };
 
 export const RunStatusError: Story = (
   args: React.JSX.IntrinsicAttributes & IRunStatusProps
 ) => (
-  <>
+  <div className="poc-border">
     <RunStatus {...args} />
-  </>
+  </div>
 );
 
 RunStatusError.args = {
@@ -68,4 +68,6 @@ RunStatusError.args = {
   errorName: "Bad error",
   errorValue: "Very bad error",
   addCell: () => {},
+  previousCode: "print(",
+  setCode: (src: string) => {}, 
 };

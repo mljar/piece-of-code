@@ -29,7 +29,7 @@ import { CakeIcon } from "../icons/Cake";
 export interface ISelectRecipeProps {
   previousCode: string;
   previousErrorName: string;
-  previousErroValue: string;
+  previousErrorValue: string;
   previousExecutionCount: number;
   setCode: (src: string) => void;
   runCell: () => void;
@@ -59,7 +59,7 @@ declare global {
 export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   previousCode,
   previousErrorName,
-  previousErroValue,
+  previousErrorValue,
   previousExecutionCount,
   setCode,
   runCell,
@@ -97,6 +97,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [showBuyLicense, setShowBuyLicense] = useState(false);
   const [showEnterLicense, setShowEnterLicense] = useState(false);
   const [keepOpen, setKeepOpen] = useState(false);
+  const [currentCode, setCurrentCode] = useState("");
+
+  const setCodeWithCopy = (src: string) => {
+    setCurrentCode(src);
+    setCode(src);
+  };
 
   useEffect(() => {
     async function getLicense() {
@@ -218,19 +224,23 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <div className="poc-flex-none" style={{ width: "72px" }}></div>
           <div className="poc-w-full">
             {topButtons}
-            <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+            <div>
+              {/* <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+               */}
               {executionSteps.length > 0 && (
                 <RunStatus
                   steps={executionSteps}
                   errorName={previousErrorName}
-                  errorValue={previousErroValue}
+                  errorValue={previousErrorValue}
                   addCell={addCell}
                   //
                   variablesStatus={variablesStatus}
                   variables={variables}
-                  setCode={setCode}
+                  setCode={setCodeWithCopy}
                   metadata={metadata}
                   setMetadata={setMetadata}
+                  previousCode={currentCode}
+                  showBorder={true}
                 />
               )}
             </div>
@@ -290,7 +300,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       title={"Select your next step"}
       Icon={WalkIcon}
       description={
-        "What is your next step? Please select code recipe from the left sidebar."
+        "What is your next step? Please select code recipe from the left sidebar or use AI assistant."
       }
       setShowEnterLicense={
         isElectron && license === "" ? setShowEnterLicense : undefined
@@ -448,12 +458,12 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           type="button"
           className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-5 poc-py-1.5 poc-text-center poc-me-2  poc-mb-2 poc-ml-4"
           onClick={() => {
-            console.log(selectedRecipeSet, cellType);
             if (selectedRecipeSet === "Markdown") {
               changeCellToMarkdown();
             }
             runCell();
             setExecuted(true);
+            //setShowChat(false);
           }}
         >
           {<PlayIcon className="poc-inline" />}
@@ -555,7 +565,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             <Chat
               variablesStatus={variablesStatus}
               variables={variables}
-              setCode={setCode}
+              setCode={setCodeWithCopy}
               metadata={metadata}
               setMetadata={setMetadata}
               isStatic={false}
@@ -573,9 +583,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       </div>
       <div className="poc-w-full">
         {executionSteps.length > 0 && !keepOpen && topButtons}
-        <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
-            <>
+            <div className="poc-p-2">
               {showBuyLicense && (
                 <BuyLicense
                   setShowBuyLicense={setShowBuyLicense}
@@ -609,7 +619,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                   {welcomeMsg}
                 </div>
               </div>
-            </>
+            </div>
           )}
 
           {RecipeUI && showRecipeUI && (
@@ -619,7 +629,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               {showNav && <hr className="poc-p-1 poc-m-2" />}
               <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-2 poc-rounded-md">
                 <RecipeUI
-                  setCode={setCode}
+                  setCode={setCodeWithCopy}
                   setPackages={setPackages}
                   variablesStatus={variablesStatus}
                   variables={variables}
@@ -655,15 +665,16 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             <RunStatus
               steps={executionSteps}
               errorName={previousErrorName}
-              errorValue={previousErroValue}
+              errorValue={previousErrorValue}
               addCell={addCell}
               //
-
               variablesStatus={variablesStatus}
               variables={variables}
-              setCode={setCode}
+              setCode={setCodeWithCopy}
               metadata={metadata}
               setMetadata={setMetadata}
+              previousCode={currentCode}
+              showBorder={false}
             />
           )}
         </div>
