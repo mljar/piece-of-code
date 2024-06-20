@@ -62,6 +62,8 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
   return recipeUrls;
 }).flat();
 
+// do we have duplicates in urlList ?
+
 import axios from "axios";
 if (process.env.STORYBOOK_UPDATE_DB) {
   console.log("Update server data");
