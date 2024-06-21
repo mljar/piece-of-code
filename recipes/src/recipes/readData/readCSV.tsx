@@ -8,7 +8,12 @@ import { Select } from "../../components/Select";
 
 const DOCS_URL = "python-read-csv";
 
-export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages, metadata, setMetadata }) => {
+export const ReadCSV: React.FC<IRecipeProps> = ({
+  setCode,
+  setPackages,
+  metadata,
+  setMetadata,
+}) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
 
@@ -32,6 +37,8 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages, metadata
     }
     let src = `# read data from csv file\n`;
     src += `${name} = pd.read_csv(r"${filePath}"${delimiterSrc})\n`;
+    src += `# display data shape\n`;
+    src += `print(${name}.shape())\n`;
     src += `# display first rows\n`;
     src += `${name}.head()`;
 
@@ -48,7 +55,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages, metadata
     }
   }, [name, filePath, delimiter]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["name"]) setName(metadata["name"]);
@@ -71,10 +78,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({ setCode, setPackages, metadata
         name={name}
         setName={setName}
       />
-      <SelectPath
-        label={"Select CSV file"}
-        setPath={setFilePath}
-      />
+      <SelectPath label={"Select CSV file"} setPath={setFilePath} />
       {advanced && (
         <>
           <Select
@@ -98,7 +102,11 @@ export const ReadCSVRecipe: IRecipe = {
   description:
     "Read CSV file into Pandas DataFrame. Please provide the name of variable and file path. Please switch `Advanced` toggle for more options.",
   shortDescription: "Read CSV file in Python using Pandas package",
-  codeExplanation: "",
+  codeExplanation: `
+1. Read CSV file to Pandas DataFrame.
+2. Display shape of DataFrame.
+3. Display first rows of DataFrame.  
+`,
   ui: ReadCSV,
   Icon: FileCsvIcon,
   requiredPackages: [

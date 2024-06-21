@@ -119,6 +119,7 @@ export const Chat: React.FC<IChatProps> = ({
   // }, [isLlama3Running, fixError, askedToFix]);
 
   const lama = async (prompt: string) => {
+    clearExecutionSteps();
     const varDesc = getVariablesDesc();
 
     setStreaming(true);
