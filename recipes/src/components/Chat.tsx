@@ -329,7 +329,7 @@ export const Chat: React.FC<IChatProps> = ({
                     setMsg(e.target.value);
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" && msg !== "") {
                       lama(msg);
                       setMsg("");
                       e.preventDefault();
