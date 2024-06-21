@@ -40,6 +40,7 @@ SelectRecipeForm.args = {
   variablesStatus: "loaded",
   variables: [],
   checkPackage: (pkg: string) => {},
+  getCellCode: () => "",
 };
 
 export const SelectRecipeExecuted: Story = (
@@ -68,5 +69,5 @@ SelectRecipeExecuted.args = {
   variablesStatus: "loaded",
   variables: [],
   checkPackage: (pkg: string) => {},
+  getCellCode: () => "",
 };
-

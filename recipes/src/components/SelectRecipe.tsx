@@ -48,6 +48,7 @@ export interface ISelectRecipeProps {
   changeCellToMarkdown: () => void;
   changeCellToCode: () => void;
   cellType: string;
+  getCellCode: () => string;
 }
 
 declare global {
@@ -78,6 +79,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   changeCellToMarkdown,
   changeCellToCode,
   cellType,
+  getCellCode,
 }: ISelectRecipeProps) => {
   let isElectron = false;
   if (typeof window !== "undefined") {
@@ -184,185 +186,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       markdown={true}
     />
   );
+
   const [showChat, setShowChat] = useState(false);
   const [pythonOnly, setPythonOnly] = useState(false);
-
-  if (pythonOnly) {
-    return (
-      <div className="poc-flex">
-        <div className="poc-flex-none" style={{ width: "72px" }}></div>
-        <div className="poc-w-full">{topButtons}</div>
-      </div>
-    );
-  }
-  if (cellType === "markdown") {
-    return (
-      <div className="poc-flex">
-        <div className="poc-flex-none" style={{ width: "72px" }}></div>
-        <div className="poc-w-full">{topButtonsMarkdown}</div>
-      </div>
-    );
-  }
-
-  if (
-    !keepOpen &&
-    executed &&
-    previousCode !== "" &&
-    //previousErrorName === "" &&
-    !overwriteExistingCode
-  ) {
-    if (executionSteps.length === 0) {
-      return (
-        <div className="poc-flex">
-          <div className="poc-flex-none" style={{ width: "72px" }}></div>
-          <div className="poc-w-full">{topButtons}</div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="poc-flex">
-          <div className="poc-flex-none" style={{ width: "72px" }}></div>
-          <div className="poc-w-full">
-            {topButtons}
-            <div>
-              {/* <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-               */}
-              {executionSteps.length > 0 && (
-                <RunStatus
-                  steps={executionSteps}
-                  errorName={previousErrorName}
-                  errorValue={previousErrorValue}
-                  addCell={addCell}
-                  //
-                  variablesStatus={variablesStatus}
-                  variables={variables}
-                  setCode={setCodeWithCopy}
-                  metadata={metadata}
-                  setMetadata={setMetadata}
-                  previousCode={currentCode}
-                  showBorder={true}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-  }
-
-  const ActiveTabClass =
-    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-text-white poc-bg-blue-500 poc-rounded-lg poc-w-full dark:poc-bg-blue-600";
-  const TabClass =
-    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-rounded-lg poc-bg-gray-50 hover:poc-text-gray-900 hover:poc-bg-blue-100 poc-w-full dark:poc-bg-gray-800 dark:hover:poc-bg-gray-800 dark:poc-text-gray-200 dark:hover:poc-text-white";
-  const tabs = Object.entries(allRecipeSets).map(([name, recipeSet]) => (
-    <li key={`select-recipe-set-${recipeSet.name}`}>
-      <a
-        className={
-          recipeSet.name === selectedRecipeSet ? ActiveTabClass : TabClass
-        }
-        onClick={() => {
-          setSelectedRecipeSet(name);
-          setSelectedRecipe("");
-        }}
-      >
-        {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />}{" "}
-        {recipeSet.name}
-      </a>
-    </li>
-  ));
-
-  let showSubTabs = false;
-  let subTabs = undefined;
-  if (selectedRecipeSet !== "") {
-    subTabs = Object.entries(allRecipeSets[selectedRecipeSet].recipes).map(
-      ([_, recipe]) => (
-        <li key={`select-recipe-${recipe.name}`}>
-          <a
-            className={
-              selectedRecipe === recipe.name ? ActiveTabClass : TabClass
-            }
-            onClick={() => {
-              setSelectedRecipe(recipe.name);
-            }}
-          >
-            {recipe.Icon && <recipe.Icon className="poc-p-1" />} {recipe.name}
-          </a>
-        </li>
-      )
-    );
-    if (Object.entries(allRecipeSets[selectedRecipeSet].recipes).length > 0) {
-      showSubTabs = true;
-    }
-  }
-
-  let welcomeMsg = (
-    <Welcome
-      title={"Select your next step"}
-      Icon={WalkIcon}
-      description={
-        "What is your next step? Please select code recipe from the left sidebar or use AI assistant."
-      }
-      setShowEnterLicense={
-        isElectron && license === "" ? setShowEnterLicense : undefined
-      }
-    />
-  );
-  if (selectedRecipeSet !== "" && selectedRecipe == "") {
-    const recipeSet = allRecipeSets[selectedRecipeSet];
-    welcomeMsg = (
-      <Welcome
-        title={recipeSet.name}
-        Icon={recipeSet.Icon}
-        description={recipeSet.description}
-        tags={recipeSet.tags}
-      />
-    );
-  }
-
-  let installPackages: IPackage[] = [];
-  let RecipeUI = undefined;
-  if (selectedRecipeSet !== "" && selectedRecipe !== "") {
-    console.log(selectedRecipeSet, selectedRecipe);
-    const recipe = allRecipeSets[selectedRecipeSet].recipes[selectedRecipe];
-    welcomeMsg = (
-      <Welcome
-        title={recipe.name}
-        Icon={recipe.Icon}
-        description={recipe.description}
-        packages={recipe.requiredPackages}
-        docsLink={`https://mljar.com/docs/${recipe.docsUrl}/`}
-        checkPackage={checkPackage}
-        checkedPackages={checkedPackages}
-        installPackage={installPackage}
-        tags={recipe.tags}
-      />
-    );
-    RecipeUI = recipe.ui;
-
-    recipe.requiredPackages?.forEach((p) => {
-      if (
-        !(
-          checkedPackages &&
-          p.importName in checkedPackages &&
-          checkedPackages[p.importName] !== "error" &&
-          checkedPackages[p.importName] !== "install"
-        )
-      ) {
-        installPackages.push(p);
-      }
-    });
-  }
-  let showRecipeUI = false;
-  if (
-    RecipeUI !== undefined &&
-    executionSteps.length === 0 &&
-    installPackages.length === 0
-  ) {
-    showRecipeUI = true;
-  }
-  if (keepOpen) {
-    showRecipeUI = true;
-  }
 
   const leftButtons = (
     <div className="poc-h-full poc-grid poc-grid-cols-1 poc-content-end">
@@ -472,6 +298,208 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     </div>
   );
 
+  if (showChat && !pythonOnly) {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}>
+          {leftButtons}
+        </div>
+        <div className="poc-w-full">
+          <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+            <Chat
+              variablesStatus={variablesStatus}
+              variables={variables}
+              setCode={setCodeWithCopy}
+              metadata={metadata}
+              setMetadata={setMetadata}
+              isStatic={false}
+              runCell={() => {
+                runCell();
+              }}
+              executionSteps={executionSteps}
+              errorName={previousErrorName}
+              errorValue={previousErrorValue}
+              currentCode={currentCode}
+              getCellCode={getCellCode}
+              clearExecutionSteps={clearExecutionSteps}
+              addCell={addCell}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (pythonOnly) {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}></div>
+        <div className="poc-w-full">{topButtons}</div>
+      </div>
+    );
+  }
+  if (cellType === "markdown") {
+    return (
+      <div className="poc-flex">
+        <div className="poc-flex-none" style={{ width: "72px" }}></div>
+        <div className="poc-w-full">{topButtonsMarkdown}</div>
+      </div>
+    );
+  }
+
+  if (
+    !keepOpen &&
+    executed &&
+    previousCode !== "" &&
+    //previousErrorName === "" &&
+    !overwriteExistingCode
+  ) {
+    if (executionSteps.length === 0) {
+      return (
+        <div className="poc-flex">
+          <div className="poc-flex-none" style={{ width: "72px" }}></div>
+          <div className="poc-w-full">{topButtons}</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="poc-flex">
+          <div className="poc-flex-none" style={{ width: "72px" }}></div>
+          <div className="poc-w-full">
+            {topButtons}
+            <div>
+              {/* <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+               */}
+              {executionSteps.length > 0 && (
+                <RunStatus
+                  steps={executionSteps}
+                  errorName={previousErrorName}
+                  errorValue={previousErrorValue}
+                  addCell={addCell}
+                  showBorder={true}
+                  setShowChat={(show: boolean) => setShowChat(show)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  const ActiveTabClass =
+    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-text-white poc-bg-blue-500 poc-rounded-lg poc-w-full dark:poc-bg-blue-600";
+  const TabClass =
+    "poc-inline-flex poc-items-center poc-px-4 poc-py-2 poc-rounded-lg poc-bg-gray-50 hover:poc-text-gray-900 hover:poc-bg-blue-100 poc-w-full dark:poc-bg-gray-800 dark:hover:poc-bg-gray-800 dark:poc-text-gray-200 dark:hover:poc-text-white";
+  const tabs = Object.entries(allRecipeSets).map(([name, recipeSet]) => (
+    <li key={`select-recipe-set-${recipeSet.name}`}>
+      <a
+        className={
+          recipeSet.name === selectedRecipeSet ? ActiveTabClass : TabClass
+        }
+        onClick={() => {
+          setSelectedRecipeSet(name);
+          setSelectedRecipe("");
+        }}
+      >
+        {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />}{" "}
+        {recipeSet.name}
+      </a>
+    </li>
+  ));
+
+  let showSubTabs = false;
+  let subTabs = undefined;
+  if (selectedRecipeSet !== "") {
+    subTabs = Object.entries(allRecipeSets[selectedRecipeSet].recipes).map(
+      ([_, recipe]) => (
+        <li key={`select-recipe-${recipe.name}`}>
+          <a
+            className={
+              selectedRecipe === recipe.name ? ActiveTabClass : TabClass
+            }
+            onClick={() => {
+              setSelectedRecipe(recipe.name);
+            }}
+          >
+            {recipe.Icon && <recipe.Icon className="poc-p-1" />} {recipe.name}
+          </a>
+        </li>
+      )
+    );
+    if (Object.entries(allRecipeSets[selectedRecipeSet].recipes).length > 0) {
+      showSubTabs = true;
+    }
+  }
+
+  let welcomeMsg = (
+    <Welcome
+      title={"Select your next step"}
+      Icon={WalkIcon}
+      description={
+        "What is your next step? Please select code recipe from the left sidebar or use AI assistant."
+      }
+      setShowEnterLicense={
+        isElectron && license === "" ? setShowEnterLicense : undefined
+      }
+    />
+  );
+  if (selectedRecipeSet !== "" && selectedRecipe == "") {
+    const recipeSet = allRecipeSets[selectedRecipeSet];
+    welcomeMsg = (
+      <Welcome
+        title={recipeSet.name}
+        Icon={recipeSet.Icon}
+        description={recipeSet.description}
+        tags={recipeSet.tags}
+      />
+    );
+  }
+
+  let installPackages: IPackage[] = [];
+  let RecipeUI = undefined;
+  if (selectedRecipeSet !== "" && selectedRecipe !== "") {
+    const recipe = allRecipeSets[selectedRecipeSet].recipes[selectedRecipe];
+    welcomeMsg = (
+      <Welcome
+        title={recipe.name}
+        Icon={recipe.Icon}
+        description={recipe.description}
+        packages={recipe.requiredPackages}
+        docsLink={`https://mljar.com/docs/${recipe.docsUrl}/`}
+        checkPackage={checkPackage}
+        checkedPackages={checkedPackages}
+        installPackage={installPackage}
+        tags={recipe.tags}
+      />
+    );
+    RecipeUI = recipe.ui;
+
+    recipe.requiredPackages?.forEach((p) => {
+      if (
+        !(
+          checkedPackages &&
+          p.importName in checkedPackages &&
+          checkedPackages[p.importName] !== "error" &&
+          checkedPackages[p.importName] !== "install"
+        )
+      ) {
+        installPackages.push(p);
+      }
+    });
+  }
+  let showRecipeUI = false;
+  if (
+    RecipeUI !== undefined &&
+    executionSteps.length === 0 &&
+    installPackages.length === 0
+  ) {
+    showRecipeUI = true;
+  }
+  if (keepOpen) {
+    showRecipeUI = true;
+  }
+
   const installPackagesElement = installPackages.map((p) => {
     let status = "unknown";
 
@@ -553,28 +581,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //   },
   //   [showNav]
   // );
-
-  if (showChat) {
-    return (
-      <div className="poc-flex">
-        <div className="poc-flex-none" style={{ width: "72px" }}>
-          {leftButtons}
-        </div>
-        <div className="poc-w-full">
-          <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
-            <Chat
-              variablesStatus={variablesStatus}
-              variables={variables}
-              setCode={setCodeWithCopy}
-              metadata={metadata}
-              setMetadata={setMetadata}
-              isStatic={false}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="poc-flex">
@@ -667,14 +673,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
               errorName={previousErrorName}
               errorValue={previousErrorValue}
               addCell={addCell}
-              //
-              variablesStatus={variablesStatus}
-              variables={variables}
-              setCode={setCodeWithCopy}
-              metadata={metadata}
-              setMetadata={setMetadata}
-              previousCode={currentCode}
               showBorder={false}
+              setShowChat={(show: boolean) => setShowChat(show)}
             />
           )}
         </div>

@@ -5,6 +5,12 @@ import { SendIcon } from "../icons/Send";
 import ollama from "ollama/browser";
 import { PlayerStopIcon } from "../icons/PlayerStop";
 import IVariable from "./IVariable";
+import ExecutionStatus from "./ExecutionStatus";
+import { PlayIcon } from "../icons/Play";
+import { PlusIcon } from "../icons/Plus";
+import { CakeIcon } from "../icons/Cake";
+import { getStatusElements } from "./RunStatus";
+import { WandIcon } from "../icons/Wand";
 
 const DOCS_URL = "python-notebook-ai-assistant";
 
@@ -17,7 +23,14 @@ export interface IChatProps {
   metadata: any;
   setMetadata: (m: any) => void;
   isStatic: boolean;
-  fixError?: string;
+  runCell: () => void;
+  executionSteps: [string, ExecutionStatus][];
+  errorName: string;
+  errorValue: string;
+  currentCode: string;
+  getCellCode: () => string;
+  clearExecutionSteps: () => void;
+  addCell: () => void;
 }
 
 var stopStreaming = false;
@@ -29,7 +42,14 @@ export const Chat: React.FC<IChatProps> = ({
   metadata,
   setMetadata,
   isStatic,
-  fixError,
+  runCell,
+  executionSteps,
+  errorName,
+  errorValue,
+  currentCode,
+  getCellCode,
+  clearExecutionSteps,
+  addCell,
 }: IChatProps) => {
   const [streaming, setStreaming] = useState(false);
   const [lastMsg, setLastMsg] = useState(``);
@@ -37,11 +57,13 @@ export const Chat: React.FC<IChatProps> = ({
   const [isLLMRunning, setIsLLMRunning] = useState(false);
   const [isLlama3Running, setIsLlama3Running] = useState(false);
   const elementRef = useRef<null | HTMLDivElement>(null);
-  const scrollToElement = () => {
+  const [showControlButtons, setShowControlButtons] = useState(true);
+  const inputRef = useRef<null | HTMLInputElement>(null);
+
+  const scrollToElement = (scrollBy = 10) => {
     const { current } = elementRef;
     if (current !== null) {
-      console.log("scroll");
-      current.scrollIntoView({ behavior: "smooth" });
+      current.scrollBy(0, scrollBy);
     }
   };
 
@@ -87,18 +109,18 @@ export const Chat: React.FC<IChatProps> = ({
     }
   }, [isStatic]);
 
-  const [askedToFix, setAskedToFix] = useState(false);
+  // const [askedToFix, setAskedToFix] = useState(false);
 
-  useEffect(() => {
-    if (isLlama3Running && fixError !== undefined && !askedToFix) {
-      setAskedToFix(true);
-      lama(fixError);
-    }
-  }, [isLlama3Running, fixError, askedToFix]);
+  // useEffect(() => {
+  //   if (isLlama3Running && fixError !== undefined && !askedToFix) {
+  //     setAskedToFix(true);
+  //     lama(fixError);
+  //   }
+  // }, [isLlama3Running, fixError, askedToFix]);
 
   const lama = async (prompt: string) => {
     const varDesc = getVariablesDesc();
-    console.log(varDesc);
+
     setStreaming(true);
     setMsgs([...msgs, prompt]);
     let messages = [
@@ -143,36 +165,14 @@ export const Chat: React.FC<IChatProps> = ({
     stopStreaming = false;
     setMsgs([...msgs, prompt, fullResponse]);
 
-    if (setMetadata) {
+    if (setMetadata && msgs.length > 0) {
       setMetadata({
         msgs: [...msgs, prompt, fullResponse],
-        //variables: variables,
         docsUrl: DOCS_URL,
       });
     }
     scrollToElement();
   };
-
-  useEffect(() => {
-    const blockStart = lastMsg.search("```");
-
-    if (blockStart !== -1) {
-      const blockEnd = lastMsg.slice(blockStart + 1).search("```");
-
-      // add 1 char for new line
-      let start = blockStart + 4;
-      const blockPython = lastMsg.search("```python");
-      if (blockPython !== -1) {
-        start = blockStart + 10;
-      }
-
-      if (blockEnd !== -1) {
-        setCode(lastMsg.slice(start, blockEnd));
-      } else {
-        setCode(lastMsg.slice(start));
-      }
-    }
-  }, [lastMsg]);
 
   useEffect(() => {
     if (metadata) {
@@ -184,9 +184,55 @@ export const Chat: React.FC<IChatProps> = ({
   const [msgs, setMsgs] = useState([] as string[]);
   const [msg, setMsg] = useState("");
 
+  useEffect(() => {
+    let m = lastMsg;
+    if (msgs.length > 1 && msgs.length % 2 === 0) {
+      m = msgs[msgs.length - 1];
+    }
+
+    const blockStart = m.indexOf("```");
+
+    if (blockStart !== -1) {
+      let src = "";
+      // add 1 char for new line
+      let start = blockStart + 4;
+      const blockPython = m.indexOf("```python");
+      if (blockPython !== -1) {
+        start = blockStart + 10;
+      }
+      const blockEnd = m.indexOf("\n```", start + 1);
+
+      if (blockEnd !== -1) {
+        src = m.slice(start, blockEnd);
+      } else {
+        src = m.slice(start);
+      }
+      setCode(src);
+    }
+  }, [lastMsg, msgs]);
+
+  useEffect(() => {
+    if (errorName !== "") {
+      setMsg(
+        `Please fix ${errorName} ${errorValue} in \`\`\`${getCellCode()}\`\`\``
+      );
+    }
+  }, [errorName, errorValue]);
+
+  useEffect(() => {
+    if (!streaming) {
+      inputRef.current?.focus();
+      scrollToElement(100);
+    }
+  }, [streaming]);
+
+  useEffect(() => {
+    scrollToElement(100);
+  }, [executionSteps]);
+
   const aiResponse = (m: string, index: number) => {
     return (
-      <div key={`msg-${index}`} className="poc-py-2 poc-my-2 poc-self-end">
+      <div key={`ai-msg-${index}`} className="poc-py-2 poc-self-end">
         <div
           className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base
           prose-p:poc-leading-6 prose-p:poc-py-1 prose-p:poc-my-1 
@@ -270,19 +316,83 @@ export const Chat: React.FC<IChatProps> = ({
       style={{ minHeight: "266px", maxHeight: "266px" }}
     >
       <div
-        className="poc-flex poc-flex-col poc-w-full poc-max-w-full poc-p-4 poc-border"
+        className="poc-flex poc-flex-col poc-w-full poc-max-w-full"
         style={{ minHeight: "266px", maxHeight: "266px" }}
-        ref={elementRef}
       >
         <div
-          className="poc-flex-1 poc-p-4 poc-overflow-y-auto poc-border-2 poc-border-red-400 "
-          style={{ maxHeight: "266px" }}
-          
+          className="poc-flex-1 poc-overflow-y-auto poc-p-4"
+          style={{ maxHeight: "266px", height: "266px" }}
+          ref={elementRef}
         >
+          {msgs.length === 0 && <>How can I help you?</>}
           {msgsElements}
           {streaming && lastMsg !== "" && <>{aiResponse(lastMsg, 1010101)}</>}
           {streaming && lastMsg === "" && (
             <>{aiResponse("Waiting for AI response ...", 1010101)} </>
+          )}
+
+          {!streaming && msgs.length > 1 && msg === "" && (
+            <div>
+              <div className="poc-inline">
+                <button
+                  type="button"
+                  className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg 
+                  poc-text-sm poc-px-2 poc-py-1 poc-text-center"
+                  onClick={() => runCell()}
+                >
+                  {<PlayIcon className="poc-inline poc-py-1" />}Run cell
+                </button>
+              </div>
+              {/* {errorName !== "" && executionSteps.length > 0 && (
+                <div className="poc-inline">
+                  <button
+                    data-tooltip-id="top-buttons-tooltip"
+                    data-tooltip-content="Add new cell below"
+                    type="button"
+                    className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-ml-1"
+                    onClick={() => {
+                      lama(msg);
+                      clearExecutionSteps();
+                      setMsg("");
+                    }}
+                  >
+                    <WandIcon className="poc-inline poc-pb-1" />
+                    Fix error
+                  </button>
+                </div>
+              )} */}
+              <div className="poc-inline">
+                <button
+                  data-tooltip-id="top-buttons-tooltip"
+                  data-tooltip-content="Add new cell below"
+                  type="button"
+                  className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-ml-1"
+                  onClick={() => addCell()}
+                >
+                  <PlusIcon className="poc-inline poc-pb-1" />
+                  Add cell
+                </button>
+              </div>
+              {/* <div className="poc-inline">
+                <button
+                  data-tooltip-id="top-buttons-tooltip"
+                  data-tooltip-content="Open Piece of Code and overwrite with new code"
+                  type="button"
+                  className="poc-text-white poc-bg-gradient-to-r poc-from-yellow-400 
+                poc-to-yellow-500 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:ring-teal-300 dark:focus:ring-teal-800        poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center "
+                  onClick={() => {}}
+                >
+                  <CakeIcon className="poc-inline poc-pb-1" />
+                  Recipes
+                </button>
+              </div> */}
+            </div>
+          )}
+          {!streaming && msg === "" && executionSteps.length > 0 && (
+            <div className="poc-py-2">
+              <b>Code execution</b>
+              {getStatusElements(executionSteps)}
+            </div>
           )}
         </div>
 
@@ -311,7 +421,6 @@ export const Chat: React.FC<IChatProps> = ({
                     className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
                     onClick={() => {
                       stopStreaming = true;
-                      console.log("stop");
                     }}
                   >
                     {" "}
@@ -323,9 +432,14 @@ export const Chat: React.FC<IChatProps> = ({
                   type="text"
                   className="poc-peer poc-w-11/12  poc-bg-gray-50 poc-text-gray-900
              poc-p-4  poc-outline-0 dark:poc-bg-gray-700   dark:poc-placeholder-gray-400 dark:poc-text-white"
-                  placeholder={"Write prompt ..."}
+                  placeholder={
+                    streaming
+                      ? "Please wait for response ..."
+                      : "Please write prompt ..."
+                  }
                   value={msg}
                   onChange={(e) => {
+                    if (executionSteps.length) clearExecutionSteps();
                     setMsg(e.target.value);
                   }}
                   onKeyDown={(e) => {
@@ -336,6 +450,8 @@ export const Chat: React.FC<IChatProps> = ({
                     }
                   }}
                   aria-label={`Input chat`}
+                  disabled={streaming}
+                  ref={inputRef}
                 />
               </div>
             </div>

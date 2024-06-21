@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IChatProps, Chat } from "./Chat";
+import ExecutionStatus from "./ExecutionStatus";
 
 const meta: Meta<typeof Chat> = {
   component: Chat,
@@ -14,11 +15,15 @@ type Story = StoryObj<typeof Chat>;
 
 export const ChatForm: Story = (
   args: React.JSX.IntrinsicAttributes & IChatProps
-) => (
-  <>
-    <Chat {...args} />
-  </>
-);
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <Chat {...args} setCode={setCode} />
+      <pre>{code}</pre>
+    </>
+  );
+};
 
 ChatForm.args = {
   variablesStatus: "loaded",
@@ -102,5 +107,19 @@ ChatForm.args = {
       isWidget: false,
     },
   ],
-  setCode: (src: string) => {}, 
+  setCode: (src: string) => {},
+  runCell: () => {},
+  executionSteps: [
+    // ["Wait for installation", ExecutionStatus.Wait],
+    ["Install packages", ExecutionStatus.Success],
+    // ["Run code", ExecutionStatus.Success],
+    ["Load data", ExecutionStatus.Error],
+    // ["Train ML model", ExecutionStatus.Warning],
+  ],
+  errorName: "Bad error",
+  errorValue: "Very bad error",
+  currentCode: "",
+  getCellCode: () => "",
+  clearExecutionSteps: () => {},
+  addCell: () => {},
 };

@@ -24,39 +24,11 @@ export interface IRunStatusProps {
   errorName: string;
   errorValue: string;
   addCell: () => void;
-  //
-  variablesStatus: "loading" | "loaded" | "error" | "unknown";
-  variables: IVariable[];
-  setCode: (src: string) => void;
-  metadata: any;
-  setMetadata: (m: any) => void;
-  previousCode: string;
+  setShowChat: (show: boolean) => void;
   showBorder: boolean;
 }
 
-export const RunStatus: React.FC<IRunStatusProps> = ({
-  steps,
-  errorName,
-  errorValue,
-  addCell,
-  variablesStatus,
-  variables,
-  setCode,
-  metadata,
-  setMetadata,
-  previousCode,
-  showBorder,
-}: IRunStatusProps) => {
-
-  const [showEmail, setShowEmail] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-
-  useEffect(() => {
-    // if there is any update in steps, please hide chat, 
-    // probably we are executing a cell
-    setShowChat(false);
-  }, [steps]);
-
+export const getStatusElements = (steps: [string, ExecutionStatus][]) => {
   const elements = steps.map((step) => {
     const label = step[0];
     const status = step[1];
@@ -87,30 +59,24 @@ export const RunStatus: React.FC<IRunStatusProps> = ({
       </div>
     );
   });
+  return elements;
+};
+
+export const RunStatus: React.FC<IRunStatusProps> = ({
+  steps,
+  errorName,
+  errorValue,
+  addCell,
+  setShowChat,
+  showBorder,
+}: IRunStatusProps) => {
+  const [showEmail, setShowEmail] = useState(false);
+  const elements = getStatusElements(steps);
 
   const allSuccess =
     steps.filter((step) => step[1] === ExecutionStatus.Success).length ==
     steps.length;
 
-  if (showChat) {
-    return (
-      <div className={showBorder? 
-       "poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md": ""
-        
-      }>
-        <Chat
-          variablesStatus={variablesStatus}
-          variables={variables}
-          setCode={(src: string) => {}}
-          metadata={undefined}
-          setMetadata={(m: any) => {}}
-          isStatic={false}
-          fixError={`Explain ${errorName} ${errorValue} for code \n\`\`\`\n${previousCode}\n\`\`\``}
-        />
-      </div>
-    );
-  }
-  
   const borderClass = showBorder
     ? "poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md"
     : "poc-p-2";

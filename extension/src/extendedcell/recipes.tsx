@@ -59,7 +59,7 @@ const SelectRecipeComponent = ({
   meta,
   setMeta,
   changeCellToMarkdown,
-  changeCellToCode,
+  changeCellToCode
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -68,6 +68,10 @@ const SelectRecipeComponent = ({
   // cell.model.contentChanged.connect(() => {
   //   setPreviousCode(cell.model.sharedModel.getSource());
   // }, cell);
+
+  const getCellCode = (): string => {
+    return cell.model.sharedModel.getSource();
+  };
 
   return (
     <div>
@@ -93,6 +97,7 @@ const SelectRecipeComponent = ({
         changeCellToMarkdown={changeCellToMarkdown}
         changeCellToCode={changeCellToCode}
         cellType={cell.model.sharedModel.cell_type}
+        getCellCode={getCellCode}
       />
     </div>
   );

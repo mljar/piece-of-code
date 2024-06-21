@@ -68,6 +68,4 @@ RunStatusError.args = {
   errorName: "Bad error",
   errorValue: "Very bad error",
   addCell: () => {},
-  previousCode: "print(",
-  setCode: (src: string) => {}, 
 };
