@@ -34,38 +34,43 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   const [index, setIndex] = useState(true);
   // const [advanced, setAdvanced] = useState(false);
 
-  const [filePath, setFilePath] = useState("my_data.csv");
+  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState("my_file.csv");
 
   useEffect(() => {
     if(df === "") {
       return;
     }
-    let src = `# write DataFrame to CSV\n`;
-    src += `${df}.to_csv(r"${filePath}"`;
+    let src = `# construct file path\n`;
+    src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+    src += `# write DataFrame to CSV\n`;
+    src += `${df}.to_csv(fname`;
     if (!index) {
       src += `, index=False`;
     }
     src += `)\n`;
-    src += `print(r"DataFrame saved at ${filePath}")`;
+    src += `print(f"DataFrame ${df} saved at {fname}")`;
     setCode(src);
-    setPackages(["import pandas as pd"]);
+    setPackages(["import os", "import pandas as pd"]);
 
     if (setMetadata) {
       setMetadata({
         df,
         filePath,
+        fileName,
         index,
         variables: variables.filter((v) => v.varType === "DataFrame"),
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, filePath, index]);
+  }, [df, filePath, fileName, index]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["df"]) setDf(metadata["df"]);
       if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"]) setFileName(metadata["fileName"]);
       if (metadata["index"]) setIndex(metadata["index"]);
     }
   }, [metadata]);
@@ -93,7 +98,18 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
-          <SelectPath label={"CSV file path"} setPath={setFilePath} />
+          
+          <SelectPath
+            label={"Select directory"}
+            setPath={setFilePath}
+            selectFolder={true}
+          />
+          <Variable
+            label={"File name, remember to set .csv extension"}
+            name={fileName}
+            setName={setFileName}
+          />
+
           <Toggle
             label={"Include index column in CSV file"}
             value={index}

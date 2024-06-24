@@ -29,31 +29,37 @@ export const SavePickle: React.FC<IRecipeProps> = ({
   }
 
   const [df, setDf] = useState(variables.length ? variables[0].varName : "");
-  const [filePath, setFilePath] = useState("my_data.pickle");
+  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState("my_data.pickle");
 
   useEffect(() => {
-    setPackages(["import pickle"]);
-    let src = `# save object to pickle file\n`;
-    src += `with open(r"${filePath}", "wb") as fout:\n`;
+    setPackages(["import os", "import pickle"]);
+
+    let src = `# construct file path\n`;
+    src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+    src += `# save object to pickle file\n`;
+    src += `with open(fname, "wb") as fout:\n`;
     src += `    pickle.dump(${df}, fout)\n`;
-    src += `print(f"Object ${df} saved at ${filePath}"`;
+    src += `print(f"Object ${df} saved at {fname}")`;
     setCode(src);
-    
+
     if (setMetadata) {
       setMetadata({
         df,
         filePath,
+        fileName,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, filePath]);
+  }, [df, filePath, fileName]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["df"]) setDf(metadata["df"]);
       if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"]) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
@@ -77,7 +83,16 @@ export const SavePickle: React.FC<IRecipeProps> = ({
             options={variables.map((d) => [d.varName, d.varName])}
             setOption={setDf}
           />
-          <SelectPath label={"File path"} setPath={setFilePath} />
+          <SelectPath
+            label={"Select directory"}
+            setPath={setFilePath}
+            selectFolder={true}
+          />
+          <Variable
+            label={"File name, remember to set .pickle extension"}
+            name={fileName}
+            setName={setFileName}
+          />
         </>
       )}
     </div>
@@ -90,9 +105,12 @@ export const SavePickleRecipe: IRecipe = {
   name: "Save to Pickle",
   longName: "Write any Python object to Pickle file",
   parentName: "Write data",
-  description: `You can save any Python object to Pickle file. If your output file doesn't exist, please similar path and do adjustment to path in the code.`,
-  shortDescription: "Write Python object to Pickle file",
-  codeExplanation: ``,
+  description: `You can save any Python object to Pickle file. You can persist Python object on hard drive and load it later also with Pickle module. This is great!`,
+  shortDescription: `You can save any Python object to Pickle file. You can persist Python object on hard drive and load it later also with Pickle module. This is great!`,
+  codeExplanation: `
+1. Construct the file path from selected folder and file name.
+2. Save Python object to pickle format.
+3. Print success message.`,
   ui: SavePickle,
   Icon: CucumberIcon,
   requiredPackages: [],

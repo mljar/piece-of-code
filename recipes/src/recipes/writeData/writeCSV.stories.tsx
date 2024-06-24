@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
@@ -15,11 +15,15 @@ type Story = StoryObj<typeof WriteCSV>;
 
 export const WriteCSVForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <WriteCSV {...args} />
-  </>
-);
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <WriteCSV {...args} setCode={setCode} />
+      <pre>{code}</pre>
+    </>
+  );
+};
 WriteCSVForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),

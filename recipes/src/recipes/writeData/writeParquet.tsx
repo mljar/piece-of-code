@@ -6,6 +6,7 @@ import { Select } from "../../components/Select";
 import { SelectPath } from "../../components/SelectPath";
 import { Toggle } from "../../components/Toggle";
 import { DashboardIcon } from "../../icons/Dashboard";
+import { Variable } from "../../components/Variable";
 
 const DOCS_URL = "pandas-write-parquet";
 
@@ -33,26 +34,30 @@ export const WriteParquet: React.FC<IRecipeProps> = ({
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [index, setIndex] = useState(true);
 
-  const [filePath, setFilePath] = useState("my_data.parquet");
+  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState("my_data.parquet");
 
   useEffect(() => {
     if (df === "") {
       return;
     }
-    let src = `# write DataFrame to parquet file\n`;
-    src += `${df}.to_parquet(r"${filePath}"`;
+    let src = `# construct file path\n`;
+    src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+    src += `# write DataFrame to parquet file\n`;
+    src += `${df}.to_parquet(fname`;
     if (!index) {
       src += `, index=False`;
     }
     src += `)\n`;
-    src += `print(r"DataFrame saved at ${filePath}")`;
+    src += `print(f"DataFrame ${df} saved at {fname}")`;
     setCode(src);
-    setPackages(["import pandas as pd"]);
+    setPackages(["import os", "import pandas as pd"]);
 
     if (setMetadata) {
       setMetadata({
         df,
         filePath,
+        fileName,
         index,
         variables: variables.filter((v) => v.varType === "DataFrame"),
         docsUrl: DOCS_URL,
@@ -65,6 +70,7 @@ export const WriteParquet: React.FC<IRecipeProps> = ({
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["df"]) setDf(metadata["df"]);
       if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"]) setFileName(metadata["fileName"]);
       if (metadata["index"]) setIndex(metadata["index"]);
     }
   }, [metadata]);
@@ -90,7 +96,18 @@ export const WriteParquet: React.FC<IRecipeProps> = ({
             options={dataFrames.map((d) => [d, d])}
             setOption={setDf}
           />
-          <SelectPath label={"Parquet file path"} setPath={setFilePath} />
+
+          <SelectPath
+            label={"Select directory"}
+            setPath={setFilePath}
+            selectFolder={true}
+          />
+          <Variable
+            label={"File name, remember to set .parquet extension"}
+            name={fileName}
+            setName={setFileName}
+          />
+
           <Toggle
             label={"Include index column in parquet file"}
             value={index}

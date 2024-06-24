@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
@@ -15,11 +15,15 @@ type Story = StoryObj<typeof SavePickle>;
 
 export const SavePickleForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <SavePickle {...args} />
-  </>
-);
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <SavePickle {...args} setCode={setCode} />
+      <pre>{code}</pre>
+    </>
+  );
+};
 SavePickleForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
