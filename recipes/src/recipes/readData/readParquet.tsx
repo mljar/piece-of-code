@@ -24,10 +24,12 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
     }
     let src = `# read data from parquet file\n`;
     src += `${name} = pd.read_parquet(r"${filePath}")\n`;
+    src += `# display data shape\n`;
+    src += `print(${name}.shape)\n`;
     src += `# display first rows\n`;
     src += `${name}.head()`;
     setCode(src);
-    
+
     if (setMetadata) {
       setMetadata({
         name,
@@ -66,19 +68,23 @@ export const ReadParquetRecipe: IRecipe = {
   name: "Read Parquet",
   longName: "Read Parquet file in Python",
   parentName: "Read data",
-  description: `Load Parquet file in Python code.
+  description: `Parquet files are designed to store large volumes of data in columnar storage format. Parquet files can be read in Python code using pandas and pyarrow packages.
   
-Please check [pandas.read_parquet](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_parquet.html) for more parameters.`,
-  shortDescription: `Load Parquet file in Python code`,
+Please check [pandas.read_parquet](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_parquet.html) function for more details.`,
+  shortDescription: `Parquet files are designed to store large volumes of data in columnar storage format. Parquet files can be read in Python code using pandas and pyarrow packages.`,
   tags: ["parquet", "pandas"],
   codeExplanation: `
 1. Read Parquet file from provided path.
-2. Display first rows of data.  
+2. Display shape of loaded data.
+3. Display first rows of data.  
+
+Additionally, you can specify \`columns\` list as argument in \`read_parquet()\` function, and only columns from list will be loaded.
   `,
   ui: ReadParquet,
   Icon: DashboardIcon,
   docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+    { importName: "pyarrow", installationName: "pyarrow", version: ">=16.1.0" },
   ],
 };
