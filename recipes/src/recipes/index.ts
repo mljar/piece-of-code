@@ -63,11 +63,12 @@ export const urlList = Object.entries(allRecipes).map((objs) => {
 }).flat();
 
 // do we have duplicates in urlList ?
+console.log(urlList);
 
 import axios from "axios";
 if (process.env.STORYBOOK_UPDATE_DB) {
-  console.log("Update server data");
-  console.log(urlList);
+  console.info("Update server data");
+  console.info(urlList);
   axios.post('https://licenses.mljar.com/api/set-recipes/', {
     apiKey: process.env.STORYBOOK_UPDATE_DB,
     recipes: urlList
