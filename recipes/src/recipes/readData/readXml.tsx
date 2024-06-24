@@ -64,10 +64,13 @@ export const ReadXmlRecipe: IRecipe = {
   name: "Read XML",
   longName: "Read XML file in Python",
   parentName: "Read data",
-  description: `Load XML file in Python code. 
+  description: `
+  An XML (Extensible Markup Language) file is a text-based file that stores data in a format that is 
+both human-readable and machine-readable, using a hierarchical structure. You can load XML file in your notebook using Python code and Pandas library. 
   
 Please check [pandas.read_xml](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_xml.html) for more parameters.`,
-  shortDescription: `Load XML file in Python code`,
+  shortDescription: 
+`An XML (Extensible Markup Language) file is a text-based file that stores data using a hierarchical structure. You can load XML file in Python using Pandas library.`,
   tags: ["xml", "pandas"],
   codeExplanation: `
 1. Read XML file from provided path.
@@ -78,5 +81,6 @@ Please check [pandas.read_xml](https://pandas.pydata.org/pandas-docs/stable/refe
   docsUrl: DOCS_URL,
   requiredPackages: [
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" },
+    { importName: "lxml", installationName: "lxml", version: ">=5.2.2" },
   ],
 };
