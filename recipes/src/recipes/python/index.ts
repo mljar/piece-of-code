@@ -19,6 +19,7 @@ import FileCopyRecipe from "./fileCopy";
 import AddDotEnvVarRecipe from "./addDotEnvVar";
 import LoadDotEnvVarRecipe from "./LoadDotEnvVar";
 import ListFilesRecipe from "./listFiles";
+import InstallPackageRecipe from "./installPackage";
 
 export const PythonRecipes: IRecipeSet = {
     name: "Python",
@@ -30,6 +31,7 @@ export const PythonRecipes: IRecipeSet = {
     Icon: PythonIcon,
     recipes: {
         [CheckPythonVersionRecipe.name]: CheckPythonVersionRecipe,
+        [InstallPackageRecipe.name]: InstallPackageRecipe,
         [CurrentTimeRecipe.name]: CurrentTimeRecipe,
         [CurrentDirectoryRecipe.name]: CurrentDirectoryRecipe,
         [EnvironmentVarsRecipe.name]: EnvironmentVarsRecipe,
