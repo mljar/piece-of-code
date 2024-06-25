@@ -100,7 +100,7 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
           />
           
           <SelectPath
-            label={"Select directory"}
+            label={"Select directory, leave empty to save in the current directory"}
             setPath={setFilePath}
             selectFolder={true}
           />

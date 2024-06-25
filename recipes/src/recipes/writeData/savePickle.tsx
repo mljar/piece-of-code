@@ -84,7 +84,7 @@ export const SavePickle: React.FC<IRecipeProps> = ({
             setOption={setDf}
           />
           <SelectPath
-            label={"Select directory"}
+            label={"Select directory, leave empty to save in the current directory"}
             setPath={setFilePath}
             selectFolder={true}
           />
