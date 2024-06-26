@@ -36,7 +36,7 @@ export const FileDelete: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
     }
   }, [metadata]);
 

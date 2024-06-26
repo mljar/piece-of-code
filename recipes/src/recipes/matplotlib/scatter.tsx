@@ -306,15 +306,15 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["series"]) setSeries(metadata["series"]);
-      if (metadata["title"]) setTitle(metadata["title"]);
-      if (metadata["xLabel"]) setXLabel(metadata["xLabel"]);
-      if (metadata["yLabel"]) setYLabel(metadata["yLabel"]);
-      if (metadata["xGrid"]) setXGrid(metadata["xGrid"]);
-      if (metadata["yGrid"]) setYGrid(metadata["yGrid"]);
-      if (metadata["style"]) setStyle(metadata["style"]);
-      if (metadata["legendPosition"]) setLegendPosition(metadata["legendPosition"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["series"] !== undefined) setSeries(metadata["series"]);
+      if (metadata["title"] !== undefined) setTitle(metadata["title"]);
+      if (metadata["xLabel"] !== undefined) setXLabel(metadata["xLabel"]);
+      if (metadata["yLabel"] !== undefined) setYLabel(metadata["yLabel"]);
+      if (metadata["xGrid"] !== undefined) setXGrid(metadata["xGrid"]);
+      if (metadata["yGrid"] !== undefined) setYGrid(metadata["yGrid"]);
+      if (metadata["style"] !== undefined) setStyle(metadata["style"]);
+      if (metadata["legendPosition"] !== undefined) setLegendPosition(metadata["legendPosition"]);
     }
   }, [metadata]);
 

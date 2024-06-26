@@ -98,12 +98,12 @@ export const CategoricalToInt: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["xCols"]) setXCols(metadata["xCols"]);
-      if (metadata["encoder"]) setEncoder(metadata["encoder"]);
-      if (metadata["handleUnknown"])
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["xCols"] !== undefined) setXCols(metadata["xCols"]);
+      if (metadata["encoder"] !== undefined) setEncoder(metadata["encoder"]);
+      if (metadata["handleUnknown"] !== undefined)
         setHandleUnknown(metadata["handleUnknown"]);
-      if (metadata["encodedMissingValue"])
+      if (metadata["encodedMissingValue"] !== undefined)
         setEncodedMissingValue(metadata["encodedMissingValue"]);
     }
   }, [metadata]);

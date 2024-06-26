@@ -123,13 +123,13 @@ export const Importance: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["iterations"]) setIterations(metadata["iterations"]);
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["target"]) setTarget(metadata["target"]);
-      if (metadata["sampleWeight"]) setSampleWeight(metadata["sampleWeight"]);
-      if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["seed"]) setSeed(metadata["seed"]);
+      if (metadata["iterations"] !== undefined) setIterations(metadata["iterations"]);
+      if (metadata["model"] !== undefined) setModel(metadata["model"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["target"] !== undefined) setTarget(metadata["target"]);
+      if (metadata["sampleWeight"] !== undefined) setSampleWeight(metadata["sampleWeight"]);
+      if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
+      if (metadata["seed"] !== undefined) setSeed(metadata["seed"]);
     }
   }, [metadata]);
 

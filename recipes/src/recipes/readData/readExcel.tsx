@@ -57,10 +57,10 @@ export const ReadExcel: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["name"]) setName(metadata["name"]);
-      if (metadata["sheet"]) setSheet(metadata["sheet"]);
-      if (metadata["skipRows"]) setSkipRows(metadata["skipRows"]);
-      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["name"] !== undefined) setName(metadata["name"]);
+      if (metadata["sheet"] !== undefined) setSheet(metadata["sheet"]);
+      if (metadata["skipRows"] !== undefined) setSkipRows(metadata["skipRows"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
     }
   }, [metadata]);
 

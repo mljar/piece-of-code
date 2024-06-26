@@ -42,9 +42,9 @@ export const FileAppend: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
-      if (metadata["text"]) setText(metadata["text"]);
-      if (metadata["binary"]) setBinary(metadata["binary"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
+      if (metadata["text"] !== undefined) setText(metadata["text"]);
+      if (metadata["binary"] !== undefined) setBinary(metadata["binary"]);
     }
   }, [metadata]);
 

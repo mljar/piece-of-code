@@ -85,10 +85,10 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["target"]) setTarget(metadata["target"]);
-      if (metadata["depth"]) setDepth(metadata["depth"]);
+      if (metadata["model"] !== undefined) setModel(metadata["model"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["target"] !== undefined) setTarget(metadata["target"]);
+      if (metadata["depth"] !== undefined) setDepth(metadata["depth"]);
     }
   }, [metadata]);
 

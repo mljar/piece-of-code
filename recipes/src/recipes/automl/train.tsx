@@ -233,24 +233,28 @@ export const Train: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["name"]) setName(metadata["name"]);
-      if (metadata["resultsPath"]) setResultsPath(metadata["resultsPath"]);
-      if (metadata["mode"]) setMode(metadata["mode"]);
-      if (metadata["trainingTime"]) setTrainingTime(metadata["trainingTime"]);
-      if (metadata["X"]) setX(metadata["X"]);
-      if (metadata["y"]) setY(metadata["y"]);
-      if (metadata["algorithms"]) setAlgorithms(metadata["algorithms"]);
-      if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["trainEnsemble"])
+      if (metadata["name"] !== undefined) setName(metadata["name"]);
+      if (metadata["resultsPath"] !== undefined)
+        setResultsPath(metadata["resultsPath"]);
+      if (metadata["mode"] !== undefined) setMode(metadata["mode"]);
+      if (metadata["trainingTime"] !== undefined)
+        setTrainingTime(metadata["trainingTime"]);
+      if (metadata["X"] !== undefined) setX(metadata["X"]);
+      if (metadata["y"] !== undefined) setY(metadata["y"]);
+      if (metadata["algorithms"] !== undefined)
+        setAlgorithms(metadata["algorithms"]);
+      if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
+      if (metadata["trainEnsemble"] !== undefined)
         setTrainEnsemble(metadata["trainEnsemble"]);
-      if (metadata["stackModels"]) setStackModels(metadata["stackModels"]);
-      if (metadata["goldenFeatures"])
+      if (metadata["stackModels"] !== undefined)
+        setStackModels(metadata["stackModels"]);
+      if (metadata["goldenFeatures"] !== undefined)
         setGoldenFeatures(metadata["goldenFeatures"]);
-      if (metadata["featuresSelection"])
+      if (metadata["featuresSelection"] !== undefined)
         setFeaturesSelection(metadata["featuresSelection"]);
-      if (metadata["kMeansFeatures"])
+      if (metadata["kMeansFeatures"] !== undefined)
         setKMeansFeatures(metadata["kMeansFeatures"]);
-      if (metadata["boostOnErrors"])
+      if (metadata["boostOnErrors"] !== undefined)
         setBoostOnErrors(metadata["boostOnErrors"]);
     }
   }, [metadata]);

@@ -61,9 +61,9 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["target"]) setTarget(metadata["target"]);
-      if (metadata["predictions"]) setPredictions(metadata["predictions"]);
-      if (metadata["normalize"]) setNormalize(metadata["normalize"]);
+      if (metadata["target"] !== undefined) setTarget(metadata["target"]);
+      if (metadata["predictions"] !== undefined) setPredictions(metadata["predictions"]);
+      if (metadata["normalize"] !== undefined) setNormalize(metadata["normalize"]);
     }
   }, [metadata]);
 

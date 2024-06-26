@@ -41,8 +41,8 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["now"]) setNow(metadata["now"]);
-      if (metadata["showDate"]) setShowDate(metadata["showDate"]);
+      if (metadata["now"] !== undefined) setNow(metadata["now"]);
+      if (metadata["showDate"] !== undefined) setShowDate(metadata["showDate"]);
     }
   }, [metadata]);
 

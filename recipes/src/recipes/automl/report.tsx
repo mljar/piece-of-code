@@ -57,7 +57,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["automl"]) setAutoml(metadata["automl"]);
+      if (metadata["automl"] !== undefined) setAutoml(metadata["automl"]);
     }
   }, [metadata]);
 

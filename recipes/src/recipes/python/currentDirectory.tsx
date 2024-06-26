@@ -35,7 +35,7 @@ export const CurrentDirectory: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+      if (metadata["myVar"] !== undefined) setMyVar(metadata["myVar"]);
     }
   }, [metadata]);
 

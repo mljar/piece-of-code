@@ -63,12 +63,12 @@ export const FileWrite: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
-      if (metadata["fileName"]) setFileName(metadata["fileName"]);
-      if (metadata["text"]) setText(metadata["text"]);
-      if (metadata["saveVariable"]) setSaveVariable(metadata["saveVariable"]);
-      if (metadata["variable"]) setVariable(metadata["variable"]);
-      if (metadata["binary"]) setBinary(metadata["binary"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
+      if (metadata["text"] !== undefined) setText(metadata["text"]);
+      if (metadata["saveVariable"] !== undefined) setSaveVariable(metadata["saveVariable"]);
+      if (metadata["variable"] !== undefined) setVariable(metadata["variable"]);
+      if (metadata["binary"] !== undefined) setBinary(metadata["binary"]);
     }
   }, [metadata]);
 

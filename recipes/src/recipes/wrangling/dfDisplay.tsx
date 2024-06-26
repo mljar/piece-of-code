@@ -84,11 +84,11 @@ export const DfDisplay: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["display"]) setDisplay(metadata["display"]);
-      if (metadata["rows"]) setRows(metadata["rows"]);
-      if (metadata["startRow"]) setStartRow(metadata["startRow"]);
-      if (metadata["endRow"]) setEndRow(metadata["endRow"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["display"] !== undefined) setDisplay(metadata["display"]);
+      if (metadata["rows"] !== undefined) setRows(metadata["rows"]);
+      if (metadata["startRow"] !== undefined) setStartRow(metadata["startRow"]);
+      if (metadata["endRow"] !== undefined) setEndRow(metadata["endRow"]);
     }
   }, [metadata]);
 

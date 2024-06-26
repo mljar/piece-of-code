@@ -101,14 +101,14 @@ export const SplitData: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["train"]) setTrain(metadata["train"]);
-      if (metadata["test"]) setTest(metadata["test"]);
-      if (metadata["trainRatio"]) setTrainRatio(metadata["trainRatio"]);
-      if (metadata["seed"]) setSeed(metadata["seed"]);
-      if (metadata["shuffle"]) setShuffle(metadata["shuffle"]);
-      if (metadata["straify"]) setStratify(metadata["stratify"]);
-      if (metadata["yCol"]) setYCol(metadata["yCol"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["train"] !== undefined) setTrain(metadata["train"]);
+      if (metadata["test"] !== undefined) setTest(metadata["test"]);
+      if (metadata["trainRatio"] !== undefined) setTrainRatio(metadata["trainRatio"]);
+      if (metadata["seed"] !== undefined) setSeed(metadata["seed"]);
+      if (metadata["shuffle"] !== undefined) setShuffle(metadata["shuffle"]);
+      if (metadata["straify"] !== undefined) setStratify(metadata["stratify"]);
+      if (metadata["yCol"] !== undefined) setYCol(metadata["yCol"]);
     }
   }, [metadata]);
 

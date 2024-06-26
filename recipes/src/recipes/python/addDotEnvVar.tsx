@@ -38,8 +38,8 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myEnvVar"]) setMyEnvVar(metadata["myEnvVar"]);
-      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
+      if (metadata["myEnvVar"] !== undefined) setMyEnvVar(metadata["myEnvVar"]);
+      if (metadata["myVar"] !== undefined) setMyVar(metadata["myVar"]);
     }
   }, [metadata]);
 

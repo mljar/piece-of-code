@@ -36,9 +36,9 @@ export const FileCopy: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
-      if (metadata["myDstFile"]) setDstFile(metadata["myDstFile"]);
-      if (metadata["copyFolder"]) setCopyFolder(metadata["copyFolder"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
+      if (metadata["myDstFile"] !== undefined) setDstFile(metadata["myDstFile"]);
+      if (metadata["copyFolder"] !== undefined) setCopyFolder(metadata["copyFolder"]);
     }
   }, [metadata]);
 

@@ -65,8 +65,8 @@ export const DeleteColumn: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["xCols"]) setXCols(metadata["xCols"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["xCols"] !== undefined) setXCols(metadata["xCols"]);
     }
   }, [metadata]);
 

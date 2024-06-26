@@ -38,9 +38,9 @@ export const RandomInteger: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myVar"]) setMyVar(metadata["myVar"]);
-      if (metadata["myLower"]) setMyLower(metadata["myLower"]);
-      if (metadata["myHigher"]) setMyHigher(metadata["myHigher"]);
+      if (metadata["myVar"] !== undefined) setMyVar(metadata["myVar"]);
+      if (metadata["myLower"] !== undefined) setMyLower(metadata["myLower"]);
+      if (metadata["myHigher"] !== undefined) setMyHigher(metadata["myHigher"]);
     }
   }, [metadata]);
 

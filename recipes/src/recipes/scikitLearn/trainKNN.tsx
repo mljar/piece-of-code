@@ -70,12 +70,12 @@ export const TrainKNN: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["mlTask"]) setMlTask(metadata["mlTask"]);
-      if (metadata["k"]) setK(metadata["k"]);
-      if (metadata["weight"]) setWeight(metadata["weight"]);
-      if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["nJobs"]) setNJobs(metadata["nJobs"]);
+      if (metadata["model"] !== undefined) setModel(metadata["model"]);
+      if (metadata["mlTask"] !== undefined) setMlTask(metadata["mlTask"]);
+      if (metadata["k"] !== undefined) setK(metadata["k"]);
+      if (metadata["weight"] !== undefined) setWeight(metadata["weight"]);
+      if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
+      if (metadata["nJobs"] !== undefined) setNJobs(metadata["nJobs"]);
     }
   }, [metadata]);
 

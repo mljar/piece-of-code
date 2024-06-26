@@ -42,8 +42,8 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["name"]) setName(metadata["name"]);
-      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
+      if (metadata["name"] !== undefined) setName(metadata["name"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
     }
   }, [metadata]);
 

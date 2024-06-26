@@ -88,11 +88,11 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["xCols"]) setXCols(metadata["xCols"]);
-      if (metadata["yCol"]) setYCol(metadata["yCol"]);
-      if (metadata["x"]) setX(metadata["x"]);
-      if (metadata["y"]) setY(metadata["y"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["xCols"] !== undefined) setXCols(metadata["xCols"]);
+      if (metadata["yCol"] !== undefined) setYCol(metadata["yCol"]);
+      if (metadata["x"] !== undefined) setX(metadata["x"]);
+      if (metadata["y"] !== undefined) setY(metadata["y"]);
     }
   }, [metadata]);
 

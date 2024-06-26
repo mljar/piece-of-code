@@ -39,8 +39,8 @@ export const FileExists: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["exists"]) setExists(metadata["exists"]);
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
+      if (metadata["exists"] !== undefined) setExists(metadata["exists"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
     }
   }, [metadata]);
 

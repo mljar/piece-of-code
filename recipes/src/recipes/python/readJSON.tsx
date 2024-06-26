@@ -39,8 +39,8 @@ export const ReadJSON: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
-      if (metadata["myDict"]) setMyDict(metadata["myDict"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
+      if (metadata["myDict"] !== undefined) setMyDict(metadata["myDict"]);
     }
   }, [metadata]);
 

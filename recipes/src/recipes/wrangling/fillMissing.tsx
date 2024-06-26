@@ -137,13 +137,13 @@ export const FillMissing: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["name"]) setName(metadata["name"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["xCols"]) setXCols(metadata["xCols"]);
-      if (metadata["varType"]) setVarType(metadata["varType"]);
-      if (metadata["imputer"]) setImputer(metadata["imputer"]);
-      if (metadata["constant"]) setConstant(metadata["constant"]);
-      if (metadata["kNN"]) setKNN(metadata["kNN"]);
+      if (metadata["name"] !== undefined) setName(metadata["name"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["xCols"] !== undefined) setXCols(metadata["xCols"]);
+      if (metadata["varType"] !== undefined) setVarType(metadata["varType"]);
+      if (metadata["imputer"] !== undefined) setImputer(metadata["imputer"]);
+      if (metadata["constant"] !== undefined) setConstant(metadata["constant"]);
+      if (metadata["kNN"] !== undefined) setKNN(metadata["kNN"]);
     }
   }, [metadata]);
 

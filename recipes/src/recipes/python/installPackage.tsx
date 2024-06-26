@@ -33,7 +33,7 @@ export const InstallPackage: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["installPackage"])
+      if (metadata["installPackage"] !== undefined)
         setInstallPackage(metadata["installPackage"]);
     }
   }, [metadata]);

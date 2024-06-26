@@ -68,10 +68,10 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
-      if (metadata["fileName"]) setFileName(metadata["fileName"]);
-      if (metadata["index"]) setIndex(metadata["index"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
+      if (metadata["index"] !== undefined) setIndex(metadata["index"]);
     }
   }, [metadata]);
 

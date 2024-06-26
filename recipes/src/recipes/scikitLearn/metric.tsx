@@ -79,10 +79,10 @@ export const Metric: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["yTrue"]) setYTrue(metadata["yTrue"]);
-      if (metadata["yPred"]) setYPred(metadata["yPred"]);
-      if (metadata["sampleWeight"]) setSampleWeight(metadata["sampleWeight"]);
+      if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
+      if (metadata["yTrue"] !== undefined) setYTrue(metadata["yTrue"]);
+      if (metadata["yPred"] !== undefined) setYPred(metadata["yPred"]);
+      if (metadata["sampleWeight"] !== undefined) setSampleWeight(metadata["sampleWeight"]);
     }
   }, [metadata]);
 

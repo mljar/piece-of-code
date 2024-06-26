@@ -32,7 +32,7 @@ export const TimeDelay: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myDelay"]) setMyDelay(metadata["myDelay"]);
+      if (metadata["myDelay"] !== undefined) setMyDelay(metadata["myDelay"]);
     }
   }, [metadata]);
 

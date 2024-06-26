@@ -56,8 +56,8 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["imputer"]) setImputer(metadata["imputer"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["imputer"] !== undefined) setImputer(metadata["imputer"]);
     }
   }, [metadata]);
 

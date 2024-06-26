@@ -56,7 +56,7 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myDict"]) setMyDict(metadata["myDict"]);
+      if (metadata["myDict"] !== undefined) setMyDict(metadata["myDict"]);
     }
   }, [metadata]);
 

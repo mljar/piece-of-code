@@ -59,8 +59,8 @@ export const EncoderReuse: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["encoder"]) setEncoder(metadata["encoder"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["encoder"] !== undefined) setEncoder(metadata["encoder"]);
     }
   }, [metadata]);
 

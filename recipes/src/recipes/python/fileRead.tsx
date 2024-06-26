@@ -44,9 +44,9 @@ export const FileRead: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFile"]) setMyFile(metadata["myFile"]);
-      if (metadata["content"]) setContent(metadata["content"]);
-      if (metadata["binary"]) setBinary(metadata["binary"]);
+      if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
+      if (metadata["content"] !== undefined) setContent(metadata["content"]);
+      if (metadata["binary"] !== undefined) setBinary(metadata["binary"]);
     }
   }, [metadata]);
 

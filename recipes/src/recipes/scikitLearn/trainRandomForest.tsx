@@ -128,22 +128,22 @@ export const TrainRandomForest: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["mlTask"]) setMlTask(metadata["mlTask"]);
-      if (metadata["criterion"]) setCriterion(metadata["criterion"]);
-      if (metadata["minSamplesLeaf"])
+      if (metadata["model"] !== undefined) setModel(metadata["model"]);
+      if (metadata["mlTask"] !== undefined) setMlTask(metadata["mlTask"]);
+      if (metadata["criterion"] !== undefined) setCriterion(metadata["criterion"]);
+      if (metadata["minSamplesLeaf"] !== undefined)
         setMinSamplesLeaf(metadata["minSamplesLeaf"]);
-      if (metadata["minSamplesSplit"])
+      if (metadata["minSamplesSplit"] !== undefined)
         setMinSamplesSplit(metadata["minSamplesSplit"]);
 
-      if (metadata["maxFeaturesString"])
+      if (metadata["maxFeaturesString"] !== undefined)
         setMaxFeaturesString(metadata["maxFeaturesString"]);
-      if (metadata["maxFeaturesNumber"])
+      if (metadata["maxFeaturesNumber"] !== undefined)
         setMaxFeaturesNumber(metadata["maxFeaturesNumber"]);
-      if (metadata["isMaxDepth"]) setIsMaxDepth(metadata["isMaxDepth"]);
-      if (metadata["maxDepth"]) setMaxDepth(metadata["maxDepth"]);
-      if (metadata["seed"]) setSeed(metadata["seed"]);
-      if (metadata["nJobs"]) setNJobs(metadata["nJobs"]);
+      if (metadata["isMaxDepth"] !== undefined) setIsMaxDepth(metadata["isMaxDepth"]);
+      if (metadata["maxDepth"] !== undefined) setMaxDepth(metadata["maxDepth"]);
+      if (metadata["seed"] !== undefined) setSeed(metadata["seed"]);
+      if (metadata["nJobs"] !== undefined) setNJobs(metadata["nJobs"]);
     }
   }, [metadata]);
 

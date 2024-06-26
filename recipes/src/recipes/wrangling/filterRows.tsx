@@ -101,12 +101,12 @@ export const FilterRows: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["col"]) setCol(metadata["col"]);
-      if (metadata["newDf"]) setNewDf(metadata["newDf"]);
-      if (metadata["condition"]) setCondition(metadata["condition"]);
-      if (metadata["val"]) setVal(metadata["val"]);
-      if (metadata["varType"]) setCol(metadata["varType"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["col"] !== undefined) setCol(metadata["col"]);
+      if (metadata["newDf"] !== undefined) setNewDf(metadata["newDf"]);
+      if (metadata["condition"] !== undefined) setCondition(metadata["condition"]);
+      if (metadata["val"] !== undefined) setVal(metadata["val"]);
+      if (metadata["varType"] !== undefined) setCol(metadata["varType"]);
     }
   }, [metadata]);
 

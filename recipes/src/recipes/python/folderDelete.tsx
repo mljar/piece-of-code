@@ -35,7 +35,7 @@ export const FolderDelete: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myFolder"]) setMyFolder(metadata["myFolder"]);
+      if (metadata["myFolder"] !== undefined) setMyFolder(metadata["myFolder"]);
     }
   }, [metadata]);
 

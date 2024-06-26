@@ -212,20 +212,20 @@ export const Tune: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["searchType"]) setSearchType(metadata["searchType"]);
-      if (metadata["iterations"]) setIterations(metadata["iterations"]);
-      if (metadata["model"]) setModel(metadata["model"]);
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["target"]) setTarget(metadata["target"]);
-      if (metadata["sampleWeight"]) setSampleWeight(metadata["sampleWeight"]);
-      if (metadata["metric"]) setMetric(metadata["metric"]);
-      if (metadata["validation"]) setValidation(metadata["validation"]);
-      if (metadata["kFolds"]) setKFolds(metadata["kFolds"]);
-      if (metadata["shuffle"]) setShuffle(metadata["shuffle"]);
-      if (metadata["stratify"]) setStratify(metadata["stratify"]);
-      if (metadata["gap"]) setGap(metadata["gap"]);
-      if (metadata["seed"]) setSeed(metadata["seed"]);
-      if (metadata["verbose"]) setVerbose(metadata["verbose"]);
+      if (metadata["searchType"] !== undefined) setSearchType(metadata["searchType"]);
+      if (metadata["iterations"] !== undefined) setIterations(metadata["iterations"]);
+      if (metadata["model"] !== undefined) setModel(metadata["model"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["target"] !== undefined) setTarget(metadata["target"]);
+      if (metadata["sampleWeight"] !== undefined) setSampleWeight(metadata["sampleWeight"]);
+      if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
+      if (metadata["validation"] !== undefined) setValidation(metadata["validation"]);
+      if (metadata["kFolds"] !== undefined) setKFolds(metadata["kFolds"]);
+      if (metadata["shuffle"] !== undefined) setShuffle(metadata["shuffle"]);
+      if (metadata["stratify"] !== undefined) setStratify(metadata["stratify"]);
+      if (metadata["gap"] !== undefined) setGap(metadata["gap"]);
+      if (metadata["seed"] !== undefined) setSeed(metadata["seed"]);
+      if (metadata["verbose"] !== undefined) setVerbose(metadata["verbose"]);
     }
   }, [metadata]);
 

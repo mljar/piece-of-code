@@ -57,9 +57,9 @@ export const SavePickle: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["df"]) setDf(metadata["df"]);
-      if (metadata["filePath"]) setFilePath(metadata["filePath"]);
-      if (metadata["fileName"]) setFileName(metadata["fileName"]);
+      if (metadata["df"] !== undefined) setDf(metadata["df"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
