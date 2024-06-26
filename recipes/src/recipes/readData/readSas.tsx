@@ -57,6 +57,7 @@ export const ReadSas: React.FC<IRecipeProps> = ({
       />
       <SelectPath
         label={"Select SAS (*.sas7bdat) file"}
+        defaultPath={filePath}
         setPath={setFilePath}
       />
     </div>

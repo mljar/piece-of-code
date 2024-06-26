@@ -98,9 +98,12 @@ export const WriteParquet: React.FC<IRecipeProps> = ({
           />
 
           <SelectPath
-            label={"Select directory, leave empty to save in the current directory"}
+            label={
+              "Select directory, leave empty to save in the current directory"
+            }
             setPath={setFilePath}
             selectFolder={true}
+            defaultPath={filePath}
           />
           <Variable
             label={"File name, remember to set .parquet extension"}

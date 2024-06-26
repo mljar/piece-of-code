@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
-import { FolderOpenIcon } from "../../icons/FolderOpen";
 import { Variable } from "../../components/Variable";
-import { SelectPath } from "../../components/SelectPath";
-import { Toggle } from "../../components/Toggle";
 import { SettingsDownIcon } from "../../icons/SettingsDown";
 
 const DOCS_URL = "install-package-in-python-notebook";

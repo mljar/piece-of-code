@@ -55,7 +55,7 @@ export const ReadXml: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select XML (*.xml) file"} setPath={setFilePath} />
+      <SelectPath label={"Select XML (*.xml) file"} defaultPath={filePath} setPath={setFilePath} />
     </div>
   );
 };

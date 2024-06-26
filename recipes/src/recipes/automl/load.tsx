@@ -35,8 +35,8 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["automl"]) setAutoml(metadata["automl"]);
-      if (metadata["folder"]) setFolder(metadata["folder"]);
+      if (metadata["automl"] !== undefined) setAutoml(metadata["automl"]);
+      if (metadata["folder"] !== undefined) setFolder(metadata["folder"]);
     }
   }, [metadata]);
 
@@ -56,6 +56,7 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
       <SelectPath
         label="Directory with AutoML models"
         setPath={setFolder}
+        defaultPath={folder}
         selectFolder={true}
       />
     </div>

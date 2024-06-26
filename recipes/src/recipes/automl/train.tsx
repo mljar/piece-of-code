@@ -274,7 +274,7 @@ export const Train: React.FC<IRecipeProps> = ({
           label={"Where to save results?"}
           setPath={setResultsPath}
           selectFolder={true}
-          defaultPath="auto"
+          defaultPath={resultsPath === "" ? "auto" : resultsPath}
           tooltip={
             "The 'auto' means automatically create a new directory for results."
           }

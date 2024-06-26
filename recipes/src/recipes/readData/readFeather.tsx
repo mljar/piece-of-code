@@ -58,7 +58,11 @@ export const ReadFeather: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select Feather file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select Feather file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
     </div>
   );
 };

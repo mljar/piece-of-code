@@ -55,7 +55,11 @@ export const ReadHtml: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select HTML (*.html) file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select HTML (*.html) file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
     </div>
   );
 };

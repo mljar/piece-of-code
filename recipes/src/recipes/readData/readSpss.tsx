@@ -56,7 +56,11 @@ export const ReadSpss: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select SPSS (*.sav) file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select SPSS (*.sav) file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
     </div>
   );
 };

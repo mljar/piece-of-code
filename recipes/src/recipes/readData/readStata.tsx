@@ -55,7 +55,11 @@ export const ReadStata: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select Stata (*.dta) file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select Stata (*.dta) file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
     </div>
   );
 };

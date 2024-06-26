@@ -59,6 +59,7 @@ export const ReadPickle: React.FC<IRecipeProps> = ({
       />
       <SelectPath
         label={"Select Pickle (*.pickle) file"}
+        defaultPath={filePath}
         setPath={setFilePath}
       />
     </div>

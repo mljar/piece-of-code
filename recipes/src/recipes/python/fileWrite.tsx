@@ -94,6 +94,7 @@ export const FileWrite: React.FC<IRecipeProps> = ({
       <SelectPath
         label={"Select directory, leave empty to save in the current directory"}
         setPath={setFilePath}
+        defaultPath={filePath}
         selectFolder={true}
       />
       <Variable

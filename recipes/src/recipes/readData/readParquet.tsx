@@ -59,7 +59,11 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select Parquet file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select Parquet file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
     </div>
   );
 };

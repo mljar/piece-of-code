@@ -78,7 +78,11 @@ export const ReadExcel: React.FC<IRecipeProps> = ({
         name={name}
         setName={setName}
       />
-      <SelectPath label={"Select Excel file"} setPath={setFilePath} />
+      <SelectPath
+        label={"Select Excel file"}
+        defaultPath={filePath}
+        setPath={setFilePath}
+      />
       {advanced && (
         <>
           <Variable

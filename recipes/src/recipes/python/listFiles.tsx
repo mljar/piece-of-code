@@ -21,6 +21,7 @@ export const ListFiles: React.FC<IRecipeProps> = ({
   const [filterExtension, setFilterExtension] = useState("");
 
   useEffect(() => {
+    console.log("use effect code");
     let src = `# list files in directory\n`;
     let condition = "";
     if (!showDirectories) {
@@ -39,6 +40,7 @@ export const ListFiles: React.FC<IRecipeProps> = ({
     setCode(src);
     setPackages(["from os import listdir", "from os.path import isfile, join"]);
     if (setMetadata) {
+      console.log("set metadata");
       setMetadata({
         myList,
         myFolder,
@@ -52,11 +54,12 @@ export const ListFiles: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["myList"]) setMyList(metadata["myList"]);
-      if (metadata["myFolder"]) setMyFolder(metadata["myFolder"]);
-      if (metadata["showDirectories"])
+      if (metadata["myList"] !== undefined) setMyList(metadata["myList"]);
+      if (metadata["myFolder"] !== undefined) setMyFolder(metadata["myFolder"]);
+      if (metadata["showDirectories"] !== undefined) {
         setShowDirectories(metadata["showDirectories"]);
-      if (metadata["filterExtension"])
+      }
+      if (metadata["filterExtension"] !== undefined)
         setFilterExtension(metadata["filterExtension"]);
     }
   }, [metadata]);
@@ -75,6 +78,7 @@ export const ListFiles: React.FC<IRecipeProps> = ({
       />
       <SelectPath
         label="Select directory"
+        defaultPath={myFolder}
         setPath={setMyFolder}
         selectFolder={true}
       />

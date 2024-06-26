@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
-import { Variable } from "../../components/Variable";
-import { SelectPath } from "../../components/SelectPath";
-import { Toggle } from "../../components/Toggle";
-import { FilePencilIcon } from "../../icons/FilePencil";
 import { JSONIcon } from "../../icons/JSON";
 import { Select } from "../../components/Select";
 
