@@ -17,14 +17,23 @@ export const ListFiles: React.FC<IRecipeProps> = ({
 }) => {
   const [myList, setMyList] = useState("my_files");
   const [myFolder, setMyFolder] = useState("my_path");
-  const [onlyFiles, setOnlyFiles] = useState(true);
+  const [showDirectories, setShowDirectories] = useState(true);
+  const [filterExtension, setFilterExtension] = useState("");
+
   useEffect(() => {
     let src = `# list files in directory\n`;
-    if (onlyFiles) {
-      src += `${myList} = [f for f in listdir("${myFolder}") if isfile(join("${myFolder}", f))]\n`;
-    } else {
-      src += `${myList} = [f for f in listdir("${myFolder}")]\n`;
+    let condition = "";
+    if (!showDirectories) {
+      condition = ` if isfile(join("${myFolder}", f))`;
     }
+    if (filterExtension !== "") {
+      if (condition === "") {
+        condition = ` if f.endswith("${filterExtension}")`;
+      } else {
+        condition += ` and f.endswith("${filterExtension}")`;
+      }
+    }
+    src += `${myList} = [f for f in listdir("${myFolder}")${condition}]\n`;
     src += `print("Files in directory ${myFolder}")\n`;
     src += `print(${myList})`;
     setCode(src);
@@ -33,18 +42,22 @@ export const ListFiles: React.FC<IRecipeProps> = ({
       setMetadata({
         myList,
         myFolder,
-        onlyFiles,
+        showDirectories,
+        filterExtension,
         docsUrl: DOCS_URL,
       });
     }
-  }, [myList, myFolder, onlyFiles]);
+  }, [myList, myFolder, showDirectories, filterExtension]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["myList"]) setMyList(metadata["myList"]);
       if (metadata["myFolder"]) setMyFolder(metadata["myFolder"]);
-      if (metadata["onlyFiles"]) setOnlyFiles(metadata["onlyFiles"]);
+      if (metadata["showDirectories"])
+        setShowDirectories(metadata["showDirectories"]);
+      if (metadata["filterExtension"])
+        setFilterExtension(metadata["filterExtension"]);
     }
   }, [metadata]);
 
@@ -65,12 +78,21 @@ export const ListFiles: React.FC<IRecipeProps> = ({
         setPath={setMyFolder}
         selectFolder={true}
       />
-      <Toggle
-        label="Include only files"
-        value={onlyFiles}
-        setValue={setOnlyFiles}
-        tooltip="Directory is a file as well. Please set to false to include directories."
-      />
+
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Variable
+          label={"Filter files with extension"}
+          name={filterExtension}
+          setName={setFilterExtension}
+          tooltip="Include only files with provided extension"
+        />
+        <Toggle
+          label="Show directories"
+          value={showDirectories}
+          setValue={setShowDirectories}
+          tooltip="Directory is a file as well. Please set to false to exclude directories."
+        />
+      </div>
     </div>
   );
 };
@@ -79,10 +101,12 @@ export const ListFilesRecipe: IRecipe = {
   name: "List files",
   longName: "List files in directory in Python",
   parentName: "Python",
-  description:
-    "Create and display list with all files in the selected directory with Python code.",
-  shortDescription: "List all files in directory",
-  codeExplanation: "",
+  description: `Create and display list with all files in the selected directory with Python code. You can filter directories out and apply filtering on file extension.`,
+  shortDescription: `Create and display list with all files in the selected directory with Python code. You can filter directories out and apply filtering on file extension.`,
+  codeExplanation: `
+1. Create list with files. You can filter out directories and filter files based on extension.
+2. Display list with files.
+  `,
   ui: ListFiles,
   Icon: FolderOpenIcon,
   requiredPackages: [],
