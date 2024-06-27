@@ -3,7 +3,6 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { SelectPath } from "../../components/SelectPath";
 import { FilesIcon } from "../../icons/Files";
-import { Toggle } from "../../components/Toggle";
 
 const DOCS_URL = "python-copy-file";
 
@@ -19,7 +18,7 @@ export const FileCopy: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = `# copy file\n`;
     src += `shutil.copy2(r"${myFile}", r"${myDstFile}")\n`;
-    src += `print("File coppied")`;
+    src += `print("File copied")`;
     setCode(src);
     setPackages(["import shutil"]);
     if (setMetadata) {
