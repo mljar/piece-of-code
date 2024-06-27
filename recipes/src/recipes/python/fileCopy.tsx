@@ -15,7 +15,6 @@ export const FileCopy: React.FC<IRecipeProps> = ({
 }) => {
   const [myFile, setMyFile] = useState("source_file_name");
   const [myDstFile, setDstFile] = useState("destination_path");
-  const [copyFolder, setCopyFolder] = useState(false);
 
   useEffect(() => {
     let src = `# copy file\n`;
@@ -26,19 +25,18 @@ export const FileCopy: React.FC<IRecipeProps> = ({
     if (setMetadata) {
       setMetadata({
         myFile,
-        myDstFile,
-        copyFolder,
+        myDstFile, 
         docsUrl: DOCS_URL,
       });
     }
-  }, [myFile, myDstFile, copyFolder]);
+  }, [myFile, myDstFile]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["myFile"] !== undefined) setMyFile(metadata["myFile"]);
-      if (metadata["myDstFile"] !== undefined) setDstFile(metadata["myDstFile"]);
-      if (metadata["copyFolder"] !== undefined) setCopyFolder(metadata["copyFolder"]);
+      if (metadata["myDstFile"] !== undefined)
+        setDstFile(metadata["myDstFile"]);
     }
   }, [metadata]);
 
@@ -55,28 +53,13 @@ export const FileCopy: React.FC<IRecipeProps> = ({
         defaultPath={myFile}
         selectFolder={false}
       />
-      <Toggle
-        label={"Destination is a directory"}
-        value={copyFolder}
-        setValue={setCopyFolder}
-        tooltip="Destination might be other file path or a directory"
+
+      <SelectPath
+        label="Select destination directory"
+        setPath={setDstFile}
+        defaultPath={myDstFile}
+        selectFolder={true}
       />
-      {!copyFolder && (
-        <SelectPath
-          label="Select destination file"
-          setPath={setDstFile}
-          defaultPath={myDstFile}
-          selectFolder={false}
-        />
-      )}
-      {copyFolder && (
-        <SelectPath
-          label="Select destination directory"
-          setPath={setDstFile}
-          defaultPath={myDstFile}
-          selectFolder={true}
-        />
-      )}
     </div>
   );
 };
@@ -86,13 +69,10 @@ export const FileCopyRecipe: IRecipe = {
   longName: "Copy file in Python",
   parentName: "Python",
   description:
-    "Copy file in Python. Source file can be coppied to new file path or to new directory.",
-  shortDescription: "Copy file in Python",
+`Copy file in Python using built-in \`shutil\` module. Source file will be coppied to new to a new directory. We will use \`shutil.copy2()\` function to copy file to preserve timestamp information.`,
+  shortDescription: `Copy file in Python using built-in \`shutil\` module. Source file will be coppied to new to a new directory. We will use \`shutil.copy2()\` function to copy file to preserve timestamp information.`,
   codeExplanation: `
-1. Copy file to new destination.
-
-Please note that in this recipe you can select a file in the User Interface, which already means that file must exits. What to do, if file doesn't exist?
-Please select some other file in the same or similar directory, and manually edit the file path in the code.
+Copy file to new destination directory.
   `,
   tags: ["file", "copy"],
   ui: FileCopy,
