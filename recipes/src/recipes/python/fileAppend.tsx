@@ -81,8 +81,8 @@ export const FileAppendRecipe: IRecipe = {
   longName: "Append to file in Python",
   parentName: "Python",
   description:
-    "Append to file in Python. Files can be edited as text or binary format.",
-  shortDescription: "Append to file in Python",
+    "You can append any content to file using Python. Python built-in functions `open()` and `read()` will help you automate your workflows. Files can be edited as text or binary format.",
+  shortDescription:  "You can append any content to file using Python. Python built-in functions `open()` and `read()` will help you automate your workflows. Files can be edited as text or binary format.",,
   codeExplanation: `
 1. Open file in append mode.
 2. Write a new content at the end of file.

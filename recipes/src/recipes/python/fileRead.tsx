@@ -54,7 +54,7 @@ export const FileRead: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={FileDownloadIcon}
-        label={"Write to file"}
+        label={"Read file"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -82,11 +82,12 @@ export const FileReadRecipe: IRecipe = {
   name: "Read file",
   longName: "Read file in Python",
   parentName: "Python",
-  description: `Read file in Python. File can be read as text or binary.`,
-  shortDescription: "Read file in Python",
+  description: `Read content from a file in Python. Use \`open()\` function to open file and \`read()\` to get file contents into variable. File can be read in text or binary format.`,
+  shortDescription: `Read content from a file in Python. Use \`open()\` function to open file and \`read()\` to get file contents into variable. File can be read in text or binary format.`,
   codeExplanation: `
 1. Open file in read mode.
 2. Read content from file and assign to variable.
+3. Display contents with \`print()\`.
   `,
   tags: ["file", "read"],
   ui: FileRead,
