@@ -38,7 +38,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({
     let src = `# read data from csv file\n`;
     src += `${name} = pd.read_csv(r"${filePath}"${delimiterSrc})\n`;
     src += `# display data shape\n`;
-    src += `print(${name}.shape())\n`;
+    src += `print(${name}.shape)\n`;
     src += `# display first rows\n`;
     src += `${name}.head()`;
 

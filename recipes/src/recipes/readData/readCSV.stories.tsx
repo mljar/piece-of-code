@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { ReadCSV } from "./readCSV";
@@ -14,12 +14,16 @@ export default meta;
 type Story = StoryObj<typeof ReadCSV>;
 
 export const ReadCSVForm: Story = (
-  args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <ReadCSV {...args} />
-  </>
-);
+    args: React.JSX.IntrinsicAttributes & IRecipeProps
+) => {
+    const [code, setCode] = useState("")
+    return(
+        <>
+            <ReadCSV {...args} setCode={setCode} />
+            <pre>{code}</pre>
+        </>
+    );
+};
 ReadCSVForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
