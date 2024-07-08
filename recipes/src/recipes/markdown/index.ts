@@ -68,9 +68,9 @@ some text with \`inline code\` and rest of text
 \`\`\`
 
 ### Code Block
-\`\`\`language
-code block
-\`\`\`
+    \`\`\`language
+    code block
+    \`\`\`
 
 ### Indented Code Block
 \`\`\`
