@@ -19,6 +19,10 @@ export const SelectRecipeForm: Story = (
 ) => (
   <>
     <SelectRecipe {...args} />
+    <h2>Dark theme</h2>
+    <div className="poc-dark poc-bg-black poc-p-8">
+      <SelectRecipe {...args} />
+    </div>
   </>
 );
 
