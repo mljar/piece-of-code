@@ -100,7 +100,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [showEnterLicense, setShowEnterLicense] = useState(false);
   const [keepOpen, setKeepOpen] = useState(false);
   const [currentCode, setCurrentCode] = useState("");
-
+  const [showChat, setShowChat] = useState(false);
+  const [pythonOnly, setPythonOnly] = useState(false);
+  
   const setCodeWithCopy = (src: string) => {
     setCurrentCode(src);
     setCode(src);
@@ -187,8 +189,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
     />
   );
 
-  const [showChat, setShowChat] = useState(false);
-  const [pythonOnly, setPythonOnly] = useState(false);
+  
 
   const leftButtons = (
     <div className="poc-h-full poc-grid poc-grid-cols-1 poc-content-end">
