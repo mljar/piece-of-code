@@ -20,7 +20,7 @@ export const TimeDelay: React.FC<IRecipeProps> = ({
     let src = `# start delay\n`;
     src += `time.sleep(${myDelay})`;
     setCode(src);
-    setPackages(["import datetime"]);
+    setPackages(["import time"]);
     if (setMetadata) {
       setMetadata({
         myDelay,
@@ -57,10 +57,10 @@ export const TimeDelayRecipe: IRecipe = {
   longName: "Add time delay in Python",
   parentName: "Python",
   description:
-    "Add time delay in Python. Your program will sleep for selected number of seconds.",
-  shortDescription: "Add time delay in Python",
+    "Add time delays in Python using the `sleep()` function from the built-in `time` module. This guide explains how to pause execution in your code, enhancing control over program flow and improving user experience.",
+  shortDescription: "Learn how to add time delays in Python using the sleep() function from the built-in time module. This guide explains how to pause execution in your code, enhancing control over program flow and improving user experience.",
   codeExplanation: `
-1. Sleeps Python 🐍 for selected number of seconds.
+The above code snippet sleeps Python 🐍 for selected number of seconds. The argument in the \`sleep()\` function can be float. For example, if you would like to sleep code execution for 0.5 seconds, please run \`sleep(0.5)\`.
 `,
   ui: TimeDelay,
   Icon: CalendarClockIcon,
