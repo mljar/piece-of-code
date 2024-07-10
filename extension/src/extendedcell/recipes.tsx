@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { IVariable, SelectRecipe } from '@mljar/recipes';
 import { Cell, ICellModel } from '@jupyterlab/cells';
@@ -69,12 +69,34 @@ const SelectRecipeComponent = ({
   //   setPreviousCode(cell.model.sharedModel.getSource());
   // }, cell);
 
+  const [isDark, setIsDark] = useState(false);
   const getCellCode = (): string => {
     return cell.model.sharedModel.getSource();
   };
 
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === 'attributes') {
+        if (
+          document.body.attributes
+            .getNamedItem('data-jp-theme-name')
+            ?.value.includes('Dark')
+        ) {
+          setIsDark(true);
+        } else {
+          setIsDark(false);
+        }
+      }
+    });
+  });
+
+  observer.observe(document.body, {
+    attributes: true, //configure it to listen to attribute changes
+    attributeFilter: ['data-jp-theme-name']
+  });
+
   return (
-    <div>
+    <div className={isDark ? 'poc-dark' : ''}>
       <SelectRecipe
         previousCode={previousCode}
         previousErrorName={previousErrorName}

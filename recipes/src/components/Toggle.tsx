@@ -20,19 +20,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       {tooltip !== "" && (
         <Tooltip id="select-path-tooltip" className="poc-text-base" />
       )}
-      <label className="poc-block poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-white">
-        {label}
-        {tooltip !== "" && (
-          <div
-            data-tooltip-id="select-path-tooltip"
-            data-tooltip-content={tooltip}
-            className="poc-inline"
-          >
-            <InfoIcon  className="poc-absolute"/>
-          </div>
-        )}
-      </label>
-
+      <div className="poc-pb-1"></div>
       <label
         className="poc-relative poc-inline-flex 
                           poc-items-center poc-cursor-pointer"
@@ -56,8 +44,17 @@ export const Toggle: React.FC<ToggleProps> = ({
                         peer-checked:after:poc-border-white after:poc-content-[''] 
                         after:poc-absolute after:poc-top-[2px] after:poc-start-[2px] after:poc-bg-white after:poc-border-gray-300 after:poc-border after:poc-rounded-full after:poc-h-4 after:poc-w-4 after:poc-transition-all dark:poc-border-gray-600 peer-checked:poc-bg-blue-600"
         ></div>
-        <span className="poc-ms-1 poc-text-xs poc-font-normal poc-text-gray-900 dark:poc-text-gray-300">
+        <span className="poc-ms-1 poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-gray-300">
           {label}
+          {tooltip !== "" && (
+          <div
+            data-tooltip-id="select-path-tooltip"
+            data-tooltip-content={tooltip}
+            className="poc-inline"
+          >
+            <InfoIcon  className="poc-absolute"/>
+          </div>
+        )}
         </span>
       </label>
     </div>

@@ -154,8 +154,8 @@ export const Welcome: React.FC<IWelcomeProps> = ({
             <a
               className="poc-text-blue-500 hover:poc-text-blue-700 
           poc-font-medium poc-text-sm poc-text-center 
-          poc-inline-flex poc-items-center dark:poc-bg-blue-600 
-          dark:hover:poc-bg-blue-700 dark:focus:poc-ring-blue-800"
+          poc-inline-flex poc-items-center 
+           dark:focus:poc-ring-blue-800"
               href={docsLink}
               target="_blank"
             >
@@ -182,14 +182,14 @@ export const Welcome: React.FC<IWelcomeProps> = ({
       {/* {description && <p className="poc-mb-2 poc-text-base">{description}</p>} */}
       {description && (
         <div
-          className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base"
+          className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base dark:poc-prose-invert"
           dangerouslySetInnerHTML={{
             __html: md.render(description),
           }}
         ></div>
       )}
 
-{/* 
+      {/* 
 prose-md prose-headings:font-heading prose-headings:leading-tighter container prose prose-headings:font-bold prose-headings:tracking-tighter prose-a:text-primary-600 prose-img:rounded-md prose-img:shadow-xl dark:prose-invert
        dark:prose-headings:text-slate-300 dark:prose-a:text-primary-400 mt-8 max-w-full */}
 

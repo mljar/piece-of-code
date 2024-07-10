@@ -42,7 +42,7 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# display json or dict\n`;
-    src += `json.dumps(${myDict}, indent=4)`;
+    src += `print(json.dumps(${myDict}, indent=4))`;
     setCode(src);
     setPackages(["import json"]);
     if (setMetadata) {
@@ -81,10 +81,10 @@ export const PrettyPrintJSONRecipe: IRecipe = {
   name: "Pretty print JSON ",
   longName: "Pretty print JSON in Python",
   parentName: "Python",
-  description: `Pretty print JSON or dict objects in Python. It is much easier to understand JSON objects that have nice indentation.`,
-  shortDescription: "Pretty print JSON in Python",
+  description: `Pretty print JSON or dict objects in Python. It is much easier to understand JSON objects that has nice indentation.`,
+  shortDescription: "Pretty print JSON or dict objects in Python. It is much easier to understand JSON objects that has nice indentation.",
   codeExplanation: `
-The above code displays JSON with pretty indentation (4 spaces).
+The above code displays JSON with 4 spaces indentation.
   `,
   tags: ["json"],
   ui: PrettyPrintJSON,
