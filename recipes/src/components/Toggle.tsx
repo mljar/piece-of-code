@@ -20,7 +20,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       {tooltip !== "" && (
         <Tooltip id="select-path-tooltip" className="poc-text-base" />
       )}
-      <div className="poc-pb-1"></div>
+      <div className="poc-pb-7"></div>
       <label
         className="poc-relative poc-inline-flex 
                           poc-items-center poc-cursor-pointer"
