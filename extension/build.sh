@@ -4,6 +4,6 @@ jlpm run build
 
 python -m build
 
-cp dist/pieceofcode-0.3.1-py3-none-any.whl ../../studio/env_installer/extras/
+cp dist/pieceofcode-0.3.2-py3-none-any.whl ../../studio/env_installer/extras/
 
-sha256sum dist/pieceofcode-0.3.1-py3-none-any.whl
+sha256sum dist/pieceofcode-0.3.2-py3-none-any.whl
