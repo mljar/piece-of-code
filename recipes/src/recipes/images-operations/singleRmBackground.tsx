@@ -81,7 +81,7 @@ export const SingleImage: React.FC<IRecipeProps> = ({
 };
 
 export const SingleImageRecipe: IRecipe = {
-  name: "Single Image",
+  name: "Remove background from single image",
   longName: "Remove background from image",
   parentName: "Python",
   description: "Use simple Python code to remove the background from a PNG, JPG, JPEG, or SVG image. Save the new image with the same or a different extension in any folder you want.",

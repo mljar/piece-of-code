@@ -99,8 +99,8 @@ export const MultiImages: React.FC<IRecipeProps> = ({
 };
 
 export const MultiImagesRecipe: IRecipe = {
-  name: "Multi Images",
-  longName: "Remove background from images",
+  name: "Remove background from multiple images",
+  longName: "Remove background from multiple images",
   parentName: "Python",
   description:
     "Remove the background from all images with the chosen extension in the given directory in seconds! Save edited images with the same or different extension in the files' parent directory.",
