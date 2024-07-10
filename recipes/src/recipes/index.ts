@@ -9,7 +9,7 @@ import { DataWranglingRecipes } from "./wrangling";
 import { MatplotlibRecipes } from "./matplotlib";
 import { ScikitLearnRecipes } from "./scikitLearn";
 import { AutoMLRecipes } from "./automl";
-import { RembgRecipes } from "./rembg";
+import { ImagesOperationsRecipes } from "./images-operations";
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -24,7 +24,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [MatplotlibRecipes.name]: MatplotlibRecipes,
   [ScikitLearnRecipes.name]: ScikitLearnRecipes,
   [AutoMLRecipes.name]: AutoMLRecipes,
-  [RembgRecipes.name]: RembgRecipes,
+  [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 

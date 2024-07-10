@@ -6,9 +6,9 @@ import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 import { ImageIcon } from "../../icons/Image";
 
-const DOCS_URL = "python-remove-background";
+const DOCS_URL = "remove-image-background";
 
-export const Rembg: React.FC<IRecipeProps> = ({
+export const SingleImage: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
@@ -41,11 +41,21 @@ export const Rembg: React.FC<IRecipeProps> = ({
     }
   }, [image, filePath, outImage]);
 
+  useEffect(() => {
+    if (metadata) {
+      if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["image"] !== undefined) setImage(metadata["image"]);
+      if (metadata["filePath"] !== undefined)
+        setFilePath(metadata["filePath"]);
+      if (metadata["outImage"] !== undefined) setOutImage(metadata["outImage"]);
+    }
+  }, [metadata]);
+
   return (
     <div>
       <Title
         Icon={ImageIcon}
-        label={"Remove single image background"}
+        label={"Remove background from single image"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <SelectPath
@@ -70,14 +80,17 @@ export const Rembg: React.FC<IRecipeProps> = ({
   );
 };
 
-export const RembgRecipe: IRecipe = {
+export const SingleImageRecipe: IRecipe = {
   name: "Single Image",
-  longName: "Remove background from single image",
+  longName: "Remove background from image",
   parentName: "Python",
-  description: "Remove background from your image(PNG, JPG, JPEG) using simple Python code. Save it as a new image with the same or different extension in the directory of your choice.",
-  shortDescription: "Remove background from your image(PNG, JPG, JPEG) in Python",
-  codeExplanation: ``,
-  ui: Rembg,
+  description: "Use simple Python code to remove the background from a PNG, JPG, JPEG, or SVG image. Save the new image with the same or a different extension in any folder you want.",
+  shortDescription: "Use simple Python code to remove the background from a PNG, JPG, JPEG, or SVG image. Save the new image with the same or a different extension in any folder you want.",
+  codeExplanation: `
+  1. Set input and output images paths.
+  2. Open both files(images).
+  3. Edit the input image and save the result as an output image.`,
+  ui: SingleImage,
   Icon: ImageIcon,
   requiredPackages: [
     { importName: "rembg", installationName: "rembg", version: ">=2.0.57" },
@@ -85,4 +98,4 @@ export const RembgRecipe: IRecipe = {
   docsUrl: DOCS_URL,
 };
 
-export default RembgRecipe;
+export default SingleImageRecipe;
