@@ -39,8 +39,6 @@ export const Toggle: React.FC<ToggleProps> = ({
                         peer-focus:poc-ring-blue-300 dark:peer-focus:poc-ring-blue-800 
                         poc-rounded-full peer dark:poc-bg-gray-700 
                         peer-checked:after:poc-translate-x-full 
-                        
-
                         peer-checked:after:poc-border-white after:poc-content-[''] 
                         after:poc-absolute after:poc-top-[2px] after:poc-start-[2px] after:poc-bg-white after:poc-border-gray-300 after:poc-border after:poc-rounded-full after:poc-h-4 after:poc-w-4 after:poc-transition-all dark:poc-border-gray-600 peer-checked:poc-bg-blue-600"
         ></div>

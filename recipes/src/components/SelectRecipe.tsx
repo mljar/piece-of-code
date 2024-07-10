@@ -306,7 +306,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           {leftButtons}
         </div>
         <div className="poc-w-full">
-          <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+          <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 dark:poc-border-slate-600 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
             <Chat
               variablesStatus={variablesStatus}
               variables={variables}
@@ -369,7 +369,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
           <div className="poc-w-full">
             {topButtons}
             <div>
-              {/* <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+              {/* <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2 poc-w-full poc-border-gray-100 dark:poc-border-slate-600 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
                */}
               {executionSteps.length > 0 && (
                 <RunStatus
@@ -590,7 +590,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       </div>
       <div className="poc-w-full">
         {executionSteps.length > 0 && !keepOpen && topButtons}
-        <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-w-full poc-border-gray-100 dark:poc-border-slate-600 poc-border-t poc-border-l poc-border-r poc-rounded-t-md">
           {showNav && (
             <div className="poc-p-2">
               {showBuyLicense && (

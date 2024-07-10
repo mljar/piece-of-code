@@ -240,7 +240,7 @@ export const Chat: React.FC<IChatProps> = ({
           prose-pre:poc-py-1 prose-pre:poc-my-1
           prose-ul:poc-py-1 prose-ul:poc-my-1
           prose-ol:poc-py-1 prose-ol:poc-my-1
-          prose-li:poc-py-1 prose-li:poc-my-1 prose-li:poc-leading-6 poc-prose-sm"
+          prose-li:poc-py-1 prose-li:poc-my-1 prose-li:poc-leading-6 poc-prose-sm dark:poc-prose-invert"
           dangerouslySetInnerHTML={{
             __html: md.render(m),
           }}
@@ -390,7 +390,7 @@ export const Chat: React.FC<IChatProps> = ({
             </div>
           )}
           {!streaming && msg === "" && executionSteps.length > 0 && (
-            <div className="poc-py-2">
+            <div className="poc-py-2 dark:poc-text-slate-100">
               <b>Code execution</b>
               {getStatusElements(executionSteps)}
             </div>
