@@ -21,17 +21,17 @@ export const ShowImage: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# variables:\n`;
-    src += `path="${image}"\n`;
+    src += `path=r"${image}"\n`;
     if (!advanced) {
         src += `\n# code:\n`;
         src += `with Image.open(path) as i:\n`;
-        src += `\tdisplay(i)`;
+        src += `    display(i)`;
     } else {
         src += `size=${width? width:250},${height? height:250}\n`  
         src += `\n# code:\n`;
         src += `with Image.open(path) as i:\n`;
-        src += `\ti.thumbnail(size)\n`
-        src += `\tdisplay(i)`;
+        src += `    i.thumbnail(size)\n`
+        src += `    display(i)`;
     }
     setCode(src);
     setPackages([
@@ -71,7 +71,7 @@ export const ShowImage: React.FC<IRecipeProps> = ({
         label={"Select image"}
         defaultPath={image}
         setPath={setImage}
-        tooltip={"You can upload *.png, *.jpg, *.jpeg, *.svg"}
+        tooltip={"You can upload *.png, *.jpg, *.jpeg"}
       />
       {advanced && (
         <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -100,9 +100,9 @@ export const ShowImageRecipe: IRecipe = {
   longName: "How to show images in Jupyter Notebook using Python",
   parentName: "Python",
   description:
-    "Display PNG, JPG, JPEG, and SVG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
+    "Display PNG, JPG, and JPEG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
   shortDescription:
-    "Display PNG, JPG, JPEG, and SVG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
+    "Display PNG, JPG, and JPEG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
   codeExplanation: `
   1. Set image path and optionally size.
   2. Show the chosen image in Jupyter Notebook.`,

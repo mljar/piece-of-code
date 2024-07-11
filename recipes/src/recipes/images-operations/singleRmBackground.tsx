@@ -20,14 +20,14 @@ export const SingleImage: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# variables:\n`;
-    src += `input_image = "${image}"\n`;
+    src += `input_image = r"${image}"\n`;
     src += `output_image = os.path.join(r"${filePath}", "${outImage}")\n\n`;
     src += `# code:\n`;
     src += `with open(input_image, "rb") as i:\n`;
-    src += `\twith open(output_image, "wb") as o:\n`;
-    src += `\t\tinput = i.read()\n`;
-    src += `\t\toutput = remove(input)\n`;
-    src += `\t\to.write(output)\n`;
+    src += `    with open(output_image, "wb") as o:\n`;
+    src += `        input = i.read()\n`;
+    src += `        output = remove(input)\n`;
+    src += `        o.write(output)\n`;
 
     setCode(src);
     setPackages(["import os", "from rembg import remove"]);
@@ -84,8 +84,8 @@ export const SingleImageRecipe: IRecipe = {
   name: "Remove background from single image",
   longName: "Remove background from image",
   parentName: "Python",
-  description: "Use simple Python code to remove the background from a PNG, JPG, JPEG, or SVG image. Save the new image with the same or a different extension in any folder you want.",
-  shortDescription: "Use simple Python code to remove the background from a PNG, JPG, JPEG, or SVG image. Save the new image with the same or a different extension in any folder you want.",
+  description: "Use simple Python code to remove the background from a PNG, JPG, or JPEG image. Save the new image with the same or a different extension in any folder you want.",
+  shortDescription: "Use simple Python code to remove the background from a PNG, JPG, or JPEG image. Save the new image with the same or a different extension in any folder you want.",
   codeExplanation: `
   1. Set input and output images paths.
   2. Open both files(images).
