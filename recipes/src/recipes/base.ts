@@ -13,6 +13,7 @@ export interface IRecipeProps {
     setKeepOpen?: (keepOpen: boolean) => void;
     metadata?: any;
     setMetadata?: (m: any) => void;
+    setEnv?: (envVariables: [string, string][]) => void;
 }
 
 export interface IRecipeSet {

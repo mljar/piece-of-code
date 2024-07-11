@@ -49,6 +49,7 @@ export interface ISelectRecipeProps {
   changeCellToCode: () => void;
   cellType: string;
   getCellCode: () => string;
+  setEnv: (envVariables: [string, string][]) => void;
 }
 
 declare global {
@@ -80,6 +81,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   changeCellToCode,
   cellType,
   getCellCode,
+  setEnv,
 }: ISelectRecipeProps) => {
   let isElectron = false;
   if (typeof window !== "undefined") {
@@ -102,7 +104,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [currentCode, setCurrentCode] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [pythonOnly, setPythonOnly] = useState(false);
-  
+
   const setCodeWithCopy = (src: string) => {
     setCurrentCode(src);
     setCode(src);
@@ -188,8 +190,6 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       markdown={true}
     />
   );
-
-  
 
   const leftButtons = (
     <div className="poc-h-full poc-grid poc-grid-cols-1 poc-content-end">
@@ -647,6 +647,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                   setKeepOpen={setKeepOpen}
                   metadata={metadata}
                   setMetadata={setMetadata}
+                  setEnv={setEnv}
                 />
               </div>
             </div>

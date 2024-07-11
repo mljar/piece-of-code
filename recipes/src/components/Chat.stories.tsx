@@ -21,8 +21,8 @@ export const ChatForm: Story = (
     <>
       <Chat {...args} setCode={setCode} />
       <h2>Dark theme</h2>
-    <div className="poc-dark poc-bg-black poc-p-8">
-      <Chat {...args} setCode={setCode} />
+      <div className="poc-dark poc-bg-black poc-p-8">
+        <Chat {...args} setCode={setCode} />
       </div>
       <pre>{code}</pre>
     </>

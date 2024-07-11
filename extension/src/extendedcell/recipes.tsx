@@ -36,6 +36,7 @@ interface Props {
   setMeta: (m: any) => void;
   changeCellToMarkdown: () => void;
   changeCellToCode: () => void;
+  setEnv: (envVariables: [string, string][]) => void;
 }
 
 const SelectRecipeComponent = ({
@@ -59,7 +60,8 @@ const SelectRecipeComponent = ({
   meta,
   setMeta,
   changeCellToMarkdown,
-  changeCellToCode
+  changeCellToCode,
+  setEnv,
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -120,6 +122,7 @@ const SelectRecipeComponent = ({
         changeCellToCode={changeCellToCode}
         cellType={cell.model.sharedModel.cell_type}
         getCellCode={getCellCode}
+        setEnv={setEnv}
       />
     </div>
   );
@@ -152,6 +155,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _setMeta: (m: any) => void;
   private _changeCellToMarkdown: () => void;
   private _changeCellToCode: () => void;
+  private _setEnv: (envVariables: [string, string][]) => void;
 
   constructor(
     cell: Cell<ICellModel>,
@@ -164,7 +168,8 @@ export class SelectRecipeWidget extends ReactWidget {
     meta: any,
     setMeta: (m: any) => void,
     changeCellToMarkdown: () => void,
-    changeCellToCode: () => void
+    changeCellToCode: () => void,
+    setEnv: (envVariables: [string, string][]) => void
   ) {
     super();
     this.addClass('jp-react-widget');
@@ -182,6 +187,7 @@ export class SelectRecipeWidget extends ReactWidget {
     this._setMeta = setMeta;
     this._changeCellToMarkdown = changeCellToMarkdown;
     this._changeCellToCode = changeCellToCode;
+    this._setEnv = setEnv;
   }
 
   public setExecutionSteps(steps: [string, ExecutionStatus][]) {
@@ -261,6 +267,7 @@ export class SelectRecipeWidget extends ReactWidget {
               setMeta={this._setMeta}
               changeCellToMarkdown={this._changeCellToMarkdown}
               changeCellToCode={this._changeCellToCode}
+              setEnv={this._setEnv}
             />
           );
         }}

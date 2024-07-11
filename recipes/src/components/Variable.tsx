@@ -7,6 +7,7 @@ interface VariableProps {
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   tooltip?: string;
+  isPassword?: boolean;
 }
 
 export const Variable: React.FC<VariableProps> = ({
@@ -14,7 +15,9 @@ export const Variable: React.FC<VariableProps> = ({
   name,
   setName,
   tooltip = "",
+  isPassword = false,
 }: VariableProps) => {
+  const inputType = isPassword ? "password" : "text";
   return (
     <div>
       <div className="poc-mt-2">
@@ -33,7 +36,7 @@ export const Variable: React.FC<VariableProps> = ({
             </div>
           )}
           <input
-            type="text"
+            type={inputType}
             className="poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
         poc-rounded-md 
         focus:poc-border-blue-500 poc-block poc-w-full poc-p-2

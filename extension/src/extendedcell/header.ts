@@ -15,6 +15,7 @@ import { VariableInspector } from './variableinspector';
 
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { mIcon } from '../icons';
+import { SetEnv } from './setEnv';
 
 const STATUSBAR_PLUGIN_ID = '@jupyterlab/statusbar-extension:plugin';
 
@@ -220,6 +221,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   private _executionSteps: [string, ExecutionStatus][] = [];
   private _variableInspector: VariableInspector | undefined;
   private _meta: any = {};
+  private _envVariables: [string, string][] = [];
 
   constructor() {
     super();
@@ -272,6 +274,11 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       this.addExecutionStep("Render", ExecutionStatus.Success);
       return;
     }
+    if (this._envVariables.length > 0) {
+      const envManager = new SetEnv(this.notebook);
+      envManager.run(this._envVariables);
+      this._envVariables = [];
+    }
 
     this.selectRecipe?.setPreviousError('', '');
 
@@ -317,6 +324,10 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
 
   changeCellToMarkdown() {
     this._renderMarkdown = true;
+  }
+
+  setEnv(envVariables: [string, string][]) {
+    this._envVariables = envVariables;
   }
 
   changeCellToCode() {
@@ -492,6 +503,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.setMeta.bind(this),
           this.changeCellToMarkdown.bind(this),
           this.changeCellToCode.bind(this),
+          this.setEnv.bind(this),
         );
         this.selectRecipe.hide();
         if (this.layout instanceof PanelLayout) {
