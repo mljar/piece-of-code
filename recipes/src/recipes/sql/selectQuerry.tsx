@@ -43,24 +43,19 @@ export const SelectQuerry: React.FC<IRecipeProps> = ({
     const [tables, setTables] = useState("please select querry tables");
 
     useEffect(() => {
-        let src = `connection_name = "${conn}"\n\n`;
-        src += `try:\n`;
-        src += `    with connection_name:\n`;
-        src += `        with connection_name.cursor() as cursor\n\n`;
-        src += `            # Querry db\n`;
-        src += `            cur.execute("SELECT ${collumns} FROM ${tables}")\n\n`;
-        src += `            # Fetch all the rows\n`;
-        src += `            rows = cur.fetchall()\n\n`;
-        src += `            # Print the results\n`;
-        src += `            for row in rows:\n`;
-        src += `                print(f"row")\n\n`;
-        src += `    except Exception as e:\n`;
-        src += `        raise e\n\n`;
-        src += `    finally:\n`;
-        src += `        connection_name.close()\n`;
+        let src = `connection_name = ${conn}\n\n`;
+        src += `with connection_name:\n`;
+        src += `    with connection_name.cursor() as cursor:\n\n`;
+        src += `    # Querry db\n`;
+        src += `    cur.execute("SELECT ${collumns} FROM ${tables}")\n\n`;
+        src += `    # Fetch all the rows\n`;
+        src += `    rows = cur.fetchall()\n\n`;
+        src += `    # Print the results\n`;
+        src += `    for row in rows:\n`;
+        src += `        print(f"row")\n\n`;
 
         setCode(src);
-        setPackages(["import os, import psycopg2"]);
+        setPackages(["import os, import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -126,8 +121,20 @@ export const SelectQuerryRecipe: IRecipe = {
     codeExplanation: ``,
     ui: SelectQuerry,
     Icon: QuestionMarkIcon,
-    requiredPackages: [],
+    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
+    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    defaultVariables: [
+        {
+            varName: "conn",
+            varType: "connection",
+            varColumns: [""],
+            varColumnTypes: [""],
+            varSize: "",
+            varShape: "",
+            varContent: "",
+            isMatrix: false,
+            isWidget: false,
+        }],
 };
-
 export default SelectQuerryRecipe;

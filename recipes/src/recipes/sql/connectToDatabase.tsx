@@ -69,9 +69,8 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     codeExplanation: ``,
     ui: ConnectToDatabase,
     Icon: QuestionMarkIcon,
-    requiredPackages: [
-        { importName: "psycopg2", installationName: "psycopg2", version: ">=2.9.9" },
-    ],
+    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },],
+    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
 };
 
