@@ -10,6 +10,7 @@ import { MatplotlibRecipes } from "./matplotlib";
 import { ScikitLearnRecipes } from "./scikitLearn";
 import { AutoMLRecipes } from "./automl";
 import { ImagesOperationsRecipes } from "./images-operations";
+import { SqlRecipes } from "./sql";
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -25,6 +26,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [ScikitLearnRecipes.name]: ScikitLearnRecipes,
   [AutoMLRecipes.name]: AutoMLRecipes,
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
+  [SqlRecipes.name]: SqlRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 

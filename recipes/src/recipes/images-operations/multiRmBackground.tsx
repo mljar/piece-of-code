@@ -20,26 +20,24 @@ export const MultiImages: React.FC<IRecipeProps> = ({
     ["PNG", "*.png"],
     ["JPG", "*.jpg"],
     ["JPEG", "*.jpeg"],
-    ["SVG", "*.svg"],
   ] as [string, string][];
   const [outExtension, setOutExtension] = useState(".png");
   const outExtensionOptions = [
     ["PNG", ".png"],
     ["JPG", ".jpg"],
     ["JPEG", ".jpeg"],
-    ["SVG", ".svg"],
   ] as [string, string][];
 
   useEffect(() => {
     let src = `session = new_session()\n\n`;
     src += `for file in Path(r"${directory}").glob("${extension}"):\n`;
-    src += `\tinput_path = str(file)\n`;
-    src += `\toutput_path = str(file.parent / (file.stem + ".out${outExtension}"))\n`;
-    src += `\twith open(input_path, 'rb') as i:\n`;
-    src += `\t\twith open(output_path, 'wb') as o:\n`;
-    src += `\t\t\tinput = i.read()\n`;
-    src += `\t\t\toutput = remove(input, session=session)\n`;
-    src += `\t\t\to.write(output)`;
+    src += `    input_path = str(file)\n`;
+    src += `    output_path = str(file.parent / (file.stem + ".out${outExtension}"))\n`;
+    src += `    with open(input_path, 'rb') as i:\n`;
+    src += `        with open(output_path, 'wb') as o:\n`;
+    src += `            input = i.read()\n`;
+    src += `            output = remove(input, session=session)\n`;
+    src += `            o.write(output)`;
     setCode(src);
     setPackages([
       "from pathlib import Path",
@@ -100,7 +98,7 @@ export const MultiImages: React.FC<IRecipeProps> = ({
 
 export const MultiImagesRecipe: IRecipe = {
   name: "Remove background from multiple images",
-  longName: "Remove background from multiple images",
+  longName: "Remove background from multiple  images",
   parentName: "Python",
   description:
     "Remove the background from all images with the chosen extension in the given directory in seconds! Save edited images with the same or different extension in the files' parent directory.",
