@@ -8,7 +8,7 @@ import { Select } from "../../components/Select";
 
 const DOCS_URL = "python-sql-querry";
 
-export const SelectQuerry: React.FC<IRecipeProps> = ({
+export const InsertQuerry: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -29,11 +29,7 @@ export const SelectQuerry: React.FC<IRecipeProps> = ({
             </div>
         );
     }
-<<<<<<< HEAD
-    if (variablesStatus === "loaded" && !my_connestions.length) {
-=======
     if (variablesStatus === "loaded" && !connections.length) {
->>>>>>> 23e134e72b39d88293d07e1a208eb5cb8114dfdb
         return (
             <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
                 <p className="text-base text-gray-800 dark:text-white">
@@ -42,52 +38,24 @@ export const SelectQuerry: React.FC<IRecipeProps> = ({
             </div>
         );
     }
-
-<<<<<<< HEAD
-    const [conn, setConnection] = useState(my_connestions[0]);
-
-    useEffect(() => {
-        let src = `connection_name = "${conn}"\n`;
-        src += `try:\n`;
-        src += `    with connection_name:\n`;
-        src += `        with connection_name.cursor() as cursor\n\n`;
-        src += `            # Querry db\n`;
-        src += `            cur.execute("SELECT * FROM users")\n\n`;
-        src += `            # Fetch all the rows\n`;
-        src += `            rows = cur.fetchall()\n\n`;
-        src += `            # Print the results\n`;
-        src += `            for row in rows:\n`;
-        src += `                print(f"ID: {row[0]}, Name: {row[1]}, Email: {row[2]}")\n`;
-        src += `    except Exception as e:\n`;
-        src += `        raise e\n`;
-        src += `    finally:\n`;
-        src += `        connection_name.close()\n`;
-
-        setCode(src);
-        setPackages(["import os"]);
-        if (setMetadata) {
-            setMetadata({
-                conn,
-                docsUrl: DOCS_URL,
-            });
-        }
-    }, [conn]);
-=======
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [collumns, setCollumns] = useState("please select querry collumns");
-    const [tables, setTables] = useState("please select querry tables");
+    const [collumns, setcollumns] = useState("please select querry collumns");
+    const [table, setTable] = useState("please select querry table");
+    const [values, setValues] = useState("please select querry values");
+
+    let percentS = "%s"
+
+    for (let i = 1; i < values.split(",").length; i++) {
+        percentS += ", %s";
+    }
 
     useEffect(() => {
         let src = `connection_name = ${conn}\n\n`;
         src += `with connection_name:\n`;
         src += `    with connection_name.cursor() as cursor:\n\n`;
-        src += `    # Querry db\n`;
-        src += `    cur.execute("SELECT ${collumns} FROM ${tables}")\n\n`;
-        src += `    # Fetch all the rows\n`;
-        src += `    rows = cur.fetchall()\n\n`;
-        src += `    # Print the results\n`;
-        src += `    for row in rows:\n`;
-        src += `        print(f"row")\n\n`;
+        src += `    # Insert into db\n`;
+        // here i am not shure if ${values} is gonna work or if it needs to be "${values}"
+        src += `    cur.execute("INSERT INTO ${table} (${collumns}) valuesS (${percentS})", (${values})\n\n`;
 
         setCode(src);
         setPackages(["import os, import psycopg"]);
@@ -95,38 +63,32 @@ export const SelectQuerry: React.FC<IRecipeProps> = ({
             setMetadata({
                 conn,
                 collumns,
-                tables,
+                table,
+                values,
                 variables: variables.filter((v) => v.varType === "connection"),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, collumns, tables]);
+    }, [conn, collumns, table, values]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-            if (metadata["collumns"] !== undefined) setCollumns(metadata["collumns"]);
-            if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
+            if (metadata["collumns"] !== undefined) setcollumns(metadata["collumns"]);
+            if (metadata["table"] !== undefined) setTable(metadata["table"]);
+            if (metadata["values"] !== undefined) setValues(metadata["values"]);
         }
     }, [metadata]);
 
->>>>>>> 23e134e72b39d88293d07e1a208eb5cb8114dfdb
 
     return (
         <div>
             <Title
                 Icon={QuestionMarkIcon}
-                label={"Run sql select querry"}
+                label={"Run sql insert querry"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-<<<<<<< HEAD
-            <Variable
-                label={"Choose connection variable name"}
-                name={conn}
-                setName={setConnection}
-            />
-=======
             {conn === "" && (
                 <p className="text-base text-gray-800 dark:text-white">
                     There are no connection objects in your notebook. You can open a new connection to run the querry.
@@ -143,35 +105,33 @@ export const SelectQuerry: React.FC<IRecipeProps> = ({
                     <Variable
                         label={"Choose querry collumns"}
                         name={collumns}
-                        setName={setCollumns}
+                        setName={setcollumns}
                     />
                     <Variable
-                        label={"Choose querry tables"}
-                        name={tables}
-                        setName={setTables}
+                        label={"Choose querry table"}
+                        name={table}
+                        setName={setTable}
+                    />
+                    <Variable
+                        label={"Choose querry values"}
+                        name={values}
+                        setName={setValues}
                     />
                 </>
             )}
->>>>>>> 23e134e72b39d88293d07e1a208eb5cb8114dfdb
         </div>
     );
 };
 
-export const SelectQuerryRecipe: IRecipe = {
-    name: "Run select querry",
-    longName: "Execute sql select querry",
+export const InsertQuerryRecipe: IRecipe = {
+    name: "Run insert querry",
+    longName: "Execute sql insert querry",
     parentName: "Sql",
-    description: "Execute sql select querry on previously configured connection. Credentails are stored in .env file.",
-    shortDescription: "Execute sql select querry on previously configured connection.",
+    description: "Execute sql insert querry on previously configured connection. Credentails are stored in .env file.",
+    shortDescription: "Execute sql insert querry on previously configured connection.",
     codeExplanation: ``,
-    ui: SelectQuerry,
+    ui: InsertQuerry,
     Icon: QuestionMarkIcon,
-<<<<<<< HEAD
-    requiredPackages: [],
-    docsUrl: DOCS_URL,
-};
-
-=======
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
@@ -188,5 +148,4 @@ export const SelectQuerryRecipe: IRecipe = {
             isWidget: false,
         }],
 };
->>>>>>> 23e134e72b39d88293d07e1a208eb5cb8114dfdb
-export default SelectQuerryRecipe;
+export default InsertQuerryRecipe;

@@ -36,6 +36,14 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         }
     }, [conn]);
 
+    useEffect(() => {
+        if (metadata) {
+            if ("mljar" in metadata) metadata = metadata.mljar;
+            if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
+        }
+    }, [metadata]);
+
+
     return (
         <div>
             <Title
@@ -61,9 +69,8 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     codeExplanation: ``,
     ui: ConnectToDatabase,
     Icon: QuestionMarkIcon,
-    requiredPackages: [
-        { importName: "psycopg2", installationName: "psycopg2", version: ">=2.9.9" },
-    ],
+    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },],
+    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
 };
 
