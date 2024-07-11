@@ -54,6 +54,18 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         }
     }, [conn, dbname, username, password, host_address, port]);
 
+    useEffect(() => {
+        if (metadata) {
+            if ("mljar" in metadata) metadata = metadata.mljar;
+            if (metadata["dbname"] !== undefined) setDBName(metadata["dbname"]);
+            if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
+            if (metadata["username"] !== undefined) setUsername(metadata["username"]);
+            if (metadata["password"] !== undefined) setPassword(metadata["password"]);
+            if (metadata["host_address"] !== undefined) setHostAddress(metadata["host_address"]);
+            if (metadata["port"] !== undefined) setPort(metadata["port"]);
+        }
+    }, [metadata]);
+
     return (
         <div>
             <Title
@@ -129,7 +141,8 @@ export const DefineNewConnectionRecipe: IRecipe = {
     codeExplanation: ``,
     ui: DefineNewConnection,
     Icon: QuestionMarkIcon,
-    requiredPackages: [ ],
+    requiredPackages: [],
+    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
 };
 

@@ -36,6 +36,14 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         }
     }, [conn]);
 
+    useEffect(() => {
+        if (metadata) {
+            if ("mljar" in metadata) metadata = metadata.mljar;
+            if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
+        }
+    }, [metadata]);
+
+
     return (
         <div>
             <Title

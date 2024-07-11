@@ -5,26 +5,26 @@ import { IRecipeProps } from "../base";
 import { DefineNewConnection } from "./defineNewConnection";
 
 const meta: Meta<typeof DefineNewConnection> = {
-  component: DefineNewConnection,
-  title: "CodePieces/sql/define new connection",
-  argTypes: {},
+    component: DefineNewConnection,
+    title: "CodePieces/sql/connect",
+    argTypes: {},
 };
 export default meta;
 
 type Story = StoryObj<typeof DefineNewConnection>;
 
 export const DefineNewConnectionForm: Story = (
-  args: React.JSX.IntrinsicAttributes & IRecipeProps
+    args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
-  const [code, setCode] = useState("");
-  return (
-  <>
-    <DefineNewConnection {...args} setCode={setCode}/>
-    <pre>{code}</pre>
-  </>
-  )
+    const [code, setCode] = useState("");
+    return (
+        <>
+            <DefineNewConnection {...args} setCode={setCode} />
+            <pre>{code}</pre>
+        </>
+    )
 };
 DefineNewConnectionForm.args = {
-  setCode: (src: string) => console.log(src),
-  setPackages: (packages: string[]) => console.log(packages),
+    setCode: (src: string) => console.log(src),
+    setPackages: (packages: string[]) => console.log(packages),
 };
