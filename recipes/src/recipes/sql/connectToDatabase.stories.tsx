@@ -6,7 +6,7 @@ import { ConnectToDatabase } from "./connectToDatabase";
 
 const meta: Meta<typeof ConnectToDatabase> = {
   component: ConnectToDatabase,
-  title: "CodePieces/sql/connedtToDatabase",
+  title: "CodePieces/sql/connect",
   argTypes: {},
 };
 export default meta;

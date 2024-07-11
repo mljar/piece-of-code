@@ -1,8 +1,9 @@
 import { QuestionMarkIcon } from "../../icons/QuestionMark";
 import { IRecipeSet } from "../base";
-import ConnectToDatabaseRecipe from "./connectToDatabase";
 
+import ConnectToDatabaseRecipe from "./connectToDatabase";
 import { DefineNewConnectionRecipe } from "./defineNewConnection";
+import SelectQuerryRecipe from "./selectQuerry";
 
 export const SqlRecipes: IRecipeSet = {
   name: "Sql",
@@ -15,5 +16,6 @@ export const SqlRecipes: IRecipeSet = {
   recipes: {
     [DefineNewConnectionRecipe.name]: DefineNewConnectionRecipe,
     [ConnectToDatabaseRecipe.name]: ConnectToDatabaseRecipe,
+    [SelectQuerryRecipe.name]: SelectQuerryRecipe,
   },
 };

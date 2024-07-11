@@ -6,7 +6,7 @@ import { DefineNewConnection } from "./defineNewConnection";
 
 const meta: Meta<typeof DefineNewConnection> = {
   component: DefineNewConnection,
-  title: "CodePieces/sql/define new connection",
+  title: "CodePieces/sql/connect",
   argTypes: {},
 };
 export default meta;
