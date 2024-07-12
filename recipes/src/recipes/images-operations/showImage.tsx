@@ -6,7 +6,7 @@ import { Numeric } from "../../components/Numeric";
 import { SelectPath } from "../../components/SelectPath";
 import { addImageIcon } from "../../icons/addImage";
 
-const DOCS_URL = "how-show-images-jupyter-notebook";
+const DOCS_URL = "how-to-show-images-jupyter-notebook";
 
 export const ShowImage: React.FC<IRecipeProps> = ({
   setCode,
