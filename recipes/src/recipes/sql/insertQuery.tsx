@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
 import { Select } from "../../components/Select";
+import { InsertIcon } from "../../icons/Insert";
 
 const DOCS_URL = "postgresql-insert";
 
@@ -85,7 +85,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QuestionMarkIcon}
+                Icon={InsertIcon}
                 label={"Run sql insert query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -132,7 +132,7 @@ export const InsertQueryRecipe: IRecipe = {
     shortDescription: "Execute sql insert query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table name, then list out columns you wish to fill and then their respectful values.",
     codeExplanation: ``,
     ui: InsertQuery,
-    Icon: QuestionMarkIcon,
+    Icon: InsertIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],

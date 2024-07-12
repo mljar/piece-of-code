@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
+import { ConnectIcon } from "../../icons/Connect";
 
 const DOCS_URL = "postgresql-connect-to-database";
 
@@ -47,8 +47,8 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QuestionMarkIcon}
-                label={"Define new database connection"}
+                Icon={ConnectIcon}
+                label={"Connect to Postgresql database"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Variable
@@ -69,7 +69,7 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     shortDescription: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",
     codeExplanation: ``,
     ui: ConnectToDatabase,
-    Icon: QuestionMarkIcon,
+    Icon: ConnectIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },],
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,

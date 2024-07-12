@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
 import { Select } from "../../components/Select";
+import { QueryIcon } from "../../icons/Query";
 
 const DOCS_URL = "postgresql-select";
 
@@ -81,7 +81,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QuestionMarkIcon}
+                Icon={QueryIcon}
                 label={"Run sql select query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -123,7 +123,7 @@ export const SelectQueryRecipe: IRecipe = {
     shortDescription: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
     codeExplanation: ``,
     ui: SelectQuery,
-    Icon: QuestionMarkIcon,
+    Icon: QueryIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],

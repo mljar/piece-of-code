@@ -1,4 +1,4 @@
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
+import { PostgresqlIcon } from "../../icons/Postgresql";
 import { IRecipeSet } from "../base";
 
 import ConnectToDatabaseRecipe from "./connectToDatabase";
@@ -13,7 +13,7 @@ export const SqlRecipes: IRecipeSet = {
     description: "Tool which allows you to define new Postgrasql database connection with credentials stored in .env file. Exqcute sql queries such as SELECT, CREATE TABLE, DROP TABLE, UPDATE TABLE.",
     shortDescription: "Tool which allows you to define new Postgrasql database connection with credentials stored in .env file. Exqcute sql queries such as SELECT, CREATE TABLE, DROP TABLE, UPDATE TABLE.",
     tags: ["python", "postgresql", "sql", "psycopg"],
-    Icon: QuestionMarkIcon,
+    Icon: PostgresqlIcon,
     recipes: {
         [DefineNewConnectionRecipe.name]: DefineNewConnectionRecipe,
         [ConnectToDatabaseRecipe.name]: ConnectToDatabaseRecipe,

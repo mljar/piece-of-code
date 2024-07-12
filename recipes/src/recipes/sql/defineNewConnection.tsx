@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { QuestionMarkIcon } from "../../icons/QuestionMark";
+import { GlobeIcon } from "../../icons/Globe";
 
 const DOCS_URL = "postgresql-define-connection";
 
@@ -79,7 +79,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QuestionMarkIcon}
+                Icon={GlobeIcon}
                 label={"Define new database connection"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -154,7 +154,7 @@ export const DefineNewConnectionRecipe: IRecipe = {
     shortDescription: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forger to close it after done using it",
     codeExplanation: ``,
     ui: DefineNewConnection,
-    Icon: QuestionMarkIcon,
+    Icon: GlobeIcon,
     requiredPackages: [],
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
