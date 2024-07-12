@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { SelectQuerry } from "./selectQuerry";
+import { InsertQuery } from "./insertQuery";
 
-const meta: Meta<typeof SelectQuerry> = {
-    component: SelectQuerry,
-    title: "CodePieces/sql/querries",
+const meta: Meta<typeof InsertQuery> = {
+    component: InsertQuery,
+    title: "CodePieces/postgresql/queries",
     argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof SelectQuerry>;
+type Story = StoryObj<typeof InsertQuery>;
 
-export const SelectQuerryForm: Story = (
+export const InsertQueryForm: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
     const [code, setCode] = useState("");
     return (
         <>
-            <SelectQuerry {...args} setCode={setCode} />
+            <InsertQuery {...args} setCode={setCode} />
             <pre>{code}</pre>
         </>
     )
 };
-SelectQuerryForm.args = {
+InsertQueryForm.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
@@ -43,14 +43,14 @@ SelectQuerryForm.args = {
     ],
 };
 
-export const SelectQuerryEmptyConnStory: Story = (
+export const InsertQueryEmptyConnStory: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
     <>
-        <SelectQuerry {...args} />
+        <InsertQuery {...args} />
     </>
 );
-SelectQuerryEmptyConnStory.args = {
+InsertQueryEmptyConnStory.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",

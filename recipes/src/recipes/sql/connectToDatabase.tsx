@@ -5,7 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { QuestionMarkIcon } from "../../icons/QuestionMark";
 
-const DOCS_URL = "python-sql-querry";
+const DOCS_URL = "postgresql-connect-to-database";
 
 export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     setCode,
@@ -61,11 +61,12 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 };
 
 export const ConnectToDatabaseRecipe: IRecipe = {
-    name: "Connect to database",
-    longName: "Open new database connection",
-    parentName: "Sql",
-    description: "Open new database connection using simple Python code. Credentials are loaded from .enf file",
-    shortDescription: "Open new database connection using simple Python code.",
+    name: "Connect to Postgresql database",
+    longName: "Connect to Postgresql database",
+    parentName: "Postgresql",
+    // len: 147
+    description: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",
+    shortDescription: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",
     codeExplanation: ``,
     ui: ConnectToDatabase,
     Icon: QuestionMarkIcon,

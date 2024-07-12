@@ -3,19 +3,20 @@ import { IRecipeSet } from "../base";
 
 import ConnectToDatabaseRecipe from "./connectToDatabase";
 import { DefineNewConnectionRecipe } from "./defineNewConnection";
-import SelectQuerryRecipe from "./selectQuerry";
+import SelectQueryRecipe from "./selectQuery";
 
 export const SqlRecipes: IRecipeSet = {
-    name: "Sql",
-    longName: "Run sql querryies usign python",
-    docsUrl: "python-sql-querry",
-    description: `Tool which allows you to define new database connection with credentials stored in .env file. Exqcute sql querries such as SELECT, CREATE TABLE, DROP TABLE, UPDATE TABLE.`,
-    shortDescription: "Tool which provides sql database functionality",
-    tags: ["python", "sql", "psycopg"],
+    name: "Postgresql",
+    longName: "Run sql queryies on Postgresql database usign python",
+    docsUrl: "postgresql-query-python",
+    //len: 180
+    description: "Tool which allows you to define new Postgrasql database connection with credentials stored in .env file. Exqcute sql queries such as SELECT, CREATE TABLE, DROP TABLE, UPDATE TABLE.",
+    shortDescription: "Tool which allows you to define new Postgrasql database connection with credentials stored in .env file. Exqcute sql queries such as SELECT, CREATE TABLE, DROP TABLE, UPDATE TABLE.",
+    tags: ["python", "postgresql", "sql", "psycopg"],
     Icon: QuestionMarkIcon,
     recipes: {
         [DefineNewConnectionRecipe.name]: DefineNewConnectionRecipe,
         [ConnectToDatabaseRecipe.name]: ConnectToDatabaseRecipe,
-        [SelectQuerryRecipe.name]: SelectQuerryRecipe,
+        [SelectQueryRecipe.name]: SelectQueryRecipe,
     },
 };
