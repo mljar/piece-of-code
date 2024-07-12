@@ -12,24 +12,30 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  setEnv,
 }) => {
   const [myEnvVar, setMyEnvVar] = useState("MY_ENV_VARIABLE");
   const [myVar, setMyVar] = useState("my_var");
 
   useEffect(() => {
-    let src = `# add secret to .env file\n`;
-    src += `mode = "a" if os.path.exists(".env") else "w"\n`;
-    src += `# open file and write variable\n`;
-    src += `with open(".env", mode) as fout:\n`;
-    src += `    fout.write("${myEnvVar}=${myVar}\\n")\n`;
-    src += `print("Secret saved in .env file")\n`;
-    src += `print("Please remove this code cell and save notebook, be safe!")`;
+    // let src = `# add secret to .env file\n`;
+    // src += `mode = "a" if os.path.exists(".env") else "w"\n`;
+    // src += `# open file and write variable\n`;
+    // src += `with open(".env", mode) as fout:\n`;
+    // src += `    fout.write("${myEnvVar}=${myVar}\\n")\n`;
+    // src += `print("Secret saved in .env file")\n`;
+    // src += `print("Please remove this code cell and save notebook, be safe!")`;
+    // setCode(src);
+    // setPackages(["import os"]);
+    let src = `print("Variable added successfully. Please check .env file")`;
     setCode(src);
-    setPackages(["import os"]);
+    if (setEnv) {
+      setEnv([[myEnvVar, myVar]]);
+    }
     if (setMetadata) {
       setMetadata({
         myEnvVar,
-        myVar,
+        // myVar,
         docsUrl: DOCS_URL,
       });
     }
@@ -39,7 +45,7 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["myEnvVar"] !== undefined) setMyEnvVar(metadata["myEnvVar"]);
-      if (metadata["myVar"] !== undefined) setMyVar(metadata["myVar"]);
+      // if (metadata["myVar"] !== undefined) setMyVar(metadata["myVar"]);
     }
   }, [metadata]);
 
@@ -50,21 +56,25 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
         label={"Add .env variable"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Variable
-        label={"Environment variable name"}
-        name={myEnvVar}
-        setName={setMyEnvVar}
-        tooltip={"Usually environment variables are in all capital letters"}
-      />
-      <Variable
-        label={"Secret value"}
-        name={myVar}
-        setName={setMyVar}
-        tooltip={
-          "Value of environment variable will be assigned to Python variable"
-        }
-      />
-      <div
+
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Variable
+          label={"Environment variable name"}
+          name={myEnvVar}
+          setName={setMyEnvVar}
+          tooltip={"Usually environment variables are in all capital letters"}
+        />
+        <Variable
+          label={"Secret value"}
+          name={myVar}
+          setName={setMyVar}
+          tooltip={
+            "Value of environment variable will be assigned to Python variable"
+          }
+          isPassword={true}
+        />
+      </div>
+      {/* <div
         className="poc-mt-2 poc-p-4 poc-mb-4 poc-text-base poc-text-red-800 poc-rounded-lg poc-bg-red-50 dark:poc-bg-gray-800 dark:poc-text-red-400"
         role="alert"
       >
@@ -77,7 +87,7 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
         in the code for security reasons. If the cell is executed successfully,
         please check that you have a <b>.env</b> file, and you can safely remove
         this cell and save the notebook.
-      </div>
+      </div> */}
     </div>
   );
 };

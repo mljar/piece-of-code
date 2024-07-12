@@ -53,7 +53,7 @@ export const Title: React.FC<TitleProps> = ({
           </label>
         </div>
       )}
-      {docsUrl && (
+      {/* {docsUrl && (
         <div className="poc-relative poc-float-right">
           <a
             className="poc-text-blue-700 hover:poc-text-blue-800 
@@ -68,7 +68,7 @@ export const Title: React.FC<TitleProps> = ({
             <ExternalLinkIcon className="poc-pb-1" />
           </a>
         </div>
-      )}
+      )} */}
     </h2>
   );
 };

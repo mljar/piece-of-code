@@ -98,7 +98,7 @@ export const ShowImage: React.FC<IRecipeProps> = ({
 export const ShowImageRecipe: IRecipe = {
   name: "Show Image",
   longName: "How to show images in Jupyter Notebook using Python",
-  parentName: "Python",
+  parentName: "Images Operations",
   description:
     "Display PNG, JPG, and JPEG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
   shortDescription:
