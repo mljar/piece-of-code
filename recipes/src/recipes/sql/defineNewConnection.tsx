@@ -12,6 +12,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setPackages,
     metadata,
     setMetadata,
+    setEnv,
 }) => {
     const [conn, setConnection] = useState("conn");
     const [dbname, setDBName] = useState("database");
@@ -21,34 +22,43 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     const [port, setPort] = useState("port");
 
     useEffect(() => {
-        let src = `connection_name = "${conn}"\n`;
-        src += `database_name = "${dbname}"\n`;
-        src += `username = "${username}"\n`;
-        src += `password = "${password}"\n`;
-        src += `host_address = "${host_address}"\n`;
-        src += `port = "${port}"\n\n`;
-        src += `mode = "a" if os.path.exists(".env") else "w"\n`;
-        src += `# open file and write variable\n`;
-        src += `with open(".env", mode) as fout:\n`;
-        src += `    fout.write("POSTGRES_CONNECTION_NAME=connection_name")\n`;
-        src += `	fout.write("POSTGRES_DB_NAME=database_name"\n`;
-        src += `	fout.write("POSTGRES_USERNAME=username")\n`;
-        src += `	fout.write("POSTGRES_PASSWORD=password")\n`;
-        src += `	fout.write("POSTGRES_HOST_ADDRESS=host_address")\n`;
-        src += `	fout.write("POSTGRES_PORT=port")\n`;
-        src += `print("Secret saved in .env file")\n`;
-        src += `print("Please remove this code cell and save notebook, be safe!")`;
+        // let src = `connection_name = "${conn}"\n`;
+        // src += `database_name = "${dbname}"\n`;
+        // src += `username = "${username}"\n`;
+        // src += `password = "${password}"\n`;
+        // src += `host_address = "${host_address}"\n`;
+        // src += `port = "${port}"\n\n`;
+        // src += `mode = "a" if os.path.exists(".env") else "w"\n`;
+        // src += `# open file and write variable\n`;
+        // src += `with open(".env", mode) as fout:\n`;
+        // src += `    fout.write("POSTGRES_CONNECTION_NAME=connection_name")\n`;
+        // src += `	fout.write("POSTGRES_DB_NAME=database_name"\n`;
+        // src += `	fout.write("POSTGRES_USERNAME=username")\n`;
+        // src += `	fout.write("POSTGRES_PASSWORD=password")\n`;
+        // src += `	fout.write("POSTGRES_HOST_ADDRESS=host_address")\n`;
+        // src += `	fout.write("POSTGRES_PORT=port")\n`;
+        // src += `print("Secret saved in .env file")\n`;
+        // src += `print("Please remove this code cell and save notebook, be safe!")`;
 
+        let src = `print("Variable added successfully. Please check .env file")`;
         setCode(src);
+        if (setEnv) {
+            setEnv([["POSTGRES_CONNECTION_NAME", conn]]);
+            setEnv([["POSTGRES_DB_NAME", dbname]]);
+            setEnv([["POSTGRES_USERNAME", username]]);
+            setEnv([["POSTGRES_PASSWORD", password]]);
+            setEnv([["POSTGRES_HOST", host_address]]);
+            setEnv([["POSTGRES_PORT", port]]);
+        }
         setPackages(["import os"]);
         if (setMetadata) {
             setMetadata({
-                conn,
-                dbname,
-                username,
-                password,
-                host_address,
-                port,
+                // conn,
+                // dbname,
+                // username,
+                // password,
+                // host_address,
+                // port,
                 docsUrl: DOCS_URL,
             });
         }
@@ -57,12 +67,12 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
-            if (metadata["dbname"] !== undefined) setDBName(metadata["dbname"]);
-            if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-            if (metadata["username"] !== undefined) setUsername(metadata["username"]);
-            if (metadata["password"] !== undefined) setPassword(metadata["password"]);
-            if (metadata["host_address"] !== undefined) setHostAddress(metadata["host_address"]);
-            if (metadata["port"] !== undefined) setPort(metadata["port"]);
+            // if (metadata["dbname"] !== undefined) setDBName(metadata["dbname"]);
+            // if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
+            // if (metadata["username"] !== undefined) setUsername(metadata["username"]);
+            // if (metadata["password"] !== undefined) setPassword(metadata["password"]);
+            // if (metadata["host_address"] !== undefined) setHostAddress(metadata["host_address"]);
+            // if (metadata["port"] !== undefined) setPort(metadata["port"]);
         }
     }, [metadata]);
 
@@ -97,6 +107,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                     label={"Put in database user password"}
                     name={password}
                     setName={setPassword}
+                    isPassword={true}
                 />
             </div>
 
@@ -114,6 +125,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                     setName={setPort}
                 />
             </div>
+            {/*
             <div
                 className="poc-mt-2 poc-p-4 poc-mb-4 poc-text-base poc-text-red-800 poc-rounded-lg poc-bg-red-50 dark:poc-bg-gray-800 dark:poc-text-red-400"
                 role="alert"
@@ -128,6 +140,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                 please check that you have a <b>.env</b> file, and you can safely remove
                 this cell and save the notebook.
             </div>
+            */}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
@@ -15,11 +15,15 @@ type Story = StoryObj<typeof AddDotEnvVar>;
 
 export const AddDotEnvVarForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <AddDotEnvVar {...args} />
-  </>
-);
+) => {
+    const [code, setCode] = useState("");
+    return (
+        <>
+            <AddDotEnvVar {...args} setCode={setCode} />
+            <pre>{code}</pre>
+        </>
+    )
+}
 AddDotEnvVarForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
