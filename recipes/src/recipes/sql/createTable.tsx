@@ -4,7 +4,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
-import { TableIcon } from "../../icons/Table";
+import { TableAddIcon } from "../../icons/TableAdd";
 
 const DOCS_URL = "create-table-postgresql";
 
@@ -88,7 +88,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
         }
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os, import psycopg, from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -115,7 +115,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={TableIcon}
+                Icon={TableAddIcon}
                 label={"Create table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -133,6 +133,11 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                         setOption={setConnection}
                     />
                     <Variable
+                        label={"Set new table name"}
+                        name={table}
+                        setName={setTable}
+                    />
+                    <Variable
                         label={"Input columns names"}
                         name={columns}
                         setName={setColumns}
@@ -143,11 +148,6 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                         name={dataTypes}
                         setName={setDataTypes}
                         tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
-                    />
-                    <Variable
-                        label={"Set new table name"}
-                        name={table}
-                        setName={setTable}
                     />
                 </>
             )}
@@ -164,7 +164,7 @@ export const CreateTableRecipe: IRecipe = {
     shortDescription: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",
     codeExplanation: ``,
     ui: CreateTable,
-    Icon: TableIcon,
+    Icon: TableAddIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],

@@ -15,11 +15,11 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setEnv,
 }) => {
     const [conn, setConnection] = useState("conn");
-    const [dbname, setDBName] = useState("database");
+    const [dbname, setDBName] = useState("postgresql");
     const [username, setUsername] = useState("username");
     const [password, setPassword] = useState("password");
     const [host_address, setHostAddress] = useState("host_address");
-    const [port, setPort] = useState("port");
+    const [port, setPort] = useState("54321");
 
     useEffect(() => {
         // let src = `connection_name = "${conn}"\n`;

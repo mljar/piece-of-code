@@ -4,6 +4,7 @@ import { IRecipeSet } from "../base";
 import ConnectToDatabaseRecipe from "./connectToDatabase";
 import CreateTableRecipe from "./createTable";
 import { DefineNewConnectionRecipe } from "./defineNewConnection";
+import DropTableRecipe from "./dropTable";
 import InsertQueryRecipe from "./insertQuery";
 import SelectQueryRecipe from "./selectQuery";
 
@@ -22,5 +23,6 @@ export const SqlRecipes: IRecipeSet = {
         [SelectQueryRecipe.name]: SelectQueryRecipe,
         [InsertQueryRecipe.name]: InsertQueryRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
+        [DropTableRecipe.name]: DropTableRecipe,
     },
 };

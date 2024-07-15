@@ -18,7 +18,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     useEffect(() => {
         let src = `load_dotenv()\n\n`;
         src += `# open new connection:\n`;
-        src += `${conn} = psycopg2.connect(\n`;
+        src += `${conn} = psycopg.connect(\n`;
         src += `	dbname = os.getenv("POSTGRES_DB_NAME"),\n`;
         src += `	user = os.getenv("POSTGRES_USERNAME"),\n`;
         src += `	password = os.getenv("POSTGRES_PASSWORD"),\n`;
@@ -27,7 +27,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `)\n`;
 
         setCode(src);
-        setPackages(["import psycopg2, import os"]);
+        setPackages(["import psycopg, import os"]);
         if (setMetadata) {
             setMetadata({
                 conn,
