@@ -2,7 +2,9 @@ import { PostgresqlIcon } from "../../icons/Postgresql";
 import { IRecipeSet } from "../base";
 
 import ConnectToDatabaseRecipe from "./connectToDatabase";
+import CreateTableRecipe from "./createTable";
 import { DefineNewConnectionRecipe } from "./defineNewConnection";
+import InsertQueryRecipe from "./insertQuery";
 import SelectQueryRecipe from "./selectQuery";
 
 export const SqlRecipes: IRecipeSet = {
@@ -18,5 +20,7 @@ export const SqlRecipes: IRecipeSet = {
         [DefineNewConnectionRecipe.name]: DefineNewConnectionRecipe,
         [ConnectToDatabaseRecipe.name]: ConnectToDatabaseRecipe,
         [SelectQueryRecipe.name]: SelectQueryRecipe,
+        [InsertQueryRecipe.name]: InsertQueryRecipe,
+        [CreateTableRecipe.name]: CreateTableRecipe,
     },
 };
