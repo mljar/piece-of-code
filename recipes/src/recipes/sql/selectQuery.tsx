@@ -17,7 +17,8 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
+        // .filter((v) => v.varType === "connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -76,7 +77,6 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
             if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
         }
     }, [metadata]);
-
 
     return (
         <div>

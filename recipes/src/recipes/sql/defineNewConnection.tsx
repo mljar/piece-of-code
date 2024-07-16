@@ -15,11 +15,11 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setEnv,
 }) => {
     const [conn, setConnection] = useState("conn");
-    const [dbname, setDBName] = useState("postgresql");
+    const [dbname, setDBName] = useState("database");
     const [username, setUsername] = useState("username");
     const [password, setPassword] = useState("password");
     const [host_address, setHostAddress] = useState("host_address");
-    const [port, setPort] = useState("54321");
+    const [port, setPort] = useState("5432");
 
     useEffect(() => {
         // let src = `connection_name = "${conn}"\n`;
@@ -43,12 +43,14 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         let src = `print("Variable added successfully. Please check .env file")`;
         setCode(src);
         if (setEnv) {
-            setEnv([["POSTGRES_CONNECTION_NAME", conn]]);
-            setEnv([["POSTGRES_DB_NAME", dbname]]);
-            setEnv([["POSTGRES_USERNAME", username]]);
-            setEnv([["POSTGRES_PASSWORD", password]]);
-            setEnv([["POSTGRES_HOST", host_address]]);
-            setEnv([["POSTGRES_PORT", port]]);
+            setEnv([
+                ["POSTGRES_CONNECTION_NAME", conn],
+                ["POSTGRES_DB_NAME", dbname],
+                ["POSTGRES_USERNAME", username],
+                ["POSTGRES_PASSWORD", password],
+                ["POSTGRES_HOST", host_address],
+                ["POSTGRES_PORT", port]
+            ]);
         }
         setPackages(["import os"]);
         if (setMetadata) {

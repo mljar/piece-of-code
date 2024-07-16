@@ -22,12 +22,12 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `	dbname = os.getenv("POSTGRES_DB_NAME"),\n`;
         src += `	user = os.getenv("POSTGRES_USERNAME"),\n`;
         src += `	password = os.getenv("POSTGRES_PASSWORD"),\n`;
-        src += `	host = os.getenv("POSTGRES_HOST_ADDRESS"),\n`;
+        src += `	host = os.getenv("POSTGRES_HOST"),\n`;
         src += `	port = os.getenv("POSTGRES_PORT"),\n`;
         src += `)\n`;
 
         setCode(src);
-        setPackages(["import psycopg, import os"]);
+        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -70,7 +70,10 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     codeExplanation: ``,
     ui: ConnectToDatabase,
     Icon: ConnectIcon,
-    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },],
+    requiredPackages: [
+        { importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
+        { importName: "load_dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
+    ],
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
 };
