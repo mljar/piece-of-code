@@ -72,7 +72,9 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     Icon: ConnectIcon,
     requiredPackages: [
         { importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
-        { importName: "load_dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
+        // TODO
+        // commented out due to a bug (#51), if fixed then should be uncommented
+        // { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
     ],
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,

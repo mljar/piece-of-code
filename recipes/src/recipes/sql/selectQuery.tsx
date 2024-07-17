@@ -47,17 +47,17 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     useEffect(() => {
         let src = `connection_name = ${conn}\n\n`;
         src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cursor:\n\n`;
-        src += `    # Query db\n`;
-        src += `    cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
-        src += `    # Fetch all the rows\n`;
-        src += `    rows = cur.fetchall()\n\n`;
-        src += `    # Print the results\n`;
-        src += `    for row in rows:\n`;
-        src += `        print(f"row")\n\n`;
+        src += `    with connection_name.cursor() as cursor:\n`;
+        src += `        # Query db\n`;
+        src += `        cursor.execute("SELECT ${columns} FROM ${tables}")\n\n`;
+        src += `        # Fetch all the rows\n`;
+        src += `        rows = cursor.fetchall()\n\n`;
+        src += `        # Print the results\n`;
+        src += `        for row in rows:\n`;
+        src += `            print(f"{row}")`;
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os", "import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
