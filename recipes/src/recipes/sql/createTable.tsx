@@ -71,9 +71,12 @@ export const CreateTable: React.FC<IRecipeProps> = ({
         let src = ""
 
         if (columnsArr.length === dataTypesArr.length) {
-            src += `connection_name = ${conn}\n\n`;
-            src += `with connection_name:\n`;
-            src += `    with connection_name.cursor() as cur:\n\n`;
+            src += `# if connection was used and closed it is reopen here\n`;
+            src += `if conn.closed:\n`;
+            src += `    conn = create_new_connection()\n`;
+            src += `# run the query`;
+            src += `with conn:\n`;
+            src += `    with conn.cursor() as cur:\n\n`;
             src += `        # Create table\n`;
             src += `        cur.execute(\n`;
             src += `            sql.SQL("""\n`;

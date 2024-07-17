@@ -16,15 +16,21 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     const [conn, setConnection] = useState("conn");
 
     useEffect(() => {
-        let src = `load_dotenv()\n\n`;
+        let src = `# load credentials from .env file:\n`;
+        src += `load_dotenv()\n\n`;
+
+        src += `def create_new_connection():\n`;
+        src += `    return psycopg.connect(\n`;
+        src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
+        src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
+        src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
+        src += `        host=os.getenv("POSTGRES_HOST"),\n`;
+        src += `        port=os.getenv("POSTGRES_PORT"),\n`;
+        src += `    )\n\n`;
+
         src += `# open new connection:\n`;
-        src += `${conn} = psycopg.connect(\n`;
-        src += `	dbname = os.getenv("POSTGRES_DB_NAME"),\n`;
-        src += `	user = os.getenv("POSTGRES_USERNAME"),\n`;
-        src += `	password = os.getenv("POSTGRES_PASSWORD"),\n`;
-        src += `	host = os.getenv("POSTGRES_HOST"),\n`;
-        src += `	port = os.getenv("POSTGRES_PORT"),\n`;
-        src += `)`;
+        src += `conn = create_new_connection()`;
+
 
         setCode(src);
         setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);

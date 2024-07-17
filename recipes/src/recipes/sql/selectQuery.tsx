@@ -45,9 +45,12 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     const [tables, setTables] = useState("please select query tables");
 
     useEffect(() => {
-        let src = `connection_name = ${conn}\n\n`;
-        src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cur:\n`;
+        let src = `# if connection was used and closed it is reopen here\n`;
+        src += `if conn.closed:\n`;
+        src += `    conn = create_new_connection()\n`;
+        src += `# run query\n`;
+        src += `with conn:\n`;
+        src += `    with conn.cursor() as cur:\n`;
         src += `        # Query db\n`;
         src += `        cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
         src += `        # Fetch all the rows\n`;

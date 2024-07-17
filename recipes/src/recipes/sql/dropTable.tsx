@@ -45,9 +45,12 @@ export const DropTable: React.FC<IRecipeProps> = ({
     const [dropOption, setDropOption] = useState(dropOptions[0][0]);
 
     useEffect(() => {
-        let src = `connection_name = ${conn}\n\n`;
-        src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cur:\n\n`;
+        let src = `# if connection was used and closed it is reopen here\n`;
+        src += `if conn.closed:\n`;
+        src += `    conn = create_new_connection()\n`;
+        src += `# run query\n`;
+        src += `with conn:\n`;
+        src += `    with conn.cursor() as cur:\n\n`;
         src += `        # drop table\n`;
         src += `        cur.execute(\n`;
         src += `            "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
