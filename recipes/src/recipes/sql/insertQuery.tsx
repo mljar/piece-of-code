@@ -17,7 +17,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -49,16 +49,22 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         percentS += ", %s";
     }
 
+    let valuesArr = values.split(",")
+    for (let i = 0; i < values.split(",").length; i++) {
+        valuesArr[i] = '"' + valuesArr[i] + '"'
+    }
+    let valuesWithQuetes = valuesArr.join()
+
     useEffect(() => {
         let src = `connection_name = ${conn}\n\n`;
         src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cursor:\n\n`;
-        src += `    # Insert into db\n`;
-        // here i am not shure if ${values} is gonna work or if it needs to be "${values}"
-        src += `    cur.execute("INSERT INTO ${table} (${columns}) valuesS (${percentS})", (${values})\n\n`;
+        src += `    with connection_name.cursor() as cur:\n\n`;
+        src += `        # Insert into db\n`;
+        // fails when given one value and one column and in the table there are two columns
+        src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes}))`;
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os", "import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -84,6 +90,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 
     return (
         <div>
+                {valuesWithQuetes}
             <Title
                 Icon={InsertIcon}
                 label={"Run sql insert query"}
@@ -103,14 +110,14 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                         setOption={setConnection}
                     />
                     <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
-                    <Variable
                         label={"Choose query table"}
                         name={table}
                         setName={setTable}
+                    />
+                    <Variable
+                        label={"Choose query columns"}
+                        name={columns}
+                        setName={setColumns}
                     />
                     <Variable
                         label={"Choose query values"}

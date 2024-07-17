@@ -32,7 +32,6 @@ SelectQueryForm.args = {
         {
             varName: "conn",
             varType: "Connection",
-            // varType: "connection",
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

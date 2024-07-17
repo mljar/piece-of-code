@@ -47,11 +47,11 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     useEffect(() => {
         let src = `connection_name = ${conn}\n\n`;
         src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cursor:\n`;
+        src += `    with connection_name.cursor() as cur:\n`;
         src += `        # Query db\n`;
-        src += `        cursor.execute("SELECT ${columns} FROM ${tables}")\n\n`;
+        src += `        cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
         src += `        # Fetch all the rows\n`;
-        src += `        rows = cursor.fetchall()\n\n`;
+        src += `        rows = cur.fetchall()\n\n`;
         src += `        # Print the results\n`;
         src += `        for row in rows:\n`;
         src += `            print(f"{row}")`;
@@ -99,14 +99,14 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                         setOption={setConnection}
                     />
                     <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
-                    <Variable
                         label={"Choose query tables"}
                         name={tables}
                         setName={setTables}
+                    />
+                    <Variable
+                        label={"Choose query columns"}
+                        name={columns}
+                        setName={setColumns}
                     />
                 </>
             )}

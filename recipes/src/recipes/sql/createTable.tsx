@@ -17,7 +17,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -50,20 +50,21 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     let queryPart1 = ""
     let queryPart2 = ""
 
+    // could probably just smush it into one loop
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
-            queryPart1 += "\t\t\t\t" + "{}" + " " + dataTypesArr[i]
+            queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
             break
         }
-        queryPart1 += "\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
+        queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
     }
 
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
-            queryPart2 += "\t\t\t" + "sql.Identifier(" + columnsArr[i] + ")"
+            queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '")'
             break
         }
-        queryPart2 += "\t\t\t" + "sql.Identifier(" + columnsArr[i] + "),\n"
+        queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '"),\n'
     }
 
     useEffect(() => {
@@ -73,22 +74,22 @@ export const CreateTable: React.FC<IRecipeProps> = ({
             src += `connection_name = ${conn}\n\n`;
             src += `with connection_name:\n`;
             src += `    with connection_name.cursor() as cur:\n\n`;
-            src += `    # Create table\n`;
-            src += `    cur.execute(\n`;
-            src += `        sql.SQL("""\n`;
-            src += `            CREATE TABLE IF NOT EXISTS ${table} (\n`;
+            src += `        # Create table\n`;
+            src += `        cur.execute(\n`;
+            src += `            sql.SQL("""\n`;
+            src += `                CREATE TABLE IF NOT EXISTS ${table} (\n`;
             src += `${queryPart1}\n`;
-            src += `        );"""\n`;
-            src += `        ).format(\n`;
+            src += `            );"""\n`;
+            src += `            ).format(\n`;
             src += `${queryPart2}\n`;
-            src += `        )\n`;
-            src += `    )\n`;
+            src += `            )\n`;
+            src += `        )`;
         } else {
             src += "number of column names needs to be euqal to number of data types"
         }
 
         setCode(src);
-        setPackages(["import os, import psycopg, from psycopg import sql"]);
+        setPackages(["import os", "import psycopg", "from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,

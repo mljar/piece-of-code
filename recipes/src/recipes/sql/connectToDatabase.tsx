@@ -24,7 +24,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `	password = os.getenv("POSTGRES_PASSWORD"),\n`;
         src += `	host = os.getenv("POSTGRES_HOST"),\n`;
         src += `	port = os.getenv("POSTGRES_PORT"),\n`;
-        src += `)\n`;
+        src += `)`;
 
         setCode(src);
         setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);

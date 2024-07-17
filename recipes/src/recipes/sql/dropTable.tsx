@@ -17,7 +17,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -48,13 +48,13 @@ export const DropTable: React.FC<IRecipeProps> = ({
         let src = `connection_name = ${conn}\n\n`;
         src += `with connection_name:\n`;
         src += `    with connection_name.cursor() as cur:\n\n`;
-        src += `    # drop table\n`;
-        src += `    cur.execute(\n`;
-        src += `        "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
+        src += `        # drop table\n`;
+        src += `        cur.execute(\n`;
+        src += `            "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
         src += `    )`;
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os", "import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
