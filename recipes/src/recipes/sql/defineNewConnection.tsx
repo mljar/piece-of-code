@@ -14,7 +14,6 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setMetadata,
     setEnv,
 }) => {
-    const [conn, setConnection] = useState("conn");
     const [dbname, setDBName] = useState("database");
     const [username, setUsername] = useState("username");
     const [password, setPassword] = useState("password");
@@ -44,7 +43,6 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         setCode(src);
         if (setEnv) {
             setEnv([
-                ["POSTGRES_CONNECTION_NAME", conn],
                 ["POSTGRES_DB_NAME", dbname],
                 ["POSTGRES_USERNAME", username],
                 ["POSTGRES_PASSWORD", password],
@@ -55,7 +53,6 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         setPackages(["import os"]);
         if (setMetadata) {
             setMetadata({
-                // conn,
                 // dbname,
                 // username,
                 // password,
@@ -64,13 +61,12 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, dbname, username, password, host_address, port]);
+    }, [dbname, username, password, host_address, port]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             // if (metadata["dbname"] !== undefined) setDBName(metadata["dbname"]);
-            // if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
             // if (metadata["username"] !== undefined) setUsername(metadata["username"]);
             // if (metadata["password"] !== undefined) setPassword(metadata["password"]);
             // if (metadata["host_address"] !== undefined) setHostAddress(metadata["host_address"]);
@@ -88,9 +84,9 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable
-                    label={"Choose connection variable name"}
-                    name={conn}
-                    setName={setConnection}
+                    label={"Set your database name"}
+                    name={dbname}
+                    setName={setDBName}
                 />
                 <Variable
                     label={"Choose database user name"}
@@ -101,9 +97,9 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable
-                    label={"Set your database name"}
-                    name={dbname}
-                    setName={setDBName}
+                    label={"Set database host address"}
+                    name={host_address}
+                    setName={setHostAddress}
                 />
                 <Variable
                     label={"Put in database user password"}
@@ -113,13 +109,6 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                 />
             </div>
 
-            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-                <Variable
-                    label={"Set database host address"}
-                    name={host_address}
-                    setName={setHostAddress}
-                />
-            </div>
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable
                     label={"Choose database port"}
