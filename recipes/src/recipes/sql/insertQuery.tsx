@@ -57,11 +57,12 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
-        src += `if conn.closed:\n`;
-        src += `    conn = create_new_connection()\n`;
-        src += `# run the query`;
-        src += `with conn:\n`;
-        src += `    with conn.cursor() as cur:\n\n`;
+        src += `if ${conn}.closed:\n`;
+        src += `    ${conn} = create_new_connection()\n\n`;
+
+        src += `# run the query\n`;
+        src += `with ${conn}:\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
         src += `        # Insert into db\n`;
         // fails when given one value and one column and in the table there are two columns
         src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes}))`;

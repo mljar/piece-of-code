@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
-import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
-import { QueryIcon } from "../../icons/Query";
+import { TableIcon } from "../../icons/Table";
+import { Toggle } from "../../components/Toggle";
 
-const DOCS_URL = "postgresql-select";
+const DOCS_URL = "postgresql-list-tables";
 
-export const SelectQuery: React.FC<IRecipeProps> = ({
+export const ShowAllTables: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -18,7 +18,6 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 }) => {
     const connections = variables
         .filter((v) => v.varType === "Connection")
-        // .filter((v) => v.varType === "connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -39,54 +38,70 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
             </div>
         );
     }
-
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
     const [columns, setColumns] = useState("please select query columns");
-    const [tables, setTables] = useState("please select query tables");
+    const [table, setTable] = useState("please select query table");
+    const [values, setValues] = useState("please select query values");
+    const [schema, setSchema] = useState(false);
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
-        src += `# run query\n`;
+        src += `# run the query\n`;
         src += `with ${conn}:\n`;
-        src += `    with ${conn}.cursor() as cur:\n`;
-        src += `        # Query db\n`;
-        src += `        cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
-        src += `        # Fetch all the rows\n`;
-        src += `        rows = cur.fetchall()\n\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
+        src += `        # Query the db\n`;
+        src += `        cur.execute(\n`;
+        src += `            """\n`;
+        if (schema) {
+            src += `                SELECT table_schema || '.' || table_name\n`;
+        } else {
+            src += `                SELECT table_name\n`;
+        }
+        src += `                FROM information_schema.tables\n`;
+        src += `                WHERE table_type = 'BASE TABLE'\n`;
+        src += `                AND table_schema NOT IN ('pg_catalog', 'information_schema');\n`;
+        src += `            """\n`;
+        src += `        )\n\n`;
+
+        src += `        # Fetch all the tables\n`;
+        src += `        tables = cur.fetchall()\n\n`;
+
         src += `        # Print the results\n`;
-        src += `        for row in rows:\n`;
-        src += `            print(f"{row}")`;
+        src += `        for table in tables:\n`;
+        src += `            print(f"{table}")`;
 
         setCode(src);
-        setPackages(["import os", "import psycopg"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
                 columns,
-                tables,
+                table,
+                values,
                 variables: variables.filter((v) => v.varType === "connection"),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, columns, tables]);
+    }, [conn, columns, table, values, schema]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
             if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
-            if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
+            if (metadata["table"] !== undefined) setTable(metadata["table"]);
+            if (metadata["values"] !== undefined) setValues(metadata["values"]);
         }
     }, [metadata]);
 
     return (
         <div>
             <Title
-                Icon={QueryIcon}
-                label={"Run sql select query"}
+                Icon={TableIcon}
+                label={"Run sql insert query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             {conn === "" && (
@@ -96,38 +111,35 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
             )}
             {conn !== "" && (
                 <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Choose query tables"}
-                        name={tables}
-                        setName={setTables}
-                    />
-                    <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
+                    <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                        <Select
+                            label={"Choose connection variable name"}
+                            option={conn}
+                            options={connections.map((d) => [d, d])}
+                            setOption={setConnection}
+                        />
+                        <Toggle
+                            label="Show table schema"
+                            value={schema}
+                            setValue={setSchema}
+                        />
+                    </div>
                 </>
             )}
         </div>
     );
 };
 
-export const SelectQueryRecipe: IRecipe = {
-    name: "Run select query",
-    longName: "Run select query",
+export const ShowAllTablesRecipe: IRecipe = {
+    name: "Show all tables",
+    longName: "Show all tables",
     parentName: "Postgresql",
-    // len: 152
-    description: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
-    shortDescription: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
+    // len: 171
+    description: "List all tables of previously configured Postgresql database connection. Choose if you want to displaty table schema too. Credentials are stored and loaded from .env file.",
+    shortDescription: "List all tables of previously configured Postgresql database connection. Choose if you want to displaty table schema too. Credentials are stored and loaded from .env file.",
     codeExplanation: ``,
-    ui: SelectQuery,
-    Icon: QueryIcon,
+    ui: ShowAllTables,
+    Icon: TableIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
@@ -144,4 +156,4 @@ export const SelectQueryRecipe: IRecipe = {
             isWidget: false,
         }],
 };
-export default SelectQueryRecipe;
+export default ShowAllTablesRecipe;

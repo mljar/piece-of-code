@@ -29,7 +29,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `    )\n\n`;
 
         src += `# open new connection:\n`;
-        src += `conn = create_new_connection()`;
+        src += `${conn} = create_new_connection()`;
 
 
         setCode(src);

@@ -72,11 +72,12 @@ export const CreateTable: React.FC<IRecipeProps> = ({
 
         if (columnsArr.length === dataTypesArr.length) {
             src += `# if connection was used and closed it is reopen here\n`;
-            src += `if conn.closed:\n`;
-            src += `    conn = create_new_connection()\n`;
+            src += `if ${conn}.closed:\n`;
+            src += `    ${conn} = create_new_connection()\n\n`;
+
             src += `# run the query`;
-            src += `with conn:\n`;
-            src += `    with conn.cursor() as cur:\n\n`;
+            src += `with ${conn}:\n`;
+            src += `    with ${conn}.cursor() as cur:\n\n`;
             src += `        # Create table\n`;
             src += `        cur.execute(\n`;
             src += `            sql.SQL("""\n`;
@@ -160,8 +161,8 @@ export const CreateTable: React.FC<IRecipeProps> = ({
 };
 
 export const CreateTableRecipe: IRecipe = {
-    name: "create table",
-    longName: "create table",
+    name: "Create table",
+    longName: "Create table",
     parentName: "Postgresql",
     // len: 187
     description: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",

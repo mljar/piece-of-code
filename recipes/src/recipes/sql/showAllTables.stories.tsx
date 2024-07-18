@@ -2,44 +2,33 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { CreateTable } from "./createTable";
+import { ShowAllTables } from "./showAllTables";
 
-const meta: Meta<typeof CreateTable> = {
-    component: CreateTable,
+const meta: Meta<typeof ShowAllTables> = {
+    component: ShowAllTables,
     title: "CodePieces/postgresql/queries",
     argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof CreateTable>;
+type Story = StoryObj<typeof ShowAllTables>;
 
-export const CreateTableForm: Story = (
+export const ShowAllTablesForm: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
     const [code, setCode] = useState("");
     return (
         <>
-            <CreateTable {...args} setCode={setCode} />
+            <ShowAllTables {...args} setCode={setCode} />
             <pre>{code}</pre>
         </>
     )
 };
-CreateTableForm.args = {
+ShowAllTablesForm.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
     variables: [
-        {
-            varName: "conn22",
-            varType: "Connection",
-            varColumns: [""],
-            varColumnTypes: [""],
-            varSize: "",
-            varShape: "",
-            varContent: "",
-            isMatrix: false,
-            isWidget: false,
-        },
         {
             varName: "conn",
             varType: "Connection",
@@ -54,14 +43,14 @@ CreateTableForm.args = {
     ],
 };
 
-export const CreateTableEmptyConnStory: Story = (
+export const ShowAllTablesEmptyConnStory: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
     <>
-        <CreateTable {...args} />
+        <ShowAllTables {...args} />
     </>
 );
-CreateTableEmptyConnStory.args = {
+ShowAllTablesEmptyConnStory.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",

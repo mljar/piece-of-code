@@ -46,11 +46,12 @@ export const DropTable: React.FC<IRecipeProps> = ({
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
-        src += `if conn.closed:\n`;
-        src += `    conn = create_new_connection()\n`;
+        src += `if ${conn}.closed:\n`;
+        src += `    ${conn} = create_new_connection()\n\n`;
+
         src += `# run query\n`;
-        src += `with conn:\n`;
-        src += `    with conn.cursor() as cur:\n\n`;
+        src += `with ${conn}:\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
         src += `        # drop table\n`;
         src += `        cur.execute(\n`;
         src += `            "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
@@ -116,8 +117,8 @@ export const DropTable: React.FC<IRecipeProps> = ({
 };
 
 export const DropTableRecipe: IRecipe = {
-    name: "drop table",
-    longName: "drop table",
+    name: "Drop table",
+    longName: "Drop table",
     parentName: "Postgresql",
     // len: 169
     description: "Drop table from database usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose between CASCADE and RESTRICT options",

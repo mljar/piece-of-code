@@ -7,6 +7,7 @@ import { DefineNewConnectionRecipe } from "./defineNewConnection";
 import DropTableRecipe from "./dropTable";
 import InsertQueryRecipe from "./insertQuery";
 import SelectQueryRecipe from "./selectQuery";
+import ShowAllTablesRecipe from "./showAllTables";
 
 export const SqlRecipes: IRecipeSet = {
     name: "Postgresql",
@@ -24,5 +25,6 @@ export const SqlRecipes: IRecipeSet = {
         [InsertQueryRecipe.name]: InsertQueryRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,
+        [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
     },
 };
