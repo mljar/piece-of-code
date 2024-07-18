@@ -67,7 +67,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))`;
 
         setCode(src);
-        setPackages(["import os", "import psycopg"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,

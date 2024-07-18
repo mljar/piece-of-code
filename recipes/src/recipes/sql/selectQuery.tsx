@@ -60,7 +60,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
         src += `            print(f"{row}")`;
 
         setCode(src);
-        setPackages(["import os", "import psycopg"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,

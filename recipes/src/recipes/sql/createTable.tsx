@@ -50,7 +50,6 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     let queryPart1 = ""
     let queryPart2 = ""
 
-    // could probably just smush it into one loop
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
             queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
@@ -69,7 +68,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
             src += `if ${conn}.closed:\n`;
             src += `    ${conn} = create_new_connection()\n\n`;
 
-            src += `# run the query`;
+            src += `# run the query\n`;
             src += `with ${conn}:\n`;
             src += `    with ${conn}.cursor() as cur:\n\n`;
             src += `        # Create table\n`;
@@ -87,7 +86,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
         }
 
         setCode(src);
-        setPackages(["import os", "import psycopg", "from psycopg import sql"]);
+        setPackages(["import psycopg", "from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,
