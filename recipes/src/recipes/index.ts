@@ -26,7 +26,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [ScikitLearnRecipes.name]: ScikitLearnRecipes,
   [AutoMLRecipes.name]: AutoMLRecipes,
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
-  // [SqlRecipes.name]: SqlRecipes,
+  [SqlRecipes.name]: SqlRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 
