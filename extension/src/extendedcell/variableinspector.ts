@@ -163,6 +163,8 @@ def _jupyterlab_variableinspector_dict_list():
                 return True
             if __xr and __xr is not None and isinstance(obj, __xr.DataArray):
                 return True
+            if str(obj).startswith("<psycopg.Connection"):
+                return True
             if str(obj)[0] == "<":
                 return False
             if  v in ['__np', '__pd', '__pyspark', '__tf', '__K', '__torch', '__ipywidgets', '__xr']:

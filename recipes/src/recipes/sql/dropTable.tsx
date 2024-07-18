@@ -17,7 +17,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -45,16 +45,20 @@ export const DropTable: React.FC<IRecipeProps> = ({
     const [dropOption, setDropOption] = useState(dropOptions[0][0]);
 
     useEffect(() => {
-        let src = `connection_name = ${conn}\n\n`;
-        src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cur:\n\n`;
-        src += `    # drop table\n`;
-        src += `    cur.execute(\n`;
-        src += `        "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
+        let src = `# if connection was used and closed it is reopen here\n`;
+        src += `if ${conn}.closed:\n`;
+        src += `    ${conn} = create_new_connection()\n\n`;
+
+        src += `# run query\n`;
+        src += `with ${conn}:\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
+        src += `        # drop table\n`;
+        src += `        cur.execute(\n`;
+        src += `            "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
         src += `    )`;
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os", "import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -81,40 +85,31 @@ export const DropTable: React.FC<IRecipeProps> = ({
                 label={"drop table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Input table name to drop"}
-                        name={table}
-                        setName={setTable}
-                        tooltip="to drop multiple table input a comma separated list"
-                    />
-                    <Select
-                        label={"Select drop opiton"}
-                        option={dropOption}
-                        options={dropOptions}
-                        setOption={setDropOption}
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Input table name to drop"}
+                name={table}
+                setName={setTable}
+                tooltip="to drop multiple table input a comma separated list"
+            />
+            <Select
+                label={"Select drop opiton"}
+                option={dropOption}
+                options={dropOptions}
+                setOption={setDropOption}
+            />
         </div>
     );
 };
 
 export const DropTableRecipe: IRecipe = {
-    name: "drop table",
-    longName: "drop table",
+    name: "Drop table",
+    longName: "Drop table",
     parentName: "Postgresql",
     // len: 169
     description: "Drop table from database usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose between CASCADE and RESTRICT options",

@@ -16,18 +16,24 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     const [conn, setConnection] = useState("conn");
 
     useEffect(() => {
-        let src = `load_dotenv()\n\n`;
+        let src = `# load credentials from .env file:\n`;
+        src += `load_dotenv()\n\n`;
+
+        src += `def create_new_connection():\n`;
+        src += `    return psycopg.connect(\n`;
+        src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
+        src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
+        src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
+        src += `        host=os.getenv("POSTGRES_HOST"),\n`;
+        src += `        port=os.getenv("POSTGRES_PORT"),\n`;
+        src += `    )\n\n`;
+
         src += `# open new connection:\n`;
-        src += `${conn} = psycopg.connect(\n`;
-        src += `	dbname = os.getenv("POSTGRES_DB_NAME"),\n`;
-        src += `	user = os.getenv("POSTGRES_USERNAME"),\n`;
-        src += `	password = os.getenv("POSTGRES_PASSWORD"),\n`;
-        src += `	host = os.getenv("POSTGRES_HOST_ADDRESS"),\n`;
-        src += `	port = os.getenv("POSTGRES_PORT"),\n`;
-        src += `)\n`;
+        src += `${conn} = create_new_connection()`;
+
 
         setCode(src);
-        setPackages(["import psycopg, import os"]);
+        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -70,7 +76,12 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     codeExplanation: ``,
     ui: ConnectToDatabase,
     Icon: ConnectIcon,
-    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },],
+    requiredPackages: [
+        { importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
+        // TODO
+        // commented out due to a bug (#51), if fixed then should be uncommented
+        // { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
+    ],
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     docsUrl: DOCS_URL,
 };

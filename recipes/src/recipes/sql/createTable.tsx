@@ -17,7 +17,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -50,45 +50,44 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     let queryPart1 = ""
     let queryPart2 = ""
 
+    // could probably just smush it into one loop
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
-            queryPart1 += "\t\t\t\t" + "{}" + " " + dataTypesArr[i]
+            queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
+            queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '")'
             break
         }
-        queryPart1 += "\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
-    }
-
-    for (let i = 0; i <= columnsArr.length - 1; i++) {
-        if (i === columnsArr.length - 1) {
-            queryPart2 += "\t\t\t" + "sql.Identifier(" + columnsArr[i] + ")"
-            break
-        }
-        queryPart2 += "\t\t\t" + "sql.Identifier(" + columnsArr[i] + "),\n"
+        queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
+        queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '"),\n'
     }
 
     useEffect(() => {
         let src = ""
 
         if (columnsArr.length === dataTypesArr.length) {
-            src += `connection_name = ${conn}\n\n`;
-            src += `with connection_name:\n`;
-            src += `    with connection_name.cursor() as cur:\n\n`;
-            src += `    # Create table\n`;
-            src += `    cur.execute(\n`;
-            src += `        sql.SQL("""\n`;
-            src += `            CREATE TABLE IF NOT EXISTS ${table} (\n`;
+            src += `# if connection was used and closed it is reopen here\n`;
+            src += `if ${conn}.closed:\n`;
+            src += `    ${conn} = create_new_connection()\n\n`;
+
+            src += `# run the query`;
+            src += `with ${conn}:\n`;
+            src += `    with ${conn}.cursor() as cur:\n\n`;
+            src += `        # Create table\n`;
+            src += `        cur.execute(\n`;
+            src += `            sql.SQL("""\n`;
+            src += `                CREATE TABLE IF NOT EXISTS ${table} (\n`;
             src += `${queryPart1}\n`;
-            src += `        );"""\n`;
-            src += `        ).format(\n`;
+            src += `            );"""\n`;
+            src += `            ).format(\n`;
             src += `${queryPart2}\n`;
-            src += `        )\n`;
-            src += `    )\n`;
+            src += `            )\n`;
+            src += `        )`;
         } else {
             src += "number of column names needs to be euqal to number of data types"
         }
 
         setCode(src);
-        setPackages(["import os, import psycopg, from psycopg import sql"]);
+        setPackages(["import os", "import psycopg", "from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -119,45 +118,36 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                 label={"Create table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Set new table name"}
-                        name={table}
-                        setName={setTable}
-                    />
-                    <Variable
-                        label={"Input columns names"}
-                        name={columns}
-                        setName={setColumns}
-                        tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
-                    />
-                    <Variable
-                        label={"Input data types of columns"}
-                        name={dataTypes}
-                        setName={setDataTypes}
-                        tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Set new table name"}
+                name={table}
+                setName={setTable}
+            />
+            <Variable
+                label={"Input columns names"}
+                name={columns}
+                setName={setColumns}
+                tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
+            />
+            <Variable
+                label={"Input data types of columns"}
+                name={dataTypes}
+                setName={setDataTypes}
+                tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
+            />
         </div>
     );
 };
 
 export const CreateTableRecipe: IRecipe = {
-    name: "create table",
-    longName: "create table",
+    name: "Create table",
+    longName: "Create table",
     parentName: "Postgresql",
     // len: 187
     description: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",

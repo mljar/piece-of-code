@@ -17,7 +17,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === "Connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -44,21 +44,30 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     const [values, setValues] = useState("please select query values");
 
     let percentS = "%s"
+    let valuesArr = values.split(",")
 
-    for (let i = 1; i < values.split(",").length; i++) {
-        percentS += ", %s";
+    for (let i = 0; i < values.split(",").length; i++) {
+        if (i !== 0) {
+            percentS += ", %s";
+        }
+        valuesArr[i] = '"' + valuesArr[i] + '"'
     }
 
+    let valuesWithQuetes = valuesArr.join()
+
     useEffect(() => {
-        let src = `connection_name = ${conn}\n\n`;
-        src += `with connection_name:\n`;
-        src += `    with connection_name.cursor() as cursor:\n\n`;
-        src += `    # Insert into db\n`;
-        // here i am not shure if ${values} is gonna work or if it needs to be "${values}"
-        src += `    cur.execute("INSERT INTO ${table} (${columns}) valuesS (${percentS})", (${values})\n\n`;
+        let src = `# if connection was used and closed it is reopen here\n`;
+        src += `if ${conn}.closed:\n`;
+        src += `    ${conn} = create_new_connection()\n\n`;
+
+        src += `# run the query\n`;
+        src += `with ${conn}:\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
+        src += `        # Insert into db\n`;
+        src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))`;
 
         setCode(src);
-        setPackages(["import os, import psycopg"]);
+        setPackages(["import os", "import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -89,36 +98,27 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                 label={"Run sql insert query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
-                    <Variable
-                        label={"Choose query table"}
-                        name={table}
-                        setName={setTable}
-                    />
-                    <Variable
-                        label={"Choose query values"}
-                        name={values}
-                        setName={setValues}
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Choose query table"}
+                name={table}
+                setName={setTable}
+            />
+            <Variable
+                label={"Choose query columns"}
+                name={columns}
+                setName={setColumns}
+            />
+            <Variable
+                label={"Choose query values"}
+                name={values}
+                setName={setValues}
+            />
         </div>
     );
 };

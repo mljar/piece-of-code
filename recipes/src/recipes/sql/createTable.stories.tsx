@@ -30,8 +30,19 @@ CreateTableForm.args = {
     variablesStatus: "loaded",
     variables: [
         {
+            varName: "conn22",
+            varType: "Connection",
+            varColumns: [""],
+            varColumnTypes: [""],
+            varSize: "",
+            varShape: "",
+            varContent: "",
+            isMatrix: false,
+            isWidget: false,
+        },
+        {
             varName: "conn",
-            varType: "connection",
+            varType: "Connection",
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

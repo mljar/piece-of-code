@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { SelectQuery } from "./selectQuery";
+import { ShowAllColumns } from "./showAllColumns";
 
-const meta: Meta<typeof SelectQuery> = {
-    component: SelectQuery,
+const meta: Meta<typeof ShowAllColumns> = {
+    component: ShowAllColumns,
     title: "CodePieces/postgresql/queries",
     argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof SelectQuery>;
+type Story = StoryObj<typeof ShowAllColumns>;
 
-export const SelectQueryForm: Story = (
+export const ShowAllColumnsForm: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
     const [code, setCode] = useState("");
     return (
         <>
-            <SelectQuery {...args} setCode={setCode} />
+            <ShowAllColumns {...args} setCode={setCode} />
             <pre>{code}</pre>
         </>
     )
 };
-SelectQueryForm.args = {
+ShowAllColumnsForm.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
@@ -43,14 +43,14 @@ SelectQueryForm.args = {
     ],
 };
 
-export const SelectQueryEmptyConnStory: Story = (
+export const ShowAllColumnsEmptyConnStory: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
     <>
-        <SelectQuery {...args} />
+        <ShowAllColumns {...args} />
     </>
 );
-SelectQueryEmptyConnStory.args = {
+ShowAllColumnsEmptyConnStory.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
