@@ -65,7 +65,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         src += `    with ${conn}.cursor() as cur:\n\n`;
         src += `        # Insert into db\n`;
         // fails when given one value and one column and in the table there are two columns
-        src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes}))`;
+        src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))`;
 
         setCode(src);
         setPackages(["import os", "import psycopg"]);
