@@ -44,15 +44,15 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     const [values, setValues] = useState("please select query values");
 
     let percentS = "%s"
-
-    for (let i = 1; i < values.split(",").length; i++) {
-        percentS += ", %s";
-    }
-
     let valuesArr = values.split(",")
+
     for (let i = 0; i < values.split(",").length; i++) {
+        if (i !== 0) {
+            percentS += ", %s";
+        }
         valuesArr[i] = '"' + valuesArr[i] + '"'
     }
+
     let valuesWithQuetes = valuesArr.join()
 
     useEffect(() => {

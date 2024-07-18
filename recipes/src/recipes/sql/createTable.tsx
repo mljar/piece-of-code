@@ -54,16 +54,10 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
             queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
-            break
-        }
-        queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
-    }
-
-    for (let i = 0; i <= columnsArr.length - 1; i++) {
-        if (i === columnsArr.length - 1) {
             queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '")'
             break
         }
+        queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
         queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '"),\n'
     }
 
