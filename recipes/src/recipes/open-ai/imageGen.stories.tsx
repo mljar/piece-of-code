@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { MultiImages } from "./multiRmBackground";
+import { ImageGen } from "./imageGen";
 
-const meta: Meta<typeof MultiImages> = {
-  component: MultiImages,
-  title: "CodePieces/images-operations/multiRmBackground",
+const meta: Meta<typeof ImageGen> = {
+  component: ImageGen,
+  title: "CodePieces/open-ai/imageGen",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof MultiImages>;
+type Story = StoryObj<typeof ImageGen>;
 
-export const MultiImagesForm: Story = (
+export const ImageGenForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
   const [code, setCode] = useState("");
   return (
   <>
-    <MultiImages  {...args} setCode={setCode}/>
+    <ImageGen {...args} setCode={setCode}/>
     <pre>{code}</pre>
   </>
   )
 };
-MultiImagesForm.args = {
+ImageGenForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
 };
