@@ -8,6 +8,7 @@ interface TextAreaProps {
     setText: React.Dispatch<React.SetStateAction<string>>;
     tooltip?: string;
     rows?: number;
+    wrap?: string;
 }
 
 export const TextArea: React.FC<TextAreaProps> = ({
@@ -15,6 +16,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
     text,
     setText,
     tooltip = "",
+    wrap = "hard",
     rows = 3,
 }: TextAreaProps) => {
     return (
@@ -45,6 +47,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
                         placeholder={text}
                         value={text}
                         rows={rows}
+                        wrap={wrap}
                         onChange={(e) => setText(e.target.value)}
                         aria-label={`${label}`}
                     />
