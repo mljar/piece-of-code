@@ -107,32 +107,23 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
                 setAdvanced={setAdvanced}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Choose table"}
-                        name={table}
-                        setName={setTable}
-                    />
-                    {advanced && (
-                        <Variable
-                            label="Choose schema"
-                            name={schema}
-                            setName={setSchema}
-                        />
-                    )}
-                </>
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Choose table"}
+                name={table}
+                setName={setTable}
+            />
+            {advanced && (
+                <Variable
+                    label="Choose schema"
+                    name={schema}
+                    setName={setSchema}
+                />
             )}
         </div>
     );

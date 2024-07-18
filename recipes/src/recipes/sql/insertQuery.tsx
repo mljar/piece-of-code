@@ -64,7 +64,6 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
         src += `        # Insert into db\n`;
-        // fails when given one value and one column and in the table there are two columns
         src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))`;
 
         setCode(src);
@@ -99,36 +98,27 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                 label={"Run sql insert query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Choose query table"}
-                        name={table}
-                        setName={setTable}
-                    />
-                    <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
-                    <Variable
-                        label={"Choose query values"}
-                        name={values}
-                        setName={setValues}
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Choose query table"}
+                name={table}
+                setName={setTable}
+            />
+            <Variable
+                label={"Choose query columns"}
+                name={columns}
+                setName={setColumns}
+            />
+            <Variable
+                label={"Choose query values"}
+                name={values}
+                setName={setValues}
+            />
         </div>
     );
 };

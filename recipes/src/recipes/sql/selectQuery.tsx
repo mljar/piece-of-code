@@ -18,7 +18,6 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 }) => {
     const connections = variables
         .filter((v) => v.varType === "Connection")
-        // .filter((v) => v.varType === "connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -89,31 +88,22 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                 label={"Run sql select query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Choose query tables"}
-                        name={tables}
-                        setName={setTables}
-                    />
-                    <Variable
-                        label={"Choose query columns"}
-                        name={columns}
-                        setName={setColumns}
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Choose query tables"}
+                name={tables}
+                setName={setTables}
+            />
+            <Variable
+                label={"Choose query columns"}
+                name={columns}
+                setName={setColumns}
+            />
         </div>
     );
 };

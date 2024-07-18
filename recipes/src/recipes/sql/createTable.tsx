@@ -118,38 +118,29 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                 label={"Create table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Set new table name"}
-                        name={table}
-                        setName={setTable}
-                    />
-                    <Variable
-                        label={"Input columns names"}
-                        name={columns}
-                        setName={setColumns}
-                        tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
-                    />
-                    <Variable
-                        label={"Input data types of columns"}
-                        name={dataTypes}
-                        setName={setDataTypes}
-                        tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Set new table name"}
+                name={table}
+                setName={setTable}
+            />
+            <Variable
+                label={"Input columns names"}
+                name={columns}
+                setName={setColumns}
+                tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
+            />
+            <Variable
+                label={"Input data types of columns"}
+                name={dataTypes}
+                setName={setDataTypes}
+                tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
+            />
         </div>
     );
 };

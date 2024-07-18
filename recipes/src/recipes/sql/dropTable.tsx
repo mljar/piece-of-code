@@ -85,33 +85,24 @@ export const DropTable: React.FC<IRecipeProps> = ({
                 label={"drop table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <Select
-                        label={"Choose connection variable name"}
-                        option={conn}
-                        options={connections.map((d) => [d, d])}
-                        setOption={setConnection}
-                    />
-                    <Variable
-                        label={"Input table name to drop"}
-                        name={table}
-                        setName={setTable}
-                        tooltip="to drop multiple table input a comma separated list"
-                    />
-                    <Select
-                        label={"Select drop opiton"}
-                        option={dropOption}
-                        options={dropOptions}
-                        setOption={setDropOption}
-                    />
-                </>
-            )}
+            <Select
+                label={"Choose connection variable name"}
+                option={conn}
+                options={connections.map((d) => [d, d])}
+                setOption={setConnection}
+            />
+            <Variable
+                label={"Input table name to drop"}
+                name={table}
+                setName={setTable}
+                tooltip="to drop multiple table input a comma separated list"
+            />
+            <Select
+                label={"Select drop opiton"}
+                option={dropOption}
+                options={dropOptions}
+                setOption={setDropOption}
+            />
         </div>
     );
 };

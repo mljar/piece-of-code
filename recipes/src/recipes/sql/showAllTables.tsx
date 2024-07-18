@@ -104,28 +104,19 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
                 label={"Run sql insert query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            {conn === "" && (
-                <p className="text-base text-gray-800 dark:text-white">
-                    There are no connection objects in your notebook. You can open a new connection to run the query.
-                </p>
-            )}
-            {conn !== "" && (
-                <>
-                    <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-                        <Select
-                            label={"Choose connection variable name"}
-                            option={conn}
-                            options={connections.map((d) => [d, d])}
-                            setOption={setConnection}
-                        />
-                        <Toggle
-                            label="Show table schema"
-                            value={schema}
-                            setValue={setSchema}
-                        />
-                    </div>
-                </>
-            )}
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                <Select
+                    label={"Choose connection variable name"}
+                    option={conn}
+                    options={connections.map((d) => [d, d])}
+                    setOption={setConnection}
+                />
+                <Toggle
+                    label="Show table schema"
+                    value={schema}
+                    setValue={setSchema}
+                />
+            </div>
         </div>
     );
 };
