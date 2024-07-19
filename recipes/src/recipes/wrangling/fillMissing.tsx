@@ -113,7 +113,7 @@ export const FillMissing: React.FC<IRecipeProps> = ({
     }
     src += `# fit imputer and fill missing data\n`;
     const xColsStr = '"' + xCols.join('", "') + '"';
-    const d = `${df}[[${xColsStr}]]`;
+    const d = `${df}.loc[:, [${xColsStr}]]`;
     src += `${d} = ${name}.fit_transform(${d})\n`;
     src += `# display column that was filled\n`;
     src += `print("Filled columns")\n`;

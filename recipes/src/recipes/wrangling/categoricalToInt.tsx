@@ -74,7 +74,7 @@ export const CategoricalToInt: React.FC<IRecipeProps> = ({
     src += `)\n`;
     src += `# fit and convert selected columns\n`;
     const xColsStr = '"' + xCols.join('", "') + '"';
-    const d = `${df}[[${xColsStr}]]`;
+    const d = `${df}.loc[:, [${xColsStr}]]`;
     src += `${d} = ${encoder}.fit_transform(${d})\n`;
     src += `# display values after conversion\n`;
     src += `print("Columns after conversion categoricals to integers")\n`;
