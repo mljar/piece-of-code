@@ -7,6 +7,7 @@ import { DefineNewConnectionRecipe } from "./defineNewConnection";
 import DropTableRecipe from "./dropTable";
 import InsertQueryRecipe from "./insertQuery";
 import RawQueryRecipe from "./rawQuery";
+import RawQueryToPandasRecipe from "./rawQueryToPandas";
 import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
@@ -30,5 +31,6 @@ export const SqlRecipes: IRecipeSet = {
         [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
         [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
         [RawQueryRecipe.name]: RawQueryRecipe,
+        [RawQueryToPandasRecipe.name]: RawQueryToPandasRecipe,
     },
 };
