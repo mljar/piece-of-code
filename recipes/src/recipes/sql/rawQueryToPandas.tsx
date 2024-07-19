@@ -6,17 +6,9 @@ import { Select } from "../../components/Select";
 import { TextArea } from "../../components/TextArea";
 import { SqlIcon } from "../../icons/Sql";
 import { Variable } from "../../components/Variable";
+import { QueryIcon } from "../../icons/Query";
 
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-const DOCS_URL = "sql-query-postgresql";
+const DOCS_URL = "sql-query-postgresql-pandas";
 
 export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     setCode,
@@ -120,7 +112,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={SqlIcon}
+                Icon={QueryIcon}
                 label={"Raw query to pandas"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -152,25 +144,16 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     );
 };
 
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
-// TODO
 export const RawQueryToPandasRecipe: IRecipe = {
     name: "Raw query to Pandas",
-    longName: "Raw query to Pandas",
+    longName: "Raw query and craete Pandas dataframe",
     parentName: "Postgresql",
-    // len: 207
-    description: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
-    shortDescription: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
+    // len: 199
+    description: "Run a sql query usign previously configured Postgresql connection and crate pandas data frame. You can input any valid Postgresql sql query. Select query will display the result and crate data frame.",
+    shortDescription: "Run a sql query usign previously configured Postgresql connection and crate pandas data frame. You can input any valid Postgresql sql query. Select query will display the result and crate data frame.",
     codeExplanation: ``,
     ui: RawQueryToPandas,
-    Icon: SqlIcon,
+    Icon: QueryIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
     { importName: "pandas", installationName: "pandas", version: ">=1.0.0" }],
     docsUrl: DOCS_URL,
