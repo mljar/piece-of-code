@@ -13,6 +13,8 @@ import TrainKNNRecipe from "./trainKNN";
 import ConfusionMatrixRecipe from "./confusionMatrix";
 import RocCurveRecipe from "./rocCurve";
 import PrecisionRecallRecipe from "./precisionRecall";
+import LiftChartRecipe from "./liftChart";
+import CalibrationPlotRecipe from "./calibrationPlot";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -35,5 +37,7 @@ export const ScikitLearnRecipes: IRecipeSet = {
         [ConfusionMatrixRecipe.name]: ConfusionMatrixRecipe,
         [RocCurveRecipe.name]: RocCurveRecipe,
         [PrecisionRecallRecipe.name]: PrecisionRecallRecipe,
+        [LiftChartRecipe.name]: LiftChartRecipe,
+        [CalibrationPlotRecipe.name]: CalibrationPlotRecipe,
     }
 };
