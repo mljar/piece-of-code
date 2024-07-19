@@ -4,7 +4,6 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { TextArea } from "../../components/TextArea";
-import { SqlIcon } from "../../icons/Sql";
 import { Variable } from "../../components/Variable";
 import { QueryIcon } from "../../icons/Query";
 
