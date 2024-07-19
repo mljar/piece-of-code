@@ -137,7 +137,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 };
 
 export const DefineNewConnectionRecipe: IRecipe = {
-    name: "Define new Postgresql database connection",
+    name: "Define new connection",
     longName: "Define new Postgresql database connection",
     parentName: "Postgresql",
     // len: 196
