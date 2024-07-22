@@ -4,11 +4,11 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
-import { TableRemoveIcon } from "../../icons/TableRemove";
+import { QueryIcon } from "../../icons/Query";
 
-const DOCS_URL = "postgresql-drop-table";
+const DOCS_URL = "postgresql-select";
 
-export const DropTable: React.FC<IRecipeProps> = ({
+export const SelectQuery: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -40,9 +40,8 @@ export const DropTable: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [table, setTable] = useState("table");
-    const dropOptions: [string, string][] = [["", ""], ["RESTRICT", " RESTRICT"], ["CASCADE", " CASCADE"]];
-    const [dropOption, setDropOption] = useState(dropOptions[0][0]);
+    const [columns, setColumns] = useState("please select query columns");
+    const [tables, setTables] = useState("please select query tables");
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
@@ -51,38 +50,42 @@ export const DropTable: React.FC<IRecipeProps> = ({
 
         src += `# run query\n`;
         src += `with ${conn}:\n`;
-        src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # drop table\n`;
-        src += `        cur.execute(\n`;
-        src += `            "DROP TABLE IF EXISTS ${table}${dropOption};"\n`;
-        src += `    )`;
+        src += `    with ${conn}.cursor() as cur:\n`;
+        src += `        # Query db\n`;
+        src += `        cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
+        src += `        # Fetch all the rows\n`;
+        src += `        rows = cur.fetchall()\n\n`;
+        src += `        # Print the results\n`;
+        src += `        for row in rows:\n`;
+        src += `            print(f"{row}")`;
 
         setCode(src);
-        setPackages(["import os", "import psycopg"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
-                table,
+                columns,
+                tables,
                 variables: variables.filter((v) => v.varType === "connection"),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, table, dropOption]);
+    }, [conn, columns, tables]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-            if (metadata["table"] !== undefined) setTable(metadata["table"]);
+            if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
+            if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
         }
     }, [metadata]);
-
 
     return (
         <div>
             <Title
-                Icon={TableRemoveIcon}
-                label={"drop table"}
+                Icon={QueryIcon}
+                label={"Run sql select query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -92,31 +95,29 @@ export const DropTable: React.FC<IRecipeProps> = ({
                 setOption={setConnection}
             />
             <Variable
-                label={"Input table name to drop"}
-                name={table}
-                setName={setTable}
-                tooltip="to drop multiple table input a comma separated list"
+                label={"Choose query tables"}
+                name={tables}
+                setName={setTables}
             />
-            <Select
-                label={"Select drop opiton"}
-                option={dropOption}
-                options={dropOptions}
-                setOption={setDropOption}
+            <Variable
+                label={"Choose query columns"}
+                name={columns}
+                setName={setColumns}
             />
         </div>
     );
 };
 
-export const DropTableRecipe: IRecipe = {
-    name: "Drop table",
-    longName: "Drop table",
+export const SelectQueryRecipe: IRecipe = {
+    name: "Run select query",
+    longName: "Run select query",
     parentName: "Postgresql",
-    // len: 169
-    description: "Drop table from database usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose between CASCADE and RESTRICT options",
-    shortDescription: "Drop table from database usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose between CASCADE and RESTRICT options",
+    // len: 152
+    description: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
+    shortDescription: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
     codeExplanation: ``,
-    ui: DropTable,
-    Icon: TableRemoveIcon,
+    ui: SelectQuery,
+    Icon: QueryIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
@@ -133,4 +134,4 @@ export const DropTableRecipe: IRecipe = {
             isWidget: false,
         }],
 };
-export default DropTableRecipe;
+export default SelectQueryRecipe;

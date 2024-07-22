@@ -15,7 +15,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setEnv,
 }) => {
     const [dbname, setDBName] = useState("database");
-    const [username, setUsername] = useState("username");
+    const [username, setUsername] = useState("postgres");
     const [password, setPassword] = useState("password");
     const [host_address, setHostAddress] = useState("host_address");
     const [port, setPort] = useState("5432");
@@ -39,7 +39,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         // src += `print("Secret saved in .env file")\n`;
         // src += `print("Please remove this code cell and save notebook, be safe!")`;
 
-        let src = `print("Variable added successfully. Please check .env file")`;
+        let src = `print("Database connection credentials stored in .env file successfully.")`;
         setCode(src);
         if (setEnv) {
             setEnv([
@@ -84,7 +84,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable
-                    label={"Set your database name"}
+                    label={"Database name"}
                     name={dbname}
                     setName={setDBName}
                 />
@@ -137,12 +137,12 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 };
 
 export const DefineNewConnectionRecipe: IRecipe = {
-    name: "Define new Postgresql database connection",
+    name: "Define new connection",
     longName: "Define new Postgresql database connection",
     parentName: "Postgresql",
     // len: 196
-    description: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forger to close it after done using it",
-    shortDescription: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forger to close it after done using it",
+    description: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
+    shortDescription: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
     codeExplanation: ``,
     ui: DefineNewConnection,
     Icon: GlobeIcon,

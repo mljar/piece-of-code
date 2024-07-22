@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
-import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
-import { InsertIcon } from "../../icons/Insert";
+import { TextArea } from "../../components/TextArea";
+import { SqlIcon } from "../../icons/Sql";
 
-const DOCS_URL = "postgresql-insert";
+const DOCS_URL = "sql-query-postgresql";
 
-export const InsertQuery: React.FC<IRecipeProps> = ({
+export const RawQuery: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -38,22 +38,9 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
             </div>
         );
     }
+
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [columns, setColumns] = useState("please select query columns");
-    const [table, setTable] = useState("please select query table");
-    const [values, setValues] = useState("please select query values");
-
-    let percentS = "%s"
-    let valuesArr = values.split(",")
-
-    for (let i = 0; i < values.split(",").length; i++) {
-        if (i !== 0) {
-            percentS += ", %s";
-        }
-        valuesArr[i] = '"' + valuesArr[i] + '"'
-    }
-
-    let valuesWithQuetes = valuesArr.join()
+    const [query, setQuery] = useState("select 1");
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
@@ -63,39 +50,46 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         src += `# run the query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # Insert into db\n`;
-        src += `        cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))`;
+        src += `        # Run query\n`;
+        src += `        cur.execute(\n`;
+        src += `            sql.SQL("""\n`;
+        src += `${query}\n`;
+        src += `            """\n`;
+        src += `            )\n`;
+        src += `        )\n\n`;
+
+        src += `        if str(cur.statusmessage).upper().startswith("SELECT"):\n`;
+        src += `            # Fetch all the results\n`;
+        src += `            results = cur.fetchall()\n\n`;
+
+        src += `            # Print the results\n`;
+        src += `            for result in results:\n`;
+        src += `                print(f"{result}")`;
 
         setCode(src);
-        setPackages(["import os", "import psycopg"]);
+        setPackages(["import psycopg", "from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,
-                columns,
-                table,
-                values,
                 variables: variables.filter((v) => v.varType === "connection"),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, columns, table, values]);
+    }, [conn, query]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-            if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
-            if (metadata["table"] !== undefined) setTable(metadata["table"]);
-            if (metadata["values"] !== undefined) setValues(metadata["values"]);
+            if (metadata["query"] !== undefined) setQuery(metadata["query"]);
         }
     }, [metadata]);
-
 
     return (
         <div>
             <Title
-                Icon={InsertIcon}
-                label={"Run sql insert query"}
+                Icon={SqlIcon}
+                label={"Raw query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -104,35 +98,26 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
             />
-            <Variable
-                label={"Choose query table"}
-                name={table}
-                setName={setTable}
-            />
-            <Variable
-                label={"Choose query columns"}
-                name={columns}
-                setName={setColumns}
-            />
-            <Variable
-                label={"Choose query values"}
-                name={values}
-                setName={setValues}
+            <TextArea
+                label={"Write sql query"}
+                text={query}
+                setText={setQuery}
+                rows={3}
+                wrap="hard"
             />
         </div>
     );
 };
-
-export const InsertQueryRecipe: IRecipe = {
-    name: "Run insert query",
-    longName: "Run insert query",
+export const RawQueryRecipe: IRecipe = {
+    name: "Raw query",
+    longName: "Raw query",
     parentName: "Postgresql",
-    // len: 214
-    description: "Execute sql insert query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table name, then list out columns you wish to fill and then their respectful values.",
-    shortDescription: "Execute sql insert query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table name, then list out columns you wish to fill and then their respectful values.",
+    // len: 207
+    description: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
+    shortDescription: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
     codeExplanation: ``,
-    ui: InsertQuery,
-    Icon: InsertIcon,
+    ui: RawQuery,
+    Icon: SqlIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
@@ -149,4 +134,4 @@ export const InsertQueryRecipe: IRecipe = {
             isWidget: false,
         }],
 };
-export default InsertQueryRecipe;
+export default RawQueryRecipe;

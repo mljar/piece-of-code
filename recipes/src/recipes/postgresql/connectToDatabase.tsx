@@ -17,23 +17,30 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 
     useEffect(() => {
         let src = `# load credentials from .env file:\n`;
-        src += `load_dotenv()\n\n`;
+        src += `load_dotenv(override=True)\n\n`;
 
         src += `def create_new_connection():\n`;
-        src += `    return psycopg.connect(\n`;
+        src += `    try:\n`;
+        src += `        conn = psycopg.connect(\n`;
+        // src += `    return psycopg.connect(\n`;
         src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
         src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
         src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
         src += `        host=os.getenv("POSTGRES_HOST"),\n`;
         src += `        port=os.getenv("POSTGRES_PORT"),\n`;
-        src += `    )\n\n`;
+        src += `        )\n`;
+        src += `    except OperationalError as e:\n`;
+        src += `        print(f"Error connectiong to database {e}")\n`;
+        src += `        print(f"Are all credentials correct?")\n`;
+        src += `    finally:\n`;
+        src += `        return conn\n\n`;
 
         src += `# open new connection:\n`;
-        src += `${conn} = create_new_connection()`;
-
+        src += `${conn} = create_new_connection()\n`;
+        src += `print(f"Success")`;
 
         setCode(src);
-        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);
+        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv", "from psycopg import OperationalError"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -67,7 +74,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 };
 
 export const ConnectToDatabaseRecipe: IRecipe = {
-    name: "Connect to Postgresql database",
+    name: "Connect to database",
     longName: "Connect to Postgresql database",
     parentName: "Postgresql",
     // len: 147
