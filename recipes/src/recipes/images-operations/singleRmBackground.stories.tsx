@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof SingleImage>;
 
-export const RembgForm: Story = (
+export const SingleImageForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
   const [code, setCode] = useState("");
@@ -24,7 +24,7 @@ export const RembgForm: Story = (
   </>
   )
 };
-RembgForm.args = {
+SingleImageForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
 };
