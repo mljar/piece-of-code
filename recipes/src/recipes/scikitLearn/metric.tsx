@@ -29,11 +29,11 @@ export const Metric: React.FC<IRecipeProps> = ({
   const metricsFuncs = {
     Accuracy: "accuracy_score",
     "ROC AUC": "roc_auc_score",
-    F1: "f1_score",
+    // F1: "f1_score",
     Precision: "average_precision_score",
     Recall: "recall_score",
     LogLoss: "log_loss",
-    MCC: "matthews_corrcoef",
+    "Matthews correlation coefficient": "matthews_corrcoef",
     MSE: "mean_squared_error",
     RMSE: "root_mean_squared_error",
     MAE: "mean_absolute_error",
@@ -52,12 +52,30 @@ export const Metric: React.FC<IRecipeProps> = ({
   const [predVarType, setPredVarType] = useState("");
   const [multiClassStrategy, setMultiClassStrategy] = useState("ovr");
   const [averageStrategy, setAverageStrategy] = useState("micro");
+  const [metricTitle, setMetricTitle] = useState("Predicted values");
 
   useEffect(() => {
-    const predSize = variables.filter((v) => v.varName === yPred)[0].varShape;
-    if (predSize.includes("x 2 cols")) {
+    if (
+      metric === "Accuracy" ||
+      metric === "F1" ||
+      metric === "Matthews correlation coefficient"
+    ) {
+      setMetricTitle("Predicted labels");
+    } else if (
+      metric === "ROC AUC" ||
+      metric === "Precision" ||
+      metric === "Recall" ||
+      metric === "LogLoss"
+    ) {
+      setMetricTitle("Predicted probabilities");
+    }
+  }, [metric]);
+
+  useEffect(() => {
+    const predShape = variables.filter((v) => v.varName === yPred)[0].varShape;
+    if (predShape.includes("x 2 cols")) {
       setPredVarType("binary");
-    } else if (predSize.includes("x")) {
+    } else if (predShape.includes("x")) {
       setPredVarType("multiclass");
     } else {
       setPredVarType("vector");
@@ -79,15 +97,6 @@ export const Metric: React.FC<IRecipeProps> = ({
         src += `${varName} = ${m}(${yTrue}, ${yPred}[:,1]`;
       } else if (predVarType === "multiclass") {
         src += `${varName} = ${m}(${yTrue}, ${yPred}, multi_class="${multiClassStrategy}"`;
-      } else {
-        src += `${varName} = ${m}(${yTrue}, ${yPred}`;
-      }
-    } else if (metric === "F1") {
-      if (predVarType === "binary") {
-        src += `${varName} = ${m}(${yTrue}, ${yPred}, pos_label=np.unique(${yTrue})[1]`;
-        packages.push("import numpy as np");
-      } else if (predVarType === "multiclass") {
-        src += `${varName} = ${m}(${yTrue}, ${yPred}, average="${averageStrategy}"`;
       } else {
         src += `${varName} = ${m}(${yTrue}, ${yPred}`;
       }
@@ -213,11 +222,7 @@ export const Metric: React.FC<IRecipeProps> = ({
               setOption={setYTrue}
             />
             <Select
-              label={
-                metric === "Accuracy" || metric === "F1"
-                  ? "Predicted labels"
-                  : "Predicted values"
-              }
+              label={metricTitle}
               option={yPred}
               options={dataObjects.map((c) => [c, c])}
               setOption={setYPred}
@@ -246,8 +251,8 @@ export const MetricRecipe: IRecipe = {
   name: "Compute Metric",
   longName: "Compute Metric",
   parentName: "Scikit-learn",
-  description: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, F1, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2. Please use advanced settings to provide sample weights for metric function.`,
-  shortDescription: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, F1, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2.`,
+  description: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2. Please use advanced settings to provide sample weights for metric function.`,
+  shortDescription: `Compute metrics for predictions. This recipe supports following metrics: Accuracy, ROC AUC, Precision, Recall, LogLoss, MCC, MSE, RMSE, MAE, R2.`,
   codeExplanation: `
 1. Compute metric to assess performance between true and predicted values.
 2. Print computed score.  
