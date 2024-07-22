@@ -6,6 +6,7 @@ import { Select } from "../../components/Select";
 import { TextArea } from "../../components/TextArea";
 import { Variable } from "../../components/Variable";
 import { QueryIcon } from "../../icons/Query";
+import { PandasIcon } from "../../icons/Pandas";
 
 const DOCS_URL = "python-sql-query-postgresql-pandas";
 
@@ -111,7 +112,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QueryIcon}
+                Icon={PandasIcon}
                 label={"Raw query to pandas"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
