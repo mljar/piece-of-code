@@ -17,7 +17,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "Connection")
+        .filter((v) => v.varType === "connection")
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
