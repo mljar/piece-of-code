@@ -3,6 +3,7 @@ import { IRecipeSet } from "../base";
 import { OpenAIIcon } from "../../icons/OpenAI";
 import ImageGenRecipe from "./imageGen";
 import ClientRecipe from "./clientOpenAI";
+import ChatComplRecipe from "./chatCompletions";
 
 export const OpenAIRecipes: IRecipeSet = {
   name: "OpenAI",
@@ -13,7 +14,8 @@ export const OpenAIRecipes: IRecipeSet = {
   tags: ["python", "ai-image"],
   Icon: OpenAIIcon,
   recipes: {
-    [ImageGenRecipe.name]: ImageGenRecipe,
     [ClientRecipe.name]: ClientRecipe,
+    [ImageGenRecipe.name]: ImageGenRecipe,
+    [ChatComplRecipe.name]: ChatComplRecipe,
   },
 };
