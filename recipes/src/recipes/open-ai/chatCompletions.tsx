@@ -26,6 +26,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
   const [maxTokens, setMaxTokens] = useState(300);
   const [systemPrompt, setSystemPrompt] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
+  const [assistantPrompt, setAssistantPrompt] = useState("");
   const [advanced, setAdvanced] = useState(false);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
     src += `        {"role": "user", "content": "${userPrompt}"},\n`;
     if (advanced){
         src += `        {"role": "system", "content": "${systemPrompt}"},\n`;
+        src += `        {"role": "assistant", "content": "${assistantPrompt}"},\n`
     }
     src += `    ],\n`;
     src += `    max_tokens=${maxTokens}\n`;
@@ -52,11 +54,12 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         maxTokens,
         systemPrompt,
         userPrompt,
+        assistantPrompt,
         advanced,
         docsUrl: DOCS_URL,
       });
     }
-  }, [model, maxTokens, systemPrompt, userPrompt, advanced]);
+  }, [model, maxTokens, systemPrompt, userPrompt, assistantPrompt, advanced]);
 
   useEffect(() => {
     if (metadata) {
@@ -65,6 +68,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
       if (metadata["maxTokens"] !== undefined) setMaxTokens(metadata["maxTokens"]);
       if (metadata["systemPrompt"] !== undefined) setSystemPrompt(metadata["systemPrompt"]);
       if (metadata["userPrompt"] !== undefined) setUserPrompt(metadata["userPrompt"]);
+      if (metadata["assistantPrompt"] !== undefined) setAssistantPrompt(metadata["assistantPrompt"]);
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
     }
   }, [metadata]);
@@ -94,17 +98,26 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
           />
       </div>
       <Variable
-          label={"Enter your question"}
+          label={"Enter user message"}
           name={userPrompt}
           setName={setUserPrompt}
+          tooltip="The user messages provide requests or comments for the assistant to respond to."
         />
         {advanced && (
+        <>
         <Variable
-        label={"Enter system role"}
+        label={"Enter system message"}
         name={systemPrompt}
         setName={setSystemPrompt}
-        tooltip="Thanks to system role you can guide the behavior and output of the AI model."
+        tooltip="The system message is optional and can be used to set the behavior of the assistant."
       />
+      <Variable
+        label={"Enter assistant message"}
+        name={assistantPrompt}
+        setName={setAssistantPrompt}
+        tooltip="Assistant messages store previous assistant responses, but can also be written by you to give examples of desired behavior"
+      />
+      </>
       )}
     </div>
   );
