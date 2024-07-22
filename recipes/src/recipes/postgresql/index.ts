@@ -12,7 +12,7 @@ import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
 
-export const SqlRecipes: IRecipeSet = {
+export const PostgresqlRecipes: IRecipeSet = {
     name: "Postgresql",
     longName: "Run sql queryies on Postgresql database usign python",
     docsUrl: "postgresql-query-python",
@@ -24,13 +24,13 @@ export const SqlRecipes: IRecipeSet = {
     recipes: {
         [DefineNewConnectionRecipe.name]: DefineNewConnectionRecipe,
         [ConnectToDatabaseRecipe.name]: ConnectToDatabaseRecipe,
+        [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
+        [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
+        [RawQueryToPandasRecipe.name]: RawQueryToPandasRecipe,
+        [RawQueryRecipe.name]: RawQueryRecipe,
         [SelectQueryRecipe.name]: SelectQueryRecipe,
         [InsertQueryRecipe.name]: InsertQueryRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,
-        [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
-        [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
-        [RawQueryRecipe.name]: RawQueryRecipe,
-        [RawQueryToPandasRecipe.name]: RawQueryToPandasRecipe,
     },
 };
