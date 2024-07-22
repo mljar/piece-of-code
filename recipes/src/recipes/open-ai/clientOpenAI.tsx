@@ -5,7 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { OpenAIIcon } from "../../icons/OpenAI";
 
-const DOCS_URL = "client-open-ai";
+const DOCS_URL = "python-client-openai";
 
 export const Client: React.FC<IRecipeProps> = ({
   setCode,
@@ -69,7 +69,7 @@ export const Client: React.FC<IRecipeProps> = ({
 
 export const ClientRecipe: IRecipe = {
   name: "Client connection",
-  longName: "OpenAI client connection",
+  longName: "Python OpenAI client connection",
   parentName: "OpenAI",
   description: "Learn how to securely load and use an OpenAI API key from an environment variable in Python with this detailed guide. We'll start by loading the .env file and retrieving the API key stored as OPENAI_KEY. Next, we'll create a function create_client that initializes an OpenAI client using the retrieved API key. The function includes error handling to manage authentication issues, ensuring the API key is correct. Finally, we'll demonstrate listing available models from the OpenAI library, providing a complete and practical example for integrating OpenAI's API into your projects.",
   shortDescription: "Learn how to securely load and use an OpenAI API key from an environment variable in Python. This guide walks through creating a client instance, handling authentication errors, and listing available models using the OpenAI library.",

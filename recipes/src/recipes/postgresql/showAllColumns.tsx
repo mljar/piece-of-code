@@ -6,7 +6,7 @@ import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 import { LayoutColumnsIcon } from "../../icons/LayoutColumns";
 
-const DOCS_URL = "postgresql-columns-show";
+const DOCS_URL = "python-postgres-columns-show";
 
 export const ShowAllColumns: React.FC<IRecipeProps> = ({
     setCode,
@@ -131,7 +131,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
 
 export const ShowAllColumnsRecipe: IRecipe = {
     name: "Show all columns",
-    longName: "Show all columns",
+    longName: "Python show all columns in PostgreSQL",
     parentName: "Postgresql",
     // len: 209
     description: "List all columns of previously configured Postgresql database connection. Provide table name to list columns from. Use advanced options to choose table schema. Credentials are stored and loaded from .env file.",

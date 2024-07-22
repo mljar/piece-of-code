@@ -7,7 +7,7 @@ import { Variable } from "../../components/Variable";
 import { SelectPath } from "../../components/SelectPath";
 import { imageAIIcon } from "../../icons/imageAI";
 
-const DOCS_URL = "generate-image";
+const DOCS_URL = "python-generate-image";
 
 export const ImageGen: React.FC<IRecipeProps> = ({
   setCode,
@@ -129,7 +129,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
 
 export const ImageGenRecipe: IRecipe = {
   name: "AI Image Generator",
-  longName: "Generate images using AI",
+  longName: "Python generate images using AI",
   parentName: "OpenAI",
   description: "Discover how to generate images using OpenAI's DALL-E 3 model in Python with this comprehensive guide. We'll walk you through generating an image with specific parameters, such as model type, prompt, size, quality, and number of images. Then, you'll learn how to retrieve the generated image from a URL, save it locally as PNG image, and display it using the PIL library. This tutorial ensures you handle responses correctly and manage potential errors while working with the OpenAI API and image processing.",
   shortDescription: "Discover how to generate images using OpenAI's DALL-E 3 model in Python. This guide covers generating an image with specific parameters, retrieving the image from a URL, saving it locally, and displaying it using the PIL library.",

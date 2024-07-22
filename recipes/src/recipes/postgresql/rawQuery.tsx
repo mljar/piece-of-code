@@ -7,7 +7,7 @@ import { TableAddIcon } from "../../icons/TableAdd";
 import { TextArea } from "../../components/TextArea";
 import { SqlIcon } from "../../icons/Sql";
 
-const DOCS_URL = "sql-query-postgresql";
+const DOCS_URL = "python-sql-query-postgresql";
 
 export const RawQuery: React.FC<IRecipeProps> = ({
     setCode,
@@ -113,7 +113,7 @@ export const RawQuery: React.FC<IRecipeProps> = ({
 };
 export const RawQueryRecipe: IRecipe = {
     name: "Raw query",
-    longName: "Raw query",
+    longName: "Python send raw query to PostgreSQL",
     parentName: "Postgresql",
     // len: 207
     description: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",

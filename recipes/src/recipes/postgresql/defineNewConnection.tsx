@@ -5,7 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { GlobeIcon } from "../../icons/Globe";
 
-const DOCS_URL = "postgresql-define-connection";
+const DOCS_URL = "python-postgresql-define-connection";
 
 export const DefineNewConnection: React.FC<IRecipeProps> = ({
     setCode,
@@ -137,8 +137,8 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 };
 
 export const DefineNewConnectionRecipe: IRecipe = {
-    name: "Define new connection",
-    longName: "Define new Postgresql database connection",
+    name: "Define a new connection",
+    longName: "Python define a new PostgreSQL connection",
     parentName: "Postgresql",
     // len: 196
     description: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",

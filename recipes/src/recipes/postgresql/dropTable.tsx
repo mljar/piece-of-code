@@ -6,7 +6,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { TableRemoveIcon } from "../../icons/TableRemove";
 
-const DOCS_URL = "postgresql-drop-table";
+const DOCS_URL = "python-postgresql-drop-table";
 
 export const DropTable: React.FC<IRecipeProps> = ({
     setCode,
@@ -109,7 +109,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
 
 export const DropTableRecipe: IRecipe = {
     name: "Drop table",
-    longName: "Drop table",
+    longName: "Python code to drop table in PostgreSQL",
     parentName: "Postgresql",
     // len: 169
     description: "Drop table from database usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose between CASCADE and RESTRICT options",

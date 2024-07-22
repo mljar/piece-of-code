@@ -6,7 +6,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { QueryIcon } from "../../icons/Query";
 
-const DOCS_URL = "postgresql-select";
+const DOCS_URL = "python-postgres-select";
 
 export const SelectQuery: React.FC<IRecipeProps> = ({
     setCode,
@@ -110,7 +110,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
 export const SelectQueryRecipe: IRecipe = {
     name: "Run select query",
-    longName: "Run select query",
+    longName: "Python run select query in PostgreSQL",
     parentName: "Postgresql",
     // len: 152
     description: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",

@@ -7,8 +7,8 @@ import ChatComplRecipe from "./chatCompletions";
 
 export const OpenAIRecipes: IRecipeSet = {
   name: "OpenAI",
-  longName: "Make things easier with OpenAI",
-  docsUrl: "open-ai",
+  longName: "Python code recipes for OpenAI",
+  docsUrl: "python-openai",
   description: "Doing operations with AI help has never been that easy! You can generate images, voices, text, and much more. All you need is an API KEY from OpenAI and MLJAR STUDIO will do the rest.",
   shortDescription: "Doing operations with AI help has never been that easy! You can generate images, voices, text, and much more. All you need is an API KEY from OpenAI and MLJAR STUDIO will do the rest.",
   tags: ["python", "ai-image"],

@@ -6,7 +6,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { InsertIcon } from "../../icons/Insert";
 
-const DOCS_URL = "postgresql-insert";
+const DOCS_URL = "python-postgresql-insert";
 
 export const InsertQuery: React.FC<IRecipeProps> = ({
     setCode,
@@ -125,7 +125,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 
 export const InsertQueryRecipe: IRecipe = {
     name: "Run insert query",
-    longName: "Run insert query",
+    longName: "Python insert query in PostgreSQL",
     parentName: "Postgresql",
     // len: 214
     description: "Execute sql insert query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table name, then list out columns you wish to fill and then their respectful values.",

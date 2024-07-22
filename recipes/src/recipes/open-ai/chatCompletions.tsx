@@ -7,7 +7,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { MessagesIcon } from "../../icons/Messages";
 
-const DOCS_URL = "chat-completions";
+const DOCS_URL = "python-chatgpt-completions";
 
 export const ChatCompl: React.FC<IRecipeProps> = ({
   setCode,
@@ -125,7 +125,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
 
 export const ChatComplRecipe: IRecipe = {
   name: "Chat Completion",
-  longName: "OpenAI Chat Completion",
+  longName: "Python OpenAI Chat Completion",
   parentName: "OpenAI",
   description: "Learn how to create chat completions using OpenAI models in Python. This guide covers setting up a client, sending user and system role messages, specifying a token limit, handling the API call, and printing the response content for seamless integration.",
   shortDescription: "Learn how to create chat completions using OpenAI models in Python. This guide covers sending a user prompt and system role message, setting a token limit, and printing the response content.",

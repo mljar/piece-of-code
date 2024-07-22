@@ -7,7 +7,7 @@ import { TextArea } from "../../components/TextArea";
 import { Variable } from "../../components/Variable";
 import { QueryIcon } from "../../icons/Query";
 
-const DOCS_URL = "sql-query-postgresql-pandas";
+const DOCS_URL = "python-sql-query-postgresql-pandas";
 
 export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     setCode,
@@ -145,7 +145,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
 
 export const RawQueryToPandasRecipe: IRecipe = {
     name: "Raw query to Pandas",
-    longName: "Raw query and craete Pandas dataframe",
+    longName: "PostgreSQL query to Pandas DataFrame",
     parentName: "Postgresql",
     // len: 199
     description: "Run a sql query usign previously configured Postgresql connection and crate pandas data frame. You can input any valid Postgresql sql query. Select query will display the result and crate data frame.",

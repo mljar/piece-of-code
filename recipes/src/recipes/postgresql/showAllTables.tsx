@@ -6,7 +6,7 @@ import { Select } from "../../components/Select";
 import { TableIcon } from "../../icons/Table";
 import { Toggle } from "../../components/Toggle";
 
-const DOCS_URL = "postgresql-list-tables";
+const DOCS_URL = "python-postgres-list-tables";
 
 export const ShowAllTables: React.FC<IRecipeProps> = ({
     setCode,
@@ -123,7 +123,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
 
 export const ShowAllTablesRecipe: IRecipe = {
     name: "Show all tables",
-    longName: "Show all tables",
+    longName: "Python show all tables from PostgreSQL",
     parentName: "Postgresql",
     // len: 171
     description: "List all tables of previously configured Postgresql database connection. Choose if you want to displaty table schema too. Credentials are stored and loaded from .env file.",

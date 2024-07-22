@@ -5,7 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { ConnectIcon } from "../../icons/Connect";
 
-const DOCS_URL = "postgresql-connect-to-database";
+const DOCS_URL = "python-postgresql-connect-to-database";
 
 export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     setCode,
@@ -75,7 +75,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 
 export const ConnectToDatabaseRecipe: IRecipe = {
     name: "Connect to database",
-    longName: "Connect to Postgresql database",
+    longName: "Python connect to PostgreSQL database",
     parentName: "Postgresql",
     // len: 147
     description: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",

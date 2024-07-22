@@ -6,7 +6,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { TableAddIcon } from "../../icons/TableAdd";
 
-const DOCS_URL = "create-table-postgresql";
+const DOCS_URL = "python-create-table-postgresql";
 
 export const CreateTable: React.FC<IRecipeProps> = ({
     setCode,
@@ -146,7 +146,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
 
 export const CreateTableRecipe: IRecipe = {
     name: "Create table",
-    longName: "Create table",
+    longName: "Python code to create table in PostgreSQL",
     parentName: "Postgresql",
     // len: 187
     description: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",
