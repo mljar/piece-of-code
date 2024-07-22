@@ -20,6 +20,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [MarkdownRecipes.name]: MarkdownRecipes,
   [ReadDataRecipes.name]: ReadDataRecipes,
   [WriteDataRecipes.name]: WriteDataRecipes,
+  [PostgresqlRecipes.name]: PostgresqlRecipes,
   [DataWranglingRecipes.name]: DataWranglingRecipes,
   // [ChartsRecipes.name]: ChartsRecipes,
   // [MLRecipes.name]: MLRecipes,
@@ -28,7 +29,6 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [AutoMLRecipes.name]: AutoMLRecipes,
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   [OpenAIRecipes.name]: OpenAIRecipes,
-  [PostgresqlRecipes.name]: PostgresqlRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 
