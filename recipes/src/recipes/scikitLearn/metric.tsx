@@ -49,7 +49,23 @@ export const Metric: React.FC<IRecipeProps> = ({
   );
   const [sampleWeight, setSampleWeight] = useState("None");
 
+  const [predVarType, setPredVarType] = useState("");
+  const [multiClassStrategy, setMultiClassStrategy] = useState("ovr");
+  const [averageStrategy, setAverageStrategy] = useState("micro");
+
   useEffect(() => {
+    const predSize = variables.filter((v) => v.varName === yPred)[0].varShape;
+    if (predSize.includes("x 2 cols")) {
+      setPredVarType("binary");
+    } else if (predSize.includes("x")) {
+      setPredVarType("multiclass");
+    } else {
+      setPredVarType("vector");
+    }
+  }, [yPred, metric]);
+
+  useEffect(() => {
+    let packages = [] as string[];
     if (yTrue === "" || yPred === "") {
       return;
     }
@@ -57,20 +73,54 @@ export const Metric: React.FC<IRecipeProps> = ({
     let m = metricsFuncs[metric] as string;
     let varName = `metric_${metric.toLowerCase().replace(" ", "_")}`;
     let pred = yPred;
-    if(metric === "ROC AUC") {
-      src += `if ${yPred}.shape[1] == 2:\n`;
-      src += `    ${varName} = ${m}(${yTrue}, ${pred}[:, 1]`;
+
+    if (metric === "ROC AUC") {
+      if (predVarType === "binary") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}[:,1]`;
+      } else if (predVarType === "multiclass") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}, multi_class="${multiClassStrategy}"`;
+      } else {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}`;
+      }
+    } else if (metric === "F1") {
+      if (predVarType === "binary") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}, pos_label=np.unique(${yTrue})[1]`;
+        packages.push("import numpy as np");
+      } else if (predVarType === "multiclass") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}, average="${averageStrategy}"`;
+      } else {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}`;
+      }
+    } else if (metric === "Precision") {
+      if (predVarType === "binary") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}[:,1], pos_label=np.unique(${yTrue})[1]`;
+        packages.push("import numpy as np");
+      } else if (predVarType === "multiclass") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}, average="${averageStrategy}"`;
+      } else {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}`;
+      }
+    } else if (metric === "Recall") {
+      if (predVarType === "binary") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}[:,1], pos_label=np.unique(${yTrue})[1]`;
+        packages.push("import numpy as np");
+      } else if (predVarType === "multiclass") {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}, average="${averageStrategy}"`;
+      } else {
+        src += `${varName} = ${m}(${yTrue}, ${yPred}`;
+      }
     } else {
-      
+      src += `${varName} = ${m}(${yTrue}, ${yPred}`;
     }
-    src += `${varName} = ${m}(${yTrue}, ${pred}`;
+
     if (sampleWeight !== "None") {
       src += `, sample_weight=${sampleWeight}`;
     }
     src += ")\n";
     src += `print(f"${metric}: {${varName}}")`;
     setCode(src);
-    setPackages([`from sklearn.metrics import ${m}`]);
+    packages.push(`from sklearn.metrics import ${m}`);
+    setPackages(packages);
     if (setMetadata) {
       setMetadata({
         metric,
@@ -81,7 +131,15 @@ export const Metric: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [metric, yTrue, yPred, sampleWeight]);
+  }, [
+    metric,
+    yTrue,
+    yPred,
+    sampleWeight,
+    predVarType,
+    multiClassStrategy,
+    averageStrategy,
+  ]);
 
   useEffect(() => {
     if (metadata) {
@@ -89,9 +147,12 @@ export const Metric: React.FC<IRecipeProps> = ({
       if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
       if (metadata["yTrue"] !== undefined) setYTrue(metadata["yTrue"]);
       if (metadata["yPred"] !== undefined) setYPred(metadata["yPred"]);
-      if (metadata["sampleWeight"] !== undefined) setSampleWeight(metadata["sampleWeight"]);
+      if (metadata["sampleWeight"] !== undefined)
+        setSampleWeight(metadata["sampleWeight"]);
     }
   }, [metadata]);
+
+  console.log({ metric, predVarType });
 
   return (
     <div>
@@ -117,6 +178,32 @@ export const Metric: React.FC<IRecipeProps> = ({
             options={Object.keys(metricsFuncs).map((d) => [d, d])}
             setOption={setMetric}
           />
+          {metric === "ROC AUC" && predVarType === "multiclass" && (
+            <Select
+              label={"Multi class strategy"}
+              option={multiClassStrategy}
+              options={[
+                ["One-vs-rest", "ovr"],
+                ["One-vs-one", "ovo"],
+              ]}
+              setOption={setMultiClassStrategy}
+            />
+          )}
+
+          {(metric === "Precision" || metric === "Recall") &&
+            predVarType === "multiclass" && (
+              <Select
+                label={"Average strategy"}
+                option={averageStrategy}
+                options={[
+                  ["micro", "micro"],
+                  ["macro", "macro"],
+                  ["weighted", "weighted"],
+                  ["samples", "samples"],
+                ]}
+                setOption={setAverageStrategy}
+              />
+            )}
 
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
             <Select
@@ -126,7 +213,11 @@ export const Metric: React.FC<IRecipeProps> = ({
               setOption={setYTrue}
             />
             <Select
-              label={"Predicted values"}
+              label={
+                metric === "Accuracy" || metric === "F1"
+                  ? "Predicted labels"
+                  : "Predicted values"
+              }
               option={yPred}
               options={dataObjects.map((c) => [c, c])}
               setOption={setYPred}
@@ -174,6 +265,17 @@ export const MetricRecipe: IRecipe = {
   tags: ["metric", "accuracy"],
   defaultVariables: [
     {
+      varName: "y",
+      varType: "Series",
+      varColumns: ["target"],
+      varColumnTypes: ["int"],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
       varName: "predicted",
       varType: "DataFrame",
       varColumns: ["col1"],
@@ -185,12 +287,23 @@ export const MetricRecipe: IRecipe = {
       isWidget: false,
     },
     {
-      varName: "y",
-      varType: "Series",
-      varColumns: ["target"],
+      varName: "predicted_binary",
+      varType: "DataFrame",
+      varColumns: ["col1"],
       varColumnTypes: ["int"],
       varSize: "",
-      varShape: "",
+      varShape: "10 rows x 2 cols",
+      varContent: "",
+      isMatrix: true,
+      isWidget: false,
+    },
+    {
+      varName: "predicted_multi",
+      varType: "DataFrame",
+      varColumns: ["col1"],
+      varColumnTypes: ["int"],
+      varSize: "",
+      varShape: "10 rows x 3 cols",
       varContent: "",
       isMatrix: true,
       isWidget: false,
