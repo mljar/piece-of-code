@@ -32,5 +32,8 @@ export const PostgresqlRecipes: IRecipeSet = {
         [InsertQueryRecipe.name]: InsertQueryRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,
+        [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
+        [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
+        [RawQueryRecipe.name]: RawQueryRecipe,
     },
 };

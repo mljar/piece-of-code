@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
+import { TableAddIcon } from "../../icons/TableAdd";
 import { TextArea } from "../../components/TextArea";
 import { SqlIcon } from "../../icons/Sql";
 
@@ -40,17 +41,19 @@ export const RawQuery: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [query, setQuery] = useState("select 1");
+    const [query, setQuery] = useState("Write your query");
 
     useEffect(() => {
-        let src = `# if connection was used and closed it is reopen here\n`;
+        let src = ""
+
+        src += `# if connection was used and closed it is reopen here\n`;
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
         src += `# run the query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # Run query\n`;
+        src += `        # Create table\n`;
         src += `        cur.execute(\n`;
         src += `            sql.SQL("""\n`;
         src += `${query}\n`;
@@ -58,13 +61,13 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         src += `            )\n`;
         src += `        )\n\n`;
 
-        src += `        if str(cur.statusmessage).upper().startswith("SELECT"):\n`;
-        src += `            # Fetch all the results\n`;
-        src += `            results = cur.fetchall()\n\n`;
+        src += `if (str(cur.statusmessage).startswith("SELECT")):\n`;
+        src += `        # Fetch all the results\n`;
+        src += `        results = cur.fetchall()\n\n`;
 
-        src += `            # Print the results\n`;
-        src += `            for result in results:\n`;
-        src += `                print(f"{result}")`;
+        src += `        # Print the results\n`;
+        src += `        for result in results:\n`;
+        src += `            print(f"result")`;
 
         setCode(src);
         setPackages(["import psycopg", "from psycopg import sql"]);
@@ -89,7 +92,7 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={SqlIcon}
-                label={"Raw query"}
+                label={"Create table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
