@@ -53,10 +53,17 @@ export const Metric: React.FC<IRecipeProps> = ({
     if (yTrue === "" || yPred === "") {
       return;
     }
-    let src = `# compute metric\n`;
+    let src = `# compute ${metric}\n`;
     let m = metricsFuncs[metric] as string;
-    let varName = `metric_${metric.toLowerCase()}`;
-    src += `${varName} = ${m}(${yTrue}, ${yPred}`;
+    let varName = `metric_${metric.toLowerCase().replace(" ", "_")}`;
+    let pred = yPred;
+    if(metric === "ROC AUC") {
+      src += `if ${yPred}.shape[1] == 2:\n`;
+      src += `    ${varName} = ${m}(${yTrue}, ${pred}[:, 1]`;
+    } else {
+      
+    }
+    src += `${varName} = ${m}(${yTrue}, ${pred}`;
     if (sampleWeight !== "None") {
       src += `, sample_weight=${sampleWeight}`;
     }
