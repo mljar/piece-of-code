@@ -74,7 +74,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={aiEyeIcon}
-        label={"OpenAI Vision"}
+        label={"Vision with URL images"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -109,7 +109,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
 };
 
 export const VisionURLRecipe: IRecipe = {
-  name: "OpenAI Vision with URL images",
+  name: "Vision with URL images",
   longName: "OpenAI Vision with URL images",
   parentName: "OpenAI",
   description:

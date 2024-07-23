@@ -94,7 +94,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={aiEyeIcon}
-        label={"OpenAI Vision with local image"}
+        label={"Vision with local image"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -129,7 +129,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
 };
 
 export const VisionLocalRecipe: IRecipe = {
-  name: "OpenAI Vision with local images",
+  name: "Vision with local images",
   longName: "OpenAI Vision with local images",
   parentName: "OpenAI",
   description: "Learn how to encode images to base64 in Python and use them in OpenAI's Chat Completions API. This guide covers creating an image encoding function, setting headers, and crafting a payload with text and image content. You'll learn how to make an API request and print the response content, integrating text and image data seamlessly into your OpenAI interactions.",
