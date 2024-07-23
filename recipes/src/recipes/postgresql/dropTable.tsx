@@ -5,6 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { TableRemoveIcon } from "../../icons/TableRemove";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-postgresql-drop-table";
 
@@ -17,7 +18,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -63,7 +64,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
             setMetadata({
                 conn,
                 table,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -123,7 +124,7 @@ export const DropTableRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

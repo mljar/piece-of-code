@@ -5,6 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { QueryIcon } from "../../icons/Query";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-postgres-select";
 
@@ -17,7 +18,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -66,7 +67,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                 conn,
                 columns,
                 tables,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -124,7 +125,7 @@ export const SelectQueryRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

@@ -5,6 +5,7 @@ import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { TableIcon } from "../../icons/Table";
 import { Toggle } from "../../components/Toggle";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-postgres-list-tables";
 
@@ -17,7 +18,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -81,7 +82,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
                 columns,
                 table,
                 values,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -137,7 +138,7 @@ export const ShowAllTablesRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",
