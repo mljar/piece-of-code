@@ -6,6 +6,8 @@ import { Select } from "../../components/Select";
 import { TextArea } from "../../components/TextArea";
 import { Variable } from "../../components/Variable";
 import { QueryIcon } from "../../icons/Query";
+import { PandasIcon } from "../../icons/Pandas";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-sql-query-postgresql-pandas";
 
@@ -18,7 +20,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -92,7 +94,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
                 conn,
                 columns,
                 df,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -111,7 +113,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={QueryIcon}
+                Icon={PandasIcon}
                 label={"Raw query to pandas"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -160,7 +162,7 @@ export const RawQueryToPandasRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

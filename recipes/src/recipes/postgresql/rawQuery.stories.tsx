@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { RawQuery } from "./rawQuery";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof RawQuery> = {
     component: RawQuery,
@@ -31,7 +32,7 @@ RawQueryForm.args = {
     variables: [
         {
             varName: "conn22",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",
@@ -42,7 +43,7 @@ RawQueryForm.args = {
         },
         {
             varName: "conn",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

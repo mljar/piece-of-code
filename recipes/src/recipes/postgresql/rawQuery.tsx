@@ -6,6 +6,7 @@ import { Select } from "../../components/Select";
 import { TableAddIcon } from "../../icons/TableAdd";
 import { TextArea } from "../../components/TextArea";
 import { SqlIcon } from "../../icons/Sql";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-sql-query-postgresql";
 
@@ -18,7 +19,7 @@ export const RawQuery: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -74,7 +75,7 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         if (setMetadata) {
             setMetadata({
                 conn,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -127,7 +128,7 @@ export const RawQueryRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

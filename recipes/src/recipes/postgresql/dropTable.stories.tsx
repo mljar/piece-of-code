@@ -31,7 +31,7 @@ DropTableForm.args = {
     variables: [
         {
             varName: "conn",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

@@ -143,11 +143,14 @@ export const DefineNewConnectionRecipe: IRecipe = {
     // len: 196
     description: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
     shortDescription: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
-    codeExplanation: ``,
+    codeExplanation: `
+1. Save provided values in .env file as POSTGRESQL credentails.
+2. Notify the user when operation gets completed.
+`,
     ui: DefineNewConnection,
     Icon: GlobeIcon,
     requiredPackages: [],
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["sql", "postgresql", "psycopg"],
     docsUrl: DOCS_URL,
 };
 

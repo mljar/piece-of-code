@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { RawQueryToPandas } from "./rawQueryToPandas";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof RawQueryToPandas> = {
     component: RawQueryToPandas,
@@ -31,7 +32,7 @@ RawQueryToPandasForm.args = {
     variables: [
         {
             varName: "conn22",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",
@@ -42,7 +43,7 @@ RawQueryToPandasForm.args = {
         },
         {
             varName: "conn",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

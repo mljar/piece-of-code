@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { ShowAllColumns } from "./showAllColumns";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof ShowAllColumns> = {
     component: ShowAllColumns,
@@ -31,7 +32,7 @@ ShowAllColumnsForm.args = {
     variables: [
         {
             varName: "conn",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

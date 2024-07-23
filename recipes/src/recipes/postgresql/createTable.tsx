@@ -5,6 +5,7 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { TableAddIcon } from "../../icons/TableAdd";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-create-table-postgresql";
 
@@ -17,7 +18,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     variables,
 }) => {
     const connections = variables
-        .filter((v) => v.varType === "connection")
+        .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
     if (variablesStatus === "loading") {
@@ -93,7 +94,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                 columns,
                 dataTypes,
                 table,
-                variables: variables.filter((v) => v.varType === "connection"),
+                variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
@@ -160,7 +161,7 @@ export const CreateTableRecipe: IRecipe = {
     defaultVariables: [
         {
             varName: "conn",
-            varType: "connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",
