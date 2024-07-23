@@ -62,9 +62,11 @@ export const VisionURL: React.FC<IRecipeProps> = ({
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["model"] !== undefined) setModel(metadata["model"]);
-      if (metadata["maxTokens"] !== undefined) setMaxTokens(metadata["maxTokens"]);
+      if (metadata["maxTokens"] !== undefined)
+        setMaxTokens(metadata["maxTokens"]);
       if (metadata["URL"] !== undefined) setURL(metadata["URL"]);
-      if (metadata["userPrompt"] !== undefined) setUserPrompt(metadata["userPrompt"]);
+      if (metadata["userPrompt"] !== undefined)
+        setUserPrompt(metadata["userPrompt"]);
     }
   }, [metadata]);
 
@@ -110,8 +112,10 @@ export const VisionURLRecipe: IRecipe = {
   name: "OpenAI Vision with URL images",
   longName: "OpenAI Vision with URL images",
   parentName: "OpenAI",
-  description: "Learn how to use OpenAI API to create chat completions with text and images given from URLs in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content. You'll learn how to integrate both text and image data into your requests, ensuring effective and dynamic interactions with the OpenAI API.",
-  shortDescription: "Learn how to use OpenAI API to create chat completions with text and images given from URL in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content.",
+  description:
+    "Learn how to use OpenAI API to create chat completions with text and images given from URLs in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content. You'll learn how to integrate both text and image data into your requests, ensuring effective and dynamic interactions with the OpenAI API.",
+  shortDescription:
+    "Learn how to use OpenAI API to create chat completions with text and images given from URL in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content.",
   codeExplanation: `
   1. Create the API request.
   2. Print the response.`,
