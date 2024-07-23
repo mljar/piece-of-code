@@ -65,7 +65,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages([
-      "from openai import OpenAI",
+      "import openai",
       "import base64",
       "import requests",
     ]);
@@ -129,8 +129,8 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
 };
 
 export const VisionLocalRecipe: IRecipe = {
-  name: "OpenAI Vision with local image",
-  longName: "OpenAI Vision with local image",
+  name: "OpenAI Vision with local images",
+  longName: "OpenAI Vision with local images",
   parentName: "OpenAI",
   description: "Learn how to encode images to base64 in Python and use them in OpenAI's Chat Completions API. This guide covers creating an image encoding function, setting headers, and crafting a payload with text and image content. You'll learn how to make an API request and print the response content, integrating text and image data seamlessly into your OpenAI interactions.",
   shortDescription: "Learn how to encode images to base64 in Python and use them in OpenAI's Chat Completions API. This guide covers setting headers, creating a payload with text and image content, making the API request, and printing the response content.",
@@ -144,6 +144,7 @@ export const VisionLocalRecipe: IRecipe = {
   Icon: aiEyeIcon,
   requiredPackages: [
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
+    { importName: "requests", installationName: "requests", version: ">=2.31.0" }
   ],
   docsUrl: DOCS_URL,
 };
