@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { DropTable } from "./dropTable";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof DropTable> = {
     component: DropTable,

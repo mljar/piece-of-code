@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { SelectQuery } from "./selectQuery";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof SelectQuery> = {
     component: SelectQuery,
