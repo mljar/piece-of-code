@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { CreateTable } from "./createTable";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof CreateTable> = {
     component: CreateTable,
@@ -31,7 +32,7 @@ CreateTableForm.args = {
     variables: [
         {
             varName: "conn22",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",
@@ -42,7 +43,7 @@ CreateTableForm.args = {
         },
         {
             varName: "conn",
-            varType: "Connection",
+            varType: CONNECITON_PSYCOPG_TYPE,
             varColumns: [""],
             varColumnTypes: [""],
             varSize: "",

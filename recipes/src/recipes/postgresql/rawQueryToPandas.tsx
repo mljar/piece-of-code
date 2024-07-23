@@ -61,19 +61,27 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
         src += `# run the query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # Run query \n`;
-        src += `        cur.execute(\n`;
-        src += `            sql.SQL("""\n`;
-        src += `${query}\n`;
-        src += `            """\n`;
-        src += `            )\n`;
-        src += `        )\n\n`;
 
+        src += `        # run query \n`;
+        src += `        try:\n`;
+        src += `            cur.execute(\n`;
+        src += `                sql.SQL("""\n`;
+        src += `${query}\n`;
+        src += `                """)\n`;
+        src += `            )\n`;
+        src += `        # check for errors\n`;
+        src += `        except ProgrammingError as e:\n`;
+        src += `            raise ProgrammingError(f"""\n`;
+        src += `Problem running query:\n`;
+        src += `    {e}\n`;
+        src += `            """)\n\n`;
+
+        src += `        # check if query was a select query\n`;
         src += `        if str(cur.statusmessage).upper().startswith("SELECT"):\n`;
-        src += `            # Fetch all the results\n`;
+        src += `            # fetch all the results\n`;
         src += `            results = cur.fetchall()\n\n`;
 
-        src += `            # Create dataframe\n`;
+        src += `            # create dataframe\n`;
         src += `            try:\n`;
         if (columns.length > 0) {
             src += `                ${df} = pd.DataFrame(data=results, columns=pd.Index([${colArr}]))\n`;
@@ -83,9 +91,12 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
         src += `                print(f"{${df}.shape = }")\n`;
         src += `                print(${df}.head())\n`;
         src += `            except ValueError as e:\n`;
-        src += `                print(f"Error creating DataFrame: {e}")\n`;
-        src += `                print("The number of columns specified does not match the number of columns in the data.")`;
+        src += `                raise ValueError(f"""\n`;
+        src += `Error creating DataFrame:\n`;
+        src += `    {e}\n\n`;
 
+        src += `Does number of columns specified matches number of columns in the data.\n`;
+        src += `                """)`;
 
         setCode(src);
         setPackages(["import psycopg", "from psycopg import sql", "import pandas as pd"]);
@@ -118,10 +129,15 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
-                label={"Choose connection variable name"}
+                label={"Choose connection variable"}
                 option={conn}
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
+            />
+            <Variable
+                label={"Name the datafrarme"}
+                name={df}
+                setName={setDf}
             />
             <Variable
                 label={"Name columns in dataframe"}
@@ -129,13 +145,8 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
                 setName={setColumns}
                 tooltip="You need to provide name for every column or ommit this field"
             />
-            <Variable
-                label={"Name the datafrarme"}
-                name={df}
-                setName={setDf}
-            />
             <TextArea
-                label={"Write sql query"}
+                label={"Run sql query"}
                 text={query}
                 setText={setQuery}
                 rows={3}
@@ -149,14 +160,23 @@ export const RawQueryToPandasRecipe: IRecipe = {
     name: "Raw query to Pandas",
     longName: "PostgreSQL query to Pandas DataFrame",
     parentName: "Postgresql",
-    // len: 199
-    description: "Run a sql query usign previously configured Postgresql connection and crate pandas data frame. You can input any valid Postgresql sql query. Select query will display the result and crate data frame.",
-    shortDescription: "Run a sql query usign previously configured Postgresql connection and crate pandas data frame. You can input any valid Postgresql sql query. Select query will display the result and crate data frame.",
-    codeExplanation: ``,
+    // len: 180
+    description: "Run a sql query and crate pandas data frame. Select query is recommended for creating dataframe. Credentials are loaded from .env file. Any errors in query will raise an exception.",
+    shortDescription: "Run a sql query and crate pandas data frame. Select query is recommended for creating dataframe (if you manage to create df from any other query hmu). Credentials are loaded from .env file. Any errors in query will raise an exception.",
+    codeExplanation: `
+1. Check if there is an open connection.
+2. If not then open the connection.
+3. Try to run query.
+4. If run a select query, try to create data frame.
+5. Show df shape and head.
+6. If error occurs raise exception.
+`,
     ui: RawQueryToPandas,
     Icon: QueryIcon,
-    requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
-    { importName: "pandas", installationName: "pandas", version: ">=1.0.0" }],
+    requiredPackages: [
+        { importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
+        { importName: "pandas", installationName: "pandas", version: ">=1.0.0" }
+    ],
     docsUrl: DOCS_URL,
     tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
     defaultVariables: [

@@ -19,28 +19,23 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         let src = `# load credentials from .env file:\n`;
         src += `load_dotenv(override=True)\n\n`;
 
+        src += `# get the credentials\n`;
         src += `def create_new_connection():\n`;
-        src += `    try:\n`;
-        src += `        conn = psycopg.connect(\n`;
-        // src += `    return psycopg.connect(\n`;
-        src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
-        src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
-        src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
-        src += `        host=os.getenv("POSTGRES_HOST"),\n`;
-        src += `        port=os.getenv("POSTGRES_PORT"),\n`;
-        src += `        )\n`;
-        src += `    except OperationalError as e:\n`;
-        src += `        print(f"Error connectiong to database {e}")\n`;
-        src += `        print(f"Are all credentials correct?")\n`;
-        src += `    finally:\n`;
-        src += `        return conn\n\n`;
+        src += `    conn = psycopg.connect(\n`;
+        src += `    dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
+        src += `    user=os.getenv("POSTGRES_USERNAME"),\n`;
+        src += `    password=os.getenv("POSTGRES_PASSWORD"),\n`;
+        src += `    host=os.getenv("POSTGRES_HOST"),\n`;
+        src += `    port=os.getenv("POSTGRES_PORT"),\n`;
+        src += `    )\n`;
+        src += `    return conn\n\n`;
 
         src += `# open new connection:\n`;
-        src += `${conn} = create_new_connection()\n`;
-        src += `print(f"Success")`;
+        src += `${conn} = create_new_connection()`;
+        // src += `print(f"Success")`;
 
         setCode(src);
-        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv", "from psycopg import OperationalError"]);
+        setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -77,10 +72,13 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     name: "Connect to database",
     longName: "Python connect to PostgreSQL database",
     parentName: "Postgresql",
-    // len: 147
-    description: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",
-    shortDescription: "Open new Postgresql database connection using simple Python code. Credentials are defined in a define new connection recipe and loaded from .enf file",
-    codeExplanation: ``,
+    // len: 200
+    description: "Open new Postgresql database connection, credentials are loaded from .env file. Incorrect credentials will raise an appropriate error. To edit the credentials add them in define new connection recipe.",
+    shortDescription: "Open new Postgresql database connection, credentials are loaded from .env file. Incorrect credentials will raise an appropriate error. To edit the credentials add them in define new connection recipe.",
+    codeExplanation: `
+1. Load credentials from .env file.
+2. Try to establish connection with database.
+`,
     ui: ConnectToDatabase,
     Icon: ConnectIcon,
     requiredPackages: [
@@ -89,7 +87,7 @@ export const ConnectToDatabaseRecipe: IRecipe = {
         // commented out due to a bug (#51), if fixed then should be uncommented
         // { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
     ],
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env", "python-dotenv"],
     docsUrl: DOCS_URL,
 };
 

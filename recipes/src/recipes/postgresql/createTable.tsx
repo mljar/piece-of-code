@@ -48,17 +48,17 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     let columnsArr = columns.split(",")
     let dataTypesArr = dataTypes.split(",")
 
-    let queryPart1 = ""
-    let queryPart2 = ""
+    let queryDataTypes = ""
+    let queryColumns = ""
 
     for (let i = 0; i <= columnsArr.length - 1; i++) {
         if (i === columnsArr.length - 1) {
-            queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
-            queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '")'
+            queryDataTypes += "\t\t\t\t\t\t" + "{}" + " " + dataTypesArr[i]
+            queryColumns += "\t\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '")'
             break
         }
-        queryPart1 += "\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
-        queryPart2 += "\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '"),\n'
+        queryDataTypes += "\t\t\t\t\t\t" + "{}" + " " + dataTypesArr[i] + ",\n"
+        queryColumns += "\t\t\t\t\t" + 'sql.Identifier("' + columnsArr[i] + '"),\n'
     }
 
     useEffect(() => {
@@ -72,22 +72,33 @@ export const CreateTable: React.FC<IRecipeProps> = ({
             src += `# run the query\n`;
             src += `with ${conn}:\n`;
             src += `    with ${conn}.cursor() as cur:\n\n`;
-            src += `        # Create table\n`;
-            src += `        cur.execute(\n`;
-            src += `            sql.SQL("""\n`;
-            src += `                CREATE TABLE IF NOT EXISTS ${table} (\n`;
-            src += `${queryPart1}\n`;
-            src += `            );"""\n`;
-            src += `            ).format(\n`;
-            src += `${queryPart2}\n`;
+
+            src += `        # create table\n`;
+            src += `        try:\n`;
+            src += `            cur.execute(\n`;
+            src += `                sql.SQL("""\n`;
+            src += `                    CREATE TABLE ${table} (\n`;
+            src += `${queryDataTypes}\n`;
+            src += `                );"""\n`;
+            src += `                ).format(\n`;
+            src += `${queryColumns}\n`;
+            src += `                )\n`;
             src += `            )\n`;
-            src += `        )`;
+            src += `        # check for errors\n`;
+            src += `        except psycopg.ProgrammingError as e:\n`;
+            src += `            raise Exception(f"""\n`;
+            src += `Problem creating table:\n`;
+            src += `    {e}\n\n`;
+
+            src += `Are you sure table and columns names are all unique?\n`;
+            src += `Is every data type a valid psotgreSQL data type?\n`;
+            src += `            """)`;
         } else {
             src += "number of column names needs to be euqal to number of data types"
         }
 
         setCode(src);
-        setPackages(["import psycopg", "from psycopg import sql"]);
+        setPackages(["import psycopg", "from psycopg import sql", "from psycopg import ProgrammingError"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -119,7 +130,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
-                label={"Choose connection variable name"}
+                label={"Choose connection variable"}
                 option={conn}
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
@@ -130,13 +141,13 @@ export const CreateTable: React.FC<IRecipeProps> = ({
                 setName={setTable}
             />
             <Variable
-                label={"Input columns names"}
+                label={"Set columns names"}
                 name={columns}
                 setName={setColumns}
                 tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
             />
             <Variable
-                label={"Input data types of columns"}
+                label={"Set data types"}
                 name={dataTypes}
                 setName={setDataTypes}
                 tooltip="comma separated list, no whitespace, no trailing comma, number of columns need to be equal number of data types"
@@ -149,15 +160,21 @@ export const CreateTableRecipe: IRecipe = {
     name: "Create table",
     longName: "Python code to create table in PostgreSQL",
     parentName: "Postgresql",
-    // len: 187
-    description: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",
-    shortDescription: "Create new database table usign previously configured Postgresql connection. Credentials are stored and loaded from .env file. Number of columns needs to be equalt to number of data types",
-    codeExplanation: ``,
+    // len: 181
+    description: "Create new database table ,credentials are loaded from .env file. Change table name, column identifiers, and data types. Number of columns needs to be equalt to number of data types",
+    shortDescription: "Create new database table ,credentials are loaded from .env file. Change table name, column identifiers, and data types. Number of columns needs to be equalt to number of data types",
+    codeExplanation: `
+1. Check if there is an open connection.
+2. If not then open the connection.
+3. Check if number of column is equal to data types.
+4. Try to create the table.
+5. If error occurs raise exception.
+`,
     ui: CreateTable,
     Icon: TableAddIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env", "python-dotenv"],
     defaultVariables: [
         {
             varName: "conn",

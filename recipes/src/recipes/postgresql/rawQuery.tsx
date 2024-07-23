@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { TableAddIcon } from "../../icons/TableAdd";
 import { TextArea } from "../../components/TextArea";
 import { SqlIcon } from "../../icons/Sql";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
@@ -42,33 +41,39 @@ export const RawQuery: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [query, setQuery] = useState("Write your query");
+    const [query, setQuery] = useState("SELECT 1");
 
     useEffect(() => {
-        let src = ""
-
-        src += `# if connection was used and closed it is reopen here\n`;
+        let src = `# if connection was used and closed it is reopen here\n`;
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
         src += `# run the query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # Create table\n`;
-        src += `        cur.execute(\n`;
-        src += `            sql.SQL("""\n`;
+
+        src += `        # run query\n`;
+        src += `        try:\n`;
+        src += `            cur.execute(\n`;
+        src += `                sql.SQL("""\n`;
         src += `${query}\n`;
-        src += `            """\n`;
+        src += `                """)\n`;
         src += `            )\n`;
-        src += `        )\n\n`;
+        src += `        # check for errors\n`;
+        src += `        except ProgrammingError as e:\n`;
+        src += `            raise ProgrammingError(f"""\n`;
+        src += `Problem running query:\n`;
+        src += `    {e}\n`;
+        src += `            """)\n\n`;
 
-        src += `if (str(cur.statusmessage).startswith("SELECT")):\n`;
-        src += `        # Fetch all the results\n`;
-        src += `        results = cur.fetchall()\n\n`;
+        src += `        # check if query was a select query\n`;
+        src += `        if (str(cur.statusmessage).upper().startswith("SELECT")):\n`;
+        src += `            # fetch all the results\n`;
+        src += `            results = cur.fetchall()\n\n`;
 
-        src += `        # Print the results\n`;
-        src += `        for result in results:\n`;
-        src += `            print(f"result")`;
+        src += `            # print the results\n`;
+        src += `            for result in results:\n`;
+        src += `                print(f"{result}")`;
 
         setCode(src);
         setPackages(["import psycopg", "from psycopg import sql"]);
@@ -93,17 +98,17 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={SqlIcon}
-                label={"Create table"}
+                label={"Raw query"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
-                label={"Choose connection variable name"}
+                label={"Choose connection variable"}
                 option={conn}
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
             />
             <TextArea
-                label={"Write sql query"}
+                label={"Raw sql query"}
                 text={query}
                 setText={setQuery}
                 rows={3}
@@ -116,15 +121,21 @@ export const RawQueryRecipe: IRecipe = {
     name: "Raw query",
     longName: "Python send raw query to PostgreSQL",
     parentName: "Postgresql",
-    // len: 207
-    description: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
-    shortDescription: "Simply run a sql query usign previously configured Postgresql connection. You can input any valid Postgresql sql query. Select query will display the result. Credentials are stored and loaded from .env file.",
-    codeExplanation: ``,
+    // len: 191
+    description: "Simply run a sql query. You can input any valid Postgresql sql query. Select query will display the result. Credentials are loaded from .env file. Any errors in query will raise an exception.",
+    shortDescription: "Simply run a sql query. You can input any valid Postgresql sql query. Select query will display the result. Credentials are loaded from .env file. Any errors in query will raise an exception.",
+    codeExplanation: `
+1. Check if there is an open connection.
+2. If not then open the connection.
+3. Try to run query.
+4. If error occurs raise exception.
+5. If run a select query, fetch and show the result.
+`,
     ui: RawQuery,
     Icon: SqlIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env"],
     defaultVariables: [
         {
             varName: "conn",
