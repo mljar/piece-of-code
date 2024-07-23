@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
 import { InsertQuery } from "./insertQuery";
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof InsertQuery> = {
     component: InsertQuery,
