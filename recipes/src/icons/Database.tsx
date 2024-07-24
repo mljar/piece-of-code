@@ -1,7 +1,7 @@
 import React from "react";
 import { IconProps } from "./props";
 
-export const EditIcon: React.FC<IconProps> = ({
+export const DatabaseIcon: React.FC<IconProps> = ({
     size = 24,
     color = "currentColor",
     className = "",
@@ -19,8 +19,9 @@ export const EditIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
     >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-        <path d="M16 5l3 3" />
+        <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+        <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+        <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
     </svg>
 );
+

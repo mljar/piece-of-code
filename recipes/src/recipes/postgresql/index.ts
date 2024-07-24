@@ -1,5 +1,6 @@
 import { PostgresqlIcon } from "../../icons/Postgresql";
 import { IRecipeSet } from "../base";
+import BackupTableRecipe, { BackupTable } from "./backupTable";
 
 import ConnectToDatabaseRecipe from "./connectToDatabase";
 import CreateTableRecipe from "./createTable";
@@ -38,5 +39,6 @@ export const PostgresqlRecipes: IRecipeSet = {
         [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
         [RawQueryRecipe.name]: RawQueryRecipe,
         [UpdateQueryRecipe.name]: UpdateQueryRecipe,
+        [BackupTableRecipe.name]: BackupTableRecipe,
     },
 };

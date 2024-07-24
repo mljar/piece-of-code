@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { GlobeIcon } from "../../icons/Globe";
+import { DatabaseIcon } from "../../icons/Database";
 
 const DOCS_URL = "python-postgresql-define-connection";
 
@@ -77,7 +77,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={GlobeIcon}
+                Icon={DatabaseIcon}
                 label={"Define new database connection"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -148,7 +148,7 @@ export const DefineNewConnectionRecipe: IRecipe = {
 2. Notify the user when operation gets completed.
 `,
     ui: DefineNewConnection,
-    Icon: GlobeIcon,
+    Icon: DatabaseIcon,
     requiredPackages: [],
     tags: ["python", "postgresql", "sql", "psycopg", ".env"],
     docsUrl: DOCS_URL,
