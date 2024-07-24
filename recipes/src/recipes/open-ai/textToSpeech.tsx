@@ -43,7 +43,9 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
     src += `  voice="${voice}",\n`;
     src += `  input="${text}"\n`;
     src += `) as response:\n`;
-    src += `  response.stream_to_file(file_path)`;
+    src += `  response.stream_to_file(file_path)\n\n`;
+    src += `# play audio\n`
+    src += `Audio(file_path, autoplay=False)`;
 
 
     setCode(src);
@@ -123,12 +125,13 @@ export const TextToSpeechRecipe: IRecipe = {
   name: "Text to speech",
   longName: "OpenAI text to speech",
   parentName: "OpenAI",
-  description: "Learn how to generate speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request with a specified model and voice, and streaming the response to save the audio file. Follow these steps to seamlessly integrate text-to-speech capabilities into your Python applications, ensuring dynamic and effective audio generation.",
-  shortDescription: "Learn how to generate speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request with a specified model and voice, and streaming the response to save the audio file.",
+  description: "Learn how to generate and play speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request with a specified model and voice, streaming the audio response to save it, and playing the audio file. Follow these steps to seamlessly integrate text-to-speech capabilities and audio playback into your Python applications.",
+  shortDescription: "Learn how to generate and play speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request, streaming the audio response to a file, and playing the audio.",
   codeExplanation: `
   1. Set the file path.
   2. Create the API request. 
-  3. Save response as the audio file.`,
+  3. Save response as the audio file.
+  4. Play audio in Jupyter Notebook.`,
   ui: TextToSpeech,
   Icon: SpeakerIcon,
   requiredPackages: [

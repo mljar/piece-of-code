@@ -7,7 +7,7 @@ import ChatComplRecipe from "./chatCompletions";
 import VisionLocalRecipe from "./visionLocal";
 import VisionURLRecipe from "./visionURL";
 import TextToSpeechRecipe from "./textToSpeech";
-// import TranscriptionsRecipe from "./transcriptions";
+import TranscriptionsRecipe from "./transcriptions";
 // import TranslationsRecipe from "./translations";
 
 export const OpenAIRecipes: IRecipeSet = {
@@ -23,7 +23,7 @@ export const OpenAIRecipes: IRecipeSet = {
     [ChatComplRecipe.name]: ChatComplRecipe,
     [ImageGenRecipe.name]: ImageGenRecipe,
     // [TranslationsRecipe.name]: TranslationsRecipe,
-    // [TranscriptionsRecipe.name]: TranscriptionsRecipe,
+    [TranscriptionsRecipe.name]: TranscriptionsRecipe,
     [TextToSpeechRecipe.name]: TextToSpeechRecipe,
     [VisionLocalRecipe.name]: VisionLocalRecipe,
     [VisionURLRecipe.name]: VisionURLRecipe,
