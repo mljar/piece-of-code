@@ -7,7 +7,7 @@ import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof CreateTable> = {
     component: CreateTable,
-    title: "CodePieces/postgresql/queries",
+    title: "CodePieces/postgresql/tables",
     argTypes: {},
 };
 export default meta;
