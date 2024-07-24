@@ -41,8 +41,8 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [columns, setColumns] = useState("please select query columns");
-    const [tables, setTables] = useState("please select query tables");
+    const [columns, setColumns] = useState("col1,col2,col3");
+    const [tables, setTables] = useState("talbe");
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
@@ -51,13 +51,23 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
         src += `# run query\n`;
         src += `with ${conn}:\n`;
-        src += `    with ${conn}.cursor() as cur:\n`;
-        src += `        # Query db\n`;
-        src += `        cur.execute("SELECT ${columns} FROM ${tables}")\n\n`;
-        src += `        # Fetch all the rows\n`;
-        src += `        rows = cur.fetchall()\n\n`;
-        src += `        # Print the results\n`;
-        src += `        for row in rows:\n`;
+        src += `    with ${conn}.cursor() as cur:\n\n`;
+
+        src += `        # query db\n`;
+        src += `        try:\n`;
+        src += `            cur.execute("SELECT ${columns} FROM ${tables}")\n`;
+        src += `        # check for errors\n`;
+        src += `        except psycopg.ProgrammingError as e:\n`;
+        src += `            raise psycopg.ProgrammingError(f"""\n`;
+        src += `Problem running query:\n`;
+        src += `    {e}\n\n`;
+
+        src += `Did you spell everything correctly?\n`;
+        src += `You can use show tables and columns recipes.\n`;
+        src += `            """)\n\n`;
+
+        src += `        # print the results\n`;
+        src += `        for row in cur.fetchall():\n`;
         src += `            print(f"{row}")`;
 
         setCode(src);
@@ -90,20 +100,22 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
-                label={"Choose connection variable name"}
+                label={"Choose connection variable"}
                 option={conn}
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
             />
             <Variable
-                label={"Choose query tables"}
+                label={"Select tables"}
                 name={tables}
                 setName={setTables}
+                tooltip="comma separated list, no trailing comma"
             />
             <Variable
-                label={"Choose query columns"}
+                label={"Select columns"}
                 name={columns}
                 setName={setColumns}
+                tooltip="comma separated list, no trailing comma"
             />
         </div>
     );
@@ -113,15 +125,21 @@ export const SelectQueryRecipe: IRecipe = {
     name: "Run select query",
     longName: "Python run select query in PostgreSQL",
     parentName: "Postgresql",
-    // len: 152
-    description: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
-    shortDescription: "Execute sql select query on previously configured Postgresql connection. Credentials are stored and loaded from .env file. Choose table and column name.",
-    codeExplanation: ``,
+    // len: 150
+    description: "Execute sql select query. Credentials are loaded from .env file. Choose table and column name. If there is no errors result is outputed to the screen.",
+    shortDescription: "Execute sql select query. Credentials are loaded from .env file. Choose table and column name. If there is no errors result is outputed to the screen.",
+    codeExplanation: `
+1. Check if there is an open connection.
+2. If not then open the connection.
+3. Try to run select query.
+4. Fetch results and show them to the user.
+5. If error occurs raise exception.
+`,
     ui: SelectQuery,
     Icon: QueryIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env"],
     defaultVariables: [
         {
             varName: "conn",

@@ -69,7 +69,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
             src += `if ${conn}.closed:\n`;
             src += `    ${conn} = create_new_connection()\n\n`;
 
-            src += `# run the query\n`;
+            src += `# run query\n`;
             src += `with ${conn}:\n`;
             src += `    with ${conn}.cursor() as cur:\n\n`;
 
@@ -86,7 +86,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
             src += `            )\n`;
             src += `        # check for errors\n`;
             src += `        except psycopg.ProgrammingError as e:\n`;
-            src += `            raise Exception(f"""\n`;
+            src += `            raise psycopg.ProgrammingError(f"""\n`;
             src += `Problem creating table:\n`;
             src += `    {e}\n\n`;
 
@@ -98,7 +98,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
         }
 
         setCode(src);
-        setPackages(["import psycopg", "from psycopg import sql", "from psycopg import ProgrammingError"]);
+        setPackages(["import psycopg", "from psycopg import sql"]);
         if (setMetadata) {
             setMetadata({
                 conn,

@@ -48,11 +48,10 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
-        src += `# run the query\n`;
+        src += `# run query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
-        src += `        # run query\n`;
         src += `        try:\n`;
         src += `            cur.execute(\n`;
         src += `                sql.SQL("""\n`;
@@ -60,19 +59,17 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         src += `                """)\n`;
         src += `            )\n`;
         src += `        # check for errors\n`;
-        src += `        except ProgrammingError as e:\n`;
-        src += `            raise ProgrammingError(f"""\n`;
+        src += `        except psycopg.ProgrammingError as e:\n`;
+        src += `            raise psycopg.ProgrammingError(f"""\n`;
         src += `Problem running query:\n`;
         src += `    {e}\n`;
         src += `            """)\n\n`;
 
         src += `        # check if query was a select query\n`;
-        src += `        if (str(cur.statusmessage).upper().startswith("SELECT")):\n`;
-        src += `            # fetch all the results\n`;
-        src += `            results = cur.fetchall()\n\n`;
+        src += `        if (str(cur.statusmessage).upper().startswith("SELECT")):\n\n`;
 
         src += `            # print the results\n`;
-        src += `            for result in results:\n`;
+        src += `            for result in cur.fetchall():\n`;
         src += `                print(f"{result}")`;
 
         setCode(src);

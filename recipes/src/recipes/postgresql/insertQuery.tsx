@@ -42,9 +42,9 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [columns, setColumns] = useState("col1, col2, col3");
+    const [columns, setColumns] = useState("col1,col2,col3");
     const [table, setTable] = useState("table");
-    const [values, setValues] = useState("val1, val2, val3");
+    const [values, setValues] = useState("val1,val2,val3");
 
     let percentS = "%s"
     let valuesArr = values.split(",")
@@ -66,7 +66,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
             src += `if ${conn}.closed:\n`;
             src += `    ${conn} = create_new_connection()\n\n`;
 
-            src += `# run the query\n`;
+            src += `# run query\n`;
             src += `with ${conn}:\n`;
             src += `    with ${conn}.cursor() as cur:\n\n`;
 
@@ -74,8 +74,8 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
             src += `        try:\n`;
             src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
             src += `        # check for errors\n`;
-            src += `        except ProgrammingError as e:\n`;
-            src += `            raise ProgrammingError(f"""\n`;
+            src += `        except psycopg.ProgrammingError as e:\n`;
+            src += `            raise psycopg.ProgrammingError(f"""\n`;
             src += `Problem running query:\n`;
             src += `    {e}\n\n`;
 

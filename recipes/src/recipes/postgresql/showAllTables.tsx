@@ -40,9 +40,9 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         );
     }
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [columns, setColumns] = useState("please select query columns");
-    const [table, setTable] = useState("please select query table");
-    const [values, setValues] = useState("please select query values");
+    const [columns, setColumns] = useState("col1,col2,col3");
+    const [table, setTable] = useState("table");
+    const [values, setValues] = useState("val1,val2,val3");
     const [schema, setSchema] = useState(false);
 
     useEffect(() => {
@@ -50,12 +50,13 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
-        src += `# run the query\n`;
+        src += `# run query\n`;
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
-        src += `        # Query the db\n`;
-        src += `        cur.execute(\n`;
-        src += `            """\n`;
+
+        src += `        # query db\n`;
+        src += `        try:\n`;
+        src += `            cur.execute("""\n`;
         if (schema) {
             src += `                SELECT table_schema || '.' || table_name\n`;
         } else {
@@ -64,14 +65,20 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         src += `                FROM information_schema.tables\n`;
         src += `                WHERE table_type = 'BASE TABLE'\n`;
         src += `                AND table_schema NOT IN ('pg_catalog', 'information_schema');\n`;
-        src += `            """\n`;
-        src += `        )\n\n`;
+        src += `            """)\n`;
+        src += `        # check for errors\n`;
+        src += `        except psycopg.ProgrammingError as e:\n`;
+        src += `            raise psycopg.ProgrammingError(f"""\n`;
+        src += `Problem running query:\n`;
+        src += `    {e}\n\n`;
 
-        src += `        # Fetch all the tables\n`;
-        src += `        tables = cur.fetchall()\n\n`;
+        src += `Did you spell everything correctly?\n`;
+        src += `You can use show tables and columns recipes.\n`;
+        src += `            """)\n\n`;
 
-        src += `        # Print the results\n`;
-        src += `        for table in tables:\n`;
+        src += `        # print the results\n`;
+        src += `        print("Tables:")\n`;
+        src += `        for table in cur.fetchall():\n`;
         src += `            print(f"{table}")`;
 
         setCode(src);
@@ -107,13 +114,13 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
             />
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Select
-                    label={"Choose connection variable name"}
+                    label={"Choose connection variable"}
                     option={conn}
                     options={connections.map((d) => [d, d])}
                     setOption={setConnection}
                 />
                 <Toggle
-                    label="Show table schema"
+                    label={"Show table schema"}
                     value={schema}
                     setValue={setSchema}
                 />
@@ -126,15 +133,21 @@ export const ShowAllTablesRecipe: IRecipe = {
     name: "Show all tables",
     longName: "Python show all tables from PostgreSQL",
     parentName: "Postgresql",
-    // len: 171
-    description: "List all tables of previously configured Postgresql database connection. Choose if you want to displaty table schema too. Credentials are stored and loaded from .env file.",
-    shortDescription: "List all tables of previously configured Postgresql database connection. Choose if you want to displaty table schema too. Credentials are stored and loaded from .env file.",
-    codeExplanation: ``,
+    // len: 176
+    description: "List all table on your connection. Use advanced options to show table schema. To show tables from other databases change your connection. Credentials are loaded from .env file.",
+    shortDescription: "List all table on your connection. Use advanced options to show table schema. To show tables from other databases change your connection. Credentials are loaded from .env file.",
+    codeExplanation: `
+1. Check if there is an open connection.
+2. If not then open the connection.
+3. Try to query the database.
+4. Fetch results and show them to the user.
+5. If error occurs raise exception.
+`,
     ui: ShowAllTables,
     Icon: TableIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
-    tags: ["ml", "machine-learning", "sql", "postgres", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env"],
     defaultVariables: [
         {
             varName: "conn",

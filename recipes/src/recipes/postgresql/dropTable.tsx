@@ -60,8 +60,8 @@ export const DropTable: React.FC<IRecipeProps> = ({
         src += `                "DROP TABLE ${table}${dropOption};"\n`;
         src += `            )\n`;
         src += `        # check for errors\n`;
-        src += `        except ProgrammingError as e:\n`;
-        src += `            raise Exception(f"""\n`;
+        src += `        except psycopg.ProgrammingError as e:\n`;
+        src += `            raise psycopg.ProgrammingError(f"""\n`;
         src += `Problem dropping table:\n`;
         src += `    {e}\n\n`;
 
@@ -70,7 +70,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
         src += `            """)`;
 
         setCode(src);
-        setPackages(["import psycopg", "from psycopg import ProgrammingError"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
@@ -103,18 +103,20 @@ export const DropTable: React.FC<IRecipeProps> = ({
                 options={connections.map((d) => [d, d])}
                 setOption={setConnection}
             />
-            <Variable
-                label={"Table to drop"}
-                name={table}
-                setName={setTable}
-                tooltip="to drop multiple table input a comma separated list"
-            />
-            <Select
-                label={"Drop opiton"}
-                option={dropOption}
-                options={dropOptions}
-                setOption={setDropOption}
-            />
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                <Variable
+                    label={"Table to drop"}
+                    name={table}
+                    setName={setTable}
+                    tooltip="to drop multiple table input a comma separated list"
+                />
+                <Select
+                    label={"Drop opiton"}
+                    option={dropOption}
+                    options={dropOptions}
+                    setOption={setDropOption}
+                />
+            </div>
         </div>
     );
 };
