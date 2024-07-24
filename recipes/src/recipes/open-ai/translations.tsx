@@ -7,7 +7,7 @@ import { Select } from "../../components/Select";
 import { TextIcon } from "../../icons/text";
 
 
-const DOCS_URL = "python-client-openai";
+const DOCS_URL = "openai-speech-translation";
 
 export const Translations: React.FC<IRecipeProps> = ({
   setCode,
