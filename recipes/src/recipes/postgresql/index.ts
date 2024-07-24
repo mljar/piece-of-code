@@ -11,6 +11,7 @@ import RawQueryToPandasRecipe from "./rawQueryToPandas";
 import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
+import UpdateQueryRecipe from "./updateQuery";
 
 export const PostgresqlRecipes: IRecipeSet = {
     name: "Postgresql",
@@ -36,5 +37,6 @@ export const PostgresqlRecipes: IRecipeSet = {
         [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
         [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
         [RawQueryRecipe.name]: RawQueryRecipe,
+        [UpdateQueryRecipe.name]: UpdateQueryRecipe,
     },
 };
