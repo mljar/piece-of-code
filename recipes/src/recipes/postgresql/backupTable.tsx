@@ -4,12 +4,12 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
-import { QueryIcon } from "../../icons/Query";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
+import { CopyIcon } from "../../icons/copy";
 
-const DOCS_URL = "python-postgres-select";
+const DOCS_URL = "python-postgresql-table-copy";
 
-export const SelectQuery: React.FC<IRecipeProps> = ({
+export const BackupTable: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -41,11 +41,13 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [columns, setColumns] = useState("col1,col2,col3");
-    const [tables, setTables] = useState("talbe");
+    const [table, setTable] = useState("table");
+    const [backup, setBackup] = useState("table_backup");
 
     useEffect(() => {
-        let src = `# if connection was used and closed it is reopen here\n`;
+        let src = ""
+
+        src += `# if connection was used and closed it is reopen here\n`;
         src += `if ${conn}.closed:\n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
@@ -53,50 +55,46 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
-        src += `        # query db\n`;
+        src += `        # create table\n`;
         src += `        try:\n`;
-        src += `            cur.execute("SELECT ${columns} FROM ${tables}")\n`;
+        src += `            cur.execute("CREATE TABLE ${backup} AS TABLE ${table}")\n`;
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
-        src += `Problem running query:\n`;
+        src += `Problem creating table:\n`;
         src += `    {e}\n\n`;
 
-        src += `Did you spell everything correctly?\n`;
-        src += `You can use show tables and columns recipes.\n`;
-        src += `            """)\n\n`;
-
-        src += `        # print the results\n`;
-        src += `        for row in cur.fetchall():\n`;
-        src += `            print(f"{row}")`;
+        src += `Are you sure everything is splled correctly and names are unique?\n`;
+        src += `            """)`;
 
         setCode(src);
         setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,
-                columns,
-                tables,
+                backup,
+                table,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, columns, tables]);
+    }, [conn, backup, table]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-            if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
-            if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
+            if (metadata["backup"] !== undefined) setBackup(metadata["backup"]);
+            if (metadata["table"] !== undefined) setTable(metadata["table"]);
         }
     }, [metadata]);
+
 
     return (
         <div>
             <Title
-                Icon={QueryIcon}
-                label={"Run sql select query"}
+                Icon={CopyIcon}
+                label={"Create table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -106,37 +104,39 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                 setOption={setConnection}
             />
             <Variable
-                label={"Select tables"}
-                name={tables}
-                setName={setTables}
-                tooltip="comma separated list, no trailing comma"
+                label={"Backup table name"}
+                name={backup}
+                setName={setBackup}
             />
             <Variable
-                label={"Select columns"}
-                name={columns}
-                setName={setColumns}
-                tooltip="comma separated list, no trailing comma"
+                label={"Table to backup"}
+                name={table}
+                setName={setTable}
             />
         </div>
     );
 };
 
-export const SelectQueryRecipe: IRecipe = {
-    name: "Run select query",
-    longName: "Python run select query in PostgreSQL",
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+export const BackupTableRecipe: IRecipe = {
+    name: "Backup table",
+    longName: "Python code to backup table in PostgreSQL",
     parentName: "Postgresql",
-    // len: 150
-    description: "Execute sql select query. Credentials are loaded from .env file. Choose table and column name. If there is no errors result is outputed to the screen.",
-    shortDescription: "Execute sql select query. Credentials are loaded from .env file. Choose table and column name. If there is no errors result is outputed to the screen.",
+    // len: 195
+    description: "Create new database table that is a copy of another table. Useful when you want to test some changes to data and you are not sure and want to have a backup. Credentials are loaded from .env file.",
+    shortDescription: "Create new database table that is a copy of another table. Useful when you want to test some changes to data and you are not sure and want to have a backup. Credentials are loaded from .env file.",
     codeExplanation: `
 1. Check if there is an open connection.
 2. If not then open the connection.
-3. Try to run select query.
-4. Fetch results and show them to the user.
-5. If error occurs raise exception.
+3. Try to copy and backup the table.
+4. If error occurs raise exception.
 `,
-    ui: SelectQuery,
-    Icon: QueryIcon,
+    ui: BackupTable,
+    Icon: CopyIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
     tags: ["python", "postgresql", "sql", "psycopg", ".env"],
@@ -153,4 +153,4 @@ export const SelectQueryRecipe: IRecipe = {
             isWidget: false,
         }],
 };
-export default SelectQueryRecipe;
+export default BackupTableRecipe;

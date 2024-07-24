@@ -7,7 +7,7 @@ import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const meta: Meta<typeof ShowAllColumns> = {
     component: ShowAllColumns,
-    title: "CodePieces/postgresql/queries",
+    title: "CodePieces/postgresql/tables",
     argTypes: {},
 };
 export default meta;

@@ -1489,7 +1489,7 @@ __metadata:
   dependencies:
     "@tailwindcss/typography": ^0.5.12
     markdown-it: ^14.1.0
-    ollama: ^0.5.1
+    ollama: ^0.5.2
     react-tooltip: ^5.26.3
   peerDependencies:
     react: ^18.0.0
@@ -4649,12 +4649,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ollama@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "ollama@npm:0.5.1"
+"ollama@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "ollama@npm:0.5.2"
   dependencies:
     whatwg-fetch: ^3.6.20
-  checksum: ec8f39f189d67c559729d1aaf58f48c425efaccc59a79c412e46b31f1501e068f415a3854698f15fc0a552fc0114749bad0f75e1d7c4e02dbb689d878012a326
+  checksum: d824825fcf52dba24e4c99eb7ec1f95075dc2e3c89d89991af7d633a67f4484f43386dd83e70b757ab1d695d7a15c27f0ed87c0ac91d47509836fbec138db85a
   languageName: node
   linkType: hard
 

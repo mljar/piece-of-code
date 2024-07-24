@@ -1,5 +1,6 @@
 import { PostgresqlIcon } from "../../icons/Postgresql";
 import { IRecipeSet } from "../base";
+import BackupTableRecipe, { BackupTable } from "./backupTable";
 
 import ConnectToDatabaseRecipe from "./connectToDatabase";
 import CreateTableRecipe from "./createTable";
@@ -11,6 +12,7 @@ import RawQueryToPandasRecipe from "./rawQueryToPandas";
 import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
+import UpdateQueryRecipe from "./updateQuery";
 
 export const PostgresqlRecipes: IRecipeSet = {
     name: "Postgresql",
@@ -31,10 +33,9 @@ export const PostgresqlRecipes: IRecipeSet = {
         [RawQueryRecipe.name]: RawQueryRecipe,
         [SelectQueryRecipe.name]: SelectQueryRecipe,
         [InsertQueryRecipe.name]: InsertQueryRecipe,
+        [UpdateQueryRecipe.name]: UpdateQueryRecipe,
+        [BackupTableRecipe.name]: BackupTableRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,
-        [ShowAllTablesRecipe.name]: ShowAllTablesRecipe,
-        [ShowAllColumnsRecipe.name]: ShowAllColumnsRecipe,
-        [RawQueryRecipe.name]: RawQueryRecipe,
     },
 };

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { GlobeIcon } from "../../icons/Globe";
+import { DatabaseIcon } from "../../icons/Database";
 
 const DOCS_URL = "python-postgresql-define-connection";
 
@@ -77,7 +77,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
     return (
         <div>
             <Title
-                Icon={GlobeIcon}
+                Icon={DatabaseIcon}
                 label={"Define new database connection"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
@@ -89,7 +89,7 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
                     setName={setDBName}
                 />
                 <Variable
-                    label={"Choose database user name"}
+                    label={"Username"}
                     name={username}
                     setName={setUsername}
                 />
@@ -97,12 +97,12 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
 
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                 <Variable
-                    label={"Set database host address"}
+                    label={"Host address"}
                     name={host_address}
                     setName={setHostAddress}
                 />
                 <Variable
-                    label={"Put in database user password"}
+                    label={"Password"}
                     name={password}
                     setName={setPassword}
                     isPassword={true}
@@ -140,17 +140,17 @@ export const DefineNewConnectionRecipe: IRecipe = {
     name: "Define a new connection",
     longName: "Python define a new PostgreSQL connection",
     parentName: "Postgresql",
-    // len: 196
-    description: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
-    shortDescription: "Define new database connection using simple Python code. Provide database credentails to create new connection. Crededentaials are stored in .env file. Don't forget to close it after done using it",
+    // len: 158
+    description: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host adress and port.",
+    shortDescription: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host adress and port.",
     codeExplanation: `
 1. Save provided values in .env file as POSTGRESQL credentails.
 2. Notify the user when operation gets completed.
 `,
     ui: DefineNewConnection,
-    Icon: GlobeIcon,
+    Icon: DatabaseIcon,
     requiredPackages: [],
-    tags: ["sql", "postgresql", "psycopg"],
+    tags: ["python", "postgresql", "sql", "psycopg", ".env"],
     docsUrl: DOCS_URL,
 };
 

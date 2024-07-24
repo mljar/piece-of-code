@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { DropTable } from "./dropTable";
+import { UpdateQuery } from "./updateQuery";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
-const meta: Meta<typeof DropTable> = {
-    component: DropTable,
-    title: "CodePieces/postgresql/tables",
+const meta: Meta<typeof UpdateQuery> = {
+    component: UpdateQuery,
+    title: "CodePieces/postgresql/queries",
     argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof DropTable>;
+type Story = StoryObj<typeof UpdateQuery>;
 
-export const DropTableForm: Story = (
+export const UpdateQueryForm: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
     const [code, setCode] = useState("");
     return (
         <>
-            <DropTable {...args} setCode={setCode} />
+            <UpdateQuery {...args} setCode={setCode} />
             <pre>{code}</pre>
         </>
     )
 };
-DropTableForm.args = {
+UpdateQueryForm.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
@@ -44,14 +44,14 @@ DropTableForm.args = {
     ],
 };
 
-export const DropTableEmptyConnStory: Story = (
+export const UpdateQueryEmptyConnStory: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
     <>
-        <DropTable {...args} />
+        <UpdateQuery {...args} />
     </>
 );
-DropTableEmptyConnStory.args = {
+UpdateQueryEmptyConnStory.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
