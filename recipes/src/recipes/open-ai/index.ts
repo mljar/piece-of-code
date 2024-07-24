@@ -6,6 +6,9 @@ import ClientRecipe from "./clientOpenAI";
 import ChatComplRecipe from "./chatCompletions";
 import VisionLocalRecipe from "./visionLocal";
 import VisionURLRecipe from "./visionURL";
+import TextToSpeechRecipe from "./textToSpeech";
+// import TranscriptionsRecipe from "./transcriptions";
+// import TranslationsRecipe from "./translations";
 
 export const OpenAIRecipes: IRecipeSet = {
   name: "OpenAI",
@@ -13,13 +16,16 @@ export const OpenAIRecipes: IRecipeSet = {
   docsUrl: "python-openai",
   description: "Doing operations with AI help has never been that easy! You can generate images, voices, text, and much more. All you need is an API KEY from OpenAI and MLJAR STUDIO will do the rest.",
   shortDescription: "Doing operations with AI help has never been that easy! You can generate images, voices, text, and much more. All you need is an API KEY from OpenAI and MLJAR STUDIO will do the rest.",
-  tags: ["python", "ai-image"],
+  tags: ["python", "open-ai"],
   Icon: OpenAIIcon,
   recipes: {
     [ClientRecipe.name]: ClientRecipe,
-    [ImageGenRecipe.name]: ImageGenRecipe,
     [ChatComplRecipe.name]: ChatComplRecipe,
-    [VisionURLRecipe.name]: VisionURLRecipe,
+    [ImageGenRecipe.name]: ImageGenRecipe,
+    // [TranslationsRecipe.name]: TranslationsRecipe,
+    // [TranscriptionsRecipe.name]: TranscriptionsRecipe,
+    [TextToSpeechRecipe.name]: TextToSpeechRecipe,
     [VisionLocalRecipe.name]: VisionLocalRecipe,
+    [VisionURLRecipe.name]: VisionURLRecipe,
   },
 };
