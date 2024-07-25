@@ -40,7 +40,9 @@ export const DefineNewConnection: React.FC<IRecipeProps> = ({
         // src += `print("Please remove this code cell and save notebook, be safe!")`;
 
         let src = `print("Database connection credentials stored in .env file successfully.")`;
+
         setCode(src);
+
         if (setEnv) {
             setEnv([
                 ["POSTGRES_DB_NAME", dbname],
@@ -140,9 +142,9 @@ export const DefineNewConnectionRecipe: IRecipe = {
     name: "Define a new connection",
     longName: "Python define a new PostgreSQL connection",
     parentName: "Postgresql",
-    // len: 158
-    description: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host adress and port.",
-    shortDescription: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host adress and port.",
+    // len: 159
+    description: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host address and port.",
+    shortDescription: "Define new PostgreSQL database connection and store credentials in .env file. Provide in this recipe: database name, username, password, host address and port.",
     codeExplanation: `
 1. Save provided values in .env file as POSTGRESQL credentails.
 2. Notify the user when operation gets completed.
