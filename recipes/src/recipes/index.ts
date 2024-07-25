@@ -11,7 +11,8 @@ import { ScikitLearnRecipes } from "./scikitLearn";
 import { AutoMLRecipes } from "./automl";
 import { ImagesOperationsRecipes } from "./images-operations";
 import { PostgresqlRecipes } from "./postgresql";
-import { OpenAIRecipes } from "./open-ai"
+import { OpenAIRecipes } from "./open-ai";
+import { PDFRecipes } from "./pdf-operations"
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -29,6 +30,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [AutoMLRecipes.name]: AutoMLRecipes,
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   [OpenAIRecipes.name]: OpenAIRecipes,
+  [PDFRecipes.name]: PDFRecipes,
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 
