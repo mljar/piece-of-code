@@ -4,6 +4,7 @@ import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { ConnectIcon } from "../../icons/Connect";
+import { Toggle } from "../../components/Toggle";
 
 const DOCS_URL = "python-postgresql-connect-to-database";
 
@@ -14,6 +15,7 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     setMetadata,
 }) => {
     const [conn, setConnection] = useState("conn");
+    const [testConn, setTestConn] = useState(false);
 
     useEffect(() => {
         let src = `# load credentials from .env file:\n`;
@@ -22,16 +24,20 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `# get the credentials\n`;
         src += `def create_new_connection():\n`;
         src += `    conn = psycopg.connect(\n`;
-        src += `    dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
-        src += `    user=os.getenv("POSTGRES_USERNAME"),\n`;
-        src += `    password=os.getenv("POSTGRES_PASSWORD"),\n`;
-        src += `    host=os.getenv("POSTGRES_HOST"),\n`;
-        src += `    port=os.getenv("POSTGRES_PORT"),\n`;
+        src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
+        src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
+        src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
+        src += `        host=os.getenv("POSTGRES_HOST"),\n`;
+        src += `        port=os.getenv("POSTGRES_PORT"),\n`;
         src += `    )\n`;
         src += `    return conn\n\n`;
 
         src += `# open new connection:\n`;
         src += `${conn} = create_new_connection()`;
+        if (testConn) {
+            src += `\n`;
+            src += `print(conn.info.status)`;
+        }
         // src += `print(f"Success")`;
 
         setCode(src);
@@ -39,18 +45,19 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         if (setMetadata) {
             setMetadata({
                 conn,
+                testConn,
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn]);
+    }, [conn, testConn]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
+            if (metadata["testConn"] !== undefined) setTestConn(metadata["testConn"]);
         }
     }, [metadata]);
-
 
     return (
         <div>
@@ -59,11 +66,18 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
                 label={"Connect to Postgresql database"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
-            <Variable
-                label={"Choose connection variable name"}
-                name={conn}
-                setName={setConnection}
-            />
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                <Variable
+                    label={"Choose connection variable name"}
+                    name={conn}
+                    setName={setConnection}
+                />
+                <Toggle
+                    label={"Test connection"}
+                    value={testConn}
+                    setValue={setTestConn}
+                />
+            </div>
         </div>
     );
 };
@@ -78,6 +92,7 @@ export const ConnectToDatabaseRecipe: IRecipe = {
     codeExplanation: `
 1. Load credentials from .env file.
 2. Try to establish connection with database.
+3. If checked, test the connection.
 `,
     ui: ConnectToDatabase,
     Icon: ConnectIcon,
