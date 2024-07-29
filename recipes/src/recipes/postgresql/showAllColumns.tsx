@@ -93,6 +93,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
                 conn,
                 table,
                 schema,
+                advanced,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
@@ -105,9 +106,9 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
             if (metadata["table"] !== undefined) setTable(metadata["table"]);
             if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
+            if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
         }
     }, [metadata]);
-
 
     return (
         <div>
