@@ -109,7 +109,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={LayoutColumnsIcon}
-                label={"Run sql insert query"}
+                label={"Show all columns"}
                 advanced={advanced}
                 setAdvanced={setAdvanced}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
