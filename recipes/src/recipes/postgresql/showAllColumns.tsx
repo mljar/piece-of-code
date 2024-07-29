@@ -78,7 +78,11 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         src += `            """)\n\n`;
 
         src += `        # print the results\n`;
-        src += `        print("Columns:")\n`;
+        if (advanced) {
+            src += `        print("Columns of ${schema}.${table}:")\n`;
+        } else {
+            src += `        print("Columns of ${table}:")\n`;
+        }
         src += `        for column in cur.fetchall():\n`;
         src += `            print(f"{column}")`;
 

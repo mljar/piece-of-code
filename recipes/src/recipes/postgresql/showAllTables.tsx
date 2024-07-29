@@ -109,7 +109,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={TableIcon}
-                label={"Run sql insert query"}
+                label={"Show all tables"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
