@@ -3,6 +3,7 @@ import { IRecipeSet } from "../base";
 import { PDFIcon } from "../../icons/PDF";
 
 import { DisplayPDFRecipe } from "./displayPDF";
+import { LoadPDFRecipe} from "./loadPDF";
 
 
 export const PDFRecipes: IRecipeSet = {
@@ -15,5 +16,6 @@ export const PDFRecipes: IRecipeSet = {
   Icon: PDFIcon,
   recipes: {
     [DisplayPDFRecipe.name]: DisplayPDFRecipe,
+    [LoadPDFRecipe.name]: LoadPDFRecipe,
   },
 };
