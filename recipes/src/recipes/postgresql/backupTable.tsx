@@ -55,7 +55,7 @@ export const BackupTable: React.FC<IRecipeProps> = ({
         src += `with ${conn}:\n`;
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
-        src += `        # create table\n`;
+        src += `        # backup table\n`;
         src += `        try:\n`;
         src += `            cur.execute("CREATE TABLE ${backup} AS TABLE ${table}")\n`;
         src += `        # check for errors\n`;
@@ -94,7 +94,7 @@ export const BackupTable: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={CopyIcon}
-                label={"Create table"}
+                label={"Backup table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -117,11 +117,6 @@ export const BackupTable: React.FC<IRecipeProps> = ({
     );
 };
 
-//TODO
-//TODO
-//TODO
-//TODO
-//TODO
 export const BackupTableRecipe: IRecipe = {
     name: "Backup table",
     longName: "Python code to backup table in PostgreSQL",
