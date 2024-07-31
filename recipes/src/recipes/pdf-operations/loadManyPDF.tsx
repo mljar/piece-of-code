@@ -66,7 +66,7 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
         defaultPath={directoryPath}
         setPath={setDirectoryPath}
         selectFolder={true}
-        tooltip={"Choose file from which you want to load the PDFs."}
+        tooltip={"Choose the directory from which you want to load the PDFs."}
       />
       <Toggle
         label={"PDFs information"}

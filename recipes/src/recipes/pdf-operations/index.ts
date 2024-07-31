@@ -5,6 +5,7 @@ import { PDFIcon } from "../../icons/PDF";
 import { DisplayPDFRecipe } from "./displayPDF";
 import { LoadPDFRecipe} from "./loadPDF";
 import { LoadManyPDFRecipe } from "./loadManyPDF";
+import { SearchInPDFRecipe } from "./searchInfoInPDF";
 
 
 export const PDFRecipes: IRecipeSet = {
@@ -18,6 +19,7 @@ export const PDFRecipes: IRecipeSet = {
   recipes: {
     [DisplayPDFRecipe.name]: DisplayPDFRecipe,
     [LoadPDFRecipe.name]: LoadPDFRecipe,
-    [LoadManyPDFRecipe.name]: LoadManyPDFRecipe
+    [LoadManyPDFRecipe.name]: LoadManyPDFRecipe,
+    [SearchInPDFRecipe.name]: SearchInPDFRecipe,
   },
 };
