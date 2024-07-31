@@ -55,26 +55,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
         src += `        # query db\n`;
         src += `        try:\n`;
-        src += `            # find column names\n`;
-        src += `            cur.execute("""\n`;
-        src += `                SELECT attname AS col\n`;
-        src += `                FROM pg_attribute\n`;
-        src += `                WHERE attrelid = '${tables}'::regclass \n`;
-        src += `                AND attnum > 0\n`;
-        src += `                AND NOT attisdropped\n`;
-        src += `                ORDER BY attnum;\n`;
-        src += `            """)\n`;
-        src += `            # print columns names\n`;
-        src += `            for column in cur.fetchall():\n`;
-        src += `                print(f"{column} ", end = "")\n`;
-        src += `            print("")\n\n`;
-
-        src += `            # find requested rows\n`;
         src += `            cur.execute("SELECT ${columns} FROM ${tables}")\n`;
-        src += `            # print the results\n`;
-        src += `            for row in cur.fetchall():\n`;
-        src += `                print(f"{row}")\n\n`;
-
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -83,8 +64,11 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
         src += `Did you spell everything correctly?\n`;
         src += `You can use show tables and columns recipes.\n`;
-        src += `            """)`;
+        src += `            """)\n\n`;
 
+        src += `        # print the results\n`;
+        src += `        for row in cur.fetchall():\n`;
+        src += `            print(f"{row}")`;
 
         setCode(src);
         setPackages(["import psycopg"]);
