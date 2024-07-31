@@ -89,6 +89,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
                 columns,
                 table,
                 values,
+                schema,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
@@ -102,6 +103,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
             if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
             if (metadata["table"] !== undefined) setTable(metadata["table"]);
             if (metadata["values"] !== undefined) setValues(metadata["values"]);
+            if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
         }
     }, [metadata]);
 
@@ -109,7 +111,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={TableIcon}
-                label={"Run sql insert query"}
+                label={"Show all tables"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">

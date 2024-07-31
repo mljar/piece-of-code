@@ -78,7 +78,11 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         src += `            """)\n\n`;
 
         src += `        # print the results\n`;
-        src += `        print("Columns:")\n`;
+        if (advanced) {
+            src += `        print("Columns of ${schema}.${table}:")\n`;
+        } else {
+            src += `        print("Columns of ${table}:")\n`;
+        }
         src += `        for column in cur.fetchall():\n`;
         src += `            print(f"{column}")`;
 
@@ -89,6 +93,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
                 conn,
                 table,
                 schema,
+                advanced,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
@@ -101,15 +106,15 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
             if (metadata["table"] !== undefined) setTable(metadata["table"]);
             if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
+            if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
         }
     }, [metadata]);
-
 
     return (
         <div>
             <Title
                 Icon={LayoutColumnsIcon}
-                label={"Run sql insert query"}
+                label={"Show all columns"}
                 advanced={advanced}
                 setAdvanced={setAdvanced}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}

@@ -171,7 +171,7 @@ export const RawQueryToPandasRecipe: IRecipe = {
 6. If error occurs raise exception.
 `,
     ui: RawQueryToPandas,
-    Icon: QueryIcon,
+    Icon: PandasIcon,
     requiredPackages: [
         { importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" },
         { importName: "pandas", installationName: "pandas", version: ">=1.0.0" }
