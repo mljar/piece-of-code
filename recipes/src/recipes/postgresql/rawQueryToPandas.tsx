@@ -5,7 +5,6 @@ import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { TextArea } from "../../components/TextArea";
 import { Variable } from "../../components/Variable";
-import { QueryIcon } from "../../icons/Query";
 import { PandasIcon } from "../../icons/Pandas";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
@@ -63,11 +62,9 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
         src += `        try:\n`;
-        src += `            cur.execute(\n`;
-        src += `                sql.SQL("""\n`;
+        src += `            cur.execute("""\n`;
         src += `${query}\n`;
-        src += `                """)\n`;
-        src += `            )\n`;
+        src += `            """)\n`;
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -98,7 +95,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
         src += `                """)`;
 
         setCode(src);
-        setPackages(["import psycopg", "from psycopg import sql", "import pandas as pd"]);
+        setPackages(["import psycopg", "import pandas as pd"]);
         if (setMetadata) {
             setMetadata({
                 conn,
