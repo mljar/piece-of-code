@@ -297,11 +297,13 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
         yGrid,
         style,
         legendPosition,
+        automatic,
+        advanced,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition]);
+  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic]);
 
   useEffect(() => {
     if (metadata) {
@@ -315,6 +317,8 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
       if (metadata["yGrid"] !== undefined) setYGrid(metadata["yGrid"]);
       if (metadata["style"] !== undefined) setStyle(metadata["style"]);
       if (metadata["legendPosition"] !== undefined) setLegendPosition(metadata["legendPosition"]);
+      if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
+      if (metadata["automatic"] !== undefined) setAutomatic(metadata["automatic"]);
     }
   }, [metadata]);
 
