@@ -99,6 +99,7 @@ export const RawQueryToPandas: React.FC<IRecipeProps> = ({
         if (setMetadata) {
             setMetadata({
                 conn,
+                query,
                 columns,
                 df,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
