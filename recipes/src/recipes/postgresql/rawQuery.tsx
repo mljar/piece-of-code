@@ -53,11 +53,9 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
         src += `        try:\n`;
-        src += `            cur.execute(\n`;
-        src += `                sql.SQL("""\n`;
+        src += `            cur.execute("""\n`;
         src += `${query}\n`;
-        src += `                """)\n`;
-        src += `            )\n`;
+        src += `            """)\n`;
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -73,7 +71,7 @@ export const RawQuery: React.FC<IRecipeProps> = ({
         src += `                print(f"{result}")`;
 
         setCode(src);
-        setPackages(["import psycopg", "from psycopg import sql"]);
+        setPackages(["import psycopg"]);
         if (setMetadata) {
             setMetadata({
                 conn,

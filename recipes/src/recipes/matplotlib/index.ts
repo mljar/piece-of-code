@@ -4,7 +4,7 @@ import { MatplotlibIcon } from "../../icons/Matplotlib";
 import ScatterPlotRecipe from "./scatter";
 
 export const MatplotlibRecipes: IRecipeSet = {
-    name: "matplotlib",
+    name: "Matplotlib",
     longName: "Matplotlib",
     docsUrl: "matplotlib",
     description: `Create matplotlib charts in Python with no-code UI.`,
