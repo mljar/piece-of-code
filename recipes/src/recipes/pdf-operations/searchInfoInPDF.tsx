@@ -18,7 +18,7 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
   const [text, setText] = useState("");
 
   useEffect(() => {
-    let src = `# set directory path\n`
+    let src = `# set directory path\n`; 
     src += `directoryPath = r"${directoryPath}"\n\n`;
     src += `# declare lists and variables\n`;
     src += `readers = []\n`;

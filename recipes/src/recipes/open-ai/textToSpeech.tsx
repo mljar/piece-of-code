@@ -52,6 +52,7 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
     setPackages([
       "import openai",
       "import os",
+      "from IPython.display import Audio"
     ]);
     if (setMetadata) {
       setMetadata({
@@ -89,7 +90,7 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
           option={model}
           options={modelOptions}
           setOption={setModel}
-          tooltip="Choose the chat model that you want to use. Remember that each model has individual pricing."
+          tooltip="Choose the OpenAI model that you want to use. Remember that each model has individual pricing."
         />
         <Select
           label={"Choose voice"}

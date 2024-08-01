@@ -9,6 +9,7 @@ import VisionURLRecipe from "./visionURL";
 import TextToSpeechRecipe from "./textToSpeech";
 import TranscriptionsRecipe from "./transcriptions";
 import TranslationsRecipe from "./translations";
+import EmbeddingRecipe from "./createEmbedding";
 
 export const OpenAIRecipes: IRecipeSet = {
   name: "OpenAI",
@@ -21,6 +22,7 @@ export const OpenAIRecipes: IRecipeSet = {
   recipes: {
     [ClientRecipe.name]: ClientRecipe,
     [ChatComplRecipe.name]: ChatComplRecipe,
+    [EmbeddingRecipe.name]: EmbeddingRecipe,  
     [ImageGenRecipe.name]: ImageGenRecipe,
     [TranscriptionsRecipe.name]: TranscriptionsRecipe,
     [TranslationsRecipe.name]: TranslationsRecipe,

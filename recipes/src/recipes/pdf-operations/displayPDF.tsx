@@ -94,9 +94,7 @@ export const DisplayPDFRecipe: IRecipe = {
   3. Create an IFrame to display encoded PDF.`,
   ui: DisplayPDF,
   Icon: PDFIcon,
-  requiredPackages: [
-    { importName: "IPython", installationName: "ipython", version: ">=8.26.0" },
-  ],
+  requiredPackages: [],
   docsUrl: DOCS_URL,
 };
 
