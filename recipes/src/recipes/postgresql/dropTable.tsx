@@ -94,7 +94,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={TableRemoveIcon}
-                label={"drop table"}
+                label={"Drop table"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -115,6 +115,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
                     option={dropOption}
                     options={dropOptions}
                     setOption={setDropOption}
+                    tooltip="empty defaults to RESTRICT"
                 />
             </div>
         </div>
