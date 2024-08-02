@@ -6,11 +6,14 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { EditIcon } from "../../icons/Edit";
+import { Numeric } from "../../components/Numeric";
+
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
+import { TextArea } from "../../components/TextArea";
 
-const DOCS_URL = "python-postgresql-update-column";
+const DOCS_URL = "python-postgresql-update-selected";
 
-export const UpdateQuery: React.FC<IRecipeProps> = ({
+export const UpdateSelected: React.FC<IRecipeProps> = ({
     setCode,
     setPackages,
     metadata,
@@ -44,7 +47,24 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
     const [table, setTable] = useState("table");
     const [column, setColumn] = useState("column");
     const [value, setValue] = useState("column * 1.05");
-    const [advanced, setAdvanced] = useState(false);
+    const [value2, setValue2] = useState("val1,val2,val3");
+    const [showResults, setShowResults] = useState(false);
+    const [id, setId] = useState(1);
+
+    let value2Arr = value2.split(",")
+    let data = ""
+    let j = id
+
+    for (let i = 0; i < value2Arr.length; i++) {
+        let unknownJ: unknown = j
+        if (i === value2Arr.length - 1) {
+            data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", value2Arr[i], "\"]")
+            break
+        }
+        data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", value2Arr[i], "\"], ")
+        j++
+    }
+
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
@@ -57,13 +77,14 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
 
         src += `        # update data\n`;
         src += `        try:\n`;
-        src += `            cur.execute("""\n`;
-        src += `                UPDATE ${table}\n`;
-        src += `                SET ${column} = ${value}\n`;
-        if (advanced) {
-            src += `                RETURNING *\n`;
+        src += `            data = ${data}\n`;
+        if (showResults) {
+            src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
+            src += `            cur.executemany(query, data, returning=True) \n`;
+        } else {
+            src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
+            src += `            cur.executemany(query, data) \n`;
         }
-        src += `            """)\n`;
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -74,11 +95,17 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
         src += `You can use show all tables or columns to check db contents.\n`;
         src += `            """)`;
 
-        if (advanced) {
+        if (showResults) {
             src += `\n\n`;
             src += `        # print the results\n`;
-            src += `        for result in cur.fetchall():\n`;
-            src += `            print(f"{result}")`;
+            // src += `        for result in cur.fetchall():\n`;
+            // src += `            print(f"{result}")`;
+
+            src += `        while True:\n`;
+            src += `            for row in cur.fetchall():\n`;
+            src += `                print(row)\n`;
+            src += `            if not cur.nextset():\n`;
+            src += `                break`;
         }
 
         setCode(src);
@@ -89,12 +116,12 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
                 column,
                 table,
                 value,
-                advanced,
+                advanced: showResults,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, column, table, value, advanced]);
+    }, [conn, column, table, value, value2, showResults, id]);
 
     useEffect(() => {
         if (metadata) {
@@ -103,7 +130,7 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
             if (metadata["column"] !== undefined) setColumn(metadata["column"]);
             if (metadata["table"] !== undefined) setTable(metadata["table"]);
             if (metadata["value"] !== undefined) setValue(metadata["value"]);
-            if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
+            if (metadata["advanced"] !== undefined) setShowResults(metadata["advanced"]);
         }
     }, [metadata]);
 
@@ -111,7 +138,7 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
         <div>
             <Title
                 Icon={EditIcon}
-                label={"Update column"}
+                label={"Update selected columns"}
                 docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
             />
             <Select
@@ -128,8 +155,8 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
                 />
                 <Toggle
                     label="Show results"
-                    value={advanced}
-                    setValue={setAdvanced}
+                    value={showResults}
+                    setValue={setShowResults}
                 />
             </div>
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -137,25 +164,44 @@ export const UpdateQuery: React.FC<IRecipeProps> = ({
                     label={"Update column"}
                     name={column}
                     setName={setColumn}
-                    tooltip="Every row in column will be updated"
                 />
-                <Variable
-                    label={"Update to"}
-                    name={value}
-                    setName={setValue}
+                <Numeric
+                    label="id"
+                    name={id}
+                    setName={setId}
                 />
             </div>
-        </div>
+            <TextArea
+                label={"Update to"}
+                text={value2}
+                setText={setValue2}
+            />
+        </div >
     );
 };
 
-export const UpdateQueryRecipe: IRecipe = {
-    name: "Update column",
-    longName: "Python update column in PostgreSQL",
+export const UpdateSelectedRecipe: IRecipe = {
+    name: "Update selected",
+    longName: "Python update selected columns in PostgreSQL",
     parentName: "Postgresql",
     // len: 207
-    description: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
-    shortDescription: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
+    // description: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
+    // shortDescription: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    description: "",
+    shortDescription: "",
     codeExplanation: `
 1. Check if there is an open connection.
 2. If not then open the connection.
@@ -163,7 +209,7 @@ export const UpdateQueryRecipe: IRecipe = {
 4. If selected show results.
 5. If error occurs raise exception.
 `,
-    ui: UpdateQuery,
+    ui: UpdateSelected,
     Icon: EditIcon,
     requiredPackages: [{ importName: "psycopg", installationName: "psycopg", version: ">=3.2.1" }],
     docsUrl: DOCS_URL,
@@ -181,4 +227,5 @@ export const UpdateQueryRecipe: IRecipe = {
             isWidget: false,
         }],
 };
-export default UpdateQueryRecipe;
+export default UpdateSelectedRecipe;
+

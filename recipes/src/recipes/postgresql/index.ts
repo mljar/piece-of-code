@@ -12,7 +12,7 @@ import RawQueryToPandasRecipe from "./rawQueryToPandas";
 import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
-import UpdateQueryRecipe from "./updateQuery";
+import UpdateColumnRecipe from "./updateColumn";
 
 export const PostgresqlRecipes: IRecipeSet = {
     name: "Postgresql",
@@ -33,7 +33,7 @@ export const PostgresqlRecipes: IRecipeSet = {
         [RawQueryRecipe.name]: RawQueryRecipe,
         [SelectQueryRecipe.name]: SelectQueryRecipe,
         [InsertQueryRecipe.name]: InsertQueryRecipe,
-        [UpdateQueryRecipe.name]: UpdateQueryRecipe,
+        [UpdateColumnRecipe.name]: UpdateColumnRecipe,
         [BackupTableRecipe.name]: BackupTableRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,

@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { UpdateQuery } from "./updateQuery";
+import { UpdateSelected } from "./updateSelected";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
-const meta: Meta<typeof UpdateQuery> = {
-    component: UpdateQuery,
+const meta: Meta<typeof UpdateSelected> = {
+    component: UpdateSelected,
     title: "CodePieces/postgresql/queries",
     argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof UpdateQuery>;
+type Story = StoryObj<typeof UpdateSelected>;
 
-export const UpdateQueryForm: Story = (
+export const UpdateSelectedForm: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
     const [code, setCode] = useState("");
     return (
         <>
-            <UpdateQuery {...args} setCode={setCode} />
+            <UpdateSelected {...args} setCode={setCode} />
             <pre>{code}</pre>
         </>
     )
 };
-UpdateQueryForm.args = {
+UpdateSelectedForm.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
@@ -44,16 +44,17 @@ UpdateQueryForm.args = {
     ],
 };
 
-export const UpdateQueryEmptyConnStory: Story = (
+export const UpdateSelectedEmptyConnStory: Story = (
     args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
     <>
-        <UpdateQuery {...args} />
+        <UpdateSelected {...args} />
     </>
 );
-UpdateQueryEmptyConnStory.args = {
+UpdateSelectedEmptyConnStory.args = {
     setCode: (src: string) => console.log(src),
     setPackages: (packages: string[]) => console.log(packages),
     variablesStatus: "loaded",
     variables: [],
 };
+
