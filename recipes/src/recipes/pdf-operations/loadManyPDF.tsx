@@ -92,7 +92,6 @@ export const LoadManyPDFRecipe: IRecipe = {
   ui: LoadManyPDF,
   Icon: LoadFileIcon,
   requiredPackages: [
-    { importName: "IPython", installationName: "ipython", version: ">=8.26.0" },
     { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0"}
   ],
   docsUrl: DOCS_URL,
