@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
+import { CLIENT_OPENAI } from "./utils";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
@@ -50,9 +51,9 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
     src += `for i in range(0, len(chunks)):\n`;
     src += `    embedding = client.embeddings.create(\n`;
     src += `        input = chunks[i],\n`;
-    src += `        model ="${model}"\n`;
+    src += `        model = "${model}"\n`;
     src += `    )\n`;
-    src += `    embeddings.append(np.array(embedding.data[0].embedding).reshape(1,-1))`;
+    src += `    embeddings.append(embedding.data[0].embedding)`;
     
     setCode(src);
     if (choice) {
@@ -129,6 +130,18 @@ export const FilesEmbeddingRecipe: IRecipe = {
     { importName: "docx", installationName: "python-docx", version: ">=1.1.2" } 
   ],
   docsUrl: DOCS_URL,
+  defaultVariables: [
+    {
+        varName: "client",
+        varType: CLIENT_OPENAI,
+        varColumns: [""],
+        varColumnTypes: [""],
+        varSize: "",
+        varShape: "",
+        varContent: "",
+        isMatrix: false,
+        isWidget: false,
+    }],
 };
 
 export default FilesEmbeddingRecipe;

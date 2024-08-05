@@ -23,7 +23,7 @@ export const Client: React.FC<IRecipeProps> = ({
     src += `# create OpenAI client\n`;
     src += `def create_client(api_key):\n`;
     src += `    try:\n`;
-    src += `        client = openai.OpenAI(api_key=api_key)\n`;
+    src += `        client = OpenAI(api_key=api_key)\n`;
     src += `        client.models.list()\n`;
     src += `        return client\n`;
     src += `    except openai.AuthenticationError:\n`;
@@ -34,7 +34,7 @@ export const Client: React.FC<IRecipeProps> = ({
     setPackages([
       "import os",
       "from dotenv import load_dotenv",
-      "import openai",
+      "from openai import OpenAI",
     ]);
     if (setMetadata) {
       setMetadata({

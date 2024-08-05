@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
+import { CLIENT_OPENAI } from "./utils";
 import { Select } from "../../components/Select";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
@@ -142,8 +143,22 @@ export const ImageGenRecipe: IRecipe = {
   Icon: imageAIIcon,
   requiredPackages: [
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
+    { importName: "PIL", installationName: "pillow", version: ">=10.2.0" },
+    { importName: "requests", installationName: "requests", version: ">=2.31.0"}
   ],
   docsUrl: DOCS_URL,
+  defaultVariables: [
+    {
+        varName: "client",
+        varType: CLIENT_OPENAI,
+        varColumns: [""],
+        varColumnTypes: [""],
+        varSize: "",
+        varShape: "",
+        varContent: "",
+        isMatrix: false,
+        isWidget: false,
+    }],
 };
 
 export default ImageGenRecipe;

@@ -11,6 +11,7 @@ import TranscriptionsRecipe from "./transcriptions";
 import TranslationsRecipe from "./translations";
 import EmbeddingRecipe from "./createEmbedding";
 import FilesEmbeddingRecipe from "./createFIlesEmbedding";
+import SimilaritySearchRecipe from "./similaritySearch";
 
 export const OpenAIRecipes: IRecipeSet = {
   name: "OpenAI",
@@ -23,6 +24,7 @@ export const OpenAIRecipes: IRecipeSet = {
   recipes: {
     [ClientRecipe.name]: ClientRecipe,
     [ChatComplRecipe.name]: ChatComplRecipe,
+    [SimilaritySearchRecipe.name]: SimilaritySearchRecipe,
     [EmbeddingRecipe.name]: EmbeddingRecipe,
     [FilesEmbeddingRecipe.name]: FilesEmbeddingRecipe, 
     [ImageGenRecipe.name]: ImageGenRecipe,

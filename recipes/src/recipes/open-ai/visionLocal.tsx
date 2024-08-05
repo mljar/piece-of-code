@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
+import { CLIENT_OPENAI } from "./utils";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
@@ -65,7 +66,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages([
-      "import openai",
+      "from openai import OpenAI",
       "import base64",
       "import requests",
     ]);
@@ -147,6 +148,18 @@ export const VisionLocalRecipe: IRecipe = {
     { importName: "requests", installationName: "requests", version: ">=2.31.0" }
   ],
   docsUrl: DOCS_URL,
+  defaultVariables: [
+    {
+        varName: "client",
+        varType: CLIENT_OPENAI,
+        varColumns: [""],
+        varColumnTypes: [""],
+        varSize: "",
+        varShape: "",
+        varContent: "",
+        isMatrix: false,
+        isWidget: false,
+    }],
 };
 
 export default VisionLocalRecipe;

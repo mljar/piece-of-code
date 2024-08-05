@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
+import { CLIENT_OPENAI } from "./utils";
 import { Title } from "../../components/Title";
 import { SelectPath } from "../../components/SelectPath";
 import { Select } from "../../components/Select";
@@ -39,7 +40,7 @@ export const Translations: React.FC<IRecipeProps> = ({
 
     setCode(src);
     setPackages([
-      "import openai",
+      "from openai import OpenAI",
     ]);
     if (setMetadata) {
       setMetadata({
@@ -99,6 +100,18 @@ export const TranslationsRecipe: IRecipe = {
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
   ],
   docsUrl: DOCS_URL,
+  defaultVariables: [
+    {
+        varName: "client",
+        varType: CLIENT_OPENAI,
+        varColumns: [""],
+        varColumnTypes: [""],
+        varSize: "",
+        varShape: "",
+        varContent: "",
+        isMatrix: false,
+        isWidget: false,
+    }],
 };
 
 export default TranslationsRecipe;

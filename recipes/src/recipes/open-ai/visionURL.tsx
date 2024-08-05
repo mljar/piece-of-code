@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
+import { CLIENT_OPENAI } from "./utils";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { Numeric } from "../../components/Numeric";
@@ -46,7 +47,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
     src += `print(response.choices[0].message.content)`;
 
     setCode(src);
-    setPackages(["import openai"]);
+    setPackages(["from openai import OpenAI"]);
     if (setMetadata) {
       setMetadata({
         model,
@@ -125,6 +126,18 @@ export const VisionURLRecipe: IRecipe = {
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
   ],
   docsUrl: DOCS_URL,
+  defaultVariables: [
+    {
+        varName: "client",
+        varType: CLIENT_OPENAI,
+        varColumns: [""],
+        varColumnTypes: [""],
+        varSize: "",
+        varShape: "",
+        varContent: "",
+        isMatrix: false,
+        isWidget: false,
+    }],
 };
 
 export default VisionURLRecipe;
