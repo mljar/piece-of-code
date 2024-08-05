@@ -13,6 +13,7 @@ import SelectQueryRecipe from "./selectQuery";
 import ShowAllColumnsRecipe from "./showAllColumns";
 import ShowAllTablesRecipe from "./showAllTables";
 import UpdateColumnRecipe from "./updateColumn";
+import UpdateSelectedRecipe from "./updateSelected";
 
 export const PostgresqlRecipes: IRecipeSet = {
     name: "Postgresql",
@@ -37,5 +38,6 @@ export const PostgresqlRecipes: IRecipeSet = {
         [BackupTableRecipe.name]: BackupTableRecipe,
         [CreateTableRecipe.name]: CreateTableRecipe,
         [DropTableRecipe.name]: DropTableRecipe,
+        [UpdateSelectedRecipe.name]: UpdateSelectedRecipe,
     },
 };

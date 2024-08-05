@@ -1,4 +1,3 @@
-
 interface IVariable {
   varName: string;
   varType: string;

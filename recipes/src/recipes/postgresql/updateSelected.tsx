@@ -1,3 +1,9 @@
+// !! WARN !!
+// This works but with a but where when you press the code field the form resets,
+// for some reason
+// (#60)
+// !! WARN !!
+
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
@@ -6,7 +12,6 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { EditIcon } from "../../icons/Edit";
-import { Numeric } from "../../components/Numeric";
 
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 import { TextArea } from "../../components/TextArea";
@@ -25,6 +30,11 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
+    const listNames = variables
+        .filter((v) => v.varType === "list")
+        .map((v) => v.varName);
+
+
     if (variablesStatus === "loading") {
         return (
             <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -34,6 +44,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
             </div>
         );
     }
+
     if (variablesStatus === "loaded" && !connections.length) {
         return (
             <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
@@ -43,32 +54,41 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
             </div>
         );
     }
+
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
+    const [dataList, setDataList] = useState(listNames.length ? listNames[0] : "");
+    const [idList, setIdList] = useState(listNames.length ? listNames[0] : "");
     const [table, setTable] = useState("table");
     const [column, setColumn] = useState("column");
-    const [value, setValue] = useState("column * 1.05");
-    const [value2, setValue2] = useState("val1,val2,val3");
+    const [value, setValue] = useState("val1,val2,val3");
     const [showResults, setShowResults] = useState(false);
-    const [id, setId] = useState(1);
+    const [id, setId] = useState("1");
+    const [chooseVar, setChooseVar] = useState(false);
 
-    let value2Arr = value2.split(",")
+    // const listContents = variables
+    //     .filter((v) => v.varType === "list" && v.varName === dataList)
+    //     .map((v) => v.varContent);
+
     let data = ""
-    let j = id
 
-    for (let i = 0; i < value2Arr.length; i++) {
-        let unknownJ: unknown = j
-        if (i === value2Arr.length - 1) {
-            data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", value2Arr[i], "\"]")
-            break
+    if (!chooseVar) {
+        let valueArr = value.split(",")
+        let j: number = +id
+
+        for (let i = 0; i < valueArr.length; i++) {
+            let unknownJ: unknown = j
+            if (i === valueArr.length - 1) {
+                data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", valueArr[i], "\"]")
+                break
+            }
+            data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", valueArr[i], "\"], ")
+            j++
         }
-        data = data.concat("[\"id\": ", unknownJ as string, ", \"value\": \"", value2Arr[i], "\"], ")
-        j++
     }
-
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
-        src += `if ${conn}.closed:\n`;
+        src += `if ${conn}.closed: \n`;
         src += `    ${conn} = create_new_connection()\n\n`;
 
         src += `# run query\n`;
@@ -76,14 +96,26 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         src += `    with ${conn}.cursor() as cur:\n\n`;
 
         src += `        # update data\n`;
-        src += `        try:\n`;
-        src += `            data = ${data}\n`;
-        if (showResults) {
-            src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
-            src += `            cur.executemany(query, data, returning=True) \n`;
+        src += `        try: \n`;
+        if (!chooseVar) {
+            src += `            data = ${data}\n`;
+            if (showResults) {
+                src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
+                src += `            cur.executemany(query, data, returning = True)\n`;
+            } else {
+                src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
+                src += `            cur.executemany(query, data)\n`;
+            }
         } else {
-            src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
-            src += `            cur.executemany(query, data) \n`;
+            src += `            data = []\n`;
+            src += `            for i in range(len(${idList})):\n`;
+            src += `                data.append((${dataList}[i],${idList}[i]))\n`;
+            src += `            data = [(${dataList}[i],${idList}[i]) for i in range(len(${idList}))]\n`;
+            src += `            query = "UPDATE ${table} SET ${column} = %s WHERE id = %s"\n`;
+
+            // src += `            data = [{"id": ${idList}[i], "value": ${dataList}[i]} for i in range(len(${idList}))]\n`;
+            // src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
+            src += `            cur.executemany(query, data)\n`;
         }
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
@@ -116,12 +148,12 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
                 column,
                 table,
                 value,
-                advanced: showResults,
+                showResults,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, column, table, value, value2, showResults, id]);
+    }, [conn, column, table, value, showResults, id, dataList, idList, chooseVar]);
 
     useEffect(() => {
         if (metadata) {
@@ -130,7 +162,6 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
             if (metadata["column"] !== undefined) setColumn(metadata["column"]);
             if (metadata["table"] !== undefined) setTable(metadata["table"]);
             if (metadata["value"] !== undefined) setValue(metadata["value"]);
-            if (metadata["advanced"] !== undefined) setShowResults(metadata["advanced"]);
         }
     }, [metadata]);
 
@@ -159,24 +190,49 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
                     setValue={setShowResults}
                 />
             </div>
-            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+            <Variable
+                label={"Update column"}
+                name={column}
+                setName={setColumn}
+            />
+            {!chooseVar && (
                 <Variable
-                    label={"Update column"}
-                    name={column}
-                    setName={setColumn}
-                />
-                <Numeric
-                    label="id"
+                    label="Update on ID"
                     name={id}
                     setName={setId}
                 />
+            )}
+            {chooseVar && (
+                <Select
+                    label="Update on ID"
+                    option={idList}
+                    options={listNames.map((n) => [n, n])}
+                    setOption={setIdList}
+                />
+            )}
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                {!chooseVar && (
+                    <TextArea
+                        label={"Update to"}
+                        text={value}
+                        setText={setValue}
+                    />
+                )}
+                {chooseVar && (
+                    <Select
+                        label={"Update to"}
+                        option={dataList}
+                        options={listNames.map((n) => [n, n])}
+                        setOption={setDataList}
+                    />
+                )}
+                <Toggle
+                    label="Update from list"
+                    value={chooseVar}
+                    setValue={setChooseVar}
+                />
             </div>
-            <TextArea
-                label={"Update to"}
-                text={value2}
-                setText={setValue2}
-            />
-        </div >
+        </div>
     );
 };
 
