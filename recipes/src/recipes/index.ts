@@ -13,6 +13,7 @@ import { ImagesOperationsRecipes } from "./images-operations";
 import { PostgresqlRecipes } from "./postgresql";
 import { OpenAIRecipes } from "./open-ai";
 import { PDFRecipes } from "./pdf-operations"
+import { GoogleSheetsRecipes } from "./google-sheets"
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -31,6 +32,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   [OpenAIRecipes.name]: OpenAIRecipes,
   [PDFRecipes.name]: PDFRecipes,
+  [GoogleSheetsRecipes.name]: GoogleSheetsRecipes
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 

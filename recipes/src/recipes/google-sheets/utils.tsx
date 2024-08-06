@@ -1,0 +1,1 @@
+export const GOOGLE_CONNECTION: string = "gspread.client.Client";
