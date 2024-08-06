@@ -6,6 +6,7 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { InsertIcon } from "../../icons/Insert";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
+import { Toggle } from "../../components/Toggle";
 
 const DOCS_URL = "python-postgresql-insert";
 
@@ -19,6 +20,10 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 }) => {
     const connections = variables
         .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
+        .map((v) => v.varName);
+
+    const listNames = variables
+        .filter((v) => v.varType === "list")
         .map((v) => v.varName);
 
     // if (variablesStatus === "loading") {
@@ -45,6 +50,8 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     const [columns, setColumns] = useState("col1,col2,col3");
     const [table, setTable] = useState("table");
     const [values, setValues] = useState("val1,val2,val3");
+    const [insertFromList, setInsertFromList] = useState(false);
+    const [valuesFromList, setValuesFromList] = useState(listNames.length ? listNames[0] : "");
 
     let percentS = "%s"
     let valuesArr = values.split(",")
@@ -61,7 +68,8 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     useEffect(() => {
         let src = ""
 
-        if (valuesArr.length === columns.split(",").length) {
+        // it is a poor solution to use insert from list but what else you gonna do? come up with smt better? pfff...
+        if (valuesArr.length === columns.split(",").length || insertFromList) {
             src += `# if connection was used and closed it is reopen here\n`;
             src += `if ${conn}.closed:\n`;
             src += `    ${conn} = create_new_connection()\n\n`;
@@ -72,7 +80,13 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 
             src += `        # insert into db\n`;
             src += `        try:\n`;
-            src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
+            if (!insertFromList) {
+                src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
+            } else {
+                src += `            query = ("INSERT INTO ${table} (${columns}) VALUES (${percentS})")\n`;
+                src += `            data = ${valuesFromList}\n`;
+                src += `            cur.executemany(query, data)\n`;
+            }
             src += `        # check for errors\n`;
             src += `        except psycopg.ProgrammingError as e:\n`;
             src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -98,7 +112,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, columns, table, values]);
+    }, [conn, columns, table, values, insertFromList, valuesFromList]);
 
     useEffect(() => {
         if (metadata) {
@@ -135,12 +149,28 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
                 setName={setColumns}
                 tooltip="comma separated list, no trailing comma, count needs to be equal to number of values"
             />
-            <Variable
-                label={"Values to insert"}
-                name={values}
-                setName={setValues}
-                tooltip="comma separated list, no trailing comma, count needs to be equal to number of columns"
-            />
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+                {!insertFromList && (
+                    <Variable
+                        label={"Values to insert"}
+                        name={values}
+                        setName={setValues}
+                        tooltip="comma separated list, no trailing comma, count needs to be equal to number of columns"
+                    />
+                )}
+                {insertFromList && (
+                    <Select
+                        label={"Insert from this list"}
+                        option={valuesFromList} options={listNames.map((n) => [n, n])}
+                        setOption={setValuesFromList}
+                    />
+                )}
+                <Toggle
+                    label={"Insert form list"}
+                    value={insertFromList}
+                    setValue={setInsertFromList}
+                />
+            </div>
         </div>
     );
 };
