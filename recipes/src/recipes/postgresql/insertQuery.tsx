@@ -21,15 +21,15 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
         .map((v) => v.varName);
 
-    if (variablesStatus === "loading") {
-        return (
-            <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-                <p className="text-base text-gray-800 dark:text-white">
-                    Loading variables ...
-                </p>
-            </div>
-        );
-    }
+    // if (variablesStatus === "loading") {
+    //     return (
+    //         <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+    //             <p className="text-base text-gray-800 dark:text-white">
+    //                 Loading variables ...
+    //             </p>
+    //         </div>
+    //     );
+    // }
 
     if (variablesStatus === "loaded" && !connections.length) {
         return (
