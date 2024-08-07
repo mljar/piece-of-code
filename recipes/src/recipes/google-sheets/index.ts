@@ -4,7 +4,9 @@ import { SpreadsheetIcon } from "../../icons/Spreadsheet";
 
 import { APIConRecipe } from "./apiConnection";
 import { ReadSheetsRecipe } from "./reading";
-
+import { OpenSpreadSheetRecipe } from "./openSpreadsheet";
+import { CreateSpreadSheetRecipe } from "./createSpreadsheet";
+import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
   name: "Google Sheets",
@@ -16,6 +18,10 @@ export const GoogleSheetsRecipes: IRecipeSet = {
   Icon: SpreadsheetIcon,
   recipes: {
     [APIConRecipe.name]: APIConRecipe,
+    [OpenSpreadSheetRecipe.name]: OpenSpreadSheetRecipe,
+    [CreateSpreadSheetRecipe.name]: CreateSpreadSheetRecipe,
+    [ShareSpreadSheetRecipe.name]: ShareSpreadSheetRecipe,
     [ReadSheetsRecipe.name]: ReadSheetsRecipe
+
   },
 };
