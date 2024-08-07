@@ -14,9 +14,24 @@ const DOCS_URL = "python-spreadsheet-operations";
 export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
+  variablesStatus,
+  variables,
   metadata,
   setMetadata,
 }) => {
+  const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
+
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no API connection in your notebook. Please create an API
+          connection. You can use the Connection recipe.
+        </p>
+      </div>
+    );
+  }
+
   const [open, setOpen] = useState("title");
   const openOptions = [
     ["Title", "title"],
@@ -31,13 +46,13 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
     let src = ``;
     src += `# open spreadsheet\n`;
     if (open == "title") {
-        src += `sh = gc.open('${title}')`
+      src += `sh = gc.open('${title}')`;
     }
     if (open == "key") {
-        src += `sh = gc.open_by_key('${key}')`
+      src += `sh = gc.open_by_key('${key}')`;
     }
     if (open == "url") {
-        src += `sh = gc.open_by_url('${url}')`
+      src += `sh = gc.open_by_url('${url}')`;
     }
 
     setCode(src);
@@ -77,7 +92,9 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
           option={open}
           options={openOptions}
           setOption={setOpen}
-          tooltip={"Choose the variable which you want to use to open the spreadsheet."}
+          tooltip={
+            "Choose the variable which you want to use to open the spreadsheet."
+          }
         />
         {open == "title" && (
           <Variable
@@ -88,7 +105,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
           />
         )}
         {open == "key" && (
-            <Variable
+          <Variable
             label={"Enter key"}
             name={key}
             setName={setKey}
@@ -96,7 +113,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
           />
         )}
         {open == "url" && (
-            <Variable
+          <Variable
             label={"Enter url"}
             name={url}
             setName={setUrl}
@@ -110,11 +127,14 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
 
 export const OpenSpreadSheetRecipe: IRecipe = {
   name: "Open Spreadsheet",
-  longName: "",
+  longName: "Open the Google Sheets spreadsheet using Python",
   parentName: "Google Sheets",
-  description: "",
-  shortDescription: "",
-  codeExplanation: ``,
+  description:
+    "Learn how to open Google Sheets using Python with the gspread library. This guide covers opening a spreadsheet by its name, by key, and by URL key. It provides detailed steps for accessing Google Sheets programmatically, enabling efficient data manipulation and retrieval from your Google Sheets documents for your Python applications.",
+  shortDescription:
+    "Learn how to open Google Sheets using Python. This guide covers opening a spreadsheet by name, by key, and by URL key using the gspread library, providing essential methods for accessing Google Sheets programmatically.",
+  codeExplanation: `
+  1. Open the spreadsheet.`,
   ui: OpenSpreadSheet,
   Icon: SpreadsheetIcon,
   requiredPackages: [

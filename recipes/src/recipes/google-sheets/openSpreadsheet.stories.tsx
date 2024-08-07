@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { OpenSpreadSheet } from "./openSpreadsheet";
+import OpenSpreadSheetRecipe, { OpenSpreadSheet } from "./openSpreadsheet";
 
 const meta: Meta<typeof OpenSpreadSheet> = {
   component: OpenSpreadSheet,
@@ -27,4 +27,6 @@ export const OpenSpreadSheetForm: Story = (
 OpenSpreadSheetForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: OpenSpreadSheetRecipe.defaultVariables,
+  variablesStatus: "loaded"
 };
