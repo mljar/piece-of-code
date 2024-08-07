@@ -8,9 +8,8 @@ import { Variable } from "../../components/Variable";
 
 import { SpreadsheetIcon } from "../../icons/Spreadsheet";
 
-const DOCS_URL = "python-spreadsheet-operations";
+const DOCS_URL = "open-spreadsheet-python";
 
-// alocate sheet to variable
 export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
@@ -19,6 +18,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
+
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
   if (variablesStatus === "loaded" && !vars.length) {
@@ -75,7 +75,6 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
       if (metadata["key"] !== undefined) setKey(metadata["key"]);
       if (metadata["url"] !== undefined) setUrl(metadata["url"]);
-      ``;
     }
   }, [metadata]);
 

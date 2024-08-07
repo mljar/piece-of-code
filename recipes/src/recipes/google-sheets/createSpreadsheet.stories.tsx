@@ -2,31 +2,31 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { OpenSpreadSheetRecipe, OpenSpreadSheet } from "./openSpreadsheet";
+import { CreateSpreadSheet, CreateSpreadSheetRecipe} from "./createSpreadsheet"
 
-const meta: Meta<typeof OpenSpreadSheet> = {
-  component: OpenSpreadSheet,
-  title: "CodePieces/google-sheets/openSpreadsheet",
+const meta: Meta<typeof CreateSpreadSheet> = {
+  component: CreateSpreadSheet,
+  title: "CodePieces/google-sheets/createSpreadsheet",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof OpenSpreadSheet>;
+type Story = StoryObj<typeof CreateSpreadSheet>;
 
-export const OpenSpreadSheetForm: Story = (
+export const CreateSpreadSheetForm: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
   const [code, setCode] = useState("");
   return (
     <>
-      <OpenSpreadSheet {...args} setCode={setCode} />
+      <CreateSpreadSheet {...args} setCode={setCode} />
       <pre>{code}</pre>
     </>
   );
 };
-OpenSpreadSheetForm.args = {
+CreateSpreadSheetForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
-  variables: OpenSpreadSheetRecipe.defaultVariables,
+  variables: CreateSpreadSheetRecipe.defaultVariables,
   variablesStatus: "loaded",
 };
