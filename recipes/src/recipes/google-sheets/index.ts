@@ -3,6 +3,7 @@ import { IRecipeSet } from "../base";
 import { SpreadsheetIcon } from "../../icons/Spreadsheet";
 
 import { APIConRecipe } from "./apiConnection";
+import { ReadSheetsRecipe } from "./reading";
 
 
 export const GoogleSheetsRecipes: IRecipeSet = {
@@ -15,5 +16,6 @@ export const GoogleSheetsRecipes: IRecipeSet = {
   Icon: SpreadsheetIcon,
   recipes: {
     [APIConRecipe.name]: APIConRecipe,
+    [ReadSheetsRecipe.name]: ReadSheetsRecipe
   },
 };
