@@ -41,6 +41,28 @@ InsertQueryForm.args = {
             isMatrix: false,
             isWidget: false,
         },
+        {
+            varName: "values",
+            varType: "list",
+            varColumns: [""],
+            varColumnTypes: [""],
+            varSize: "",
+            varShape: "",
+            varContent: "[val1, val2, val3, val4, val5]",
+            isMatrix: false,
+            isWidget: false,
+        },
+        {
+            varName: "values2",
+            varType: "list",
+            varColumns: [""],
+            varColumnTypes: [""],
+            varSize: "",
+            varShape: "",
+            varContent: "[val1, val2]",
+            isMatrix: false,
+            isWidget: false,
+        },
     ],
 };
 

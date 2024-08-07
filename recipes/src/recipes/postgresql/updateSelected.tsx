@@ -35,15 +35,15 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         .map((v) => v.varName);
 
 
-    if (variablesStatus === "loading") {
-        return (
-            <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-                <p className="text-base text-gray-800 dark:text-white">
-                    Loading variables ...
-                </p>
-            </div>
-        );
-    }
+    // if (variablesStatus === "loading") {
+    //     return (
+    //         <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+    //             <p className="text-base text-gray-800 dark:text-white">
+    //                 Loading variables ...
+    //             </p>
+    //         </div>
+    //     );
+    // }
 
     if (variablesStatus === "loaded" && !connections.length) {
         return (
