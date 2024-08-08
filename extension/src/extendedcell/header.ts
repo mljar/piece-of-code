@@ -515,7 +515,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         this._variableInspector = new VariableInspector(this.notebook,
           this.selectRecipe.setVariablesStatus.bind(this.selectRecipe),
           this.selectRecipe.setVariables.bind(this.selectRecipe),
-          this.selectRecipe.setCheckedPackages.bind(this.selectRecipe)
+          this.selectRecipe.setCheckedPackages.bind(this.selectRecipe),
+          this.selectRecipe.setInstallationLog.bind(this.selectRecipe)
         );
 
         this.selectRecipe.setCheckPackage(this._variableInspector.checkPackage.bind(this._variableInspector));
