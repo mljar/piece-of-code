@@ -31,6 +31,7 @@ interface Props {
   checkPackage: (pkg: string) => void;
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
+  installLog: string;
   clearExecutionSteps: () => void;
   meta: any;
   setMeta: (m: any) => void;
@@ -56,12 +57,13 @@ const SelectRecipeComponent = ({
   checkPackage,
   checkedPackages,
   installPackage,
+  installLog,
   clearExecutionSteps,
   meta,
   setMeta,
   changeCellToMarkdown,
   changeCellToCode,
-  setEnv,
+  setEnv
 }: Props): JSX.Element => {
   // useEffect(() => {
   //   console.log('cell changed');
@@ -115,6 +117,7 @@ const SelectRecipeComponent = ({
         checkPackage={checkPackage}
         checkedPackages={checkedPackages}
         installPackage={installPackage}
+        installLog={installLog}
         clearExecutionSteps={clearExecutionSteps}
         metadata={meta}
         setMetadata={setMeta}
@@ -150,7 +153,7 @@ export class SelectRecipeWidget extends ReactWidget {
     installationName: string,
     importName: string
   ) => void;
-
+  private _installLog: string;
   private _meta: any;
   private _setMeta: (m: any) => void;
   private _changeCellToMarkdown: () => void;
@@ -183,6 +186,7 @@ export class SelectRecipeWidget extends ReactWidget {
     this._checkPackage = (pkg: string) => {};
     this._checkedPackages = {};
     this._installPackage = (installationName: string, importName: string) => {};
+    this._installLog = '';
     this._meta = meta;
     this._setMeta = setMeta;
     this._changeCellToMarkdown = changeCellToMarkdown;
@@ -240,6 +244,11 @@ export class SelectRecipeWidget extends ReactWidget {
     this._installPackage = installPackage;
   }
 
+  public setInstallationLog(installLog: string) {
+    this._installLog = installLog;
+    this.updateWidget();
+  }
+
   render(): JSX.Element {
     return (
       <UseSignal signal={this._signal}>
@@ -262,6 +271,7 @@ export class SelectRecipeWidget extends ReactWidget {
               checkPackage={this._checkPackage}
               checkedPackages={this._checkedPackages}
               installPackage={this._installPackage}
+              installLog={this._installLog}
               clearExecutionSteps={() => this.setExecutionSteps([])}
               meta={this._meta}
               setMeta={this._setMeta}

@@ -277,16 +277,20 @@ export class VariableInspector {
   private _setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void;
   private _setVariables: (variables: IVariable[]) => void;
   private _setInstalledPackages: (pkgs: Record<string, string>) => void;
+  private _setInstallationLog: (installLog: string) => void;
+  
 
   constructor(nb: NotebookPanel | null,
     setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void,
     setVariables: (variables: IVariable[]) => void,
-    setInstalledPackages: (pkgs: Record<string, string>) => void) {
+    setInstalledPackages: (pkgs: Record<string, string>) => void,
+    setInstallationLog: (installLog: string) => void) {
     this._notebook = nb;
     this._notebookId = this._notebook?.id;
     this._setVariablesStatus = setVariablesStatus;
     this._setVariables = setVariables;
     this._setInstalledPackages = setInstalledPackages;
+    this._setInstallationLog = setInstallationLog;
   }
 
   async getVariables() {
@@ -394,14 +398,12 @@ export class VariableInspector {
           text: string;
         }
         const content = msg.content as ContentData;
-        //console.log(content.text);
 
         interface IPackage {
           package: string;
           version: string;
         }
         try {
-          // console.log('check package', content.text);
           const p: IPackage = JSON.parse(content.text);
 
           if (this._notebookId) {
@@ -450,38 +452,39 @@ export class VariableInspector {
     });
     if (future) {
       // will be needed to collect logs from installation
-      // future.onIOPub = this._onInstallPackage;
+      future.onIOPub = this._onInstallPackage;
       future.done.then(() => {
         if (this._notebookId && this._notebookId in checkedPackages) {
           // delete all packages, we need to re-check all packages again
           // there might be dependencies
           delete checkedPackages[this._notebookId]; //[importName];
           this.checkPackage(importName);
+          this._setInstallationLog("");
         }
       })
     }
   }
 
 
-  // private _onInstallPackage = (msg: KernelMessage.IIOPubMessage): void => {
-  //   const msgType = msg.header.msg_type;
-  //   switch (msgType) {
-  //     case 'stream':
-  //     case 'execute_result':
-  //     case 'display_data':
-  //     case 'update_display_data':
-  //       interface ContentData {
-  //         name: string;
-  //         text: string;
-  //       }
-  //       const content = msg.content as ContentData;
-  //       //console.log(content);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   return;
-  // };
+  private _onInstallPackage = (msg: KernelMessage.IIOPubMessage): void => {
+    const msgType = msg.header.msg_type;
+    switch (msgType) {
+      case 'stream':
+      case 'execute_result':
+      case 'display_data':
+      case 'update_display_data':
+        interface ContentData {
+          name: string;
+          text: string;
+        }
+        const content = msg.content as ContentData;
+        this._setInstallationLog(content.text);
+        break;
+      default:
+        break;
+    }
+    return;
+  };
 
 
   checkPackageManager() {

@@ -42,6 +42,7 @@ export interface ISelectRecipeProps {
   checkPackage: (pkg: string) => void;
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
+  installLog: string;
   clearExecutionSteps: () => void;
   metadata: any;
   setMetadata: (m: any) => void;
@@ -74,6 +75,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   checkPackage,
   checkedPackages,
   installPackage,
+  installLog,
   clearExecutionSteps,
   metadata,
   setMetadata,
@@ -583,6 +585,38 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //   [showNav]
   // );
 
+  const [installProgress, setInstallProgress] = useState(0.0);
+  const [installFullLog, setInstallFullLog] = useState("");
+
+  useEffect(() => {
+    if (installLog === undefined) return;
+    if (installLog === "") {
+      setInstallProgress(0.0);
+      if (
+        !(installFullLog.includes("error") || installFullLog.includes("Error"))
+      ) {
+        setInstallFullLog("");
+      }
+    } else {
+      if (installProgress === 0) {
+        setInstallFullLog("");
+      } else {
+        setInstallFullLog(installFullLog + installLog.replace("\b\b", ""));
+      }
+      if (installProgress < 25) {
+        setInstallProgress(installProgress + 1);
+      } else if (installProgress < 50) {
+        setInstallProgress(installProgress * 1.01);
+      } else if (installProgress < 75) {
+        setInstallProgress(installProgress * 1.005);
+      } else if (installProgress < 95) {
+        setInstallProgress(installProgress * 1.0025);
+      } else if (installProgress < 99) {
+        // do nothing, wait ...
+      }
+    }
+  }, [installLog]);
+  
   return (
     <div className="poc-flex">
       <div className="poc-flex-none" style={{ width: "72px" }}>
@@ -653,8 +687,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             </div>
           )}
           {installPackages.length > 0 && (
-            <div>
-              <hr className="poc-m-2" />
+            <div className="poc-px-2 poc-pb-2">
+              <hr className="poc-mb-2" />
               <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
                 <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
                   <PackageIcon className="poc-inline poc-pb-1" /> Install
@@ -665,6 +699,22 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
                 </p>
 
                 {installPackagesElement}
+                {installProgress === 0 && installFullLog !== "" && (
+                  <pre className="poc-text-sm">{installFullLog}</pre>
+                )}
+
+                {installProgress > 0 && (
+                  <div className="poc-py-2">
+                    <div className="poc-w-full poc-bg-gray-200 poc-rounded-full dark:poc-bg-gray-700">
+                      <div
+                        className="poc-bg-blue-600 poc-text-xs poc-font-medium poc-text-blue-100 poc-text-center poc-py-0.5 poc-leading-none poc-rounded-full"
+                        style={{ width: `${installProgress}%` }}
+                      >
+                        {Math.round(installProgress)}%
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
