@@ -36,8 +36,9 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
         src += `${conn} = create_new_connection()`;
         if (testConn) {
             src += `\n`;
-            src += `print(conn.info.status)`;
+            src += `print("Connection status: " + conn.info.status.name)`;
         }
+        // src += `print(conn.info.status)`;
         // src += `print(f"Success")`;
 
         setCode(src);
