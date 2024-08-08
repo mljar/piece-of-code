@@ -3,7 +3,6 @@ import { IRecipeSet } from "../base";
 import { SpreadsheetIcon } from "../../icons/Spreadsheet";
 
 import { APIConRecipe } from "./apiConnection";
-import { ReadSheetsRecipe } from "./reading";
 import { OpenSpreadSheetRecipe } from "./openSpreadsheet";
 import { CreateSpreadSheetRecipe } from "./createSpreadsheet";
 import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
@@ -21,7 +20,5 @@ export const GoogleSheetsRecipes: IRecipeSet = {
     [OpenSpreadSheetRecipe.name]: OpenSpreadSheetRecipe,
     [CreateSpreadSheetRecipe.name]: CreateSpreadSheetRecipe,
     [ShareSpreadSheetRecipe.name]: ShareSpreadSheetRecipe,
-    [ReadSheetsRecipe.name]: ReadSheetsRecipe
-
   },
 };
