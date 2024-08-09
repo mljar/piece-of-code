@@ -11,6 +11,7 @@ import { PlusIcon } from "../icons/Plus";
 import { CakeIcon } from "../icons/Cake";
 import { getStatusElements } from "./RunStatus";
 import { WandIcon } from "../icons/Wand";
+import { Select } from "./Select";
 
 const DOCS_URL = "python-notebook-ai-assistant";
 
@@ -94,12 +95,10 @@ export const Chat: React.FC<IChatProps> = ({
     try {
       const response = await ollama.list();
       setIsLLMRunning(true);
-      response.models.forEach((m: any) => {
-        if (m.name.includes("llama3")) {
-          setIsLlama3Running(true);
-        }
-      });
-    } catch (error) {}
+      if (response.models.length > 0) {
+        setIsLlama3Running(true);
+      }
+    } catch (error) { }
     setCheckingLLM(false);
   };
 
@@ -144,7 +143,7 @@ export const Chat: React.FC<IChatProps> = ({
     messages.push({ role: "user", content: prompt });
 
     const response = await ollama.chat({
-      model: "llama3",
+      model: model,
       messages: messages,
       stream: true,
     });
@@ -264,6 +263,22 @@ export const Chat: React.FC<IChatProps> = ({
     }
   });
 
+  const [models] = useState([] as string[])
+  const [model, setModel] = useState(models[0]);
+
+  const fetchModels = async () => {
+    const resopnse = await ollama.list();
+    setModel(resopnse.models[0].name);
+
+    resopnse.models.forEach((m: any) => {
+      models.push(m.name);
+    });
+  };
+
+  useEffect(() => {
+    fetchModels();
+  }, []);
+
   if (!isStatic) {
     if (checkingLLM) {
       return (
@@ -300,9 +315,11 @@ export const Chat: React.FC<IChatProps> = ({
           style={{ minHeight: "266px", maxHeight: "266px" }}
         >
           <pre>
-            Can't detect llama3 model.
+            Ollama was detected on your system.
             <br />
-            Please check https://ollama.com/ to run llama3 model.
+            But no LLM model was detected.
+            <br />
+            Please check https://ollama.com/library to run model of your choice.
             <br />
             You can do it!
           </pre>
@@ -320,6 +337,16 @@ export const Chat: React.FC<IChatProps> = ({
         className="poc-flex poc-flex-col poc-w-full poc-max-w-full"
         style={{ minHeight: "266px", maxHeight: "266px" }}
       >
+        <div
+          className="poc-w-80 poc-self-end"
+        >
+          <Select
+            label={""}
+            option={model}
+            options={models.map((m) => [m, m])}
+            setOption={setModel}
+          />
+        </div>
         <div
           className="poc-flex-1 poc-overflow-y-auto poc-p-4"
           style={{ maxHeight: "266px", height: "266px" }}
