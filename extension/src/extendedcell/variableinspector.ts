@@ -316,6 +316,9 @@ export class VariableInspector {
       // console.log({ future });
       if (future) {
         future.onIOPub = this._onIOPub;
+        future.done.then(() => {
+          this._setVariablesStatus("loaded");
+        });
       }
     } catch (e) {
       console.log(e);
