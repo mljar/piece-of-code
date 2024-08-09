@@ -120,7 +120,7 @@ export const ConfusionMatrixRecipe: IRecipe = {
   Icon: BorderAllIcon,
   requiredPackages: [
     {
-      importName: "scikit-plot",
+      importName: "scikitplot",
       installationName: "mljar-scikit-plot",
       version: ">=0.3.11",
     },

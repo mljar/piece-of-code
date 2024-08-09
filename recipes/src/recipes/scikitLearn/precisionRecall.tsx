@@ -119,7 +119,7 @@ export const PrecisionRecallRecipe: IRecipe = {
   Icon: ChartPpfIcon,
   requiredPackages: [
     {
-      importName: "scikit-plot",
+      importName: "scikitplot",
       installationName: "mljar-scikit-plot",
       version: ">=0.3.11",
     },

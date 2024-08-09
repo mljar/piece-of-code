@@ -7,7 +7,7 @@ import { OpenSpreadSheetRecipe } from "./openSpreadsheet";
 import { CreateSpreadSheetRecipe } from "./createSpreadsheet";
 import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
 import { OpenWorkSheetRecipe } from "./openWorksheet";
-import { ReadSheetsRecipe} from "./reading";
+//import { ReadSheetsRecipe} from "./reading";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
   name: "Google Sheets",
@@ -23,6 +23,6 @@ export const GoogleSheetsRecipes: IRecipeSet = {
     [CreateSpreadSheetRecipe.name]: CreateSpreadSheetRecipe,
     [ShareSpreadSheetRecipe.name]: ShareSpreadSheetRecipe,
     [OpenWorkSheetRecipe.name]: OpenWorkSheetRecipe,
-    [ReadSheetsRecipe.name]: ReadSheetsRecipe,
+    //[ReadSheetsRecipe.name]: ReadSheetsRecipe,
   },
 };

@@ -242,18 +242,17 @@ const getVars = `_jupyterlab_variableinspector_dict_list()`;
 
 var checkedPackages: Record<string, Record<string, string>> = {};
 
-const checkPackageCode = (pkg: string): string =>
+const checkPackageCode = (pkgInstallName: string, pkgImportName: string): string =>
   `
 from importlib import __import__
 try:
     try:
-        print('{' + f'"package": "${pkg}", "version": "{__import__(f"${pkg}").__version__}"' + '}')
+        print('{' + f'"package": "${pkgImportName}", "version": "{__import__(f"${pkgImportName}").__version__}"' + '}')
     except AttributeError:
-        print('{' + f'"package": "${pkg}", "version": "{__import__(f"${pkg}").version.__version__}"' + '}')
-    except ImportError:
-        print('{"package": "${pkg}", "version": "error"}')
+        import importlib.metadata as __imeta__
+        print('{' + f'"package": "${pkgImportName}", "version": "{__imeta__.version(f"${pkgInstallName}")}"' + '}')
 except Exception:
-    print('{"package": "${pkg}", "version": "error"}')
+    print('{"package": "${pkgImportName}", "version": "error"}')
 `;
 
 
@@ -278,7 +277,7 @@ export class VariableInspector {
   private _setVariables: (variables: IVariable[]) => void;
   private _setInstalledPackages: (pkgs: Record<string, string>) => void;
   private _setInstallationLog: (installLog: string) => void;
-  
+
 
   constructor(nb: NotebookPanel | null,
     setVariablesStatus: (status: "loading" | "loaded" | "error" | "unknown") => void,
@@ -369,16 +368,17 @@ export class VariableInspector {
     return;
   };
 
-  checkPackage(pkg: string): void {
+  checkPackage(pkgInstallName: string, pkgImportName: string): void {
+    
     this.checkPackageManager();
 
     if (this._notebookId) {
-      if (this._notebookId in checkedPackages && pkg in checkedPackages[this._notebookId]) {
+      if (this._notebookId in checkedPackages && pkgImportName in checkedPackages[this._notebookId]) {
         // const version = checkedPackages[this._notebookId][pkg];
         this._setInstalledPackages(checkedPackages[this._notebookId]);
       } else {
         let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
-          code: checkPackageCode(pkg),
+          code: checkPackageCode(pkgInstallName, pkgImportName),
           store_history: false,
         });
         if (future) {
@@ -461,7 +461,7 @@ export class VariableInspector {
           // delete all packages, we need to re-check all packages again
           // there might be dependencies
           delete checkedPackages[this._notebookId]; //[importName];
-          this.checkPackage(importName);
+          this.checkPackage(installationName, importName);
           this._setInstallationLog("");
         }
       })

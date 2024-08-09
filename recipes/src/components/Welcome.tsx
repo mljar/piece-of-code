@@ -38,7 +38,7 @@ export interface IWelcomeProps {
   description: string;
   packages?: IPackage[];
   docsLink?: string;
-  checkPackage?: (pkg: string) => void;
+  checkPackage?: (pkgInstallName: string, pkgImportName: string) => void;
   checkedPackages?: Record<string, string>;
   installPackage?: (installationName: string, importName: string) => void;
   setShowEnterLicense?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,7 +61,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
 
   packages?.forEach((p: IPackage) => {
     if (checkPackage && checkedPackages && !(p.importName in checkedPackages)) {
-      checkPackage(p.importName);
+      checkPackage(p.installationName, p.importName);
     }
   });
   const packagesList = packages?.map((p: IPackage) => {

@@ -50,5 +50,5 @@ WelcomeInstallPkgs.args = {
     numpy: "install",
     ["mljar-supervised"]: "error",
   },
-  checkPackage: (pkg: string) => {},
+  checkPackage: (pkgInstallName: string, pkgImportName: string) => {},
 };
