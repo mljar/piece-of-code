@@ -3,6 +3,7 @@ import { IRecipeSet } from "../base";
 import { MatplotlibIcon } from "../../icons/Matplotlib";
 import ScatterPlotRecipe from "./scatter";
 import LinePlotRecipe from "./line";
+import BarPlotRecipe from "./bar";
 
 export const MatplotlibRecipes: IRecipeSet = {
     name: "Matplotlib",
@@ -15,5 +16,6 @@ export const MatplotlibRecipes: IRecipeSet = {
     recipes: {
         [ScatterPlotRecipe.name]: ScatterPlotRecipe,
         [LinePlotRecipe.name]: LinePlotRecipe,
+        [BarPlotRecipe.name]: BarPlotRecipe,
     }
 };

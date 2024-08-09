@@ -11,19 +11,21 @@ import { CakeIcon } from "../../icons/Cake";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { Tooltip } from "react-tooltip";
-import { ChartLineIcon } from "../../icons/ChartLine";
+import { ChartBar2Icon } from "../../icons/ChartBar2";
 
-const DOCS_URL = "matplotlib-line";
+const DOCS_URL = "matplotlib-bar";
 
 type SeriesType = {
   x: string;
   y: string;
+  width: number;
   color: string;
   alpha: number;
   label: string;
+  align: string;
 };
 
-export const LinePlot: React.FC<IRecipeProps> = ({
+export const BarPlot: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -50,6 +52,7 @@ export const LinePlot: React.FC<IRecipeProps> = ({
 
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
   const [allCols, setAllCols] = useState([] as string[]);
+  const allAlignments = ["center", "edge"]
   const allColors = [
     "tab:blue",
     "tab:orange",
@@ -151,9 +154,11 @@ export const LinePlot: React.FC<IRecipeProps> = ({
             {
               x: cols[0],
               y: cols[cols.length > 1 ? 1 : 0],
+              width: 0.8,
               color: allColors[0],
               alpha: 1,
               label: "",
+              align: allAlignments[0]
             },
           ]);
         }
@@ -187,23 +192,26 @@ export const LinePlot: React.FC<IRecipeProps> = ({
 
     let tab = "";
     if (style !== "default") {
-      src += `# apply style and create line plot\n`;
+      src += `# apply style and create bar plot\n`;
       src += `with plt.style.context("${style}"):\n`;
       tab = "    ";
     } else {
-      src += `# create line plot\n`;
+      src += `# create bar plot\n`;
     }
 
     series.map((serie, index) => {
       if (index > 0 && doColorBy) {
         return;
       }
-      src += `${tab}plt.plot(${df}["${serie.x}"], ${df}["${serie.y}"]`;
+      src += `${tab}plt.bar(${df}["${serie.x}"], ${df}["${serie.y}"]`;
 
       if (doColorBy) {
         src += `, color=${df}["${colorByCol}"].map(color_map)`;
       } else {
         src += `, color="${serie.color}"`;
+      }
+      if (serie.width !== 0.8) {
+        src += `, width=${serie.width}`;
       }
       if (serie.alpha !== 1) {
         src += `, alpha=${serie.alpha}`;
@@ -211,6 +219,9 @@ export const LinePlot: React.FC<IRecipeProps> = ({
       if (serie.label !== "") {
         src += `, label="${serie.label}"`;
         showLegend = true;
+      }
+      if (serie.align !== "center") {
+        src += `, align="${serie.align}"`;
       }
       src += `)\n`;
     });
@@ -310,10 +321,18 @@ export const LinePlot: React.FC<IRecipeProps> = ({
         )
       );
     }
+
     function setColor(value: SetStateAction<string>): void {
       setSeries(
         series.map((s, j) =>
           index !== j ? s : { ...serie, color: value.toString() }
+        )
+      );
+    }
+    function setAlignment(value: SetStateAction<string>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, align: value.toString() }
         )
       );
     }
@@ -328,6 +347,13 @@ export const LinePlot: React.FC<IRecipeProps> = ({
       setSeries(
         series.map((s, j) =>
           index !== j ? s : { ...serie, alpha: value.valueOf() as number }
+        )
+      );
+    }
+    function setWidth(value: SetStateAction<number>): void {
+      setSeries(
+        series.map((s, j) =>
+          index !== j ? s : { ...serie, width: value.valueOf() as number }
         )
       );
     }
@@ -361,7 +387,7 @@ export const LinePlot: React.FC<IRecipeProps> = ({
             tooltip="Label is used in legend, please left blank to not include legend"
           />
         </div>
-        <div className="poc-col-span-2">
+        <div className="poc-col-span-1">
           <Select
             label={"Select color"}
             option={serie.color}
@@ -372,12 +398,28 @@ export const LinePlot: React.FC<IRecipeProps> = ({
             }
             setOption={setColor}
           />
+        </div><div className="poc-col-span-1">
+          <Select
+            label={"Select alignment"}
+            option={serie.align}
+            options={[...allAlignments].map((c) => [c, c])}
+            setOption={setAlignment}
+          />
         </div>
-        <div className="poc-col-span-2">
+        <div className="poc-col-span-1">
           <Numeric
             label="Set alpha"
             name={serie.alpha}
             setName={setAlpha}
+            minValue={0.01}
+            maxValue={1}
+            step={0.01}
+          />
+        </div><div className="poc-col-span-1">
+          <Numeric
+            label="Set width"
+            name={serie.width}
+            setName={setWidth}
             minValue={0.01}
             maxValue={1}
             step={0.01}
@@ -396,9 +438,11 @@ export const LinePlot: React.FC<IRecipeProps> = ({
                   {
                     x: allCols[0],
                     y: allCols[allCols.length > 1 ? 1 : 0],
+                    width: 0.8,
                     color: allColors[0],
                     alpha: 1,
                     label: "",
+                    align: allAlignments[0]
                   },
                 ])
               }
@@ -433,8 +477,8 @@ export const LinePlot: React.FC<IRecipeProps> = ({
   return (
     <div>
       <Title
-        Icon={ChartLineIcon}
-        label={"Line Plot"}
+        Icon={ChartBar2Icon}
+        label={"Bar Plot"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -549,26 +593,27 @@ export const LinePlot: React.FC<IRecipeProps> = ({
   );
 };
 
-export const LinePlotRecipe: IRecipe = {
-  name: "Line plot",
-  longName: "Line plot in matplotlib",
+export const BarPlotRecipe: IRecipe = {
+  name: "Bar plot",
+  longName: "Bar plot in matplotlib",
   parentName: "matplotlib",
-  description: `Create a line plot in matplotlib based on your data. You can plot several series of lines in one figure. For each series, you can select color and transparency (alpha). Please provide label for line to create legend. You can also produce line plot with colors assigned to selected categorical column. 
+  description: `Create a bar plot in matplotlib based on your data. You can plot several series of bars in one figure. For each series, you can select color, width, alignment and transparency (alpha). Please provide label for bars to create legend. You can also produce bar plot with colors assigned to selected categorical column.
+
   Please check **Advanced** options to change plot style, set title, axis labels and control legend position.
-`,
+  `,
   shortDescription:
-    "Create and customize line plot for your data. You can set color and transparency for line plot. There can be several plots in one figure",
+    "Create and customize bar plot for your data. You can set color, width, alignment and transparency for line plot. There can be several plots in one figure",
   codeExplanation: `
 1. Please select DataFrame.
-2. Please select columns for x and y axis. You can set color and transparency for each plot. There can be several lines in the plot.
+2. Please select columns for x and y axis. You can set color and transparency for each bar. There can be several bars in the one plot.
 3. You can color points on the line based on categorical column from your DataFrame. Please check all options on **Color** widget.
 4. Please check **Advanced** options. 
 5. You can set title and axis labels there.
 6. If you would like to control position of legend in your plot, you can do this in **Advanced** options. The default value is **best**, which means that matplotlib will search for position that do not overlay chart points.
-7. You can apply different style for line figure.
+7. You can apply different style for line figure. 
 `,
-  ui: LinePlot,
-  Icon: ChartLineIcon,
+  ui: BarPlot,
+  Icon: ChartBar2Icon,
   requiredPackages: [
     {
       importName: "matplotlib",
@@ -577,7 +622,7 @@ export const LinePlotRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["matplotlib", "line"],
+  tags: ["matplotlib", "bar"],
   defaultVariables: [
     {
       varName: "X",
@@ -593,4 +638,5 @@ export const LinePlotRecipe: IRecipe = {
   ],
 };
 
-export default LinePlotRecipe;
+export default BarPlotRecipe;
+
