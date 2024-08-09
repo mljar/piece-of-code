@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
 import { ScatterPlot } from "../matplotlib/scatter";
@@ -14,16 +14,20 @@ type Story = StoryObj<typeof ScatterPlot>;
 
 export const ScatterPlotStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <ScatterPlot {...args} />
-    <div className="poc-dark">
-      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <ScatterPlot {...args} />
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <ScatterPlot {...args} setCode={setCode} />
+      <div className="poc-dark">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+          <ScatterPlot {...args} />
+        </div>
       </div>
-    </div>
-  </>
-);
+      <pre>{code}</pre>
+    </>
+  )
+};
 
 ScatterPlotStory.args = {
   setCode: (src: string) => console.log(src),
