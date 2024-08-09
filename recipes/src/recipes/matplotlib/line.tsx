@@ -1,35 +1,29 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { XyIcon } from "../../icons/Xy";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { MultiSelect } from "../../components/MultiSelect";
 import { Variable } from "../../components/Variable";
-import { CategoryIcon } from "../../icons/Category";
-import { TreeIcon } from "../../icons/Tree";
 import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
-import { ChartScatterIcon } from "../../icons/ChartScatter";
 import { PlayIcon } from "../../icons/Play";
-import { CakeOffIcon } from "../../icons/CakeOff";
 import { CakeIcon } from "../../icons/Cake";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { Tooltip } from "react-tooltip";
+import { ChartLineIcon } from "../../icons/ChartLine";
 
-const DOCS_URL = "matplotlib-scatter";
+const DOCS_URL = "matplotlib-line";
 
 type SeriesType = {
   x: string;
   y: string;
   color: string;
-  size: number;
   alpha: number;
   label: string;
 };
 
-export const ScatterPlot: React.FC<IRecipeProps> = ({
+export const LinePlot: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -50,7 +44,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
     );
   }
   const [advanced, setAdvanced] = useState(false);
-  const [model, setModel] = useState("my_tree");
   const dataFrames = variables
     .filter((v) => v.varType === "DataFrame")
     .map((v) => v.varName);
@@ -72,12 +65,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   const [objectCols, setObjectCols] = useState([] as string[]);
   const [colorBy, setColorBy] = useState([] as string[]);
   const [series, setSeries] = useState([] as SeriesType[]);
-
-  // const [xData, setXData] = useState("");
-  // const [yData, setYData] = useState("");
-  // const [color, setColor] = useState(allColors[0]);
-  // const [size, setSize] = useState(1);
-  // const [alpha, setAlpha] = useState(1);
 
   const [title, setTitle] = useState("");
   const [xLabel, setXLabel] = useState("");
@@ -165,7 +152,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
               x: cols[0],
               y: cols[cols.length > 1 ? 1 : 0],
               color: allColors[0],
-              size: 1,
               alpha: 1,
               label: "",
             },
@@ -201,18 +187,18 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
 
     let tab = "";
     if (style !== "default") {
-      src += `# apply style and create scatter\n`;
+      src += `# apply style and create line plot\n`;
       src += `with plt.style.context("${style}"):\n`;
       tab = "    ";
     } else {
-      src += `# create scatter\n`;
+      src += `# create line plot\n`;
     }
 
     series.map((serie, index) => {
       if (index > 0 && doColorBy) {
         return;
       }
-      src += `${tab}plt.scatter(${df}["${serie.x}"], ${df}["${serie.y}"]`;
+      src += `${tab}plt.plot(${df}["${serie.x}"], ${df}["${serie.y}"]`;
 
       if (doColorBy) {
         src += `, color=${df}["${colorByCol}"].map(color_map)`;
@@ -222,9 +208,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
 
       if (serie.alpha !== 1) {
         src += `, alpha=${serie.alpha}`;
-      }
-      if (serie.size !== 1) {
-        src += `, s=${serie.size}`;
       }
       if (serie.label !== "") {
         src += `, label="${serie.label}"`;
@@ -351,13 +334,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
         )
       );
     }
-    function setSize(value: SetStateAction<number>): void {
-      setSeries(
-        series.map((s, j) =>
-          index !== j ? s : { ...serie, size: value.valueOf() as number }
-        )
-      );
-    }
     function setAlpha(value: SetStateAction<number>): void {
       setSeries(
         series.map((s, j) =>
@@ -407,10 +383,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
             setOption={setColor}
           />
         </div>
-        <div className="poc-col-span-1">
-          <Numeric label="Set size" name={serie.size} setName={setSize} />
-        </div>
-        <div className="poc-col-span-1">
+        <div className="poc-col-span-2">
           <Numeric
             label="Set alpha"
             name={serie.alpha}
@@ -434,7 +407,6 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
                     x: allCols[0],
                     y: allCols[allCols.length > 1 ? 1 : 0],
                     color: allColors[0],
-                    size: 1,
                     alpha: 1,
                     label: "",
                   },
@@ -471,8 +443,8 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   return (
     <div>
       <Title
-        Icon={ChartScatterIcon}
-        label={"Scatter Plot"}
+        Icon={ChartLineIcon}
+        label={"Line Plot"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -587,27 +559,27 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
   );
 };
 
-export const ScatterPlotRecipe: IRecipe = {
-  name: "Scatter plot",
-  longName: "Scatter plot in matplotlib",
+export const LinePlotRecipe: IRecipe = {
+  name: "Line plot",
+  longName: "Line plot in matplotlib",
   parentName: "matplotlib",
-  description: `Create a scatter plot in matplotlib based on your data. You can add plot several series of scatters in one figure. For each serie, you can select color, size and transparency (alpha). Please provide label for scatters to create legend. You can also produce scatter plot with colors assigned to selected categorical column. In this case, only first scatter is displayed.
+  description: `Create a scatter plot in matplotlib based on your data. You can add plot several series of lines in one figure. For each series, you can select color and transparency (alpha). Please provide label for scatters to create legend. You can also produce line plot with colors assigned to selected categorical column. In this case, only first line is displayed.
 
   Please check **Advanced** options to change plot style, set title, axis labels and control legend position.
   `,
   shortDescription:
-    "Create and customize scatter plot for your data. You can set color, size, transparency for scatter. There can be several scatters in one figure",
+    "Create and customize line plot for your data. You can set color and transparency for line plot. There can be several plots in one figure",
   codeExplanation: `
 1. Please select DataFrame.
-2. Please select columns for x and y axis. You can set colot, size and transparency for each scatter. There can be several scatters in the plot.
-3. You can color points in the scatter based on categorical column from your DataFrame. Please check all options on **Color** widget. In the case of coloring by value, only one scatter (the first one) can be displayed in the figure.
+2. Please select columns for x and y axis. You can set color and transparency for each plot. There can be several lines in the plot.
+3. You can color points on the line based on categorical column from your DataFrame. Please check all options on **Color** widget. In the case of coloring by value, only one line (the first one) can be displayed in the figure.
 4. Please check **Advanced** options. 
 5. You can set title and axis labels there.
-6. If you wouldlike to control position of legend in your plot, you can do this in **Advanced** options. The default value is **best**, which means that matplotlib will search for position that do not overlay chart points.
-7. You can apply different style for scatter figure.
+6. If you would like to control position of legend in your plot, you can do this in **Advanced** options. The default value is **best**, which means that matplotlib will search for position that do not overlay chart points.
+7. You can apply different style for line figure.
 `,
-  ui: ScatterPlot,
-  Icon: ChartScatterIcon,
+  ui: LinePlot,
+  Icon: ChartLineIcon,
   requiredPackages: [
     {
       importName: "matplotlib",
@@ -616,7 +588,7 @@ export const ScatterPlotRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["matplotlib", "scatter"],
+  tags: ["matplotlib", "line"],
   defaultVariables: [
     {
       varName: "X",
@@ -632,4 +604,5 @@ export const ScatterPlotRecipe: IRecipe = {
   ],
 };
 
-export default ScatterPlotRecipe;
+export default LinePlotRecipe;
+
