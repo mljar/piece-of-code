@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
-import { ScatterPlot } from "../matplotlib/scatter";
+import { LinePlot } from "../matplotlib/line";
 
-const meta: Meta<typeof ScatterPlot> = {
-  component: ScatterPlot,
-  title: "CodePieces/matplotlib/ScatterPlot",
+const meta: Meta<typeof LinePlot> = {
+  component: LinePlot,
+  title: "CodePieces/matplotlib/LinePlot",
   argTypes: {},
 };
 export default meta;
 
-type Story = StoryObj<typeof ScatterPlot>;
+type Story = StoryObj<typeof LinePlot>;
 
-export const ScatterPlotStory: Story = (
+export const LinePlotStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => {
   const [code, setCode] = useState("");
   return (
     <>
-      <ScatterPlot {...args} setCode={setCode} />
+      <LinePlot {...args} setCode={setCode} />
       <div className="poc-dark">
         <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-          <ScatterPlot {...args} />
+          <LinePlot {...args} />
         </div>
       </div>
       <pre>{code}</pre>
@@ -29,7 +29,7 @@ export const ScatterPlotStory: Story = (
   )
 };
 
-ScatterPlotStory.args = {
+LinePlotStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
@@ -70,16 +70,17 @@ ScatterPlotStory.args = {
   ],
 };
 
-export const ScatterPlotEmptyDfStory: Story = (
+export const LinePlotEmptyDfStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
 ) => (
   <>
-    <ScatterPlot {...args} />
+    <LinePlot {...args} />
   </>
 );
-ScatterPlotEmptyDfStory.args = {
+LinePlotEmptyDfStory.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
   variablesStatus: "loaded",
   variables: [],
 };
+

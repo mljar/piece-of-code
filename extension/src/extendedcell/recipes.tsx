@@ -28,7 +28,7 @@ interface Props {
   addCell: () => void;
   variablesStatus: 'loading' | 'loaded' | 'error' | 'unknown';
   variables: IVariable[];
-  checkPackage: (pkg: string) => void;
+  checkPackage: (pkgInstallName: string, pkgImportName: string) => void;
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
   installLog: string;
@@ -147,7 +147,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _variablesStatus: 'loading' | 'loaded' | 'error' | 'unknown' =
     'unknown';
   private _variables: IVariable[] = [];
-  private _checkPackage: (pkg: string) => void;
+  private _checkPackage: (pkgInstallName: string, pkgImportName: string) => void;
   private _checkedPackages: Record<string, string>;
   private _installPackage: (
     installationName: string,
@@ -183,7 +183,7 @@ export class SelectRecipeWidget extends ReactWidget {
     this._deleteCell = deleteCell;
     this._addCell = addCell;
     this._previousExecutionCount = executionCount;
-    this._checkPackage = (pkg: string) => {};
+    this._checkPackage = (pkgInstallName: string, pkgImportName: string) => {};
     this._checkedPackages = {};
     this._installPackage = (installationName: string, importName: string) => {};
     this._installLog = '';
@@ -227,7 +227,7 @@ export class SelectRecipeWidget extends ReactWidget {
     this.updateWidget();
   }
 
-  public setCheckPackage(checkPackage: (pkg: string) => void) {
+  public setCheckPackage(checkPackage: (pkgInstallName: string, pkgImportName: string) => void) {
     this._checkPackage = checkPackage;
   }
 

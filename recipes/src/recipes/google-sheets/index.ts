@@ -9,7 +9,7 @@ import { DeleteSpreadSheetRecipe } from "./deleteSpreadsheet";
 import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
 import { OpenWorkSheetRecipe } from "./openWorksheet";
 import { CreateWorkSheetRecipe } from "./createWorksheet";
-// import { ReadSheetsRecipe} from "./reading";
+//import { ReadSheetsRecipe} from "./reading";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
   name: "Google Sheets",

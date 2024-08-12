@@ -39,7 +39,7 @@ export interface ISelectRecipeProps {
   addCell: () => void;
   variablesStatus: "loading" | "loaded" | "error" | "unknown";
   variables: IVariable[];
-  checkPackage: (pkg: string) => void;
+  checkPackage: (pkgInstallName: string, pkgImportName: string) => void;
   checkedPackages: Record<string, string>;
   installPackage: (installationName: string, importName: string) => void;
   installLog: string;
@@ -616,7 +616,7 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
       }
     }
   }, [installLog]);
-  
+
   return (
     <div className="poc-flex">
       <div className="poc-flex-none" style={{ width: "72px" }}>

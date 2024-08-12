@@ -111,7 +111,7 @@ export const CalibrationPlotRecipe: IRecipe = {
   Icon: Focus2Icon,
   requiredPackages: [
     {
-      importName: "scikit-plot",
+      importName: "scikitplot",
       installationName: "mljar-scikit-plot",
       version: ">=0.3.11",
     },
