@@ -10,6 +10,7 @@ import { PlayIcon } from "../../icons/Play";
 import { CakeIcon } from "../../icons/Cake";
 import { Tooltip } from "react-tooltip";
 import { ChartBar2Icon } from "../../icons/ChartBar2";
+import { SelectPath } from "../../components/SelectPath";
 
 const DOCS_URL = "matplotlib-stacked-bar";
 
@@ -119,6 +120,7 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
   ];
   const [legendPosition, setLegendPosition] = useState(legendPositions[0]);
   const [automatic, setAutomatic] = useState(false);
+  const [saveToFile, setSaveToFile] = useState(false);
 
   useEffect(() => {
     if (setKeepOpen) {
@@ -254,6 +256,10 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
       src += `# hide legend box\n`;
       src += `plt.legend().set_visible(False)\n`;
     }
+    if (saveToFile) {
+      src += `plt.savefig()\n`;
+    }
+
     src += `# display plot\n`;
     src += `plt.show()`;
     setCode(src);
@@ -488,12 +494,29 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
             </>
           )}
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-            <Toggle
-              label={"Automatically run code on chart update"}
-              value={automatic}
-              setValue={setAutomatic}
-              tooltip="Switch it if you would like to automatically run cell on code change"
-            />
+            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+              <Toggle
+                label={"Automatically run code on chart update"}
+                value={automatic}
+                setValue={setAutomatic}
+                tooltip="Switch it if you would like to automatically run cell on code change"
+              />
+              <div>
+                <div className="poc-float-left">
+                  <Toggle
+                    label={"Save to file"}
+                    value={saveToFile}
+                    setValue={setSaveToFile}
+                  />
+                </div>
+                <div className="poc-float-right poc-pt-1">
+                  <SelectPath
+                    label={""}
+                    selectFolder={true}
+                  />
+                </div>
+              </div>
+            </div>
             <div className="poc-pt-4">
               <button
                 data-tooltip-id="top-buttons-tooltip"
@@ -525,8 +548,9 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
             </div>
           </div>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
