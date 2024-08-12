@@ -114,7 +114,7 @@ export const DeleteWorkSheetRecipe: IRecipe = {
   description: "Learn how to delete worksheets in Google Sheets using Python and the gspread library. This guide covers the steps to remove a worksheet from a spreadsheet by index and by ID, allowing you to efficiently manage and organize your spreadsheet content. Follow these instructions to streamline your data management by programmatically deleting unnecessary worksheets.",
   shortDescription: "Learn how to delete a worksheet in Google Sheets using Python and the gspread library. This guide covers removing worksheets by index and by ID, helping you manage your spreadsheet content efficiently.",
   codeExplanation: `
-  1. Deleet the worksheet`,
+  1. Delete the worksheet`,
   ui: DeleteWorkSheet,
   Icon: ToolIcon,
   requiredPackages: [
