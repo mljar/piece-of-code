@@ -87,7 +87,7 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
         label={"Files embeddings"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-10">
+      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
       <Select
         label={"Choose model"}
         option={model}

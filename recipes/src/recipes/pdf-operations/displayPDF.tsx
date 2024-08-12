@@ -21,7 +21,6 @@ export const DisplayPDF: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = `# set PDF path\n`;
     src += `pdf_path = r"${filePath}"\n\n`;
-    src += `# \n`;
     src += `# open PDF\n`;
     src += `with open(pdf_path, "rb") as pdf:\n`;
     src += `    content = pdf.read()\n\n`;

@@ -70,7 +70,7 @@ export const Embedding: React.FC<IRecipeProps> = ({
         setName={setText}
         tooltip="This is the text that you want to convert into a vector."
       />
-      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-10">
+      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
       <Select
         label={"Choose model"}
         option={model}

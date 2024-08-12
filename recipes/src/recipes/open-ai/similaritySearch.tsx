@@ -81,7 +81,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
         setName={setQuery}
         tooltip="This is the text you want to find similarity to."
       />
-      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-3">
+      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
       <Variable
         label={"Enter text list name"}
         name={chunks}
