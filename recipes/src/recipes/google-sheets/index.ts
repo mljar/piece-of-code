@@ -5,9 +5,11 @@ import { SpreadsheetIcon } from "../../icons/Spreadsheet";
 import { APIConRecipe } from "./apiConnection";
 import { OpenSpreadSheetRecipe } from "./openSpreadsheet";
 import { CreateSpreadSheetRecipe } from "./createSpreadsheet";
+import { DeleteSpreadSheetRecipe } from "./deleteSpreadsheet";
 import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
 import { OpenWorkSheetRecipe } from "./openWorksheet";
-import { ReadSheetsRecipe} from "./reading";
+import { CreateWorkSheetRecipe } from "./createWorksheet";
+// import { ReadSheetsRecipe} from "./reading";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
   name: "Google Sheets",
@@ -21,8 +23,10 @@ export const GoogleSheetsRecipes: IRecipeSet = {
     [APIConRecipe.name]: APIConRecipe,
     [OpenSpreadSheetRecipe.name]: OpenSpreadSheetRecipe,
     [CreateSpreadSheetRecipe.name]: CreateSpreadSheetRecipe,
+    [DeleteSpreadSheetRecipe.name]: DeleteSpreadSheetRecipe,
     [ShareSpreadSheetRecipe.name]: ShareSpreadSheetRecipe,
     [OpenWorkSheetRecipe.name]: OpenWorkSheetRecipe,
-    [ReadSheetsRecipe.name]: ReadSheetsRecipe,
+    [CreateWorkSheetRecipe.name]: CreateWorkSheetRecipe,
+    // [ReadSheetsRecipe.name]: ReadSheetsRecipe,
   },
 };
