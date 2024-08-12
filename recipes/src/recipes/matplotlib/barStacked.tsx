@@ -8,24 +8,20 @@ import { Numeric } from "../../components/Numeric";
 import { Toggle } from "../../components/Toggle";
 import { PlayIcon } from "../../icons/Play";
 import { CakeIcon } from "../../icons/Cake";
-import { PlusIcon } from "../../icons/Plus";
-import { TrashIcon } from "../../icons/Trash";
 import { Tooltip } from "react-tooltip";
 import { ChartBar2Icon } from "../../icons/ChartBar2";
 
-const DOCS_URL = "matplotlib-bar";
+const DOCS_URL = "matplotlib-stacked-bar";
 
 type SeriesType = {
   x: string;
-  y: string;
   width: number;
   color: string;
   alpha: number;
-  label: string;
   align: string;
 };
 
-export const BarPlot: React.FC<IRecipeProps> = ({
+export const BarStackedPlot: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   variablesStatus,
@@ -54,6 +50,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
   const [allCols, setAllCols] = useState([] as string[]);
   const allAlignments = ["center", "edge"]
   const allColors = [
+    "default",
     "tab:blue",
     "tab:orange",
     "tab:green",
@@ -106,6 +103,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
     "tableau-colorblind10",
   ];
   const [style, setStyle] = useState("default");
+  const [showLegend, setShowLegend] = useState(false);
   const legendPositions = [
     "best",
     "upper right",
@@ -153,11 +151,9 @@ export const BarPlot: React.FC<IRecipeProps> = ({
           setSeries([
             {
               x: cols[0],
-              y: cols[cols.length > 1 ? 1 : 0],
               width: 0.8,
               color: allColors[0],
               alpha: 1,
-              label: "",
               align: allAlignments[0]
             },
           ]);
@@ -172,7 +168,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
     }
     let src = ``;
 
-    let showLegend = false;
+    // let showLegend = false;
 
     let doColorBy = false;
     let colorByCol = "";
@@ -183,7 +179,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
       }
     });
     if (doColorBy) {
-      showLegend = true;
+      setShowLegend(true);
       src += `# create mapping between values and colors\n`;
       src += `labels = ${df}["${colorByCol}"].unique().tolist()\n`;
       src += `colors = list(mcolors.TABLEAU_COLORS.keys())\n`;
@@ -192,22 +188,22 @@ export const BarPlot: React.FC<IRecipeProps> = ({
 
     let tab = "";
     if (style !== "default") {
-      src += `# apply style and create bar plot\n`;
+      src += `# apply style and create stacked bar plot\n`;
       src += `with plt.style.context("${style}"):\n`;
       tab = "    ";
     } else {
-      src += `# create bar plot\n`;
+      src += `# create stacked bar plot\n`;
     }
 
     series.map((serie, index) => {
       if (index > 0 && doColorBy) {
         return;
       }
-      src += `${tab}plt.bar(${df}["${serie.x}"], ${df}["${serie.y}"]`;
+      src += `${tab}${df}.plot(x="${serie.x}", kind="bar", stacked=True`;
 
       if (doColorBy) {
         src += `, color=${df}["${colorByCol}"].map(color_map)`;
-      } else {
+      } else if (serie.color !== "default") {
         src += `, color="${serie.color}"`;
       }
       if (serie.width !== 0.8) {
@@ -216,10 +212,10 @@ export const BarPlot: React.FC<IRecipeProps> = ({
       if (serie.alpha !== 1) {
         src += `, alpha=${serie.alpha}`;
       }
-      if (serie.label !== "") {
-        src += `, label="${serie.label}"`;
-        showLegend = true;
-      }
+      // if (serie.label !== "") {
+      //   src += `, label="${serie.label}"`;
+      //   showLegend = true;
+      // }
       if (serie.align !== "center") {
         src += `, align="${serie.align}"`;
       }
@@ -247,13 +243,16 @@ export const BarPlot: React.FC<IRecipeProps> = ({
       src += `plt.ylabel("${yLabel}")\n`;
     }
     if (showLegend) {
-      src += `# add legend box\n`;
+      src += `# show legend box\n`;
       if (doColorBy) {
         src += `handles = [Line2D([0], [0], marker='o', color='w', markerfacecolor=v, label=k, markersize=8) for k, v in color_map.items()]\n`;
-        src += `plt.legend(handles=handles, loc="${legendPosition}")\n`;
+        src += `plt.legend(handles=handles, loc="${legendPosition}").set_visible(True)\n`;
       } else {
-        src += `plt.legend(loc="${legendPosition}")\n`;
+        src += `plt.legend(loc="${legendPosition}").set_visible(True)\n`;
       }
+    } else {
+      src += `# hide legend box\n`;
+      src += `plt.legend().set_visible(False)\n`;
     }
     src += `# display plot\n`;
     src += `plt.show()`;
@@ -284,10 +283,11 @@ export const BarPlot: React.FC<IRecipeProps> = ({
         automatic,
         advanced,
         variables,
+        showLegend,
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic]);
+  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic, showLegend]);
 
   useEffect(() => {
     if (metadata) {
@@ -303,6 +303,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
       if (metadata["legendPosition"] !== undefined) setLegendPosition(metadata["legendPosition"]);
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
       if (metadata["automatic"] !== undefined) setAutomatic(metadata["automatic"]);
+      if (metadata["showLegend"] !== undefined) setShowLegend(metadata["showLegend"]);
     }
   }, [metadata]);
 
@@ -314,14 +315,6 @@ export const BarPlot: React.FC<IRecipeProps> = ({
         )
       );
     }
-    function setYData(value: SetStateAction<string>): void {
-      setSeries(
-        series.map((s, j) =>
-          index !== j ? s : { ...serie, y: value.toString() }
-        )
-      );
-    }
-
     function setColor(value: SetStateAction<string>): void {
       setSeries(
         series.map((s, j) =>
@@ -333,13 +326,6 @@ export const BarPlot: React.FC<IRecipeProps> = ({
       setSeries(
         series.map((s, j) =>
           index !== j ? s : { ...serie, align: value.toString() }
-        )
-      );
-    }
-    function setLabel(value: SetStateAction<string>): void {
-      setSeries(
-        series.map((s, j) =>
-          index !== j ? s : { ...serie, label: value.toString() }
         )
       );
     }
@@ -360,7 +346,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
 
     return (
       <div
-        className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
+        className="poc-grid md:poc-grid-cols-10 md:poc-gap-2"
         key={`plot-serie-${index}`}
       >
         <div className="poc-col-span-2">
@@ -373,22 +359,6 @@ export const BarPlot: React.FC<IRecipeProps> = ({
         </div>
         <div className="poc-col-span-2">
           <Select
-            label={"Select y-axis data"}
-            option={serie.y}
-            options={allCols.map((c) => [c, c])}
-            setOption={setYData}
-          />
-        </div>
-        <div className="poc-col-span-2">
-          <Variable
-            label="Label"
-            name={serie.label}
-            setName={setLabel}
-            tooltip="Label is used in legend, please left blank to not include legend"
-          />
-        </div>
-        <div className="poc-col-span-1">
-          <Select
             label={"Select color"}
             option={serie.color}
             options={
@@ -398,7 +368,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
             }
             setOption={setColor}
           />
-        </div><div className="poc-col-span-1">
+        </div><div className="poc-col-span-2">
           <Select
             label={"Select alignment"}
             option={serie.align}
@@ -406,7 +376,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
             setOption={setAlignment}
           />
         </div>
-        <div className="poc-col-span-1">
+        <div className="poc-col-span-2">
           <Numeric
             label="Set alpha"
             name={serie.alpha}
@@ -415,7 +385,8 @@ export const BarPlot: React.FC<IRecipeProps> = ({
             maxValue={1}
             step={0.01}
           />
-        </div><div className="poc-col-span-1">
+        </div>
+        <div className="poc-col-span-2">
           <Numeric
             label="Set width"
             name={serie.width}
@@ -425,51 +396,6 @@ export const BarPlot: React.FC<IRecipeProps> = ({
             step={0.01}
           />
         </div>
-        <div className="">
-          <div className=" poc-inline">
-            <button
-              data-tooltip-id="matplotlib-tooltip"
-              data-tooltip-content="Add data series"
-              type="button"
-              className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1 poc-text-center poc-mt-7"
-              onClick={() =>
-                setSeries([
-                  ...series,
-                  {
-                    x: allCols[0],
-                    y: allCols[allCols.length > 1 ? 1 : 0],
-                    width: 0.8,
-                    color: allColors[0],
-                    alpha: 1,
-                    label: "",
-                    align: allAlignments[0]
-                  },
-                ])
-              }
-            >
-              {<PlusIcon className="poc-inline poc-pb-1" />}
-            </button>
-          </div>
-
-          {series.length > 1 && (
-            <div className=" poc-inline poc-mx-1">
-              <button
-                data-tooltip-id="matplotlib-tooltip"
-                data-tooltip-content="Delete series"
-                type="button"
-                className="poc-text-white poc-bg-gradient-to-r poc-from-pink-400 poc-via-pink-500 poc-to-pink-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-pink-300 dark:focus:poc-ring-pink-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-2 poc-py-1  poc-text-center  disabled:poc-text-gray-300"
-                onClick={() => {
-                  let aa = [...series];
-                  aa.splice(index, 1);
-                  setSeries(aa);
-                }}
-                disabled={series.length === 1}
-              >
-                {<TrashIcon className="poc-inline poc-pb-1" />}
-              </button>
-            </div>
-          )}
-        </div>
       </div>
     );
   });
@@ -478,7 +404,7 @@ export const BarPlot: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={ChartBar2Icon}
-        label={"Bar Plot"}
+        label={"Stacked Bar Plot"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -515,13 +441,24 @@ export const BarPlot: React.FC<IRecipeProps> = ({
                   options={allStyles.map((c) => [c, c])}
                   setOption={setStyle}
                 />
-                <Select
-                  label={"Legend position"}
-                  option={legendPosition}
-                  options={legendPositions.map((c) => [c, c])}
-                  setOption={setLegendPosition}
-                  tooltip="Legend is only displayed if labels are filled with values"
-                />
+                <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2">
+                  <Toggle
+                    label={"Show legend"}
+                    value={showLegend}
+                    setValue={setShowLegend}
+                  />
+                  {showLegend && (
+                    <div className="poc-col-span-4">
+                      <Select
+                        label={"Legend position"}
+                        option={legendPosition}
+                        options={legendPositions.map((c) => [c, c])}
+                        setOption={setLegendPosition}
+                        tooltip="Legend is only displayed if labels are filled with values"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
               <Variable label="Plot title" name={title} setName={setTitle} />
               <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -593,26 +530,26 @@ export const BarPlot: React.FC<IRecipeProps> = ({
   );
 };
 
-export const BarPlotRecipe: IRecipe = {
-  name: "Bar plot",
-  longName: "Bar plot in matplotlib",
+export const BarStackedPlotRecipe: IRecipe = {
+  name: "Stacked bar plot",
+  longName: "Stacked bar plot in matplotlib",
   parentName: "matplotlib",
-  description: `Create a bar plot in matplotlib based on your data. You can plot several series of bars in one figure. For each series, you can select color, width, alignment and transparency (alpha). Please provide label for bars to create legend. You can also produce bar plot with colors assigned to selected categorical column.
+  description: `Create a stacked bar plot in matplotlib based on your data. You can plot only one stacked bar plot in one figure. You can select color, width, alignment and transparency (alpha). 
 
-  Please check **Advanced** options to change plot style, set title, axis labels and control legend position.
+  Please check **Advanced** options to change plot style, set title, axis labels and control legend visibility and position.
   `,
   shortDescription:
-    "Create and customize bar plot for your data. You can set color, width, alignment and transparency for line plot. There can be several plots in one figure",
+    "Create and customize stacked bar plot for your data. You can set color, width, alignment and transparency for line plot. There can be only one plot in one figure",
   codeExplanation: `
 1. Please select DataFrame.
-2. Please select columns for x and y axis. You can set color and transparency for each bar. There can be several bars in the one plot.
-3. You can customize each bars color, transparency(alpha), width and alignment.
+2. Please select columns for x axis.
+3. You can customize color, transparency(alpha), width and alignment of every bar at once. 
 4. Please check **Advanced** options. 
 5. You can set title and axis labels there.
 6. If you would like to control position of legend in your plot, you can do this in **Advanced** options. The default value is **best**, which means that matplotlib will search for position that do not overlay chart points.
-7. You can apply different style for bar figure.
+7. You can apply different style for stacked bar figure. 
 `,
-  ui: BarPlot,
+  ui: BarStackedPlot,
   Icon: ChartBar2Icon,
   requiredPackages: [
     {
@@ -622,7 +559,7 @@ export const BarPlotRecipe: IRecipe = {
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["matplotlib", "bar"],
+  tags: ["matplotlib", "bar", "stacked"],
   defaultVariables: [
     {
       varName: "X",
@@ -638,5 +575,6 @@ export const BarPlotRecipe: IRecipe = {
   ],
 };
 
-export default BarPlotRecipe;
+export default BarStackedPlotRecipe;
+
 
