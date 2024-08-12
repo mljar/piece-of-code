@@ -9,6 +9,7 @@ import { DeleteSpreadSheetRecipe } from "./deleteSpreadsheet";
 import { ShareSpreadSheetRecipe } from "./shareSpreadsheet";
 import { OpenWorkSheetRecipe } from "./openWorksheet";
 import { CreateWorkSheetRecipe } from "./createWorksheet";
+import { DeleteWorkSheetRecipe } from "./deleteWorksheet";
 //import { ReadSheetsRecipe} from "./reading";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
@@ -27,6 +28,7 @@ export const GoogleSheetsRecipes: IRecipeSet = {
     [ShareSpreadSheetRecipe.name]: ShareSpreadSheetRecipe,
     [OpenWorkSheetRecipe.name]: OpenWorkSheetRecipe,
     [CreateWorkSheetRecipe.name]: CreateWorkSheetRecipe,
+    [DeleteWorkSheetRecipe.name]: DeleteWorkSheetRecipe,
     // [ReadSheetsRecipe.name]: ReadSheetsRecipe,
   },
 };
