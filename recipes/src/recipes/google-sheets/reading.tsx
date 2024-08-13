@@ -20,16 +20,17 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
   variablesStatus,
   setMetadata,
 }) => {
-
-  const vars = variables.filter((v) => v.varType.includes(WORKSHEET));
+  const vars = variables
+    .filter((v) => v.varType.includes(WORKSHEET))
+    .map((v) => v.varName);
+  const [variable, setVariable] = useState(vars.length > 0 ? vars[0] : "");
 
   if (variablesStatus === "loaded" && !vars.length) {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
-          There is no declared Worksheet in your notebook. Please create or
-          open the worksheet. You can use Create Worksheet or Open
-          Worksheet recipes.
+          There is no declared Worksheet in your notebook. Please create or open
+          the worksheet. You can use Create Worksheet or Open Worksheet recipes.
         </p>
       </div>
     );
@@ -55,47 +56,47 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``;
     if (choice == "cell") {
-        src += `# get value from cell\n`;
-        src += `cell = worksheet.acell('${address}').value\n\n`;
-        if (print) {
-            src += `# print cell value\n`;
-            src += `print(cell)`;
-        }
+      src += `# get value from cell\n`;
+      src += `cell = ${variable}.acell('${address}').value\n\n`;
+      if (print) {
+        src += `# print cell value\n`;
+        src += `print(cell)`;
+      }
     }
     if (choice == "row") {
-        src += `# get values from row\n`;
-        src += `row =  worksheet.row_values(${row})\n\n`;
-        if (print) {
-            src += `# print row values\n`;
-            src += `print(row)`;
-        }
+      src += `# get values from row\n`;
+      src += `row =  ${variable}.row_values(${row})\n\n`;
+      if (print) {
+        src += `# print row values\n`;
+        src += `print(row)`;
+      }
     }
     if (choice == "column") {
-        src += `# get values from column\n`;
-        src += `column = worksheet.col_values(${col})\n\n`;
-        if (print) {
-            src += `# print column values\n`;
-            src += `print(column)`
-        }
+      src += `# get values from column\n`;
+      src += `column = ${variable}.col_values(${col})\n\n`;
+      if (print) {
+        src += `# print column values\n`;
+        src += `print(column)`;
+      }
     }
     if (choice == "worksheet") {
-        src += `# get all values from worksheet\n`;
-        if (format == "list") {
-            src += `worksheet_values = worksheet.get_all_values()\n\n`;
-        } else {
-            src += `worksheet_values = worksheet.get_all_records()\n\n`;
-        }
-        if (print) {
-            src += `# print worksheet values\n`;
-            src += `print(worksheet_values)`
-        }
+      src += `# get all values from worksheet\n`;
+      if (format == "list") {
+        src += `worksheet_values = ${variable}.get_all_values()\n\n`;
+      } else {
+        src += `worksheet_values = ${variable}.get_all_records()\n\n`;
+      }
+      if (print) {
+        src += `# print worksheet values\n`;
+        src += `print(worksheet_values)`;
+      }
     }
-
 
     setCode(src);
     setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
+        variable,
         choice,
         print,
         address,
@@ -105,11 +106,12 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [choice, print, address, format, row, col]);
+  }, [variable, choice, print, address, format, row, col]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["variable"] !== undefined) setVariable(metadata["variable"]);
       if (metadata["choice"] !== undefined) setChoice(metadata["choice"]);
       if (metadata["print"] !== undefined) setPrint(metadata["print"]);
       if (metadata["address"] !== undefined) setAddress(metadata["address"]);
@@ -126,6 +128,13 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
         label={"Read Data"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
+      <Select
+        label={"Choose Worksheet"}
+        option={variable}
+        options={vars.map((d) => [d, d])}
+        setOption={setVariable}
+        tooltip={"Choose the worksheet you want to operate on."}
+      />
       <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
         <Select
           label={"What to read"}
@@ -136,12 +145,10 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
         />
         {choice == "cell" && (
           <Variable
-            label={"Enter cell address"}
+            label={"Enter cell label"}
             name={address}
             setName={setAddress}
-            tooltip={
-              "Enter the address of the cell in the worksheet e.g. 'A2'."
-            }
+            tooltip={"Enter the label of the cell in the worksheet e.g. 'A2'."}
           />
         )}
         {choice == "row" && (
@@ -179,8 +186,10 @@ export const ReadSheetsRecipe: IRecipe = {
   name: "Read Data",
   longName: "Read data from Google Sheets using Python",
   parentName: "Google Sheets",
-  description: "Learn how to interact with Google Sheets using Python. This guide covers retrieving and printing cell, row, and column values, as well as fetching all values and records from a worksheet using gspread. Detailed steps include accessing specific cells, rows, columns, and extracting comprehensive data from the entire worksheet for efficient data manipulation and analysis.",
-  shortDescription: "Learn how to interact with Google Sheets using Python. This guide covers getting and printing cell, row, and column values, as well as retrieving and printing all values and records from a worksheet using gspread.",
+  description:
+    "Learn how to interact with Google Sheets using Python. This guide covers retrieving and printing cell, row, and column values, as well as fetching all values and records from a worksheet using gspread. Detailed steps include accessing specific cells, rows, columns, and extracting comprehensive data from the entire worksheet for efficient data manipulation and analysis.",
+  shortDescription:
+    "Learn how to interact with Google Sheets using Python. This guide covers getting and printing cell, row, and column values, as well as retrieving and printing all values and records from a worksheet using gspread.",
   codeExplanation: `
   1. Read the chosen element/elements. 
   2. Print the reading.`,

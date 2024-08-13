@@ -35,11 +35,12 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
   const [rows, setRows] = useState(0);
   const [cols, setCols] = useState(0);
   const [advanced, setAdvanced] = useState(false);
+  const [worksheetName, setWorksheetName] = useState("worksheet");
 
   useEffect(() => {
     let src = ``;
     src += `# create worksheet\n`;
-    src += `worksheet = sh.add_worksheet(title="${title}", rows=${rows?rows:0}, cols=${cols?cols:0})`
+    src += `${worksheetName} = sh.add_worksheet(title="${title}", rows=${rows ? rows : 0}, cols=${cols ? cols : 0})`;
 
     setCode(src);
     setPackages(["import gspread"]);
@@ -49,10 +50,11 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         rows,
         cols,
         advanced,
+        worksheetName,
         docsUrl: DOCS_URL,
       });
     }
-  }, [title, rows, cols, advanced]);
+  }, [title, rows, cols, advanced, worksheetName]);
 
   useEffect(() => {
     if (metadata) {
@@ -60,6 +62,8 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
       if (metadata["rows"] !== undefined) setRows(metadata["rows"]);
       if (metadata["cols"] !== undefined) setCols(metadata["cols"]);
+      if (metadata["worksheetName"] !== undefined)
+        setWorksheetName(metadata["worksheetName"]);
     }
   }, [metadata]);
 
@@ -73,6 +77,12 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
+        label={"Enter worksheet name"}
+        name={worksheetName}
+        setName={setWorksheetName}
+        tooltip={"Enter the name of the worksheet you want to create."}
+      />
+      <Variable
         label={"Enter title"}
         name={title}
         setName={setTitle}
@@ -84,13 +94,17 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
             label={"Enter number of rows"}
             name={rows}
             setName={setRows}
-            tooltip={"As many rows as there should be in the worksheet (0 means default)."}
+            tooltip={
+              "As many rows as there should be in the worksheet (0 means default)."
+            }
           />
           <Numeric
             label={"Enter number of columns"}
             name={cols}
             setName={setCols}
-            tooltip={"As many columns as there should be in the worksheet (0 means default)."}
+            tooltip={
+              "As many columns as there should be in the worksheet (0 means default)."
+            }
           />
         </div>
       )}
@@ -102,8 +116,10 @@ export const CreateWorkSheetRecipe: IRecipe = {
   name: "Create Worksheet",
   longName: "Create the Google Sheets worksheet using Python",
   parentName: "Google Sheets",
-  description: "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers the steps to add a worksheet to an existing spreadsheet by specifying its title, number of rows, and columns. Follow these instructions to efficiently manage and organize your data by adding new worksheets programmatically within your Google Sheets.",
-  shortDescription: "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers adding a worksheet by specifying its title, number of rows, and columns programmatically.",
+  description:
+    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers the steps to add a worksheet to an existing spreadsheet by specifying its title, number of rows, and columns. Follow these instructions to efficiently manage and organize your data by adding new worksheets programmatically within your Google Sheets.",
+  shortDescription:
+    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers adding a worksheet by specifying its title, number of rows, and columns programmatically.",
   codeExplanation: `
   1. Create the worksheet`,
   ui: CreateWorkSheet,

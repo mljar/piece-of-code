@@ -18,15 +18,17 @@ export const FindCell: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-  const vars = variables.filter((v) => v.varType.includes(WORKSHEET));
+  const vars = variables
+    .filter((v) => v.varType.includes(WORKSHEET))
+    .map((v) => v.varName);
+  const [variable, setVariable] = useState(vars.length > 0 ? vars[0] : "");
 
   if (variablesStatus === "loaded" && !vars.length) {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
-          There is no declared Worksheet in your notebook. Please create or
-          open the worksheet. You can use Create Worksheet or Open
-          Worksheet recipes.
+          There is no declared Worksheet in your notebook. Please create or open
+          the worksheet. You can use Create Worksheet or Open Worksheet recipes.
         </p>
       </div>
     );
@@ -43,37 +45,39 @@ export const FindCell: React.FC<IRecipeProps> = ({
     if (choice == "single") {
       src += `# find and print cell location\n`;
       src += `try:\n`;
-      src += `    cell = worksheet.find("${text}")\n`;
+      src += `    cell = ${variable}.find("${text}")\n`;
       src += `    print(f"Found something at R{cell.row}C{cell.col}")\n`;
       src += `except AttributeError:\n`;
       src += `    print("Cell with that value doesn't exist.")`;
     }
     if (choice == "all") {
       src += `# find cells location\n`;
-      src += `cell_list = worksheet.findall("${text}")\n\n`;
+      src += `cell_list = ${variable}.findall("${text}")\n\n`;
       src += `# print result\n`;
       src += `if len(cell_list) != 0:\n`;
       src += `    print("Find something at:")\n`;
       src += `    for cell in cell_list:\n`;
       src += `        print(f"R{cell.row}C{cell.col}")\n`;
       src += `else:\n`;
-      src += `    print("Cell with that value doesn't exist.")`
+      src += `    print("Cell with that value doesn't exist.")`;
     }
 
     setCode(src);
     setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
+        variable,
         choice,
         text,
         docsUrl: DOCS_URL,
       });
     }
-  }, [choice, text]);
+  }, [variable, choice, text]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["variable"] !== undefined) setVariable(metadata["variable"]);
       if (metadata["choice"] !== undefined) setChoice(metadata["choice"]);
       if (metadata["text"] !== undefined) setText(metadata["text"]);
     }
@@ -85,6 +89,13 @@ export const FindCell: React.FC<IRecipeProps> = ({
         Icon={SearchIcon}
         label={"Find Cell by Value"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
+      <Select
+        label={"Choose Worksheet"}
+        option={variable}
+        options={vars.map((d) => [d, d])}
+        setOption={setVariable}
+        tooltip={"Choose the worksheet you want to operate on."}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
