@@ -260,7 +260,7 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
     }
     if (saveToFile) {
       // src += `fname = os.path.join(r"", "my_file.png")\n`;
-      src += `# save plot to file`;
+      src += `# save plot to file\n`;
       src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
       src += `plt.savefig(fname, bbox_inches = "tight")\n`;
     }
@@ -275,7 +275,7 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
         "import matplotlib.colors as mcolors",
       ]);
     } else {
-      setPackages(["import matplotlib.pyplot as plt"]);
+      setPackages(["import matplotlib.pyplot as plt", "import os"]);
     }
     if (automatic && runCell) {
       runCell();
@@ -446,6 +446,36 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
           />
           {seriesElements}
 
+          <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2 poc-h-16">
+            <div className="poc-col-span-1">
+              <Toggle
+                label={"Save to file"}
+                value={saveToFile}
+                setValue={setSaveToFile}
+              />
+            </div>
+            <div className="poc-col-span-2">
+              {saveToFile && (
+                <SelectPath
+                  label={"Select folder"}
+                  setPath={setFilePath}
+                  defaultPath={filePath}
+                  selectFolder={true}
+                />
+              )}
+            </div>
+            <div className="poc-col-span-2">
+              {saveToFile && (
+                <Variable
+                  label={"File name"}
+                  name={fileName}
+                  setName={setFileName}
+                  tooltip="Dont't forget to add extension, supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp"
+                />
+              )}
+            </div>
+          </div>
+
           {advanced && (
             <>
               <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -503,45 +533,14 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
               </div>
             </>
           )}
-          <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2 poc-h-16">
-            <div className="poc-col-span-1">
-              <Toggle
-                label={"Save to file"}
-                value={saveToFile}
-                setValue={setSaveToFile}
-              />
-            </div>
-            <div className="poc-col-span-1">
-              {saveToFile && (
-                <SelectPath
-                  label={"Select folder"}
-                  setPath={setFilePath}
-                  defaultPath={filePath}
-                  selectFolder={true}
-                />
-              )}
-            </div>
-            <div className="poc-col-span-1">
-              {saveToFile && (
-                <Variable
-                  label={"File name"}
-                  name={fileName}
-                  setName={setFileName}
-                  tooltip="Dont't forget to add extension, supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp"
-                />
-              )}
-            </div>
-          </div>
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-            <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-              <Toggle
-                label={"Automatically run code on chart update"}
-                value={automatic}
-                setValue={setAutomatic}
-                tooltip="Switch it if you would like to automatically run cell on code change"
-                paddingTop={false}
-              />
-            </div>
+            <Toggle
+              label={"Automatically run code on chart update"}
+              value={automatic}
+              setValue={setAutomatic}
+              tooltip="Switch it if you would like to automatically run cell on code change"
+              paddingTop={false}
+            />
             <div className="poc-pt-4">
               <button
                 data-tooltip-id="top-buttons-tooltip"
