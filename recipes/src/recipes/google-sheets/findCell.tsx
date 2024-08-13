@@ -41,21 +41,23 @@ export const FindCell: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``;
     if (choice == "single") {
-      src += `# find cell\n`;
-      src += `cell = worksheet.find("${text}")\n\n`;
+      src += `# find and print cell location\n`;
+      src += `try:\n`;
+      src += `    cell = worksheet.find("${text}")\n`;
+      src += `    print(f"Found something at R{cell.row}C{cell.col}")\n`;
+      src += `except AttributeError:\n`;
+      src += `    print("Cell with that value doesn't exist.")`;
     }
     if (choice == "all") {
-      src += `# find cells\n`;
+      src += `# find cells location\n`;
       src += `cell_list = worksheet.findall("${text}")\n\n`;
-    }
-    src += `# print result\n`;
-    if (choice == "single") {
-      src += `print(f"Find something at R{cell.row}C{cell.col}.")`;
-    }
-    if (choice == "all") {
-      src += `print("Find something at:")\n`;
-      src += `for cell in cell_list:\n`;
-      src += `    print(f"R{cell.row}C{cell.col}")`;
+      src += `# print result\n`;
+      src += `if len(cell_list) != 0:\n`;
+      src += `    print("Find something at:")\n`;
+      src += `    for cell in cell_list:\n`;
+      src += `        print(f"R{cell.row}C{cell.col}")\n`;
+      src += `else:\n`;
+      src += `    print("Cell with that value doesn't exist.")`
     }
 
     setCode(src);
@@ -115,7 +117,7 @@ export const FindCellRecipe: IRecipe = {
     "Discover how to search for specific values in Google Sheets using Python and the gspread library. This guide covers finding single or all matching cells in a worksheet and printing their row and column locations.",
   codeExplanation: `
   1. Find the cells and save them as a variable.
-  2. Print the result.`,
+  2. Print their location.`,
   ui: FindCell,
   Icon: SearchIcon,
   requiredPackages: [
