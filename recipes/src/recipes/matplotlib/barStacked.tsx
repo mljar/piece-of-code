@@ -527,6 +527,7 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
                   label={"File name"}
                   name={fileName}
                   setName={setFileName}
+                  tooltip="Dont't forget to add extension, supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp"
                 />
               )}
             </div>
