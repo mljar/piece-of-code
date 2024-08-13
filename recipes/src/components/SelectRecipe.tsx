@@ -106,11 +106,43 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   const [currentCode, setCurrentCode] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [pythonOnly, setPythonOnly] = useState(false);
+  const [installProgress, setInstallProgress] = useState(0.0);
+  const [installFullLog, setInstallFullLog] = useState("");
 
   const setCodeWithCopy = (src: string) => {
     setCurrentCode(src);
     setCode(src);
   };
+
+
+  useEffect(() => {
+    if (installLog === undefined) return;
+    if (installLog === "") {
+      setInstallProgress(0.0);
+      if (
+        !(installFullLog.includes("error") || installFullLog.includes("Error"))
+      ) {
+        setInstallFullLog("");
+      }
+    } else {
+      if (installProgress === 0) {
+        setInstallFullLog("");
+      } else {
+        setInstallFullLog(installFullLog + installLog.replace("\b\b", ""));
+      }
+      if (installProgress < 25) {
+        setInstallProgress(installProgress + 1);
+      } else if (installProgress < 50) {
+        setInstallProgress(installProgress * 1.01);
+      } else if (installProgress < 75) {
+        setInstallProgress(installProgress * 1.005);
+      } else if (installProgress < 95) {
+        setInstallProgress(installProgress * 1.0025);
+      } else if (installProgress < 99) {
+        // do nothing, wait ...
+      }
+    }
+  }, [installLog]);
 
   useEffect(() => {
     async function getLicense() {
@@ -585,37 +617,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
   //   [showNav]
   // );
 
-  const [installProgress, setInstallProgress] = useState(0.0);
-  const [installFullLog, setInstallFullLog] = useState("");
-
-  useEffect(() => {
-    if (installLog === undefined) return;
-    if (installLog === "") {
-      setInstallProgress(0.0);
-      if (
-        !(installFullLog.includes("error") || installFullLog.includes("Error"))
-      ) {
-        setInstallFullLog("");
-      }
-    } else {
-      if (installProgress === 0) {
-        setInstallFullLog("");
-      } else {
-        setInstallFullLog(installFullLog + installLog.replace("\b\b", ""));
-      }
-      if (installProgress < 25) {
-        setInstallProgress(installProgress + 1);
-      } else if (installProgress < 50) {
-        setInstallProgress(installProgress * 1.01);
-      } else if (installProgress < 75) {
-        setInstallProgress(installProgress * 1.005);
-      } else if (installProgress < 95) {
-        setInstallProgress(installProgress * 1.0025);
-      } else if (installProgress < 99) {
-        // do nothing, wait ...
-      }
-    }
-  }, [installLog]);
+  
+  
 
   return (
     <div className="poc-flex">

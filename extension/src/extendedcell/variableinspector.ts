@@ -347,9 +347,10 @@ export class VariableInspector {
             .replace(/\\"/g, '"')
             .replace(/\\'/g, "'");
 
-          //console.log('get variables', contentDisplay);
+          console.log('350: get variables', contentDisplay);
           const variables: IVariable[] = JSON.parse(contentDisplay);
-          //console.log(variables);
+          console.log(variables);
+
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
           if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
