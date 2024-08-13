@@ -121,6 +121,8 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
   const [legendPosition, setLegendPosition] = useState(legendPositions[0]);
   const [automatic, setAutomatic] = useState(false);
   const [saveToFile, setSaveToFile] = useState(false);
+  const [fileName, setFileName] = useState("my_file.png")
+  const [filePath, setFilePath] = useState("")
 
   useEffect(() => {
     if (setKeepOpen) {
@@ -257,7 +259,10 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
       src += `plt.legend().set_visible(False)\n`;
     }
     if (saveToFile) {
-      src += `plt.savefig()\n`;
+      // src += `fname = os.path.join(r"", "my_file.png")\n`;
+      src += `# save plot to file`;
+      src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+      src += `plt.savefig(fname, bbox_inches = "tight")\n`;
     }
 
     src += `# display plot\n`;
@@ -293,7 +298,7 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic, showLegend]);
+  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic, showLegend, saveToFile, filePath, fileName]);
 
   useEffect(() => {
     if (metadata) {
@@ -310,6 +315,9 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
       if (metadata["automatic"] !== undefined) setAutomatic(metadata["automatic"]);
       if (metadata["showLegend"] !== undefined) setShowLegend(metadata["showLegend"]);
+      if (metadata["saveToFile"] !== undefined) setSaveToFile(metadata["saveToFile"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
@@ -447,14 +455,14 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
                   options={allStyles.map((c) => [c, c])}
                   setOption={setStyle}
                 />
-                <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2">
+                <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
                   <Toggle
                     label={"Show legend"}
                     value={showLegend}
                     setValue={setShowLegend}
                   />
                   {showLegend && (
-                    <div className="poc-col-span-4">
+                    <div className="poc-col-span-1">
                       <Select
                         label={"Legend position"}
                         option={legendPosition}
@@ -484,15 +492,45 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
                   label={"Show x-axis lines grid"}
                   value={xGrid}
                   setValue={setXGrid}
+                  paddingTop={false}
                 />
                 <Toggle
                   label={"Show y-axis lines grid"}
                   value={yGrid}
                   setValue={setYGrid}
+                  paddingTop={false}
                 />
               </div>
             </>
           )}
+          <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2 poc-h-16">
+            <div className="poc-col-span-1">
+              <Toggle
+                label={"Save to file"}
+                value={saveToFile}
+                setValue={setSaveToFile}
+              />
+            </div>
+            <div className="poc-col-span-1">
+              {saveToFile && (
+                <SelectPath
+                  label={"Select folder"}
+                  setPath={setFilePath}
+                  defaultPath={filePath}
+                  selectFolder={true}
+                />
+              )}
+            </div>
+            <div className="poc-col-span-1">
+              {saveToFile && (
+                <Variable
+                  label={"File name"}
+                  name={fileName}
+                  setName={setFileName}
+                />
+              )}
+            </div>
+          </div>
           <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
             <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
               <Toggle
@@ -500,22 +538,8 @@ export const BarStackedPlot: React.FC<IRecipeProps> = ({
                 value={automatic}
                 setValue={setAutomatic}
                 tooltip="Switch it if you would like to automatically run cell on code change"
+                paddingTop={false}
               />
-              <div>
-                <div className="poc-float-left">
-                  <Toggle
-                    label={"Save to file"}
-                    value={saveToFile}
-                    setValue={setSaveToFile}
-                  />
-                </div>
-                <div className="poc-float-right poc-pt-1">
-                  <SelectPath
-                    label={""}
-                    selectFolder={true}
-                  />
-                </div>
-              </div>
             </div>
             <div className="poc-pt-4">
               <button
