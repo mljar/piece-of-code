@@ -24,9 +24,9 @@ export const FindCell: React.FC<IRecipeProps> = ({
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
-          There is no declared Spreadsheet in your notebook. Please create or
-          open the spreadsheet. You can use Create Spreadsheet or Open
-          Spreadsheet recipes.
+          There is no declared Worksheet in your notebook. Please create or
+          open the worksheet. You can use Create Worksheet or Open
+          Worksheet recipes.
         </p>
       </div>
     );
