@@ -7,6 +7,7 @@ interface ToggleProps {
   value: boolean;
   setValue: React.Dispatch<React.SetStateAction<boolean>>;
   tooltip?: string;
+  paddingTop?: boolean;
 }
 
 export const Toggle: React.FC<ToggleProps> = ({
@@ -14,13 +15,19 @@ export const Toggle: React.FC<ToggleProps> = ({
   value,
   setValue,
   tooltip = "",
+  paddingTop = true,
 }: ToggleProps) => {
   return (
     <div className="poc-mt-2">
       {tooltip !== "" && (
         <Tooltip id="select-path-tooltip" className="poc-text-base" />
       )}
-      <div className="poc-pb-7"></div>
+      {paddingTop && (
+        <div className="poc-pb-7"></div>
+      )}
+      {!paddingTop && (
+        <div className="poc-pb-2"></div>
+      )}
       <label
         className="poc-relative poc-inline-flex 
                           poc-items-center poc-cursor-pointer"
@@ -45,14 +52,14 @@ export const Toggle: React.FC<ToggleProps> = ({
         <span className="poc-ms-1 poc-text-sm poc-font-medium poc-text-gray-900 dark:poc-text-gray-300">
           {label}
           {tooltip !== "" && (
-          <div
-            data-tooltip-id="select-path-tooltip"
-            data-tooltip-content={tooltip}
-            className="poc-inline"
-          >
-            <InfoIcon  className="poc-absolute"/>
-          </div>
-        )}
+            <div
+              data-tooltip-id="select-path-tooltip"
+              data-tooltip-content={tooltip}
+              className="poc-inline"
+            >
+              <InfoIcon className="poc-absolute" />
+            </div>
+          )}
         </span>
       </label>
     </div>
