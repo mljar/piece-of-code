@@ -12,6 +12,8 @@ import { CreateWorkSheetRecipe } from "./createWorksheet";
 import { DeleteWorkSheetRecipe } from "./deleteWorksheet";
 import { ReadSheetsRecipe} from "./reading";
 import { FindCellRecipe } from "./findCell";
+import { AppendRowRecipe } from "./appendRow";
+import { UpdateCellRecipe } from "./updateCell";
 
 export const GoogleSheetsRecipes: IRecipeSet = {
   name: "Google Sheets",
@@ -32,5 +34,7 @@ export const GoogleSheetsRecipes: IRecipeSet = {
     [DeleteWorkSheetRecipe.name]: DeleteWorkSheetRecipe,
     [ReadSheetsRecipe.name]: ReadSheetsRecipe,
     [FindCellRecipe.name]: FindCellRecipe,
+    [AppendRowRecipe.name]: AppendRowRecipe,
+    [UpdateCellRecipe.name]: UpdateCellRecipe,
   },
 };
