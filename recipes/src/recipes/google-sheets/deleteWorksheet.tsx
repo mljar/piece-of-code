@@ -109,7 +109,7 @@ export const DeleteWorkSheetRecipe: IRecipe = {
   shortDescription:
     "Learn how to delete a worksheet in Google Sheets using Python and gspread. This guide demonstrates the process of removing a specified worksheet from a Google Sheets document efficiently.",
   codeExplanation: `
-  1. Delete the worksheet`,
+  1. Delete the worksheet.`,
   ui: DeleteWorkSheet,
   Icon: ToolIcon,
   requiredPackages: [
