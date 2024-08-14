@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { SPREADSHEET } from "./utils";
+import { SPREADSHEET, WORKSHEET } from "./utils";
 import { Title } from "../../components/Title";
-import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 
 import { ToolIcon } from "../../icons/Tool";
@@ -18,9 +17,21 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-  const vars = variables.filter((v) => v.varType.includes(SPREADSHEET));
+  const varsW = variables
+    .filter((v) => v.varType.includes(WORKSHEET))
+    .map((v) => v.varName);
+  const [worksheet, setWorksheet] = useState(
+    varsW.length > 0 ? varsW[0] : ""
+  );
 
-  if (variablesStatus === "loaded" && !vars.length) {
+  const varsS = variables
+    .filter((v) => v.varType.includes(SPREADSHEET))
+    .map((v) => v.varName);
+  const [spreadsheet, setSpreadsheet] = useState(
+    varsS.length > 0 ? varsS[0] : ""
+  );
+
+  if (variablesStatus === "loaded" && !varsS.length) {
     return (
       <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
         <p className="text-base text-gray-800 dark:text-white">
@@ -32,42 +43,29 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
     );
   }
 
-  const [choice, setChoice] = useState("var");
-  const choiceOptions = [
-    ["Variable Name", "var"],
-    ["ID", "id"],
-  ] as [string, string][];
-  const [varName, setVarName] = useState("");
-  const [ID, setID] = useState("");
-
   useEffect(() => {
     let src = ``;
     src += `# delete worksheet\n`;
-    if (choice == "var") {
-        src += `sh.del_worksheet(${varName})`;
-    }
-    if (choice == "id") {
-        src += `sh.del_worksheet_by_id(${ID})`;
-    }
+    src += `${spreadsheet}.del_worksheet(${worksheet})`
 
     setCode(src);
     setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
-        choice,
-        varName,
-        ID,
+        worksheet,
+        spreadsheet,
         docsUrl: DOCS_URL,
       });
     }
-  }, [choice, varName, ID]);
+  }, [worksheet, spreadsheet]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["choice"] !== undefined) setChoice(metadata["choice"]);
-      if (metadata["varName"] !== undefined) setVarName(metadata["varName"]);
-      if (metadata["ID"] !== undefined) setID(metadata["ID"]); 
+      if (metadata["worksheet"] !== undefined)
+        setWorksheet(metadata["worksheet"]);
+      if (metadata["spreadsheet"] !== undefined)
+        setSpreadsheet(metadata["spreadsheet"]);
     }
   }, [metadata]);
 
@@ -79,29 +77,24 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-        <Select
-          label={"Choose delete option"}
-          option={choice}
-          options={choiceOptions}
-          setOption={setChoice}
-          tooltip={"Choose the option which you want to use to delete the worksheet."}
+      <Select
+          label={"Choose spreadsheet"}
+          option={spreadsheet}
+          options={varsS.map((d) => [d, d])}
+          setOption={setSpreadsheet}
+          tooltip={
+            "Choose the spreadsheet where the worksheet you want to delete is located."
+          }
         />
-        {choice == "var" && (
-          <Variable
-            label={"Enter var name"}
-            name={varName}
-            setName={setVarName}
-            tooltip={"Enter the name of variable to which the worksheet is assigned."}
-          />
-        )}
-        {choice == "id" && (
-          <Variable 
-            label={"Enter ID"} 
-            name={ID} 
-            setName={setID} 
-            tooltip={"Enter the ID of the worksheet you want to delete"} 
-          />
-        )}
+        <Select
+          label={"Choose worksheet"}
+          option={worksheet}
+          options={varsW.map((d) => [d, d])}
+          setOption={setWorksheet}
+          tooltip={
+            "Choose the worksheet you want to delete."
+          }
+        />
       </div>
     </div>
   );
@@ -111,8 +104,10 @@ export const DeleteWorkSheetRecipe: IRecipe = {
   name: "Delete Worksheet",
   longName: "Delete the Google Sheets worksheet using Python",
   parentName: "Google Sheets",
-  description: "Learn how to delete worksheets in Google Sheets using Python and the gspread library. This guide covers the steps to remove a worksheet from a spreadsheet by index and by ID, allowing you to efficiently manage and organize your spreadsheet content. Follow these instructions to streamline your data management by programmatically deleting unnecessary worksheets.",
-  shortDescription: "Learn how to delete a worksheet in Google Sheets using Python and the gspread library. This guide covers removing worksheets by index and by ID, helping you manage your spreadsheet content efficiently.",
+  description:
+    "Learn how to delete a worksheet from a Google Sheets document using Python and the gspread library. This guide walks you through the steps to identify and remove a specific worksheet, ensuring efficient management of your Google Sheets data. Whether you're automating tasks or cleaning up your spreadsheets, this method makes it easy to keep your documents organized.",
+  shortDescription:
+    "Learn how to delete a worksheet in Google Sheets using Python and gspread. This guide demonstrates the process of removing a specified worksheet from a Google Sheets document efficiently.",
   codeExplanation: `
   1. Delete the worksheet`,
   ui: DeleteWorkSheet,
@@ -125,6 +120,17 @@ export const DeleteWorkSheetRecipe: IRecipe = {
     {
       varName: "sh",
       varType: SPREADSHEET,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "worksheet",
+      varType: WORKSHEET,
       varColumns: [""],
       varColumnTypes: [""],
       varSize: "",

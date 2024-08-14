@@ -42,24 +42,26 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
   const [index, setIndex] = useState(0);
   const [title, setTitle] = useState("");
   const [ID, setID] = useState(111222333);
+  const [worksheetName, setWorksheetName] = useState("worksheet");
 
   useEffect(() => {
     let src = ``;
     src += `# open worksheet\n`;
     if (open == "index") {
-      src += `worksheet = sh.get_worksheet(${index})`;
+      src += `${worksheetName} = sh.get_worksheet(${index})`;
     }
     if (open == "title") {
-      src += `worksheet = sh.worksheet("${title}")`;
+      src += `${worksheetName} = sh.worksheet("${title}")`;
     }
     if (open == "id") {
-      src += `worksheet = sh.get_worksheet_by_id(${ID})`;
+      src += `${worksheetName} = sh.get_worksheet_by_id(${ID})`;
     }
 
     setCode(src);
     setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
+        worksheetName,
         open,
         index,
         title,
@@ -67,11 +69,12 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [open, index, title, ID]);
+  }, [worksheetName, open, index, title, ID]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
+      if (metadata["worksheetName"] !== undefined) setWorksheetName(metadata["worksheetName"]);
       if (metadata["open"] !== undefined) setOpen(metadata["open"]);
       if (metadata["index"] !== undefined) setIndex(metadata["index"]);
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
@@ -85,6 +88,12 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         Icon={ToolIcon}
         label={"Open Worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
+      <Variable
+        label={"Enter worksheet name"}
+        name={worksheetName}
+        setName={setWorksheetName}
+        tooltip={"Enter the name of the variable to which the worksheet will be assigned."}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select

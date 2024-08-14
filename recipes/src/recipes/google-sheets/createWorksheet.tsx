@@ -80,7 +80,7 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         label={"Enter worksheet name"}
         name={worksheetName}
         setName={setWorksheetName}
-        tooltip={"Enter the name of the worksheet you want to create."}
+        tooltip={"Enter the name of the variable to which the worksheet will be assigned."}
       />
       <Variable
         label={"Enter title"}
