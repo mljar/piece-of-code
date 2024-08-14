@@ -12,6 +12,7 @@ import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { Tooltip } from "react-tooltip";
 import { ChartLineIcon } from "../../icons/ChartLine";
+import { SelectPath } from "../../components/SelectPath";
 
 const DOCS_URL = "matplotlib-line";
 
@@ -118,6 +119,9 @@ export const LinePlot: React.FC<IRecipeProps> = ({
   ];
   const [legendPosition, setLegendPosition] = useState(legendPositions[0]);
   const [automatic, setAutomatic] = useState(false);
+  const [saveToFile, setSaveToFile] = useState(false);
+  const [fileName, setFileName] = useState("my_file.png")
+  const [filePath, setFilePath] = useState("")
 
   useEffect(() => {
     if (setKeepOpen) {
@@ -244,6 +248,11 @@ export const LinePlot: React.FC<IRecipeProps> = ({
         src += `plt.legend(loc="${legendPosition}")\n`;
       }
     }
+    if (saveToFile) {
+      src += `# save plot to file\n`;
+      src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+      src += `plt.savefig(fname, bbox_inches = "tight")\n`;
+    }
     src += `# display plot\n`;
     src += `plt.show()`;
     setCode(src);
@@ -254,7 +263,7 @@ export const LinePlot: React.FC<IRecipeProps> = ({
         "import matplotlib.colors as mcolors",
       ]);
     } else {
-      setPackages(["import matplotlib.pyplot as plt"]);
+      setPackages(["import matplotlib.pyplot as plt", "import os"]);
     }
     if (automatic && runCell) {
       runCell();
@@ -276,7 +285,7 @@ export const LinePlot: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic]);
+  }, [df, series, title, xLabel, yLabel, xGrid, yGrid, style, legendPosition, advanced, automatic, saveToFile, filePath, fileName]);
 
   useEffect(() => {
     if (metadata) {
@@ -292,6 +301,9 @@ export const LinePlot: React.FC<IRecipeProps> = ({
       if (metadata["legendPosition"] !== undefined) setLegendPosition(metadata["legendPosition"]);
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
       if (metadata["automatic"] !== undefined) setAutomatic(metadata["automatic"]);
+      if (metadata["saveToFile"] !== undefined) setSaveToFile(metadata["saveToFile"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
@@ -462,6 +474,36 @@ export const LinePlot: React.FC<IRecipeProps> = ({
           />
           {seriesElements}
 
+          <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2 poc-h-16">
+            <div className="poc-col-span-1">
+              <Toggle
+                label={"Save to file"}
+                value={saveToFile}
+                setValue={setSaveToFile}
+              />
+            </div>
+            <div className="poc-col-span-2">
+              {saveToFile && (
+                <SelectPath
+                  label={"Select folder"}
+                  setPath={setFilePath}
+                  defaultPath={filePath}
+                  selectFolder={true}
+                />
+              )}
+            </div>
+            <div className="poc-col-span-2">
+              {saveToFile && (
+                <Variable
+                  label={"File name"}
+                  name={fileName}
+                  setName={setFileName}
+                  tooltip="Dont't forget to add extension, supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp"
+                />
+              )}
+            </div>
+          </div>
+
           {advanced && (
             <>
               <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -497,11 +539,13 @@ export const LinePlot: React.FC<IRecipeProps> = ({
                   label={"Show x-axis lines grid"}
                   value={xGrid}
                   setValue={setXGrid}
+                  paddingTop={false}
                 />
                 <Toggle
                   label={"Show y-axis lines grid"}
                   value={yGrid}
                   setValue={setYGrid}
+                  paddingTop={false}
                 />
               </div>
             </>
@@ -512,6 +556,7 @@ export const LinePlot: React.FC<IRecipeProps> = ({
               value={automatic}
               setValue={setAutomatic}
               tooltip="Switch it if you would like to automatically run cell on code change"
+              paddingTop={false}
             />
             <div className="poc-pt-4">
               <button
