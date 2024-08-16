@@ -23,21 +23,31 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 
     src += `# get the credentials\n`;
     src += `def create_new_connection():\n`;
-    src += `    conn = psycopg.connect(\n`;
-    src += `        dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
-    src += `        user=os.getenv("POSTGRES_USERNAME"),\n`;
-    src += `        password=os.getenv("POSTGRES_PASSWORD"),\n`;
-    src += `        host=os.getenv("POSTGRES_HOST"),\n`;
-    src += `        port=os.getenv("POSTGRES_PORT"),\n`;
-    src += `    )\n`;
-    src += `    return conn\n\n`;
+    src += `    try:\n`;
+    src += `        conn = psycopg.connect(\n`;
+    src += `            dbname=os.getenv("POSTGRES_DB_NAME"),\n`;
+    src += `            user=os.getenv("POSTGRES_USERNAME"),\n`;
+    src += `            password=os.getenv("POSTGRES_PASSWORD"),\n`;
+    src += `            host=os.getenv("POSTGRES_HOST"),\n`;
+    src += `            port=os.getenv("POSTGRES_PORT"),\n`;
+    src += `        )\n`;
+    if (displayConnStatus) {
+      src += `        # display connection status\n`;
+      src += `        print("Connection status: " + conn.info.status.name)\n`;
+    }
+    src += `        return conn\n`;
+    src += `    # check for errors\n`;
+    src += `    except psycopg.Error as e:\n`;
+    src += `        raise psycopg.Error(f"""\n`;
+    src += `Error occurred while establishing connection: \n`;
+    src += `    {e}\n\n`;
+
+    src += `Maybe you provided wrong credentials, use define new connection recipe to edit them.\n`;
+    src += `Other option is that database server is down or you dont have the right acces to this database.\n`;
+    src += `            """)\n\n`;
 
     src += `# open new connection:\n`;
     src += `${conn} = create_new_connection()`;
-    if (displayConnStatus) {
-      src += `\n\n# display connection status\n`;
-      src += `print("Connection status: " + conn.info.status.name)`;
-    }
 
     setCode(src);
     setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);
