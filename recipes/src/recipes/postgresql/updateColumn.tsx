@@ -6,10 +6,8 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { EditIcon } from "../../icons/Edit";
-import { Numeric } from "../../components/Numeric";
 
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
-import { TextArea } from "../../components/TextArea";
 
 const DOCS_URL = "python-postgresql-update-column";
 
@@ -180,9 +178,9 @@ export const UpdateColumnRecipe: IRecipe = {
     name: "Update column",
     longName: "Python update column in PostgreSQL",
     parentName: "Postgresql",
-    // len: 207
-    description: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
-    shortDescription: "Update entire columns in database usign UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our raw query recipe and craft your own query! Credentials are loaded from .env file.",
+    // len: 188
+    description: "Update entire columns in database using UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our update selected recipe! Credentials are loaded from .env file.",
+    shortDescription: "Update entire columns in database using UPDATE PosgreSQL keyword. To gain finer control and update only selected rows use our update selected recipe! Credentials are loaded from .env file.",
     codeExplanation: `
 1. Check if there is an open connection.
 2. If not then open the connection.
