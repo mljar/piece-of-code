@@ -5,8 +5,9 @@ import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { InsertIcon } from "../../icons/Insert";
-import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 import { Toggle } from "../../components/Toggle";
+
+import { CONNECITON_PSYCOPG_TYPE } from "./utils";
 
 const DOCS_URL = "python-postgresql-insert";
 
@@ -52,15 +53,26 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
   const [values, setValues] = useState("val1,val2,val3");
   const [insertFromList, setInsertFromList] = useState(false);
   const [valuesFromList, setValuesFromList] = useState(listNames.length ? listNames[0] : "");
+  const [showResults, setShowResults] = useState(false);
 
   let percentS = "%s"
   let valuesArr = values.split(",")
+  let valuesArr2 = valuesFromList.split(",")
 
-  for (let i = 0; i < values.split(",").length; i++) {
-    if (i !== 0) {
-      percentS += ", %s";
+  if (!insertFromList) {
+    for (let i = 0; i < columns.split(",").length; i++) {
+      if (i !== 0) {
+        percentS += ", %s";
+      }
+      valuesArr[i] = '"' + valuesArr[i] + '"'
     }
-    valuesArr[i] = '"' + valuesArr[i] + '"'
+  } else {
+    for (let i = 0; i < columns.split(",").length; i++) {
+      if (i !== 0) {
+        percentS += ", %s";
+      }
+      valuesArr2[i] = '"' + valuesArr2[i] + '"'
+    }
   }
 
   let valuesWithQuetes = valuesArr.join()
@@ -81,11 +93,21 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
       src += `        # insert into db\n`;
       src += `        try:\n`;
       if (!insertFromList) {
-        src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
+        if (showResults) {
+          src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS}) RETURNING *", (${valuesWithQuetes},))\n`;
+        } else {
+          src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
+        }
       } else {
-        src += `            query = ("INSERT INTO ${table} (${columns}) VALUES (${percentS})")\n`;
-        src += `            data = ${valuesFromList}\n`;
-        src += `            cur.executemany(query, data)\n`;
+        if (showResults) {
+          src += `            query = "INSERT INTO ${table} (${columns}) VALUES (${percentS}) RETURNING *"\n`;
+          // src += `            data = ${valuesFromList}\n`;
+          src += `            cur.executemany(query, params_seq=${valuesFromList}, returning=True)\n`;
+        } else {
+          src += `            query = "INSERT INTO ${table} (${columns}) VALUES (${percentS})"\n`;
+          // src += `            data = ${valuesFromList}\n`;
+          src += `            cur.executemany(query, params_seq=${valuesFromList})\n`;
+        }
       }
       src += `        # check for errors\n`;
       src += `        except psycopg.ProgrammingError as e:\n`;
@@ -96,6 +118,15 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
       src += `Are you sure every name is spelled correctly?\n`;
       src += `You can use show all tables or columns to check db contents.\n`;
       src += `            """)`;
+      if (showResults) {
+        src += `\n\n`;
+        src += `        # print the results\n`;
+        src += `        while True:\n`;
+        src += `            for row in cur.fetchall():\n`;
+        src += `                print(row)\n`;
+        src += `            if not cur.nextset():\n`;
+        src += `                break`;
+      }
     } else {
       src += "number of column names needs to be euqal to number of values"
     }
@@ -108,11 +139,12 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         columns,
         table,
         values,
+        showResults,
         variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, columns, table, values, insertFromList, valuesFromList]);
+  }, [conn, columns, table, values, insertFromList, valuesFromList, showResults]);
 
   useEffect(() => {
     if (metadata) {
@@ -121,9 +153,11 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
       if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
       if (metadata["table"] !== undefined) setTable(metadata["table"]);
       if (metadata["values"] !== undefined) setValues(metadata["values"]);
+      if (metadata["valuesFromList"] !== undefined) setValuesFromList(metadata["valuesFromList"]);
+      if (metadata["insertFromList"] !== undefined) setInsertFromList(metadata["insertFromList"]);
+      if (metadata["showResults"] !== undefined) setShowResults(metadata["showResults"]);
     }
   }, [metadata]);
-
 
   return (
     <div>
@@ -138,39 +172,46 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
         options={connections.map((d) => [d, d])}
         setOption={setConnection}
       />
-      <Variable
-        label={"Table to insert into"}
-        name={table}
-        setName={setTable}
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Variable
+          label={"Table to insert into"}
+          name={table}
+          setName={setTable}
+        />
+        <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+          <Toggle
+            label={"Insert form list"}
+            value={insertFromList}
+            setValue={setInsertFromList}
+          />
+          <Toggle
+            label={"Show results"}
+            value={showResults}
+            setValue={setShowResults}
+          />
+        </div>
+      </div>
       <Variable
         label={"Columns to insert into"}
         name={columns}
         setName={setColumns}
         tooltip="comma separated list, no trailing comma, count needs to be equal to number of values"
       />
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-        {!insertFromList && (
-          <Variable
-            label={"Values to insert"}
-            name={values}
-            setName={setValues}
-            tooltip="comma separated list, no trailing comma, count needs to be equal to number of columns"
-          />
-        )}
-        {insertFromList && (
-          <Select
-            label={"Insert from this list"}
-            option={valuesFromList} options={listNames.map((n) => [n, n])}
-            setOption={setValuesFromList}
-          />
-        )}
-        <Toggle
-          label={"Insert form list"}
-          value={insertFromList}
-          setValue={setInsertFromList}
+      {!insertFromList && (
+        <Variable
+          label={"Values to insert"}
+          name={values}
+          setName={setValues}
+          tooltip="comma separated list, no trailing comma, count needs to be equal to number of columns"
         />
-      </div>
+      )}
+      {insertFromList && (
+        <Select
+          label={"Insert from this list"}
+          option={valuesFromList} options={listNames.map((n) => [n, n])}
+          setOption={setValuesFromList}
+        />
+      )}
     </div>
   );
 };
@@ -188,6 +229,7 @@ export const InsertQueryRecipe: IRecipe = {
 2. If not then open the connection.
 3. Check if number of column is equal to values.
 4. Try to insert into table.
+4. If checked show the results.
 5. If error occurs raise exception.
 `,
   ui: InsertQuery,
