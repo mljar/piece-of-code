@@ -115,18 +115,18 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
       if (updateFromList) {
         if (showResults) {
           src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
-          src += `            cur.executemany(query, params_seq = [{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))], returning = True)\n`;
+          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))], returning=True)\n`;
         } else {
           src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
-          src += `            cur.executemany(query, params_seq = [{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))])\n`;
+          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))])\n`;
         }
       } else {
         if (showResults) {
           src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
-          src += `            cur.executemany(query, params_seq = [${data}], returning = True)\n`;
+          src += `            cur.executemany(query, params_seq=[${data}], returning=True)\n`;
         } else {
           src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
-          src += `            cur.executemany(query, params_seq = [${data}])\n`;
+          src += `            cur.executemany(query, params_seq=[${data}])\n`;
         }
       }
       src += `        # check for errors\n`;
