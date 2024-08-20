@@ -43,7 +43,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
     const [columns, setColumns] = useState("col1,col2,col3");
-    const [tables, setTables] = useState("table_name");
+    const [table, setTable] = useState("table_name");
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;
@@ -56,7 +56,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
         src += `        # query db\n`;
         src += `        try:\n`;
-        src += `            cur.execute("SELECT ${columns} FROM ${tables}")\n`;
+        src += `            cur.execute("SELECT ${columns} FROM ${table}")\n`;
         src += `        # check for errors\n`;
         src += `        except psycopg.ProgrammingError as e:\n`;
         src += `            raise psycopg.ProgrammingError(f"""\n`;
@@ -77,19 +77,19 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
             setMetadata({
                 conn,
                 columns,
-                tables,
+                table,
                 variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
                 docsUrl: DOCS_URL,
             });
         }
-    }, [conn, columns, tables]);
+    }, [conn, columns, table]);
 
     useEffect(() => {
         if (metadata) {
             if ("mljar" in metadata) metadata = metadata.mljar;
             if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
             if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
-            if (metadata["tables"] !== undefined) setTables(metadata["tables"]);
+            if (metadata["table"] !== undefined) setTable(metadata["table"]);
         }
     }, [metadata]);
 
@@ -107,10 +107,9 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
                 setOption={setConnection}
             />
             <Variable
-                label={"Select tables"}
-                name={tables}
-                setName={setTables}
-                tooltip="comma separated list, no trailing comma"
+                label={"Select table"}
+                name={table}
+                setName={setTable}
             />
             <Variable
                 label={"Select columns"}
