@@ -47,9 +47,6 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
   const [conn, setConnection] = useState(
     connections.length ? connections[0] : ""
   );
-  const [columns, setColumns] = useState("col1,col2,col3");
-  const [table, setTable] = useState("table_name");
-  const [values, setValues] = useState("val1,val2,val3");
   const [schema, setSchema] = useState(false);
 
   useEffect(() => {
@@ -93,9 +90,6 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
     if (setMetadata) {
       setMetadata({
         conn,
-        columns,
-        table,
-        values,
         schema,
         variables: variables.filter(
           (v) => v.varType === CONNECITON_PSYCOPG_TYPE
@@ -103,15 +97,12 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, columns, table, values, schema]);
+  }, [conn, schema]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
-      if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
-      if (metadata["table"] !== undefined) setTable(metadata["table"]);
-      if (metadata["values"] !== undefined) setValues(metadata["values"]);
       if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
     }
   }, [metadata]);
