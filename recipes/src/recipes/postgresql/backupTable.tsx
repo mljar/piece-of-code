@@ -42,7 +42,7 @@ export const BackupTable: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [table, setTable] = useState("table");
+    const [table, setTable] = useState("old_table");
     const [backup, setBackup] = useState("table_backup");
 
     useEffect(() => {

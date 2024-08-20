@@ -43,7 +43,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
     const [columns, setColumns] = useState("col1,col2,col3");
-    const [tables, setTables] = useState("talbe");
+    const [tables, setTables] = useState("table_name");
 
     useEffect(() => {
         let src = `# if connection was used and closed it is reopen here\n`;

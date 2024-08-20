@@ -48,7 +48,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
     connections.length ? connections[0] : ""
   );
   const [columns, setColumns] = useState("col1,col2,col3");
-  const [table, setTable] = useState("table");
+  const [table, setTable] = useState("table_name");
   const [values, setValues] = useState("val1,val2,val3");
   const [schema, setSchema] = useState(false);
 

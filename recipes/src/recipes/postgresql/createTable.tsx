@@ -44,7 +44,7 @@ export const CreateTable: React.FC<IRecipeProps> = ({
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
     const [columns, setColumns] = useState("column");
     const [dataTypes, setDataTypes] = useState("data_type");
-    const [table, setTable] = useState("table");
+    const [table, setTable] = useState("new_table");
 
     let columnsArr = columns.split(",")
     let dataTypesArr = dataTypes.split(",")

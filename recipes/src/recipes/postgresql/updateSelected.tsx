@@ -50,7 +50,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
 
   const [conn, setConnection] = useState(connections.length ? connections[0] : "");
 
-  const [table, setTable] = useState("table");
+  const [table, setTable] = useState("table_name");
   const [column, setColumn] = useState("column");
 
   const [id, setId] = useState("1, 2, 3");

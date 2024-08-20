@@ -49,7 +49,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
 
   const [conn, setConnection] = useState(connections.length ? connections[0] : "");
   const [columns, setColumns] = useState("col1,col2,col3");
-  const [table, setTable] = useState("table");
+  const [table, setTable] = useState("table_name");
   const [values, setValues] = useState("val1,val2,val3");
   const [insertFromList, setInsertFromList] = useState(false);
   const [valuesFromList, setValuesFromList] = useState(listNames.length ? listNames[0] : "");

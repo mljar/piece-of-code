@@ -42,7 +42,7 @@ export const DropTable: React.FC<IRecipeProps> = ({
     }
 
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [table, setTable] = useState("table");
+    const [table, setTable] = useState("table_name");
     const dropOptions: [string, string][] = [["", ""], ["RESTRICT", " RESTRICT"], ["CASCADE", " CASCADE"]];
     const [dropOption, setDropOption] = useState(dropOptions[0][0]);
 

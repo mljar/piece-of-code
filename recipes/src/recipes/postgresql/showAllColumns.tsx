@@ -41,7 +41,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         );
     }
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [table, setTable] = useState("table");
+    const [table, setTable] = useState("table_name");
     const [advanced, setAdvanced] = useState(false);
     const [schema, setSchema] = useState("public");
 

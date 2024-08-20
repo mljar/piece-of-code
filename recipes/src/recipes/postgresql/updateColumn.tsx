@@ -43,7 +43,7 @@ export const UpdateColumn: React.FC<IRecipeProps> = ({
         );
     }
     const [conn, setConnection] = useState(connections.length ? connections[0] : "");
-    const [table, setTable] = useState("table");
+    const [table, setTable] = useState("table_name");
     const [column, setColumn] = useState("column");
     const [value, setValue] = useState("column * 1.05");
     const [value2, setValue2] = useState("val1,val2,val3");
