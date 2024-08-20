@@ -98,6 +98,8 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
     }
   }
 
+  let rangeOver = idList.length <= valueList.length ? idList : valueList;
+
   useEffect(() => {
     let src = ""
 
@@ -111,21 +113,25 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
       src += `    with ${conn}.cursor() as cur:\n\n`;
 
       src += `        # update data\n`;
+      src += `idList.length = ${idList.length}\n`;
+      src += `valueList.length = ${valueList.length}\n`;
       src += `        try: \n`;
-      if (updateFromList) {
-        if (showResults) {
-          src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
-          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))], returning=True)\n`;
+      if (showResults) {
+        src += `            query = sql.SQL(\n`;
+        src += `                "UPDATE {table} SET {column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
+        src += `            ).format(table=sql.Identifier("${table}"), column=sql.Identifier("${column}"))\n`;
+        if (updateFromList) {
+          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${rangeOver}))], returning=True)\n`;
         } else {
-          src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
-          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${idList}))])\n`;
+          src += `            cur.executemany(query, params_seq=[${data}], returning=True)\n`;
         }
       } else {
-        if (showResults) {
-          src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s RETURNING *"\n`;
-          src += `            cur.executemany(query, params_seq=[${data}], returning=True)\n`;
+        src += `            query = sql.SQL(\n`;
+        src += `                "UPDATE {table} SET {column} = %(value)s WHERE id = %(id)s"\n`;
+        src += `            ).format(table=sql.Identifier("${table}"), column=sql.Identifier("${column}"))\n`;
+        if (updateFromList) {
+          src += `            cur.executemany(query, params_seq=[{"id": ${idList}[i], "value": ${valueList}[i]} for i in range(len(${rangeOver}))])\n`;
         } else {
-          src += `            query = "UPDATE ${table} SET ${column} = %(value)s WHERE id = %(id)s"\n`;
           src += `            cur.executemany(query, params_seq=[${data}])\n`;
         }
       }
@@ -153,7 +159,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
     }
 
     setCode(src);
-    setPackages(["import psycopg"]);
+    setPackages(["import psycopg", "from psycopg import sql"]);
     if (setMetadata) {
       setMetadata({
         conn,

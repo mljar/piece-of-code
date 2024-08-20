@@ -58,24 +58,28 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
   let percentS = "%s"
   let valuesArr = values.split(",")
   let valuesArr2 = valuesFromList.split(",")
+  let columnsArr = columns.split(",")
 
   if (!insertFromList) {
     for (let i = 0; i < columns.split(",").length; i++) {
       if (i !== 0) {
         percentS += ", %s";
       }
-      valuesArr[i] = '"' + valuesArr[i] + '"'
+      columnsArr[i] = "\"" + columnsArr[i] + "\""
+      valuesArr[i] = "\"" + valuesArr[i] + "\""
     }
   } else {
     for (let i = 0; i < columns.split(",").length; i++) {
       if (i !== 0) {
         percentS += ", %s";
       }
-      valuesArr2[i] = '"' + valuesArr2[i] + '"'
+      columnsArr[i] = "\"" + columnsArr[i] + "\""
+      valuesArr2[i] = "\"" + valuesArr2[i] + "\""
     }
   }
 
-  let valuesWithQuetes = valuesArr.join()
+  let valuesWithQuotes = valuesArr.join()
+  let columnsWithQuotes = columnsArr.join()
 
   useEffect(() => {
     let src = ""
@@ -93,19 +97,37 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
       src += `        # insert into db\n`;
       src += `        try:\n`;
       if (!insertFromList) {
+        src += `            cur.execute(\n`;
+        src += `                sql.SQL(\n`;
         if (showResults) {
-          src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS}) RETURNING *", (${valuesWithQuetes},))\n`;
+          src += `                    "INSERT INTO {table} ({columns}) VALUES (${percentS}) RETURNING *"\n`;
         } else {
-          src += `            cur.execute("INSERT INTO ${table} (${columns}) values (${percentS})", (${valuesWithQuetes},))\n`;
+          src += `                    "INSERT INTO {table} ({columns}) VALUES (${percentS})"\n`;
         }
+        src += `                ).format(\n`;
+        src += `                    table=sql.Identifier("${table}"),\n`;
+        src += `                    columns=sql.SQL(",").join(\n`;
+        src += `                        [sql.Identifier(column) for column in [${columnsWithQuotes}]]\n`;
+        src += `                    ),\n`;
+        src += `                ),\n`;
+        src += `                (${valuesWithQuotes},),\n`;
+        src += `            )\n`;
       } else {
+        src += `            query = sql.SQL(\n`;
         if (showResults) {
-          src += `            query = "INSERT INTO ${table} (${columns}) VALUES (${percentS}) RETURNING *"\n`;
-          // src += `            data = ${valuesFromList}\n`;
+          src += `                    "INSERT INTO {table} ({columns}) VALUES (${percentS}) RETURNING *"\n`;
+        } else {
+          src += `                    "INSERT INTO {table} ({columns}) VALUES (${percentS})"\n`;
+        }
+        src += `                ).format(\n`;
+        src += `                    table=sql.Identifier("${table}"),\n`;
+        src += `                    columns=sql.SQL(",").join(\n`;
+        src += `                        [sql.Identifier(column) for column in [${columnsWithQuotes}]]\n`;
+        src += `                    ),\n`;
+        src += `                )\n`;
+        if (showResults) {
           src += `            cur.executemany(query, params_seq=${valuesFromList}, returning=True)\n`;
         } else {
-          src += `            query = "INSERT INTO ${table} (${columns}) VALUES (${percentS})"\n`;
-          // src += `            data = ${valuesFromList}\n`;
           src += `            cur.executemany(query, params_seq=${valuesFromList})\n`;
         }
       }
@@ -132,7 +154,7 @@ export const InsertQuery: React.FC<IRecipeProps> = ({
     }
 
     setCode(src);
-    setPackages(["import psycopg"]);
+    setPackages(["import psycopg", "from psycopg import sql"]);
     if (setMetadata) {
       setMetadata({
         conn,
