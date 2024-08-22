@@ -14,8 +14,23 @@ export const VisionURL: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
+
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
   const [model, setModel] = useState("gpt-4o");
   const modelOptions = [
     ["GTP-4o", "gpt-4o"],
@@ -111,12 +126,12 @@ export const VisionURL: React.FC<IRecipeProps> = ({
 
 export const VisionURLRecipe: IRecipe = {
   name: "Vision with URL images",
-  longName: "OpenAI Vision with URL images",
+  longName: "Chat with the OpenAI model about images from URLs in Python",
   parentName: "OpenAI",
   description:
-    "Learn how to use OpenAI API to create chat completions with text and images given from URLs in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content. You'll learn how to integrate both text and image data into your requests, ensuring effective and dynamic interactions with the OpenAI API.",
+    "Learn to use the OpenAI API for creating chat completions with text and images from URLs in Python. This recipe includes crafting API requests with user messages, setting a token limit, and printing the response content. Follow these steps to effectively integrate text and image inputs into your chat interactions.",
   shortDescription:
-    "Learn how to use OpenAI API to create chat completions with text and images given from URL in Python. This guide covers crafting API requests with user messages, setting a token limit, and printing the response content.",
+    "Learn how to use OpenAI API to create chat completions with text and images given from URL in Python. This recipe covers crafting API requests with user messages, setting a token limit, and printing the response content.",
   codeExplanation: `
   1. Create the API request.
   2. Print the response.`,
@@ -128,16 +143,17 @@ export const VisionURLRecipe: IRecipe = {
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default VisionURLRecipe;

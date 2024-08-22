@@ -14,8 +14,23 @@ export const Embedding: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
+
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
   const [text, setText] = useState("");
   const [model, setModel] = useState("text-embedding-3-small");
   const modelOptions = [
@@ -30,10 +45,10 @@ export const Embedding: React.FC<IRecipeProps> = ({
     src += `embedding = client.embeddings.create(\n`;
     src += `    input = "${text}",\n`;
     src += `    model = "${model}"\n`;
-    src += `)\n\n`;
+    src += `)`;
     if (show) {
-        src += `# print embedding\n`;
-        src += `print(embedding.data[0].embedding)`;
+      src += `\n\n# print embedding\n`;
+      src += `print(embedding.data[0].embedding)`;
     }
 
     setCode(src);
@@ -71,20 +86,16 @@ export const Embedding: React.FC<IRecipeProps> = ({
         tooltip="This is the text that you want to convert into a vector."
       />
       <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
-      <Select
-        label={"Choose model"}
-        option={model}
-        options={modelOptions}
-        setOption={setModel}
-        tooltip={
-          "Choose the OpenAI model that you want to use. Remember that each model has individual pricing."
-        }
-      />
-      <Toggle 
-        label={"Print the embedding"} 
-        value={show} 
-        setValue={setShow} 
-      />
+        <Select
+          label={"Choose model"}
+          option={model}
+          options={modelOptions}
+          setOption={setModel}
+          tooltip={
+            "Choose the OpenAI model that you want to use. Remember that each model has individual pricing."
+          }
+        />
+        <Toggle label={"Print the embedding"} value={show} setValue={setShow} />
       </div>
     </div>
   );
@@ -92,10 +103,12 @@ export const Embedding: React.FC<IRecipeProps> = ({
 
 export const EmbeddingRecipe: IRecipe = {
   name: "Embeddings",
-  longName: "Create embeddings from text using the OpenAI API",
+  longName: "Generate text embeddings using OpenAI API in Python",
   parentName: "OpenAI",
-  description: "Create and print text embeddings using OpenAI's API in Python. This guide covers generating embeddings with the specified model and input text. Follow these steps to generate an embedding vector and print it, enabling you to integrate text embedding capabilities into your Python applications for enhanced text analysis and processing.",
-  shortDescription: "Create and print text embeddings using OpenAI's API in Python. This guide covers generating embeddings with a specified model and input text, and printing the resulting embedding vector.",
+  description:
+    "Learn how to create text embeddings using OpenAI's API in this guide. Learn to generate embeddings by specifying input and models, and see how to use them in your Python applications for better text analysis. Ideal for developers who want to add advanced text features to their projects.",
+  shortDescription:
+    "Learn how to create text embeddings using OpenAI's API. This recipe walks you through generating embeddings with specified models, helping you integrate powerful text analysis into your Python applications.",
   codeExplanation: `
   1. Create the embedding.
   2. Access and print the embedding.`,
@@ -107,16 +120,17 @@ export const EmbeddingRecipe: IRecipe = {
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default EmbeddingRecipe;
