@@ -196,16 +196,20 @@ export class RecipeWidgetsRegistry {
   }
 
   public hideAll() {
-    Object.values(this._widgets).forEach(w => w.hide());
+    Object.values(this._widgets).forEach(w => w.hideWidget());
   }
 
   public setSelectedCellId(cellId: string) {
     this._lastSelectedCellId = cellId;
   }
 
+  public getSelectedCellId(): string {
+    return this._lastSelectedCellId;
+  }
+
   public showLastSelectedCellId() {
     if (this._lastSelectedCellId in this._widgets) {
-      this._widgets[this._lastSelectedCellId].show();
+      this._widgets[this._lastSelectedCellId].showWidget();
     }
   }
 }
@@ -505,7 +509,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.changeCellToCode.bind(this),
           this.setEnv.bind(this),
         );
-        this.selectRecipe.hide();
+        this.selectRecipe.hideWidget();
         if (this.layout instanceof PanelLayout) {
           this.layout?.addWidget(this.selectRecipe);
         }
@@ -569,18 +573,27 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
       if (cell.model.sharedModel.cell_type === "markdown") {
         cell.node.addEventListener('focusin', () => {
           RecipeWidgetsRegistry.getInstance().hideAll();
-          this.selectRecipe?.show();
+          this.selectRecipe?.showWidget();
         });
       }
       if (cell.model.sharedModel.cell_type === "code") {
         cell.inputArea?.node.addEventListener('focusin', () => {
+          let clearPackages = true;
           if (this._cellId) {
-            RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
+            if (RecipeWidgetsRegistry.getInstance().getSelectedCellId() === this._cellId) {
+              // it is the same cell, no need to clear packages
+              clearPackages = false;
+            } else {
+              RecipeWidgetsRegistry.getInstance().setSelectedCellId(this._cellId);
+            }
           }
 
           RecipeWidgetsRegistry.getInstance().hideAll();
 
-          this._packages = [];
+          // clear packages
+          if (clearPackages) {
+            this._packages = [];
+          }
 
           if (getAlwaysOpen()) {
             this.selectRecipe?.setPreviousCode(
@@ -590,11 +603,12 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
             this.selectRecipe?.setPreviousError(errorName, errorValue);
             const executionCount = this.getExecutionCount(cell);
             this.selectRecipe?.setPreviousExecutionCount(executionCount);
-            this.selectRecipe?.updateWidget();
-            //this.selectRecipe?.update();
+            //this.selectRecipe?.updateWidget();
             this._variableInspector?.getVariables();
 
-            this.selectRecipe?.show();
+            this.selectRecipe?.showWidget();
+
+            this.selectRecipe?.updateWidget();
           }
 
           // console.log(cell.model.sharedModel.toJSON());
