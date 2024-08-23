@@ -27,7 +27,7 @@ export const DisplayPDF: React.FC<IRecipeProps> = ({
     src += `# encode PDF\n`;
     src += `base64_pdf = base64.b64encode(content).decode("utf-8")\n\n`;
     src += `# display encoded PDF\n`;
-    src += `IFrame(f"data:application/pdf;base64,{base64_pdf}", width=${width? width:1000}, height=${height? height:500})`
+    src += `IFrame(f"data:application/pdf;base64,{base64_pdf}", width=${width ? width : 1000}, height=${height ? height : 500})`;
 
     setCode(src);
     setPackages(["import base64", "from IPython.display import IFrame"]);
@@ -83,10 +83,12 @@ export const DisplayPDF: React.FC<IRecipeProps> = ({
 
 export const DisplayPDFRecipe: IRecipe = {
   name: "Display PDF",
-  longName: "Display your PDF in the notebook",
+  longName: "Display the PDF file in the Python Notebook",
   parentName: "PDF Operations",
-  description: "Learn how to encode a PDF to base64 in Python and display it seamlessly. This guide covers setting the PDF path, reading the PDF file, encoding it to a base64 string, and using an IFrame to display the encoded PDF. Follow these steps to handle PDF files efficiently and integrate base64 encoding and display into your Python applications.",
-  shortDescription: "Learn how to encode a PDF to base64 in Python and display it. This guide covers setting the PDF path, reading and encoding the PDF file, and using an IFrame to display the base64-encoded PDF.",
+  description:
+    "Learn how to display a PDF in Python. This recipe walks you through opening a PDF file, encoding it to Base64, and displaying it interactively in your notebook using an IFrame. Ideal for viewing PDFs directly within your Python projects, making it easy to integrate and display documents seamlessly.",
+  shortDescription:
+    "Learn how to display a PDF in Python. This recipe covers opening a PDF, encoding it to Base64, and displaying it interactively in your notebook using an IFrame.  Perfect for viewing PDFs directly in your Python projects.",
   codeExplanation: `
   1. Open the PDF.
   2. Encode the PDF Content (using Base64).

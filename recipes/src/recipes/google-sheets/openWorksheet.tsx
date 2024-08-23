@@ -74,7 +74,8 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["worksheetName"] !== undefined) setWorksheetName(metadata["worksheetName"]);
+      if (metadata["worksheetName"] !== undefined)
+        setWorksheetName(metadata["worksheetName"]);
       if (metadata["open"] !== undefined) setOpen(metadata["open"]);
       if (metadata["index"] !== undefined) setIndex(metadata["index"]);
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
@@ -86,14 +87,16 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={ToolIcon}
-        label={"Open Worksheet"}
+        label={"Open worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
         label={"Enter worksheet name"}
         name={worksheetName}
         setName={setWorksheetName}
-        tooltip={"Enter the name of the variable to which the worksheet will be assigned."}
+        tooltip={
+          "Enter the name of the variable to which the worksheet will be assigned."
+        }
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
@@ -137,11 +140,13 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
 };
 
 export const OpenWorkSheetRecipe: IRecipe = {
-  name: "Open Worksheet",
+  name: "Open worksheet",
   longName: "Open the Google Sheets worksheet using Python",
   parentName: "Google Sheets",
-  description: "Learn how to open and access worksheets in Google Sheets using Python and the gspread library. This guide covers multiple methods for accessing worksheets, including by index, name, and ID. Follow these steps to efficiently manage and retrieve data from specific worksheets in your Google Sheets, enhancing your ability to automate and handle spreadsheet tasks programmatically.",
-  shortDescription: "Learn how to open worksheets in Google Sheets using Python and the gspread library. This guide covers accessing worksheets by index, name, and ID, enabling efficient data management and retrieval from your Google Sheets.",
+  description:
+    "Learn how to open and access worksheets in Google Sheets using Python and the gspread library. This recipe covers multiple methods for accessing worksheets, including by index, name, and ID. Follow these steps to efficiently manage and retrieve data from specific worksheets in your Google Sheets, enhancing your ability to automate and handle spreadsheet tasks programmatically.",
+  shortDescription:
+    "Learn how to open worksheets in Google Sheets using Python and the gspread library. This recipe covers accessing worksheets by index, name, and ID, enabling efficient data management and retrieval from your Google Sheets.",
   codeExplanation: `
   1. Open the worksheet`,
   ui: OpenWorkSheet,

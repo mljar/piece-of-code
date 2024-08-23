@@ -56,7 +56,7 @@ export const Client: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={OpenAIIcon}
-        label={"OpenAI Client"}
+        label={"OpenAI client"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable

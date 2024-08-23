@@ -75,7 +75,7 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={TextIcon}
-        label={"Speech Transcriptions"}
+        label={"Speech transcriptions"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -100,7 +100,7 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
 };
 
 export const TranscriptionsRecipe: IRecipe = {
-  name: "Speech Transcriptions",
+  name: "Speech transcriptions",
   longName: "Create transcriptions for audio using OpenAI API in Python",
   parentName: "OpenAI",
   description:

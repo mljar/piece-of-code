@@ -17,7 +17,6 @@ export const DeleteSpreadSheet: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-    
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
   if (variablesStatus === "loaded" && !vars.length) {
@@ -59,27 +58,27 @@ export const DeleteSpreadSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SpreadsheetIcon}
-        label={"Delete Spreadsheet"}
+        label={"Delete spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-          <Variable
-            label={"Enter id"}
-            name={ID}
-            setName={setID}
-            tooltip={"Enter the id of the spreadsheet you want to delete."}
-          />
+      <Variable
+        label={"Enter id"}
+        name={ID}
+        setName={setID}
+        tooltip={"Enter the id of the spreadsheet you want to delete."}
+      />
     </div>
   );
 };
 
 export const DeleteSpreadSheetRecipe: IRecipe = {
-  name: "Delete Spreadsheet",
+  name: "Delete spreadsheet",
   longName: "Delete the Google Sheets spreadsheet using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to delete a Google Sheet using Python and the gspread library. This guide covers the steps to authenticate with Google and delete a specified spreadsheet programmatically. Follow these instructions to efficiently manage and automate the deletion of Google Sheets directly from your Python applications, ensuring proper handling and removal of unwanted documents.",
+    "Learn how to delete a Google Sheet using Python and the gspread library. This recipe covers the steps to authenticate with Google and delete a specified spreadsheet programmatically. Follow these instructions to efficiently manage and automate the deletion of Google Sheets directly from your Python applications, ensuring proper handling and removal of unwanted documents.",
   shortDescription:
-    "Learn how to delete a Google Sheet using Python and the gspread library. This guide covers the steps to authenticate with Google and delete a specified spreadsheet programmatically.",
+    "Learn how to delete a Google Sheet using Python and the gspread library. This recipe covers the steps to authenticate with Google and delete a specified spreadsheet programmatically.",
   codeExplanation: `
   1. Delete the spreadsheet.`,
   ui: DeleteSpreadSheet,

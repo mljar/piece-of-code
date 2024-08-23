@@ -87,7 +87,7 @@ export const FindCell: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SearchIcon}
-        label={"Find Cell by Value"}
+        label={"Find cell by value"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Select
@@ -119,13 +119,13 @@ export const FindCell: React.FC<IRecipeProps> = ({
 };
 
 export const FindCellRecipe: IRecipe = {
-  name: "Find Cell by Value",
-  longName: "Find Cell by Value in Google Sheets using Python",
+  name: "Find cell by value",
+  longName: "Find cell by value in Google Sheets using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to efficiently search for specific values in Google Sheets using Python and the gspread library. This guide covers finding single or all instances of a value within a worksheet, retrieving the matching cells, and printing their exact row and column locations. Perfect for automating data retrieval and analysis tasks in your Google Sheets projects.",
+    "Learn how to efficiently search for specific values in Google Sheets using Python and the gspread library. This recipe covers finding single or all instances of a value within a worksheet, retrieving the matching cells, and printing their exact row and column locations. Perfect for automating data retrieval and analysis tasks in your Google Sheets projects.",
   shortDescription:
-    "Discover how to search for specific values in Google Sheets using Python and the gspread library. This guide covers finding single or all matching cells in a worksheet and printing their row and column locations.",
+    "Discover how to search for specific values in Google Sheets using Python and the gspread library. This recipe covers finding single or all matching cells in a worksheet and printing their row and column locations.",
   codeExplanation: `
   1. Find the cells and save them as a variable.
   2. Print their location.`,

@@ -26,16 +26,16 @@ export const LoadPDF: React.FC<IRecipeProps> = ({
     src += `# read PDF\n`;
     src += `reader = PdfReader(filePath)\n\n`;
     if (pages) {
-        src += `# specify number of pages\n`;
-        src += `pages = len(reader.pages)\n`;
-        src += `print("Number of pages: ", pages)\n\n`;
+      src += `# specify number of pages\n`;
+      src += `pages = len(reader.pages)\n`;
+      src += `print("Number of pages: ", pages)\n\n`;
     }
     if (showText) {
-        src += `# show text from page\n`;
-        src += `text = reader.pages[${(page? page:1)-1}].extract_text()\n`;
-        src += `print(text)`
+      src += `# show text from page\n`;
+      src += `text = reader.pages[${(page ? page : 1) - 1}].extract_text()\n`;
+      src += `print(text)`;
     }
-    
+
     setCode(src);
     setPackages(["from pypdf import PdfReader", "from pathlib import Path"]);
     if (setMetadata) {
@@ -56,7 +56,7 @@ export const LoadPDF: React.FC<IRecipeProps> = ({
       if (metadata["page"] !== undefined) setPage(metadata["page"]);
       if (metadata["showText"] !== undefined) setShowText(metadata["showText"]);
       if (metadata["pages"] !== undefined) setPages(metadata["pages"]);
-     }
+    }
   }, [metadata]);
 
   return (
@@ -73,36 +73,34 @@ export const LoadPDF: React.FC<IRecipeProps> = ({
         tooltip={"Choose the PDF which you want to load."}
       />
       <div className="poc-grid md:poc-grid-cols-6 md:poc-gap-2">
-      <Toggle
-        label={"Pages count"}
-        value={pages}
-        setValue={setPages}
-        />
+        <Toggle label={"Pages count"} value={pages} setValue={setPages} />
         <Toggle
-        label={"Display text"}
-        value={showText}
-        setValue={setShowText}
+          label={"Display text"}
+          value={showText}
+          setValue={setShowText}
         />
         {showText && (
-            <Numeric 
-              label={"Page number"}
-              name={page}
-              setName={setPage}
-              tooltip={"Number of the page from which you want to display text."}
-              minValue={1}
-              />
+          <Numeric
+            label={"Page number"}
+            name={page}
+            setName={setPage}
+            tooltip={"Number of the page from which you want to display text."}
+            minValue={1}
+          />
         )}
-    </div>
+      </div>
     </div>
   );
 };
 
 export const LoadPDFRecipe: IRecipe = {
   name: "Load PDF",
-  longName: "Load the PDF into the notebook in Python",
+  longName: "Load the PDF file into Python Notebook",
   parentName: "PDF Operations",
-  description: "This comprehensive guide teaches how to read and extract text from PDF files in Python. We'll cover setting the PDF path, reading the file using the built-in pypdf module -  PdfReader, determining the number of pages, and extracting text from a specific page. Follow these steps to effectively manage and process PDF files in your Python applications, ensuring you can access and utilize the content within PDFs.",
-  shortDescription: "Learn how to read and extract text from PDF files in Python. This guide covers setting the PDF path, reading the file, counting the number of pages, and extracting text from a specific page using the PdfReader library.",
+  description:
+    "Learn to read and extract text from PDF files in Python. This recipe walks you through setting the PDF path, reading the file, counting the pages, and extracting text from a specific page using the PdfReader library. Perfect for efficiently processing and analyzing PDF documents in your projects.",
+  shortDescription:
+    "Learn how to read and extract text from PDF files in Python. This recipe covers setting the PDF path, reading the file, counting the number of pages, and extracting text from a specific page using the PdfReader library.",
   codeExplanation: `
   1. Set path to the PDF.
   2. Read the PDF.
@@ -111,7 +109,7 @@ export const LoadPDFRecipe: IRecipe = {
   ui: LoadPDF,
   Icon: LoadFileIcon,
   requiredPackages: [
-    { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0"}
+    { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0" },
   ],
   docsUrl: DOCS_URL,
 };

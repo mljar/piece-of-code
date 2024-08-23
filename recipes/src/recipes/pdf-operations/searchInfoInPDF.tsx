@@ -18,7 +18,7 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
   const [text, setText] = useState("");
 
   useEffect(() => {
-    let src = `# set directory path\n`; 
+    let src = `# set directory path\n`;
     src += `directoryPath = r"${directoryPath}"\n\n`;
     src += `# declare lists and variables\n`;
     src += `readers = []\n`;
@@ -46,14 +46,15 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
         docsUrl: DOCS_URL,
       });
     }
-  }, [directoryPath, text ]);
+  }, [directoryPath, text]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["directoryPath"] !== undefined) setDirectoryPath(metadata["directoryPath"]);
+      if (metadata["directoryPath"] !== undefined)
+        setDirectoryPath(metadata["directoryPath"]);
       if (metadata["text"] !== undefined) setText(metadata["text"]);
-    } 
+    }
   }, [metadata]);
 
   return (
@@ -68,7 +69,9 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
         defaultPath={directoryPath}
         setPath={setDirectoryPath}
         selectFolder={true}
-        tooltip={"Choose the directory with PDFs in which you want to find text."}
+        tooltip={
+          "Choose the directory with PDFs in which you want to find text."
+        }
       />
       <Variable
         label={"Enter text"}
@@ -84,8 +87,10 @@ export const SearchInPDFRecipe: IRecipe = {
   name: "Search text in many PDFs",
   longName: "Search text in many PDF files using Python",
   parentName: "PDF Operations",
-  description: "Discover how to search for specific text within multiple PDF files using Python. This guide details setting the directory path, reading PDF files, extracting text from each page, and printing the filenames and page numbers where the text is found. It also includes a condition to notify if the text is not found in any PDF, ensuring comprehensive text search functionality.",
-  shortDescription: "Discover how to search for specific text in multiple PDF files using Python. This guide covers setting the directory path, reading PDFs, extracting text from each page, and printing the filenames and page numbers where the text is found.",
+  description:
+    "Learn to search for specific text in multiple PDF files using Python. This recipe explains how to set the directory path, read PDF files, and search for text within them. It shows how to print filenames and page numbers where the text appears and how to notify if no matches are found, streamlining text search in PDFs.",
+  shortDescription:
+    "Learn how to search for text in PDFs using Python. This recipe covers setting the directory path, reading files, finding text, printing filenames and page numbers where the text appears or notifying about no matches.",
   codeExplanation: `
   1. Set the directory path.
   2. Declare lists and a counter.

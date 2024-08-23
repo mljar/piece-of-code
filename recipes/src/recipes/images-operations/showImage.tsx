@@ -20,19 +20,21 @@ export const ShowImage: React.FC<IRecipeProps> = ({
   const [height, setHeight] = useState(250);
 
   useEffect(() => {
-    let src = `# variables:\n`;
-    src += `path=r"${image}"\n`;
-    if (!advanced) {
-        src += `\n# code:\n`;
-        src += `with Image.open(path) as i:\n`;
-        src += `    display(i)`;
+    let src = ``;
+
+    if (advanced) {
+     src += `# set image path and size\n`;
+     src += `path=r"${image}"\n`;
+     src += `size=${width? width:250},${height? height:250}\n\n`;
     } else {
-        src += `size=${width? width:250},${height? height:250}\n`  
-        src += `\n# code:\n`;
-        src += `with Image.open(path) as i:\n`;
-        src += `    i.thumbnail(size)\n`
-        src += `    display(i)`;
+      src += `# set image path\n`;
+      src += `path=r"${image}"\n\n`;
     }
+    src += `# open and display image\n`;
+    src += `with Image.open(path) as i:\n`
+    if (advanced) src += `    i.thumbnail(size)\n`;
+    src += `    display(i)`
+
     setCode(src);
     setPackages([
       "from IPython.display import display",
@@ -62,7 +64,7 @@ export const ShowImage: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={addImageIcon}
-        label={"Show Image"}
+        label={"Show image"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -96,13 +98,13 @@ export const ShowImage: React.FC<IRecipeProps> = ({
 };
 
 export const ShowImageRecipe: IRecipe = {
-  name: "Show Image",
-  longName: "How to show images in Jupyter Notebook using Python",
+  name: "Show image",
+  longName: "How to show images in the Python Notebook",
   parentName: "Images Operations",
   description:
-    "Display PNG, JPG, and JPEG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
+    "Learn how to open and display an image in Python. This recipe walks you through setting the image path, resizing it to a thumbnail of a specified size, and displaying the resized image. Perfect for handling image files, adjusting their size, and viewing them directly within your Python notebook.",
   shortDescription:
-    "Display PNG, JPG, and JPEG images in Jupyter Notebook using Python. This simple code resizes images to your desired dimensions before displaying them, allowing you to easily control the output size.",
+    "Learn how to open and display an image in Python. This recipe covers setting the image path, resizing it to a thumbnail, and displaying it. Ideal for resizing and viewing images in your Python projects.",
   codeExplanation: `
   1. Set image path and optionally size.
   2. Show the chosen image in Jupyter Notebook.`,

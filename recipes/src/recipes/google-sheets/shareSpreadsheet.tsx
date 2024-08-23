@@ -48,7 +48,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``;
     src += `# share spreadsheet\n`;
-    src += `sh.share(email_address='${email}', perm_type='${permission}', role='${role}')`
+    src += `sh.share(email_address='${email}', perm_type='${permission}', role='${role}')`;
 
     setCode(src);
     setPackages(["import gspread"]);
@@ -65,7 +65,8 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["permission"] !== undefined) setPermission(metadata["permission"]);
+      if (metadata["permission"] !== undefined)
+        setPermission(metadata["permission"]);
       if (metadata["role"] !== undefined) setRole(metadata["role"]);
       if (metadata["email"] !== undefined) setEmail(metadata["email"]);
     }
@@ -75,7 +76,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SpreadsheetIcon}
-        label={"Share Spreadsheet"}
+        label={"Share spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -109,11 +110,13 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
 };
 
 export const ShareSpreadSheetRecipe: IRecipe = {
-  name: "Share Spreadsheet",
+  name: "Share spreadsheet",
   longName: "Share the Google Sheets spreadsheet using Python",
   parentName: "Google Sheets",
-  description: "Learn how to share a Google Sheet using Python and the gspread library. This guide covers the steps to set permissions, specify the user's email address, and assign roles to share the spreadsheet programmatically. Follow these instructions to efficiently manage access to your Google Sheets directly from your Python applications.",
-  shortDescription: "Learn how to share a Google Sheet using Python and the gspread library. This guide covers setting permissions, specifying the email address, and assigning roles to share the spreadsheet programmatically.",
+  description:
+    "Learn how to share a Google Sheet using Python and the gspread library. This recipe covers the steps to set permissions, specify the user's email address, and assign roles to share the spreadsheet programmatically. Follow these instructions to efficiently manage access to your Google Sheets directly from your Python applications.",
+  shortDescription:
+    "Learn how to share a Google Sheet using Python and the gspread library. This recipe covers setting permissions, specifying the email address, and assigning roles to share the spreadsheet programmatically.",
   codeExplanation: `
   1. Share the spreadsheet.`,
   ui: ShareSpreadSheet,

@@ -71,7 +71,7 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={ToolIcon}
-        label={"Create Worksheet"}
+        label={"Create worksheet"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -80,7 +80,9 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         label={"Enter worksheet name"}
         name={worksheetName}
         setName={setWorksheetName}
-        tooltip={"Enter the name of the variable to which the worksheet will be assigned."}
+        tooltip={
+          "Enter the name of the variable to which the worksheet will be assigned."
+        }
       />
       <Variable
         label={"Enter title"}
@@ -113,13 +115,13 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
 };
 
 export const CreateWorkSheetRecipe: IRecipe = {
-  name: "Create Worksheet",
+  name: "Create worksheet",
   longName: "Create the Google Sheets worksheet using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers the steps to add a worksheet to an existing spreadsheet by specifying its title, number of rows, and columns. Follow these instructions to efficiently manage and organize your data by adding new worksheets programmatically within your Google Sheets.",
+    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This recipe covers the steps to add a worksheet to an existing spreadsheet by specifying its title, number of rows, and columns. Follow these instructions to efficiently manage and organize your data by adding new worksheets programmatically within your Google Sheets.",
   shortDescription:
-    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This guide covers adding a worksheet by specifying its title, number of rows, and columns programmatically.",
+    "Learn how to create a new worksheet in Google Sheets using Python and the gspread library. This recipe covers adding a worksheet by specifying its title, number of rows, and columns programmatically.",
   codeExplanation: `
   1. Create the worksheet`,
   ui: CreateWorkSheet,

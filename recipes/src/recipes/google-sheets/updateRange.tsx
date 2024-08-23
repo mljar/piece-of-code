@@ -46,24 +46,24 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
 
   useEffect(() => {
     let src = `# define range\n`;
-    src += `cell_list = ${variable}.range('${range}')\n\n`
+    src += `cell_list = ${variable}.range('${range}')\n\n`;
     src += `# set new values\n`;
     if (choice == "same") {
-        src += `for cell in cell_list:\n`;
-        if (string) {
-            src += `    cell.value = "${value}"\n\n`;
-        } else {
-            src += `    cell.value = ${value}\n\n`;
-        }
+      src += `for cell in cell_list:\n`;
+      if (string) {
+        src += `    cell.value = "${value}"\n\n`;
+      } else {
+        src += `    cell.value = ${value}\n\n`;
+      }
     }
     if (choice == "list") {
-        src += `x=0\n`;
-        src += `for cell in cell_list:\n`;
-        src += `    cell.value = ${list}[x]\n`;
-        src += `    x=x+1\n\n`;
+      src += `x=0\n`;
+      src += `for cell in cell_list:\n`;
+      src += `    cell.value = ${list}[x]\n`;
+      src += `    x=x+1\n\n`;
     }
     src += `# update worksheet\n`;
-    src += `${variable}.update_cells(cell_list)`
+    src += `${variable}.update_cells(cell_list)`;
 
     setCode(src);
     setPackages(["import gspread"]);
@@ -96,11 +96,11 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SquareArrowUPIcon}
-        label={"Update Range"}
+        label={"Update range"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Select
-        label={"Choose Worksheet"}
+        label={"Choose worksheet"}
         option={variable}
         options={vars.map((d) => [d, d])}
         setOption={setVariable}
@@ -155,11 +155,13 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
 };
 
 export const UpdateRangeRecipe: IRecipe = {
-  name: "Update Range",
+  name: "Update range",
   longName: "Update data in the range in Google Sheets using Python",
   parentName: "Google Sheets",
-  description: "Learn how to update a range of cells in Google Sheets using Python and the gspread library. This guide covers defining a cell range, setting new values for those cells—either from a list or with a single value—and then updating the entire range in the worksheet. Perfect for efficiently managing and automating your spreadsheet data.",
-  shortDescription: "Learn how to update a range of cells in Google Sheets using Python and gspread. This guide shows how to set new values for a specified range and update the worksheet with those values efficiently.",
+  description:
+    "Learn how to update a range of cells in Google Sheets using Python and the gspread library. This recipe covers defining a cell range, setting new values for those cells—either from a list or with a single value—and then updating the entire range in the worksheet. Perfect for efficiently managing and automating your spreadsheet data.",
+  shortDescription:
+    "Learn how to update a range of cells in Google Sheets using Python and gspread. This recipe shows how to set new values for a specified range and update the worksheet with those values efficiently.",
   codeExplanation: `
   1. Define the range of cells to update.
   2. Create the loop which goes through each cell and sets values.

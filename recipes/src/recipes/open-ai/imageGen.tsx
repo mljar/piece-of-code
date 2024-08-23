@@ -105,7 +105,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={imageAIIcon}
-        label={"AI Images Generator"}
+        label={"AI images generator"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -152,7 +152,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
 };
 
 export const ImageGenRecipe: IRecipe = {
-  name: "AI Image Generator",
+  name: "AI image generator",
   longName: "Generate images using OpenAI API in Python",
   parentName: "OpenAI",
   description:

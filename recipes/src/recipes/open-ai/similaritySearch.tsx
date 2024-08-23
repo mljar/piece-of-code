@@ -86,7 +86,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SearchIcon}
-        label={"Cosine Similarity Search"}
+        label={"Cosine similarity search"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
@@ -123,7 +123,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
 };
 
 export const SimilaritySearchRecipe: IRecipe = {
-  name: "Cosine Similarity Search",
+  name: "Cosine similarity search",
   longName: "Search the cosine similarity using OpenAI API in Python",
   parentName: "OpenAI",
   description:

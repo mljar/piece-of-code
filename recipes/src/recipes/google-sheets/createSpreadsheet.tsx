@@ -17,7 +17,6 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-    
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
   if (variablesStatus === "loaded" && !vars.length) {
@@ -59,27 +58,27 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SpreadsheetIcon}
-        label={"Create Spreadsheet"}
+        label={"Create spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-          <Variable
-            label={"Enter title"}
-            name={title}
-            setName={setTitle}
-            tooltip={"Enter the title of the spreadsheet you want to create."}
-          />
+      <Variable
+        label={"Enter title"}
+        name={title}
+        setName={setTitle}
+        tooltip={"Enter the title of the spreadsheet you want to create."}
+      />
     </div>
   );
 };
 
 export const CreateSpreadSheetRecipe: IRecipe = {
-  name: "Create Spreadsheet",
+  name: "Create spreadsheet",
   longName: "Create the Google Sheets spreadsheet using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to create a new Google Sheet using Python and the gspread library. This guide covers the steps to authenticate with Google, create a new spreadsheet with a specified name, and access it programmatically. Follow these steps to efficiently manage and automate your Google Sheets tasks directly from your Python applications.",
+    "Learn how to create a new Google Sheet using Python and the gspread library. This recipe covers the steps to authenticate with Google, create a new spreadsheet with a specified name, and access it programmatically. Follow these steps to efficiently manage and automate your Google Sheets tasks directly from your Python applications.",
   shortDescription:
-    "Learn how to create a new Google Sheet using Python and the gspread library. This guide covers the steps to authenticate with Google, create a new spreadsheet, and access it programmatically.",
+    "Learn how to create a new Google Sheet using Python and the gspread library. This recipe covers the steps to authenticate with Google, create a new spreadsheet, and access it programmatically.",
   codeExplanation: `
   1. Create the spreadsheet.`,
   ui: CreateSpreadSheet,
