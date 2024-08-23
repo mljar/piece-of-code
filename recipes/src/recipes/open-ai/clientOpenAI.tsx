@@ -47,7 +47,8 @@ export const Client: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["dotenvVar"] !== undefined) setDotenvVar(metadata["dotenvVar"]);
+      if (metadata["dotenvVar"] !== undefined)
+        setDotenvVar(metadata["dotenvVar"]);
     }
   }, [metadata]);
 
@@ -69,10 +70,12 @@ export const Client: React.FC<IRecipeProps> = ({
 
 export const ClientRecipe: IRecipe = {
   name: "Client connection",
-  longName: "Python OpenAI client connection",
+  longName: "Create OpenAI API client connection using Python",
   parentName: "OpenAI",
-  description: "Learn how to securely load and use an OpenAI API key from an environment variable in Python with this detailed guide. We'll start by loading the .env file and retrieving the API key stored as OPENAI_KEY. Next, we'll create a function create_client that initializes an OpenAI client using the retrieved API key. The function includes error handling to manage authentication issues, ensuring the API key is correct. Finally, we'll demonstrate listing available models from the OpenAI library, providing a complete and practical example for integrating OpenAI's API into your projects.",
-  shortDescription: "Learn how to securely load and use an OpenAI API key from an environment variable in Python. This guide walks through creating a client instance, handling authentication errors, and listing available models using the OpenAI library.",
+  description:
+    "Learn how to load environment variables in Python, safely get API keys, and set up an OpenAI client. The recipe covers handling errors if the API key is wrong, making your code more secure and reliable. Perfect for developers who want to keep their API connections safe and their Python code strong.",
+  shortDescription:
+    "Learn how to load environment variables in Python, securely retrieve API keys, and create an OpenAI client with error handling for authentication errors. This recipe enhances code security and reliability.",
   codeExplanation: `
   1. Load dotenv file.
   2. Get API KEY from environment.

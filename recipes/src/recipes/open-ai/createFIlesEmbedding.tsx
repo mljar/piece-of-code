@@ -14,37 +14,51 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
-    const [filePath, setFilePath] = useState("");
-    const [model, setModel] = useState("text-embedding-3-small");
-    const modelOptions = [
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
+
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
+  const [filePath, setFilePath] = useState("");
+  const [model, setModel] = useState("text-embedding-3-small");
+  const modelOptions = [
     ["text-embedding-3-small", "text-embedding-3-small"],
     ["text-embedding-3-large", "text-embedding-3-large"],
     ["ada v2", "text-embedding-ada-002"],
   ] as [string, string][];
-    const [choice, setChoice] = useState(false);
-
+  const [choice, setChoice] = useState(false);
 
   useEffect(() => {
     let src = `# set file path\n`;
-    src  += `filePath=r"${filePath}"\n\n`;
-    src += `# read file\n`
+    src += `filePath=r"${filePath}"\n\n`;
+    src += `# read file\n`;
     if (choice) {
-        src += `doc = Document(filePath)\n\n`;
+      src += `doc = Document(filePath)\n\n`;
     } else {
-        src += `reader = PdfReader(filePath)\n\n`;
+      src += `reader = PdfReader(filePath)\n\n`;
     }
     src += `# declare lists\n`;
     src += `chunks = []\n`;
     src += `embeddings = []\n\n`;
     src += `# text division\n`;
     if (choice) {
-        src += `for i in range(0, len(doc.paragraphs)):\n`;
-        src += `    chunk = doc.paragraphs[i].text\n`;
+      src += `for i in range(0, len(doc.paragraphs)):\n`;
+      src += `    chunk = doc.paragraphs[i].text\n`;
     } else {
-        src += `for i in range(0, len(reader.pages)):\n`;
-        src += `    chunk = reader.pages[i].extract_text()\n`;
+      src += `for i in range(0, len(reader.pages)):\n`;
+      src += `    chunk = reader.pages[i].extract_text()\n`;
     }
     src += `    chunks.append(chunk)\n\n`;
     src += `# create embeddings\n`;
@@ -54,12 +68,12 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
     src += `        model = "${model}"\n`;
     src += `    )\n`;
     src += `    embeddings.append(embedding.data[0].embedding)`;
-    
+
     setCode(src);
     if (choice) {
       setPackages(["from openai import OpenAI", "from docx import Document"]);
     } else {
-      setPackages(["from openai import OpenAI", "from pypdf import PdfReader"])
+      setPackages(["from openai import OpenAI", "from pypdf import PdfReader"]);
     }
     if (setMetadata) {
       setMetadata({
@@ -88,19 +102,23 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
-      <Select
-        label={"Choose model"}
-        option={model}
-        options={modelOptions}
-        setOption={setModel}
-        tooltip={"Choose the OpenAI model that you want to use. Remember that each model has individual pricing."}
-      />
-      <Toggle 
-        label={"PDF or DOCX"} 
-        value={choice} 
-        setValue={setChoice}
-        tooltip={"Choose the extension of the file from which you want to create embeddings (PDF or DOCX)."}
-      />
+        <Select
+          label={"Choose model"}
+          option={model}
+          options={modelOptions}
+          setOption={setModel}
+          tooltip={
+            "Choose the OpenAI model that you want to use. Remember that each model has individual pricing."
+          }
+        />
+        <Toggle
+          label={"PDF or DOCX"}
+          value={choice}
+          setValue={setChoice}
+          tooltip={
+            "Choose the extension of the file from which you want to create embeddings (PDF or DOCX)."
+          }
+        />
       </div>
       <SelectPath
         label={"Select file"}
@@ -114,10 +132,12 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
 
 export const FilesEmbeddingRecipe: IRecipe = {
   name: "Files embeddings",
-  longName: "Create embeddings from PDF and DOCX files using the OpenAI API",
+  longName: "Generate PDF and DOCX file embeddings using OpenAI in Python",
   parentName: "OpenAI",
-  description: "Learn how to read PDF and DOCX files, divide their content into chunks, and create embeddings for each chunk using OpenAI's API in Python. This guide covers reading the files, extracting and dividing the text into chunks, and generating embeddings for each text chunk for enhanced text analysis and processing in Python applications.",
-  shortDescription: "Learn how to read PDF and DOCX files, divide their content into chunks, and create embeddings for each chunk using OpenAI's API in Python. This guide covers reading the files, extracting text, and generating embeddings.",
+  description:
+    "Learn to extract text from PDF or DOCX files and create embeddings with OpenAI's API. This recipe explains how to set file paths, read and split text into chunks, generate embeddings for each chunk, and store them. It is ideal for developers wanting to improve text analysis in Python projects.",
+  shortDescription:
+    "Learn how to extract text from PDF or DOCX files and create embeddings with OpenAI's API. This recipe covers reading files, splitting text into chunks, generating embeddings, and storing them for text analysis in Python.",
   codeExplanation: `1. Set the file path.
   2. Read the file.
   3. Split text from the file into chunks.
@@ -127,21 +147,22 @@ export const FilesEmbeddingRecipe: IRecipe = {
   requiredPackages: [
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
     { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0" },
-    { importName: "docx", installationName: "python-docx", version: ">=1.1.2" } 
+    { importName: "docx", installationName: "python-docx", version: ">=1.1.2" },
   ],
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default FilesEmbeddingRecipe;

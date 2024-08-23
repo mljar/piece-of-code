@@ -8,14 +8,29 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { MessagesIcon } from "../../icons/Messages";
 
-const DOCS_URL = "python-chatgpt-completions";
+const DOCS_URL = "python-chat-completions";
 
 export const ChatCompl: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
+
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
   const [model, setModel] = useState("gpt-4o");
   const modelOptions = [
     ["GPT-4o", "gpt-4o"],
@@ -45,7 +60,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
     src += `)\n\n`;
     src += `# get and print response\n`;
     src += `print(response.choices[0].message.content)\n`;
-    
+
     setCode(src);
     setPackages(["from openai import OpenAI"]);
     if (setMetadata) {
@@ -81,7 +96,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={MessagesIcon}
-        label={"Chat Completion"}
+        label={"Chat completion"}
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
@@ -128,13 +143,13 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
 };
 
 export const ChatComplRecipe: IRecipe = {
-  name: "Chat Completion",
-  longName: "Python OpenAI Chat Completion",
+  name: "Chat completions",
+  longName: "OpenAI Chat Completions in Python Notebook",
   parentName: "OpenAI",
   description:
-    "Learn how to create chat completions using OpenAI models in Python. This guide covers setting up a client, sending user and system role messages, specifying a token limit, handling the API call, and printing the response content for seamless integration.",
+    "Learn to create a chat completion using OpenAI's API by setting up system, assistant, and user messages. This recipe details how to generate responses with token limits, choose specific AI models, and print results. Ideal for developers building chatbots and managing AI-driven conversations in Python.",
   shortDescription:
-    "Learn how to create chat completions using OpenAI models in Python. This guide covers sending a user prompt and system role message, setting a token limit, and printing the response content.",
+    "Learn how to create a chat completion using OpenAI's API, setting up system, assistant, and user messages. This recipe covers generating responses with token limits, specified AI models and printing results. ",
   codeExplanation: `
   1. Create chat completion.
   2. Get response and print it.`,
@@ -146,16 +161,17 @@ export const ChatComplRecipe: IRecipe = {
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default ChatComplRecipe;

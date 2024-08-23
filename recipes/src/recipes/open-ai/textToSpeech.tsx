@@ -14,46 +14,59 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
-    const [model, setModel] = useState("tts-1");
-    const modelOptions = [
-        ["TTS", "tts-1"],
-        ["TSS HD", "tts-1-hd"]
-    ] as [string, string][];
-    const [voice, setVoice] = useState("alloy");
-    const voiceOptions = [
-        ["Alloy", "alloy"],
-        ["Echo", "echo"],
-        ["Fable", "fable"],
-        ["Onyx", "onyx"],
-        ["Nova", "nova"],
-        ["Shimmer", "shimmer"]
-    ] as [string, string][];
-    const [text, setText] = useState("");
-    const [fileName, setFileName] = useState("speech.mp3");
-    const [filePath, setFilePath] = useState("");
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
+  const [model, setModel] = useState("tts-1");
+  const modelOptions = [
+    ["TTS", "tts-1"],
+    ["TSS HD", "tts-1-hd"],
+  ] as [string, string][];
+  const [voice, setVoice] = useState("alloy");
+  const voiceOptions = [
+    ["Alloy", "alloy"],
+    ["Echo", "echo"],
+    ["Fable", "fable"],
+    ["Onyx", "onyx"],
+    ["Nova", "nova"],
+    ["Shimmer", "shimmer"],
+  ] as [string, string][];
+  const [text, setText] = useState("");
+  const [fileName, setFileName] = useState("speech.mp3");
+  const [filePath, setFilePath] = useState("");
 
   useEffect(() => {
     let src = `# set file path\n`;
     src += `file_path = os.path.join(r"${filePath}", "${fileName}")\n\n`;
-    src += `# create api request \n`
+    src += `# create api request \n`;
     src += `with client.audio.speech.with_streaming_response.create(\n`;
     src += `  model="${model}",\n`;
     src += `  voice="${voice}",\n`;
     src += `  input="${text}"\n`;
     src += `) as response:\n`;
     src += `  response.stream_to_file(file_path)\n\n`;
-    src += `# play audio\n`
+    src += `# play audio\n`;
     src += `Audio(file_path, autoplay=False)`;
-
 
     setCode(src);
     setPackages([
       "from openai import OpenAI",
       "import os",
-      "from IPython.display import Audio"
+      "from IPython.display import Audio",
     ]);
     if (setMetadata) {
       setMetadata({
@@ -85,7 +98,7 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
         label={"Text to speech"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-     <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
           label={"Choose model"}
           option={model}
@@ -108,7 +121,9 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
         tooltip="This is the text that you want to be spoken aloud by the TTS model."
       />
       <SelectPath
-        label={"Select the output directory, leave empty to save in the current directory"}
+        label={
+          "Select the output directory, leave empty to save in the current directory"
+        }
         setPath={setFilePath}
         selectFolder={true}
         defaultPath={filePath}
@@ -117,7 +132,9 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
         label={"Enter file name"}
         name={fileName}
         setName={setFileName}
-        tooltip={"This is the name of the file where the speech audio will be saved."}
+        tooltip={
+          "This is the name of the file where the speech audio will be saved."
+        }
       />
     </div>
   );
@@ -125,10 +142,12 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
 
 export const TextToSpeechRecipe: IRecipe = {
   name: "Text to speech",
-  longName: "OpenAI text to speech",
+  longName: "Generate audio speech from text using OpenAI API in Python",
   parentName: "OpenAI",
-  description: "Learn how to generate and play speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request with a specified model and voice, streaming the audio response to save it, and playing the audio file. Follow these steps to seamlessly integrate text-to-speech capabilities and audio playback into your Python applications.",
-  shortDescription: "Learn how to generate and play speech from text using OpenAI's API in Python. This guide covers setting a file path, creating an API request, streaming the audio response to a file, and playing the audio.",
+  description:
+    "Learn how to generate and play speech from text using OpenAI's API in Python. This recipe covers setting the file path, creating an API request, streaming the audio response to a file, and playing the generated speech. Follow these steps to easily convert text into spoken audio and hear the results.",
+  shortDescription:
+    "Learn how to generate and play speech from text using OpenAI's API in Python. This recipe covers setting a file path, creating an API request, streaming the audio response to a file, and playing the audio.",
   codeExplanation: `
   1. Set the file path.
   2. Create the API request. 
@@ -142,16 +161,17 @@ export const TextToSpeechRecipe: IRecipe = {
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default TextToSpeechRecipe;

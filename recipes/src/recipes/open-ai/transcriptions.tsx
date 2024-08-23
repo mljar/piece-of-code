@@ -13,18 +13,32 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
+  variablesStatus,
+  variables,
   setMetadata,
 }) => {
-    const [filePath, setFilePath] = useState("");
-    const [format, setFormat] = useState("text");
-    const formatOptions = [
-        ["text", "text"],
-        ["json", "json"],
-        ["srt", "srt"],
-        ["verbose_json", "verbose_json"],
-        ["vtt", "vtt"]
-    ] as [string, string][];
+  const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
+  if (variablesStatus === "loaded" && !vars.length) {
+    return (
+      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
+        <p className="text-base text-gray-800 dark:text-white">
+          There is no declared OpenAI client connection in your notebook. Please
+          create a connection. You can use the Client connection recipe.
+        </p>
+      </div>
+    );
+  }
+
+  const [filePath, setFilePath] = useState("");
+  const [format, setFormat] = useState("text");
+  const formatOptions = [
+    ["text", "text"],
+    ["json", "json"],
+    ["srt", "srt"],
+    ["verbose_json", "verbose_json"],
+    ["vtt", "vtt"],
+  ] as [string, string][];
 
   useEffect(() => {
     let src = `# open the file\n`;
@@ -36,13 +50,10 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
     src += `    response_format="${format}"\n`;
     src += `)\n\n`;
     src += `# print response\n`;
-    src += `print(transcription)`
-
+    src += `print(transcription)`;
 
     setCode(src);
-    setPackages([
-      "from openai import OpenAI",
-    ]);
+    setPackages(["from openai import OpenAI"]);
     if (setMetadata) {
       setMetadata({
         filePath,
@@ -66,14 +77,16 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
         Icon={TextIcon}
         label={"Speech Transcriptions"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
-      />  
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-      <SelectPath
-        label={"Select file"}
-        defaultPath={filePath}
-        setPath={setFilePath}
-        tooltip={"File uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm."}
       />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <SelectPath
+          label={"Select file"}
+          defaultPath={filePath}
+          setPath={setFilePath}
+          tooltip={
+            "File uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm."
+          }
+        />
         <Select
           label={"Choose format"}
           option={format}
@@ -88,10 +101,12 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
 
 export const TranscriptionsRecipe: IRecipe = {
   name: "Speech Transcriptions",
-  longName: "OpenAI Speech Transcriptions",
+  longName: "Create transcriptions for audio using OpenAI API in Python",
   parentName: "OpenAI",
-  description: "Learn how to transcribe audio to text using OpenAI's API in Python. This guide covers sending a transcription request with a specified model, handling the audio file input, and setting the response format to text. Follow these steps to seamlessly integrate audio transcription capabilities into your Python applications and print the transcription response for easy access and analysis.",
-  shortDescription: "Learn how to transcribe audio to text using OpenAI's API in Python. This guide covers sending a transcription request with a specified model, handling the audio file, and printing the transcription response.",
+  description:
+    "Learn to transcribe audio to text using OpenAI's API in Python. This recipe walks you through sending a transcription request with a chosen model, managing the audio file, and printing the resulting transcription. Master these steps to seamlessly convert audio into accurate text with ease.",
+  shortDescription:
+    "Learn how to transcribe audio to text using OpenAI's API in Python. This recipe covers sending a transcription request with a specified model, handling the audio file, and printing the transcription response.",
   codeExplanation: `
   1. Send the transcription (API) request.
   2. Print the response.`,
@@ -103,16 +118,17 @@ export const TranscriptionsRecipe: IRecipe = {
   docsUrl: DOCS_URL,
   defaultVariables: [
     {
-        varName: "client",
-        varType: CLIENT_OPENAI,
-        varColumns: [""],
-        varColumnTypes: [""],
-        varSize: "",
-        varShape: "",
-        varContent: "",
-        isMatrix: false,
-        isWidget: false,
-    }],
+      varName: "client",
+      varType: CLIENT_OPENAI,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+  ],
 };
 
 export default TranscriptionsRecipe;
