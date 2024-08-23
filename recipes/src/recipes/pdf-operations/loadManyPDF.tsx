@@ -14,8 +14,8 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-    const [directoryPath, setDirectoryPath] = useState("");
-    const [list, setList] = useState(false);
+  const [directoryPath, setDirectoryPath] = useState("");
+  const [list, setList] = useState(false);
 
   useEffect(() => {
     let src = `# set directory path\n`;
@@ -28,13 +28,12 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
     src += `    readers.append(PdfReader(str(file)))\n`;
     src += `    filenames.append(file.name)`;
     if (list) {
-        src += `\n\n# print PDFs information\n`;
-        src += `for x in range(0, len(readers)):\n`;
-        src += `    pages = len(readers[x].pages)\n`;
-        src += `    print(f"Name: {filenames[x]}, Pages: {pages}")`;
+      src += `\n\n# print PDFs information\n`;
+      src += `for x in range(0, len(readers)):\n`;
+      src += `    pages = len(readers[x].pages)\n`;
+      src += `    print(f"Name: {filenames[x]}, Pages: {pages}")`;
     }
 
-    
     setCode(src);
     setPackages(["from pypdf import PdfReader", "from pathlib import Path"]);
     if (setMetadata) {
@@ -49,16 +48,17 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["directoryPath"] !== undefined) setDirectoryPath(metadata["directoryPath"]);
+      if (metadata["directoryPath"] !== undefined)
+        setDirectoryPath(metadata["directoryPath"]);
       if (metadata["list"] !== undefined) setList(metadata["list"]);
-     }
+    }
   }, [metadata]);
 
   return (
     <div>
       <Title
         Icon={LoadFileIcon}
-        label={"Load Many PDFs"}
+        label={"Load many PDFs"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <SelectPath
@@ -72,18 +72,22 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
         label={"PDFs information"}
         value={list}
         setValue={setList}
-        tooltip={"Print PDFs information such as their names and the number of their pages."}
-        />
+        tooltip={
+          "Print PDFs information such as their names and the number of their pages."
+        }
+      />
     </div>
   );
 };
 
 export const LoadManyPDFRecipe: IRecipe = {
-  name: "Load Many PDFs",
+  name: "Load many PDFs",
   longName: "Load many PDFs from given directory into the notebook in Python",
   parentName: "PDF Operations",
-  description: "Learn how to read multiple PDF files from a directory using Python. We'll cover setting the directory path, iterating through PDF files, using the pypdf module - PdfReader to read each file, storing their filenames, and printing each PDF's name and page count. Follow these steps to efficiently manage and extract information from multiple PDFs in your Python applications.",
-  shortDescription: "Learn how to read multiple PDF files in a directory using Python. This guide covers setting the directory path, reading PDFs, storing their filenames, and printing each PDF's name and page count.",
+  description:
+    "Learn how to read multiple PDF files in a directory using Python. This recipe covers setting the directory path, reading each PDF, storing filenames, and printing the name and page count of each file. Ideal for managing and analyzing batches of PDF documents efficiently.",
+  shortDescription:
+    "Learn how to read multiple PDF files in a directory using Python. This recipe covers setting the directory path, reading PDFs, storing their filenames, and printing each PDF's name and page count.",
   codeExplanation: `
   1. Set the directory path.
   2. Declare lists.
@@ -92,7 +96,7 @@ export const LoadManyPDFRecipe: IRecipe = {
   ui: LoadManyPDF,
   Icon: LoadFileIcon,
   requiredPackages: [
-    { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0"}
+    { importName: "pypdf", installationName: "pypdf", version: ">=4.1.0" },
   ],
   docsUrl: DOCS_URL,
 };

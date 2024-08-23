@@ -29,12 +29,18 @@ export const MultiImages: React.FC<IRecipeProps> = ({
   ] as [string, string][];
 
   useEffect(() => {
-    let src = `session = new_session()\n\n`;
+    let src = ``;
+    src += `# declare new session\n`
+    src += `session = new_session()\n\n`;
+    src += `# create a loop\n`
     src += `for file in Path(r"${directory}").glob("${extension}"):\n`;
+    src += `  # set input and output images paths\n`;
     src += `    input_path = str(file)\n`;
     src += `    output_path = str(file.parent / (file.stem + ".out${outExtension}"))\n`;
+    src += `  # open input and output files\n`;
     src += `    with open(input_path, 'rb') as i:\n`;
     src += `        with open(output_path, 'wb') as o:\n`;
+    src += `          # remove background and save result\n`;
     src += `            input = i.read()\n`;
     src += `            output = remove(input, session=session)\n`;
     src += `            o.write(output)`;
@@ -56,9 +62,12 @@ export const MultiImages: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["directory"] !== undefined) setDirectory(metadata["directory"]);
-      if (metadata["extension"] !== undefined) setExtension(metadata["extension"]);
-      if (metadata["outExtension"] !== undefined) setOutExtension(metadata["outExtension"]);
+      if (metadata["directory"] !== undefined)
+        setDirectory(metadata["directory"]);
+      if (metadata["extension"] !== undefined)
+        setExtension(metadata["extension"]);
+      if (metadata["outExtension"] !== undefined)
+        setOutExtension(metadata["outExtension"]);
     }
   }, [metadata]);
 
@@ -101,9 +110,9 @@ export const MultiImagesRecipe: IRecipe = {
   longName: "Remove background from multiple  images",
   parentName: "Images Operations",
   description:
-    "Remove the background from all images with the chosen extension in the given directory in seconds! Save edited images with the same or different extension in the files' parent directory.",
+    "Learn to remove image backgrounds in bulk using Python. This recipe explains how to create a session, loop through PNG files, set input and output paths, remove backgrounds, and save the processed images. Ideal for automating and streamlining background removal for multiple images efficiently.",
   shortDescription:
-    "Remove the background from all images with the chosen extension in the given directory in seconds! Save edited images with the same or different extension in the files' parent directory.",
+    "Learn how to remove image backgrounds in bulk using Python. This recipe covers creating a session, looping through PNG files, setting input/output paths, removing backgrounds, and saving results.",
   codeExplanation: `
   1. Choose the directory and images extension.
   2. Create a loop which allows to iterate through files in the chosen directory.

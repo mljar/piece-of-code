@@ -98,11 +98,11 @@ export const UpdateCell: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SquareArrowUPIcon}
-        label={"Update Cell"}
+        label={"Update cell"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Select
-        label={"Choose Worksheet"}
+        label={"Choose worksheet"}
         option={variable}
         options={vars.map((d) => [d, d])}
         setOption={setVariable}
@@ -161,11 +161,13 @@ export const UpdateCell: React.FC<IRecipeProps> = ({
 };
 
 export const UpdateCellRecipe: IRecipe = {
-  name: "Update Cell ",
+  name: "Update cell",
   longName: "Update the cell value in Google Sheets using Python",
   parentName: "Google Sheets",
-  description: "Learn how to update cell values in Google Sheets using Python and the gspread library. This guide demonstrates how to modify cell content by specifying the cell address directly and by using row and column coordinates. Whether you need to update a single cell, these methods will help you efficiently manage and automate your data updates in Google Sheets.",
-  shortDescription: "Learn how to update cell values in Google Sheets using Python and the gspread library. This guide covers updating a specific cell by its address and another by its row and column coordinates.",
+  description:
+    "Learn how to update cell values in Google Sheets using Python and the gspread library. This recipe demonstrates how to modify cell content by specifying the cell address directly and by using row and column coordinates. Whether you need to update a single cell, these methods will help you efficiently manage and automate your data updates in Google Sheets.",
+  shortDescription:
+    "Learn how to update cell values in Google Sheets using Python and the gspread library. This recipe covers updating a specific cell by its address and another by its row and column coordinates.",
   codeExplanation: `
   1. Update the cell with the given value.`,
   ui: UpdateCell,

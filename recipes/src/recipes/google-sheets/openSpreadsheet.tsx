@@ -82,7 +82,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={SpreadsheetIcon}
-        label={"Open Spreadsheet"}
+        label={"Open spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -125,13 +125,13 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
 };
 
 export const OpenSpreadSheetRecipe: IRecipe = {
-  name: "Open Spreadsheet",
+  name: "Open spreadsheet",
   longName: "Open the Google Sheets spreadsheet using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to open Google Sheets using Python with the gspread library. This guide covers opening a spreadsheet by its name, by key, and by URL key. It provides detailed steps for accessing Google Sheets programmatically, enabling efficient data manipulation and retrieval from your Google Sheets documents for your Python applications.",
+    "Learn how to open Google Sheets using Python with the gspread library. This recipe covers opening a spreadsheet by its name, by key, and by URL key. It provides detailed steps for accessing Google Sheets programmatically, enabling efficient data manipulation and retrieval from your Google Sheets documents for your Python applications.",
   shortDescription:
-    "Learn how to open Google Sheets using Python. This guide covers opening a spreadsheet by name, by key, and by URL key using the gspread library, providing essential methods for accessing Google Sheets programmatically.",
+    "Learn how to open Google Sheets using Python. This recipe covers opening a spreadsheet by name, by key, and by URL key using the gspread library, providing essential methods for accessing Google Sheets programmatically.",
   codeExplanation: `
   1. Open the spreadsheet.`,
   ui: OpenSpreadSheet,

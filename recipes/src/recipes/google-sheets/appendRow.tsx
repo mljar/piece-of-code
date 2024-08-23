@@ -7,7 +7,6 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 
 import { TableAddIcon } from "../../icons/TableAdd";
-import meta from "./apiConnection.stories";
 
 const DOCS_URL = "python-data-append-google-sheets";
 
@@ -82,7 +81,7 @@ export const AppendRow: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={TableAddIcon}
-        label={"Append Rows"}
+        label={"Append rows"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Select
@@ -126,13 +125,13 @@ export const AppendRow: React.FC<IRecipeProps> = ({
 };
 
 export const AppendRowRecipe: IRecipe = {
-  name: "Append Rows",
-  longName: "Append Rows with value in Google Sheets using Python",
+  name: "Append rows",
+  longName: "Append rows with value in Google Sheets using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to efficiently add data to Google Sheets using Python and the gspread library. This guide covers appending a single row or multiple rows to a worksheet, enabling you to automate data entry and updates in your spreadsheets. Whether you're adding new records or bulk data, these methods will help you manage your Google Sheets more effectively.",
+    "Learn how to efficiently add data to Google Sheets using Python and the gspread library. This recipe covers appending a single row or multiple rows to a worksheet, enabling you to automate data entry and updates in your spreadsheets. Whether you're adding new records or bulk data, these methods will help you manage your Google Sheets more effectively.",
   shortDescription:
-    "Learn how to add data to Google Sheets using Python and the gspread library. This guide covers appending a single row or multiple rows to a worksheet, helping you efficiently manage and update your spreadsheet.",
+    "Learn how to add data to Google Sheets using Python and the gspread library. This recipe covers appending a single row or multiple rows to a worksheet, helping you efficiently manage and update your spreadsheet.",
   codeExplanation: `
   1. Append rows with data from the list.`,
   ui: AppendRow,

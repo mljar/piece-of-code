@@ -14,7 +14,7 @@ export const APICon: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-    const [filePath, setFilePath] = useState("");
+  const [filePath, setFilePath] = useState("");
 
   useEffect(() => {
     let src = `# set filepath\n`;
@@ -28,12 +28,10 @@ export const APICon: React.FC<IRecipeProps> = ({
     src += `    except ValueError:\n`;
     src += `        print("Incorrect private key")\n\n`;
     src += `# connection\n`;
-    src += `gc = connection(filepath)`
+    src += `gc = connection(filepath)`;
 
     setCode(src);
-    setPackages([
-      "import gspread"
-    ]);
+    setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
         filePath,
@@ -60,7 +58,9 @@ export const APICon: React.FC<IRecipeProps> = ({
         label={"Select file"}
         defaultPath={filePath}
         setPath={setFilePath}
-        tooltip={"Please select the JSON file with credentials to connect with Google Sheets API"}
+        tooltip={
+          "Please select the JSON file with credentials to connect with Google Sheets API"
+        }
       />
     </div>
   );
@@ -70,8 +70,10 @@ export const APIConRecipe: IRecipe = {
   name: "Connection",
   longName: "Python Google Sheets API Connection",
   parentName: "Google Sheets",
-  description: "Learn how to connect to Google Sheets using Python. This guide covers using service account credentials, creating a connection function with error handling, and establishing the connection to Google Sheets using gspread. Follow these steps to seamlessly integrate your Python applications with Google Sheets for efficient data management and automation.",
-  shortDescription: "Learn how to connect to Google Sheets using Python. This guide covers using service account credentials, creating a connection function with error handling, and establishing the connection to Google Sheets using gspread.",
+  description:
+    "Learn how to connect to Google Sheets using Python. This recipe covers using service account credentials, creating a connection function with error handling, and establishing the connection to Google Sheets using gspread. Follow these steps to seamlessly integrate your Python applications with Google Sheets for efficient data management and automation.",
+  shortDescription:
+    "Learn how to connect to Google Sheets using Python. This recipe covers using service account credentials, creating a connection function with error handling, and establishing the connection to Google Sheets using gspread.",
   codeExplanation: `
   1. Set the file path to your credentials.
   2. Create connection function with error handling.

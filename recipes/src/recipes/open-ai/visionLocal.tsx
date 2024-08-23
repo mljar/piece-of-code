@@ -115,7 +115,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={aiEyeIcon}
-        label={"Vision with local image"}
+        label={"Vision with local images"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">

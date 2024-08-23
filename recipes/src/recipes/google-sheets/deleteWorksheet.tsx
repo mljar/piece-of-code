@@ -73,7 +73,7 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={ToolIcon}
-        label={"Delete Worksheet"}
+        label={"Delete worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
@@ -101,13 +101,13 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
 };
 
 export const DeleteWorkSheetRecipe: IRecipe = {
-  name: "Delete Worksheet",
+  name: "Delete worksheet",
   longName: "Delete the Google Sheets worksheet using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to delete a worksheet from a Google Sheets document using Python and the gspread library. This guide walks you through the steps to identify and remove a specific worksheet, ensuring efficient management of your Google Sheets data. Whether you're automating tasks or cleaning up your spreadsheets, this method makes it easy to keep your documents organized.",
+    "Learn how to delete a worksheet from a Google Sheets document using Python and the gspread library. This recipe walks you through the steps to identify and remove a specific worksheet, ensuring efficient management of your Google Sheets data. Whether you're automating tasks or cleaning up your spreadsheets, this method makes it easy to keep your documents organized.",
   shortDescription:
-    "Learn how to delete a worksheet in Google Sheets using Python and gspread. This guide demonstrates the process of removing a specified worksheet from a Google Sheets document efficiently.",
+    "Learn how to delete a worksheet in Google Sheets using Python and gspread. This recipe demonstrates the process of removing a specified worksheet from a Google Sheets document efficiently.",
   codeExplanation: `
   1. Delete the worksheet.`,
   ui: DeleteWorkSheet,

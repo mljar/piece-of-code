@@ -125,11 +125,11 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
     <div>
       <Title
         Icon={OpenBookIcon}
-        label={"Read Data"}
+        label={"Read data"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Select
-        label={"Choose Worksheet"}
+        label={"Choose worksheet"}
         option={variable}
         options={vars.map((d) => [d, d])}
         setOption={setVariable}
@@ -183,13 +183,13 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
 };
 
 export const ReadSheetsRecipe: IRecipe = {
-  name: "Read Data",
+  name: "Read data",
   longName: "Read data from Google Sheets using Python",
   parentName: "Google Sheets",
   description:
-    "Learn how to interact with Google Sheets using Python. This guide covers retrieving and printing cell, row, and column values, as well as fetching all values and records from a worksheet using gspread. Detailed steps include accessing specific cells, rows, columns, and extracting comprehensive data from the entire worksheet for efficient data manipulation and analysis.",
+    "Learn how to interact with Google Sheets using Python. This recipe covers retrieving and printing cell, row, and column values, as well as fetching all values and records from a worksheet using gspread. Detailed steps include accessing specific cells, rows, columns, and extracting comprehensive data from the entire worksheet for efficient data manipulation and analysis.",
   shortDescription:
-    "Learn how to interact with Google Sheets using Python. This guide covers getting and printing cell, row, and column values, as well as retrieving and printing all values and records from a worksheet using gspread.",
+    "Learn how to interact with Google Sheets using Python. This recipe covers getting and printing cell, row, and column values, as well as retrieving and printing all values and records from a worksheet using gspread.",
   codeExplanation: `
   1. Read the chosen element/elements. 
   2. Print the reading.`,
