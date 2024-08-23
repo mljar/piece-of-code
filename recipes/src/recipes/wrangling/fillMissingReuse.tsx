@@ -40,6 +40,7 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
   const [imputer, setImputer] = useState(imputers.length ? imputers[0] : "");
 
   useEffect(() => {
+    if(df === "") return;
     let src = `# fill missing data using imputer\n`;
     src += `${df}.loc[:, ${imputer}.feature_names_in_] = ${imputer}.transform(${df}[${imputer}.feature_names_in_])\n`;
     setCode(src);

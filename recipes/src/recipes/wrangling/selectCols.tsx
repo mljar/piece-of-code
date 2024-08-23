@@ -52,6 +52,7 @@ export const SelectCols: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
+    if(df === "") return;
     if (!xCols) {
       return;
     }

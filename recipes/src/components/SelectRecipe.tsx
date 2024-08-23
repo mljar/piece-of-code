@@ -670,8 +670,8 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
             <div
             // onMouseOver={()=>{setShowNav(false)}}
             >
-              {showNav && <hr className="poc-p-1 poc-m-2" />}
-              <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-2 poc-rounded-md">
+              {showNav && <hr className="poc-p-1 poc-m-1" />}
+              <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-2 poc-pt-0 poc-rounded-md">
                 <RecipeUI
                   setCode={setCodeWithCopy}
                   setPackages={setPackages}

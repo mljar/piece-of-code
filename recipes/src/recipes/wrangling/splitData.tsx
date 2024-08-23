@@ -62,6 +62,7 @@ export const SplitData: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
+    if(df === "") return;
     let src = `# split data\n`;
     src += `${train}, ${test} = train_test_split(${df}, train_size=${trainRatio}`;
     if (!shuffle) {

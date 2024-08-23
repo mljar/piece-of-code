@@ -43,6 +43,7 @@ export const EncoderReuse: React.FC<IRecipeProps> = ({
   const [encoder, setEncoder] = useState(encoders.length ? encoders[0] : "");
 
   useEffect(() => {
+    if(df === "") return;
     let src = `# convert categorical columns\n`;
     src += `${df}.loc[:, ${encoder}.feature_names_in_] = ${encoder}.transform(${df}[${encoder}.feature_names_in_])\n`;
     setCode(src);

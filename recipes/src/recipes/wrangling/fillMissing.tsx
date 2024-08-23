@@ -87,6 +87,7 @@ export const FillMissing: React.FC<IRecipeProps> = ({
   }, [xCols, varDict]);
 
   useEffect(() => {
+    if(df === "") return;
     let src = `# create imputer\n`;
     if (imputer === allImputers[4]) {
       src += `${name} = KNNImputer(n_neighbors=${kNN})\n`;

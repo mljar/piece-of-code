@@ -47,8 +47,9 @@ export const DeleteColumn: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
-    let src = `# drop columns in DataFrame\n`;
+    if(df === "") return;
 
+    let src = `# drop columns in DataFrame\n`;
     const xColsStr = '"' + xCols.join('", "') + '"';
     src += `${df}.drop(columns=[${xColsStr}], axis=1, inplace=True)`;
     setCode(src);

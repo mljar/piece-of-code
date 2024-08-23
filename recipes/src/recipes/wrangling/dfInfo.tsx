@@ -25,13 +25,16 @@ export const DfInfo: React.FC<IRecipeProps> = ({
       </div>
     );
   }
+  
   const dataFrames = variables
     .filter((v) => v.varType === "DataFrame")
     .map((v) => v.varName);
+
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
 
   useEffect(() => {
-    let src = `# display datafame information\n`;
+    if(df === "") return;
+    let src = `# display DataFrame information\n`;
     src += `${df}.info()\n`;
     setCode(src);
     setPackages(["import pandas as pd"]);
