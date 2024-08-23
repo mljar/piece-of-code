@@ -435,6 +435,9 @@ export const SelectRecipe: React.FC<ISelectRecipeProps> = ({
         onClick={() => {
           setSelectedRecipeSet(name);
           setSelectedRecipe("");
+          // clear code and packages
+          // setCode("");
+          // setPackages([]);
         }}
       >
         {recipeSet.Icon && <recipeSet.Icon className="poc-p-1" />}{" "}
