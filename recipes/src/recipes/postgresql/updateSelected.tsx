@@ -104,7 +104,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
     let src = ""
 
     if (((lengthsEqual) || id.split(",").length === 1) || updateFromList) {
-      src = `# if connection was used and closed it is reopen here\n`;
+      src += `# if connection was used and closed it is reopen here\n`;
       src += `if ${conn}.closed: \n`;
       src += `    ${conn} = create_new_connection()\n\n`;
 
@@ -211,12 +211,12 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         />
         <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
           <Toggle
-            label="Update from list"
+            label={"Update from list"}
             value={updateFromList}
             setValue={setUpdateFromList}
           />
           <Toggle
-            label="Show results"
+            label={"Show results"}
             value={showResults}
             setValue={setShowResults}
           />
@@ -229,7 +229,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
       />
       {!updateFromList && (
         <Variable
-          label="Update on ID"
+          label={"Update on ID"}
           name={id}
           setName={setId}
           tooltip={`comma separated list of ids of rows to be updated,
@@ -238,7 +238,7 @@ if given one number, it will update consequent ids untill every value will be us
       )}
       {updateFromList && (
         <Select
-          label="Update on ID list"
+          label={"Update on ID list"}
           option={idList}
           options={listNames.map((n) => [n, n])}
           setOption={setIdList}
