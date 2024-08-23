@@ -1,1 +1,1 @@
-export const CLIENT_OPENAI: string = "openai.OpenAI";
+export const CLIENT_OPENAI: string = "OpenAI";

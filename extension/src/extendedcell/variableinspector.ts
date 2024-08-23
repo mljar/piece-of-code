@@ -165,8 +165,12 @@ def _jupyterlab_variableinspector_dict_list():
                 return True
             if str(obj).startswith("<psycopg.Connection"):
                 return True
-            if str(obj)[0] == "<":
+            if str(obj).startswith("<module"):
                 return False
+            if str(obj).startswith("<class"):
+                return False 
+            if str(obj).startswith("<function"):
+                return False 
             if  v in ['__np', '__pd', '__pyspark', '__tf', '__K', '__torch', '__ipywidgets', '__xr']:
                 return obj is not None
             if str(obj).startswith("_Feature"):
@@ -176,20 +180,23 @@ def _jupyterlab_variableinspector_dict_list():
         except:
             return False
     values = _jupyterlab_variableinspector_nms.who_ls()
-    vardic = [
-        {
-            'varName': _v,
-            'varType': type(eval(_v)).__name__, 
-            'varSize': str(_jupyterlab_variableinspector_getsizeof(eval(_v))), 
-            'varShape': str(_jupyterlab_variableinspector_getshapeof(eval(_v))) if _jupyterlab_variableinspector_getshapeof(eval(_v)) else '', 
-            'varContent': str(_jupyterlab_variableinspector_getcontentof(eval(_v))), 
-            'isMatrix': _jupyterlab_variableinspector_is_matrix(eval(_v)),
-            'isWidget': _jupyterlab_variableinspector_is_widget(type(eval(_v))),
-            'varColumns': _jupyterlab_variableinspector_getcolumnsof(eval(_v)),
-            'varColumnTypes': _jupyterlab_variableinspector_getcolumntypesof(eval(_v)),
-        }
-        for _v in values if keep_cond(_v)
-    ]
+    
+    vardic = []
+    for _v in values:
+        if keep_cond(_v):
+            _ev = eval(_v)
+            vardic += [{
+                'varName': _v,
+                'varType': type(_ev).__name__, 
+                'varSize': str(_jupyterlab_variableinspector_getsizeof(_ev)), 
+                'varShape': str(_jupyterlab_variableinspector_getshapeof(_ev)) if _jupyterlab_variableinspector_getshapeof(_ev) else '', 
+                'varContent': "", # str(_jupyterlab_variableinspector_getcontentof(_ev)), 
+                'isMatrix': _jupyterlab_variableinspector_is_matrix(_ev),
+                'isWidget': _jupyterlab_variableinspector_is_widget(type(_ev)),
+                'varColumns': _jupyterlab_variableinspector_getcolumnsof(_ev),
+                'varColumnTypes': _jupyterlab_variableinspector_getcolumntypesof(_ev),
+            }]
+  
     return json.dumps(vardic, ensure_ascii=False)
 
 
@@ -295,13 +302,13 @@ export class VariableInspector {
   async getVariables() {
     try {
       this.checkPackageManager();
-
       this._setVariablesStatus("loading");
       this._setVariables([]);
 
       let code = '';
-      // console.log(this._notebookId);
-      // console.log(notebooksInitialized);
+      if (this._notebookId === undefined) {
+        code += initCode + '\n\n';
+      }
       if (this._notebookId && !notebooksInitialized.includes(this._notebookId)) {
         code += initCode + '\n\n';
       }
@@ -312,7 +319,6 @@ export class VariableInspector {
         code,
         store_history: false,
       });
-      // console.log({ future });
       if (future) {
         future.onIOPub = this._onIOPub;
         future.done.then(() => {
@@ -322,11 +328,9 @@ export class VariableInspector {
     } catch (e) {
       console.log(e);
     }
-
   }
 
   private _onIOPub = (msg: KernelMessage.IIOPubMessage): void => {
-    //console.log(msg);
     const msgType = msg.header.msg_type;
     switch (msgType) {
       case 'execute_result':
@@ -339,7 +343,6 @@ export class VariableInspector {
           }
         }
         const content = msg.content as ContentData;
-        //console.log(content);
         try {
           let contentDisplay: string = content.data["text/plain"] as string;
           contentDisplay = contentDisplay.slice(1, -1);
@@ -347,9 +350,7 @@ export class VariableInspector {
             .replace(/\\"/g, '"')
             .replace(/\\'/g, "'");
 
-          console.log('350: get variables', contentDisplay);
           const variables: IVariable[] = JSON.parse(contentDisplay);
-          console.log(variables);
 
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
@@ -370,7 +371,7 @@ export class VariableInspector {
   };
 
   checkPackage(pkgInstallName: string, pkgImportName: string): void {
-    
+
     this.checkPackageManager();
 
     if (this._notebookId) {
