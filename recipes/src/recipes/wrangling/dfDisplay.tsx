@@ -55,6 +55,7 @@ export const DfDisplay: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
+    if(df === "") return;
     let src = "";
     if (display === displayOptions[0]) {
       src += `# display head of datafame\n`;

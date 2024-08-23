@@ -55,6 +55,7 @@ export const SelectXy: React.FC<IRecipeProps> = ({
   }, [df]);
 
   useEffect(() => {
+    if(df === "") return;
     if (!xCols || yCol === "") {
       return;
     }

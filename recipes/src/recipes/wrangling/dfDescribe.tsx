@@ -32,7 +32,8 @@ export const DfDescribe: React.FC<IRecipeProps> = ({
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
 
   useEffect(() => {
-    let src = `# display datafame statistics\n`;
+    if(df === "") return;
+    let src = `# display DataFrame statistics\n`;
     src += `${df}.describe()\n`;
     setCode(src);
     setPackages(["import pandas as pd"]);

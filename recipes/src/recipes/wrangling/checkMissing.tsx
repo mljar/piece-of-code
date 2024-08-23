@@ -31,6 +31,7 @@ export const CheckMissing: React.FC<IRecipeProps> = ({
   const [df, setDf] = useState(dataFrames.length ? dataFrames[0] : "");
 
   useEffect(() => {
+    if(df === "") return;
     let src = `# are there any missing values\n`;
     src += `any_missing = ${df}.isnull().values.any()\n`;
     src += `print("There are missing values" if any_missing else "There are no missing values")\n`;

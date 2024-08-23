@@ -147,7 +147,10 @@ export class SelectRecipeWidget extends ReactWidget {
   private _variablesStatus: 'loading' | 'loaded' | 'error' | 'unknown' =
     'unknown';
   private _variables: IVariable[] = [];
-  private _checkPackage: (pkgInstallName: string, pkgImportName: string) => void;
+  private _checkPackage: (
+    pkgInstallName: string,
+    pkgImportName: string
+  ) => void;
   private _checkedPackages: Record<string, string>;
   private _installPackage: (
     installationName: string,
@@ -159,6 +162,7 @@ export class SelectRecipeWidget extends ReactWidget {
   private _changeCellToMarkdown: () => void;
   private _changeCellToCode: () => void;
   private _setEnv: (envVariables: [string, string][]) => void;
+  private _show = false;
 
   constructor(
     cell: Cell<ICellModel>,
@@ -227,7 +231,9 @@ export class SelectRecipeWidget extends ReactWidget {
     this.updateWidget();
   }
 
-  public setCheckPackage(checkPackage: (pkgInstallName: string, pkgImportName: string) => void) {
+  public setCheckPackage(
+    checkPackage: (pkgInstallName: string, pkgImportName: string) => void
+  ) {
     this._checkPackage = checkPackage;
   }
 
@@ -249,39 +255,58 @@ export class SelectRecipeWidget extends ReactWidget {
     this.updateWidget();
   }
 
+  public showWidget() {
+    this._show = true;
+    //this.show();
+    this.updateWidget();
+  }
+
+  public hideWidget() {
+    this._show = false;
+    //this.hide();
+    this.updateWidget();
+  }
+
   render(): JSX.Element {
+
     return (
-      <UseSignal signal={this._signal}>
-        {() => {
-          return (
-            <SelectRecipeComponent
-              previousCode={this._previousCode}
-              previousErrorName={this._previousErrorName}
-              previousErrorValue={this._previousErrorValue}
-              previousExecutionCount={this._previousExecutionCount}
-              cell={this._cell}
-              setCode={this._setCodeCallback}
-              setPackages={this._setPackagesCallback}
-              runCell={this._runCellCallback}
-              executionSteps={this._executionSteps}
-              deleteCell={this._deleteCell}
-              addCell={this._addCell}
-              variablesStatus={this._variablesStatus}
-              variables={this._variables}
-              checkPackage={this._checkPackage}
-              checkedPackages={this._checkedPackages}
-              installPackage={this._installPackage}
-              installLog={this._installLog}
-              clearExecutionSteps={() => this.setExecutionSteps([])}
-              meta={this._meta}
-              setMeta={this._setMeta}
-              changeCellToMarkdown={this._changeCellToMarkdown}
-              changeCellToCode={this._changeCellToCode}
-              setEnv={this._setEnv}
-            />
-          );
-        }}
-      </UseSignal>
+      <div>
+        <UseSignal signal={this._signal}>
+          {() => {
+            if (!this._show) {
+              return <></>;
+            } else {
+              return (
+                <SelectRecipeComponent
+                  previousCode={this._previousCode}
+                  previousErrorName={this._previousErrorName}
+                  previousErrorValue={this._previousErrorValue}
+                  previousExecutionCount={this._previousExecutionCount}
+                  cell={this._cell}
+                  setCode={this._setCodeCallback}
+                  setPackages={this._setPackagesCallback}
+                  runCell={this._runCellCallback}
+                  executionSteps={this._executionSteps}
+                  deleteCell={this._deleteCell}
+                  addCell={this._addCell}
+                  variablesStatus={this._variablesStatus}
+                  variables={this._variables}
+                  checkPackage={this._checkPackage}
+                  checkedPackages={this._checkedPackages}
+                  installPackage={this._installPackage}
+                  installLog={this._installLog}
+                  clearExecutionSteps={() => this.setExecutionSteps([])}
+                  meta={this._meta}
+                  setMeta={this._setMeta}
+                  changeCellToMarkdown={this._changeCellToMarkdown}
+                  changeCellToCode={this._changeCellToCode}
+                  setEnv={this._setEnv}
+                />
+              );
+            }
+          }}
+        </UseSignal>
+      </div>
     );
   }
 }
