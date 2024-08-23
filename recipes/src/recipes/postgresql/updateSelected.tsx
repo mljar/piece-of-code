@@ -169,7 +169,7 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         valueList,
         showResults,
         updateFromList,
-        variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
+        variables,
         docsUrl: DOCS_URL,
       });
     }
