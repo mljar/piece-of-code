@@ -351,6 +351,7 @@ export class VariableInspector {
             .replace(/\\'/g, "'");
 
           const variables: IVariable[] = JSON.parse(contentDisplay);
+          console.log(variables);
 
           this._setVariables(variables);
           this._setVariablesStatus("loaded");
