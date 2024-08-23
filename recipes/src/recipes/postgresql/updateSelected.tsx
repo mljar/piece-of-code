@@ -113,8 +113,6 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
       src += `    with ${conn}.cursor() as cur:\n\n`;
 
       src += `        # update data\n`;
-      src += `idList.length = ${idList.length}\n`;
-      src += `valueList.length = ${valueList.length}\n`;
       src += `        try: \n`;
       if (showResults) {
         src += `            query = sql.SQL(\n`;
@@ -165,13 +163,17 @@ export const UpdateSelected: React.FC<IRecipeProps> = ({
         conn,
         column,
         table,
+        id,
         value,
+        idList,
+        valueList,
         showResults,
+        updateFromList,
         variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, column, table, value, showResults, id, valueList, idList, updateFromList]);
+  }, [conn, column, table, id, value, idList, valueList, showResults, updateFromList]);
 
   useEffect(() => {
     if (metadata) {
