@@ -58,6 +58,7 @@ export const Embedding: React.FC<IRecipeProps> = ({
         text,
         model,
         show,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

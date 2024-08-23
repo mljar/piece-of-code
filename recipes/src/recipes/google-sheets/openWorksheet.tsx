@@ -66,6 +66,7 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         index,
         title,
         ID,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

@@ -63,6 +63,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
         title,
         key,
         url,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

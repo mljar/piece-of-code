@@ -82,6 +82,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
         prompt,
         imageName,
         directory,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

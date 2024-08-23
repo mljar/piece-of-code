@@ -42,6 +42,7 @@ export const DeleteSpreadSheet: React.FC<IRecipeProps> = ({
     if (setMetadata) {
       setMetadata({
         ID,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

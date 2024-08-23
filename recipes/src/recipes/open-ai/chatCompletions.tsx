@@ -71,6 +71,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         userPrompt,
         assistantPrompt,
         advanced,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

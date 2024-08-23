@@ -69,6 +69,7 @@ export const FindCell: React.FC<IRecipeProps> = ({
         variable,
         choice,
         text,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

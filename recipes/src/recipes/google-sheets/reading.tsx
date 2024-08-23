@@ -103,6 +103,7 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
         format,
         row,
         col,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

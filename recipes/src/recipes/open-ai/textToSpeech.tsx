@@ -75,6 +75,7 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
         text,
         fileName,
         filePath,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

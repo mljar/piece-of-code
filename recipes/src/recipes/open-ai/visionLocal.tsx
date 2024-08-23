@@ -93,6 +93,7 @@ export const VisionLocal: React.FC<IRecipeProps> = ({
         maxTokens,
         imagePath,
         userPrompt,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

@@ -66,6 +66,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
         embeddings,
         query,
         model,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

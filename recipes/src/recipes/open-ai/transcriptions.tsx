@@ -58,6 +58,7 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
       setMetadata({
         filePath,
         format,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

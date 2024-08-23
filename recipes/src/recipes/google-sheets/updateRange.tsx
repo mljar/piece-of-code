@@ -75,6 +75,7 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
         value,
         string,
         list,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

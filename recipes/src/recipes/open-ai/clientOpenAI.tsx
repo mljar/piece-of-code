@@ -84,6 +84,7 @@ export const ClientRecipe: IRecipe = {
   Icon: OpenAIIcon,
   requiredPackages: [
     { importName: "openai", installationName: "openai", version: ">=1.35.14" },
+    { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1"}
   ],
   docsUrl: DOCS_URL,
 };

@@ -76,6 +76,7 @@ export const UpdateCell: React.FC<IRecipeProps> = ({
         col,
         value,
         string,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

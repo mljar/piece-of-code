@@ -57,6 +57,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
         permission,
         role,
         email,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

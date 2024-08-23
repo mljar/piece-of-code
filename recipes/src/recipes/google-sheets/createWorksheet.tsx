@@ -51,6 +51,7 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         cols,
         advanced,
         worksheetName,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

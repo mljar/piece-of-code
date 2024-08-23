@@ -69,6 +69,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
         maxTokens,
         URL,
         userPrompt,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

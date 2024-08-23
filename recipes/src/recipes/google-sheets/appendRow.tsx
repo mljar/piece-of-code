@@ -61,6 +61,7 @@ export const AppendRow: React.FC<IRecipeProps> = ({
         choice,
         list,
         listOfLists,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

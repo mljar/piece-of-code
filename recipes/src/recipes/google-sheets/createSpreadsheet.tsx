@@ -42,6 +42,7 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
     if (setMetadata) {
       setMetadata({
         title,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

@@ -80,6 +80,7 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
         filePath,
         model,
         choice,
+        variables,
         docsUrl: DOCS_URL,
       });
     }
