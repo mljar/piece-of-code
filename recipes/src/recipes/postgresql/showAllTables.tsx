@@ -17,8 +17,6 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
 }) => {
-  console.log({ variables, variablesStatus });
-
   const connections = variables
     .filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE)
     .map((v) => v.varName);
