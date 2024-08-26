@@ -6,7 +6,7 @@ import { Select } from "../../components/Select";
 import { Numeric } from "../../components/Numeric";
 import { BinaryTreeIcon } from "../../icons/BinaryTree";
 
-const DOCS_URL = "visualize-decision-tree-dtreeviz";
+const DOCS_URL = "visualize-decision-tree-supertree";
 
 export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
   setCode,
@@ -26,7 +26,9 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
       </div>
     );
   }
-  const [advanced, setAdvanced] = useState(false);
+
+  // ill add advanced with max depth choosing when tomek adds it to the supertree library
+  // const [advanced, setAdvanced] = useState(false);
 
   const dataObjects = variables.filter((v) => v.isMatrix).map((v) => v.varName);
   const models = variables
@@ -42,45 +44,41 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
   const [target, setTarget] = useState(
     dataObjects.length > 1 ? dataObjects[1] : ""
   );
-  const [depth, setDepth] = useState(5);
+  // ill add advanced with max depth choosing when tomek adds it to the supertree library
+  // const [depth, setDepth] = useState(5);
 
   useEffect(() => {
     if (model === "" || df === "") {
       return;
     }
-    let src = `# create large empty figure\n`;
-    src += `fig = plt.figure(figsize=(25,20))\n`;
-    src += `# plot tree\n`;
-    src += `_ = plot_tree(${model}, 
-    feature_names=${df}.columns.tolist(),\n`;
-
-    const isClassifier =
-      variables
-        .filter((v) => v.varName === model)
-        .filter((v) => v.varType.includes("Classifier")).length > 0;
-    if (isClassifier) {
-      src += `    class_names=np.unique(${target}).tolist(),\n`;
-    }
-    src += `    max_depth=${depth},
-    filled=True)`;
+    let src = `# plot tree\n`;
+    src += `_ = SuperTree(\n`;
+    src += `    model=${model},\n`;
+    src += `    feature_data=${df},\n`;
+    src += `    target_data=${target},\n`;
+    // feature_names=df.feature_names, target_names=df.target_names
+    src += `).show_tree()`;
 
     setCode(src);
     setPackages([
-      "import matplotlib.pyplot as plt",
-      "from sklearn.tree import plot_tree",
-      "import numpy as np"
+      // "import matplotlib.pyplot as plt",
+      // "from sklearn.tree import plot_tree",
+      // "import numpy as np",
+      "from supertree import SuperTree"
     ]);
     if (setMetadata) {
       setMetadata({
         model,
         df,
         target,
-        depth,
+        // ill add advanced with max depth choosing when tomek adds it to the supertree library
+        // depth,
         variables: variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [model, df, target, depth]);
+    // ill add advanced with max depth choosing when tomek adds it to the supertree library
+  }, [model, df, target, /* depth */]);
 
   useEffect(() => {
     if (metadata) {
@@ -88,7 +86,8 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
       if (metadata["model"] !== undefined) setModel(metadata["model"]);
       if (metadata["df"] !== undefined) setDf(metadata["df"]);
       if (metadata["target"] !== undefined) setTarget(metadata["target"]);
-      if (metadata["depth"] !== undefined) setDepth(metadata["depth"]);
+      // ill add advanced with max depth choosing when tomek adds it to the supertree library
+      // if (metadata["depth"] !== undefined) setDepth(metadata["depth"]);
     }
   }, [metadata]);
 
@@ -97,10 +96,13 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
       <Title
         Icon={BinaryTreeIcon}
         label={"Visualize Decision Tree"}
-        advanced={advanced}
-        setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
+      {/*
+      // ill add advanced with max depth choosing when tomek adds it to the supertree library
+      advanced={advanced}
+      setAdvanced={setAdvanced}
+      */}
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">
           There are no data objects in your notebook. Please create DataFrame by
@@ -136,6 +138,8 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
               setOption={setTarget}
             />
           </div>
+          {/*
+          // ill add advanced with max depth choosing when tomek adds it to the supertree library
           {advanced && (
             <>
               <Numeric
@@ -147,6 +151,7 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
               />
             </>
           )}
+          */}
         </>
       )}
     </div>
@@ -157,7 +162,9 @@ export const VisualizeDecisionTreeRecipe: IRecipe = {
   name: "Visualize Decision Tree",
   longName: "Visualize Decision Tree",
   parentName: "Scikit-learn",
-  description: `Please select your Decision Tree and visualize it. Visualization works for classifier and regressor trees. You can set max depth of visualization in **Advanced** options. Please be aware that tree deeper than 5 levels are not readable. For better visualization, please train shallow tree or limit max depth during visualization.`,
+  description: `Please select your Decision Tree and visualize it. Visualization works for classifier and regressor trees. Powered by Super Tree, developed in house by MLJAR`,
+  // `You can set max depth of visualization in **Advanced** options.`
+  // `Please be aware that tree deeper than 5 levels are not readable. For better visualization, please train shallow tree or limit max depth during visualization.`,
   shortDescription:
     "Visualize selected Decision Tree. Both classifier and regressor can be visualized.",
   codeExplanation: `Creates matplotlib figure with Decision Tree visualization.`,
@@ -165,18 +172,13 @@ export const VisualizeDecisionTreeRecipe: IRecipe = {
   Icon: BinaryTreeIcon,
   requiredPackages: [
     {
-      importName: "sklearn",
-      installationName: "scikit-learn",
-      version: ">=1.5.0",
-    },
-    {
-      importName: "matplotlib",
-      installationName: "matplotlib",
-      version: ">=3.8.4",
+      importName: "supertree",
+      installationName: "supertree",
+      version: ">=0.0.4",
     },
   ],
   docsUrl: DOCS_URL,
-  tags: ["decision-tree"],
+  tags: ["decision-tree", "supertree"],
   defaultVariables: [
     {
       varName: "my_classifier",
