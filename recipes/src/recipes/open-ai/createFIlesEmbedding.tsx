@@ -4,7 +4,6 @@ import { IRecipe, IRecipeProps } from "../base";
 import { CLIENT_OPENAI } from "./utils";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
-import { Toggle } from "../../components/Toggle";
 import { SelectPath } from "../../components/SelectPath";
 import { CodeIcon } from "../../icons/Code";
 
@@ -38,25 +37,31 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
     ["text-embedding-3-large", "text-embedding-3-large"],
     ["ada v2", "text-embedding-ada-002"],
   ] as [string, string][];
-  const [choice, setChoice] = useState(false);
+  const [choice, setChoice] = useState("pdf");
+  const choiceOptions = [
+    ["PDF", "pdf"],
+    ["DOCX", "docx"]
+  ] as [string,string][];
 
   useEffect(() => {
     let src = `# set file path\n`;
     src += `filePath=r"${filePath}"\n\n`;
     src += `# read file\n`;
-    if (choice) {
+    if (choice == "docx") {
       src += `doc = Document(filePath)\n\n`;
-    } else {
+    } 
+    if (choice == "pdf") {
       src += `reader = PdfReader(filePath)\n\n`;
     }
     src += `# declare lists\n`;
     src += `chunks = []\n`;
     src += `embeddings = []\n\n`;
     src += `# text division\n`;
-    if (choice) {
+    if (choice == "docx") {
       src += `for i in range(0, len(doc.paragraphs)):\n`;
       src += `    chunk = doc.paragraphs[i].text\n`;
-    } else {
+    } 
+    if (choice == "pdf") {
       src += `for i in range(0, len(reader.pages)):\n`;
       src += `    chunk = reader.pages[i].extract_text()\n`;
     }
@@ -70,9 +75,10 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
     src += `    embeddings.append(embedding.data[0].embedding)`;
 
     setCode(src);
-    if (choice) {
+    if (choice == "docx") {
       setPackages(["from openai import OpenAI", "from docx import Document"]);
-    } else {
+    }
+    if (choice == "pdf") {
       setPackages(["from openai import OpenAI", "from pypdf import PdfReader"]);
     }
     if (setMetadata) {
@@ -112,10 +118,11 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
             "Choose the OpenAI model that you want to use. Remember that each model has individual pricing."
           }
         />
-        <Toggle
-          label={"PDF or DOCX"}
-          value={choice}
-          setValue={setChoice}
+        <Select
+          label={"Choose the extension"}
+          option={choice}
+          setOption={setChoice}
+          options={choiceOptions}
           tooltip={
             "Choose the extension of the file from which you want to create embeddings (PDF or DOCX)."
           }
