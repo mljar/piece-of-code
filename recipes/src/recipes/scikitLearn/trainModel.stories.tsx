@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
 import TrainModelRecipe, { TrainModel } from "./trainModel";
@@ -14,16 +14,20 @@ type Story = StoryObj<typeof TrainModel>;
 
 export const TrainModelStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <TrainModel {...args} />
-    <div className="poc-dark">
-      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <TrainModel {...args} />
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <TrainModel {...args} setCode={setCode} />
+      <div className="poc-dark">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+          <TrainModel {...args} />
+        </div>
       </div>
-    </div>
-  </>
-);
+      <pre>{code}</pre>
+    </>
+  )
+};
 
 TrainModelStory.args = {
   setCode: (src: string) => console.log(src),

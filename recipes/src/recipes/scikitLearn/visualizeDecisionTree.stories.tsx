@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { IRecipeProps } from "../base";
 import VisualizeDecisionTreeRecipe, { VisualizeDecisionTree } from "./visualizeDecisionTree";
@@ -14,16 +14,20 @@ type Story = StoryObj<typeof VisualizeDecisionTree>;
 
 export const VisualizeDecisionTreeStory: Story = (
   args: React.JSX.IntrinsicAttributes & IRecipeProps
-) => (
-  <>
-    <VisualizeDecisionTree {...args} />
-    <div className="poc-dark">
-      <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
-        <VisualizeDecisionTree {...args} />
+) => {
+  const [code, setCode] = useState("");
+  return (
+    <>
+      <VisualizeDecisionTree {...args} setCode={setCode} />
+      <div className="poc-dark">
+        <div className="poc-bg-white dark:poc-bg-slate-700 poc-p-2">
+          <VisualizeDecisionTree {...args} />
+        </div>
       </div>
-    </div>
-  </>
-);
+      <pre>{code}</pre>
+    </>
+  )
+};
 
 VisualizeDecisionTreeStory.args = {
   setCode: (src: string) => console.log(src),
