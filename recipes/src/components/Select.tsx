@@ -29,7 +29,7 @@ export const Select: React.FC<SelectProps> = ({
 
   return (
     <div>
-      <div className="poc-mt-2">
+      <div>
         {tooltip !== "" && (
           <Tooltip id="select-widget-tooltip" className="poc-text-base" />
         )}
@@ -48,8 +48,8 @@ export const Select: React.FC<SelectProps> = ({
           <select
             value={option}
             onChange={(e) => setOption(e.target.value)}
-            className="poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
-          poc-bg-gray-50 
+            className="poc-border-2 poc-p-1 poc-block poc-w-full 
+          poc-bg-white
           poc-border-gray-300 
           poc-text-gray-900 
           focus:poc-border-blue-500 
