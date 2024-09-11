@@ -72,8 +72,14 @@ const SelectRecipeComponent = ({
   // cell.model.contentChanged.connect(() => {
   //   setPreviousCode(cell.model.sharedModel.getSource());
   // }, cell);
-
-  const [isDark, setIsDark] = useState(false);
+  let initialIsDark = false;
+  const t = document.body.dataset?.jpThemeName;
+  if (t !== undefined && t.includes('Dark')) {
+    initialIsDark = true;
+  } else {
+    initialIsDark = false;
+  } 
+  const [isDark, setIsDark] = useState(initialIsDark);
   const getCellCode = (): string => {
     return cell.model.sharedModel.getSource();
   };
@@ -268,7 +274,6 @@ export class SelectRecipeWidget extends ReactWidget {
   }
 
   render(): JSX.Element {
-
     return (
       <div>
         <UseSignal signal={this._signal}>
