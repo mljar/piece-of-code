@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { VisionURL } from "./visionURL";
+import VisionURLRecipe, { VisionURL } from "./visionURL";
 
 const meta: Meta<typeof VisionURL> = {
   component: VisionURL,
@@ -27,4 +27,6 @@ export const VisionURLForm: Story = (
 VisionURLForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: VisionURLRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

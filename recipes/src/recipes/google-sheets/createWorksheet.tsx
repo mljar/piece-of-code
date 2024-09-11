@@ -7,6 +7,7 @@ import { Variable } from "../../components/Variable";
 import { Numeric } from "../../components/Numeric";
 
 import { ToolIcon } from "../../icons/Tool";
+import { Select } from "../../components/Select";
 
 const DOCS_URL = "create-worksheet-python";
 
@@ -19,6 +20,13 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
   setMetadata,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(SPREADSHEET));
+
+  const varsS = variables
+    .filter((v) => v.varType.includes(SPREADSHEET))
+    .map((v) => v.varName);
+  const [spreadsheet, setSpreadsheet] = useState(
+    varsS.length > 0 ? varsS[0] : ""
+  );
 
   if (variablesStatus === "loaded" && !vars.length) {
     return (
@@ -40,7 +48,7 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``;
     src += `# create worksheet\n`;
-    src += `${worksheetName} = sh.add_worksheet(title="${title}", rows=${rows ? rows : 0}, cols=${cols ? cols : 0})`;
+    src += `${worksheetName} = ${spreadsheet}.add_worksheet(title="${title}", rows=${rows ? rows : 0}, cols=${cols ? cols : 0})`;
 
     setCode(src);
     setPackages(["import gspread"]);
@@ -51,11 +59,12 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         cols,
         advanced,
         worksheetName,
+        spreadsheet,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [title, rows, cols, advanced, worksheetName]);
+  }, [title, rows, cols, advanced, worksheetName, spreadsheet]);
 
   useEffect(() => {
     if (metadata) {
@@ -65,6 +74,8 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
       if (metadata["cols"] !== undefined) setCols(metadata["cols"]);
       if (metadata["worksheetName"] !== undefined)
         setWorksheetName(metadata["worksheetName"]);
+      if (metadata["spreadsheet"] !== undefined)
+        setSpreadsheet(metadata["spreadsheet"]);
     }
   }, [metadata]);
 
@@ -77,14 +88,25 @@ export const CreateWorkSheet: React.FC<IRecipeProps> = ({
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Variable
-        label={"Enter worksheet name"}
-        name={worksheetName}
-        setName={setWorksheetName}
-        tooltip={
-          "Enter the name of the variable to which the worksheet will be assigned."
-        }
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Select
+          label={"Choose spreadsheet"}
+          option={spreadsheet}
+          options={varsS.map((d) => [d, d])}
+          setOption={setSpreadsheet}
+          tooltip={
+            "Choose the spreadsheet in which you want to create the worksheet."
+          }
+        />
+        <Variable
+          label={"Enter worksheet name"}
+          name={worksheetName}
+          setName={setWorksheetName}
+          tooltip={
+            "Enter the name of the variable to which the worksheet will be assigned."
+          }
+        />
+      </div>
       <Variable
         label={"Enter title"}
         name={title}

@@ -31,27 +31,30 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
   }
 
   const [title, setTitle] = useState("");
+  const [varName, setVarName] = useState("sh");
 
   useEffect(() => {
     let src = ``;
     src += `# create spreadsheet\n`;
-    src += `sh = gc.create('${title}')`;
+    src += `${varName} = gc.create('${title}')`;
 
     setCode(src);
     setPackages(["import gspread"]);
     if (setMetadata) {
       setMetadata({
         title,
+        varName,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [title]);
+  }, [title, varName]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
+      if (metadata["varName"] !== undefined) setVarName(metadata["varName"]);
     }
   }, [metadata]);
 
@@ -62,12 +65,22 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
         label={"Create spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Variable
-        label={"Enter title"}
-        name={title}
-        setName={setTitle}
-        tooltip={"Enter the title of the spreadsheet you want to create."}
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Variable
+          label={"Enter spreadsheet name"}
+          name={varName}
+          setName={setVarName}
+          tooltip={
+            "Enter the name of the variable to which the spreadsheet will be assigned."
+          }
+        />
+        <Variable
+          label={"Enter title"}
+          name={title}
+          setName={setTitle}
+          tooltip={"Enter the title of the spreadsheet you want to create."}
+        />
+      </div>
     </div>
   );
 };

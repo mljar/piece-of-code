@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { TextToSpeech } from "./textToSpeech";
+import TextToSpeechRecipe, { TextToSpeech } from "./textToSpeech";
 
 const meta: Meta<typeof TextToSpeech> = {
   component: TextToSpeech,
@@ -27,4 +27,6 @@ export const TextToSpeechForm: Story = (
 TextToSpeechForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: TextToSpeechRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

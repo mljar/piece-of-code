@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { ChatCompl } from "./chatCompletions";
+import ChatComplRecipe, { ChatCompl } from "./chatCompletions";
 
 const meta: Meta<typeof ChatCompl> = {
   component: ChatCompl,
@@ -27,4 +27,6 @@ export const ChatComplForm: Story = (
 ChatComplForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: ChatComplRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

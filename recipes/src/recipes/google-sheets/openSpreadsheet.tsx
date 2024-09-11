@@ -18,7 +18,6 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
 }) => {
-
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
   if (variablesStatus === "loaded" && !vars.length) {
@@ -41,18 +40,19 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   const [title, setTitle] = useState("");
   const [key, setKey] = useState("");
   const [url, setUrl] = useState("");
+  const [varName, setVarName] = useState("sh");
 
   useEffect(() => {
     let src = ``;
     src += `# open spreadsheet\n`;
     if (open == "title") {
-      src += `sh = gc.open('${title}')`;
+      src += `${varName} = gc.open('${title}')`;
     }
     if (open == "key") {
-      src += `sh = gc.open_by_key('${key}')`;
+      src += `${varName} = gc.open_by_key('${key}')`;
     }
     if (open == "url") {
-      src += `sh = gc.open_by_url('${url}')`;
+      src += `${varName} = gc.open_by_url('${url}')`;
     }
 
     setCode(src);
@@ -63,11 +63,12 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
         title,
         key,
         url,
+        varName,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [open, title, key, url]);
+  }, [open, title, key, url, varName]);
 
   useEffect(() => {
     if (metadata) {
@@ -76,6 +77,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
       if (metadata["key"] !== undefined) setKey(metadata["key"]);
       if (metadata["url"] !== undefined) setUrl(metadata["url"]);
+      if (metadata["varName"] !== undefined) setVarName(metadata["varName"]);
     }
   }, [metadata]);
 
@@ -86,6 +88,15 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
         label={"Open spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
+      <Variable
+        label={"Enter spreadsheet name"}
+        name={varName}
+        setName={setVarName}
+        tooltip={
+          "Enter the name of the variable to which the spreadsheet will be assigned."
+        }
+      />
+
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
           label={"What do you want to use?"}

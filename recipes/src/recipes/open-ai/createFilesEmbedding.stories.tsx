@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { FilesEmbedding } from "./createFIlesEmbedding";
+import FilesEmbeddingRecipe, { FilesEmbedding } from "./createFIlesEmbedding";
 
 const meta: Meta<typeof FilesEmbedding> = {
   component: FilesEmbedding,
@@ -27,4 +27,6 @@ export const FilesEmbeddingForm: Story = (
 FilesEmbeddingForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: FilesEmbeddingRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

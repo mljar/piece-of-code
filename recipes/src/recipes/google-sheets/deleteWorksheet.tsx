@@ -54,6 +54,7 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
       setMetadata({
         worksheet,
         spreadsheet,
+        variables,
         docsUrl: DOCS_URL,
       });
     }

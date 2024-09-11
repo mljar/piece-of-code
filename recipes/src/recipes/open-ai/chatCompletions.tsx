@@ -44,6 +44,22 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
   const [userPrompt, setUserPrompt] = useState("");
   const [assistantPrompt, setAssistantPrompt] = useState("");
   const [advanced, setAdvanced] = useState(false);
+  const [userVarType, setUserVarType] = useState("str");
+  const userVarTypeOptions = [
+    ["Text", "str"],
+    ["Variable", "var"],
+  ] as [string, string][];
+
+  const [assistantVarType, setAssistantVarType] = useState("str");
+  const assistantVarTypeOptions = [
+    ["Text", "str"],
+    ["Variable", "var"],
+  ] as [string, string][];
+  const [systemVarType, setSystemVarType] = useState("str");
+  const systemVarTypeOptions = [
+    ["Text", "str"],
+    ["Variable", "var"],
+  ] as [string, string][];
 
   useEffect(() => {
     let src = `# create a chat completion\n`;
@@ -51,10 +67,22 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
     src += `    model="${model}",\n`;
     src += `    messages=[\n`;
     if (advanced) {
-      src += `        {"role": "system", "content": "${systemPrompt}"},\n`;
-      src += `        {"role": "assistant", "content": "${assistantPrompt}"},\n`;
+      if (systemVarType === "str") {
+        src += `        {"role": "system", "content": "${systemPrompt}"},\n`;
+      } else {
+        src += `        {"role": "system", "content": ${systemPrompt}},\n`;
+      }
+      if (assistantVarType === "str") {
+        src += `        {"role": "assistant", "content": "${assistantPrompt}"},\n`;
+      } else {
+        src += `        {"role": "assistant", "content": ${assistantPrompt}},\n`;
+      }
     }
-    src += `        {"role": "user", "content": "${userPrompt}"},\n`;
+    if (userVarType === "str") {
+      src += `        {"role": "user", "content": "${userPrompt}"},\n`;
+    } else {
+      src += `        {"role": "user", "content": ${userPrompt}},\n`;
+    }
     src += `    ],\n`;
     src += `    max_tokens=${maxTokens}\n`;
     src += `)\n\n`;
@@ -71,11 +99,24 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         userPrompt,
         assistantPrompt,
         advanced,
+        userVarType,
+        assistantVarType,
+        systemVarType,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [model, maxTokens, systemPrompt, userPrompt, assistantPrompt, advanced]);
+  }, [
+    model,
+    maxTokens,
+    systemPrompt,
+    userPrompt,
+    assistantPrompt,
+    userVarType,
+    assistantVarType,
+    systemVarType,
+    advanced,
+  ]);
 
   useEffect(() => {
     if (metadata) {
@@ -89,6 +130,12 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         setUserPrompt(metadata["userPrompt"]);
       if (metadata["assistantPrompt"] !== undefined)
         setAssistantPrompt(metadata["assistantPrompt"]);
+      if (metadata["userVarType"] !== undefined)
+        setUserVarType(metadata["userVarType"]);
+      if (metadata["assistantVarType"] !== undefined)
+        setUserVarType(metadata["assistantVarType"]);
+      if (metadata["systemVarType"] !== undefined)
+        setUserVarType(metadata["systemVarType"]);
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
     }
   }, [metadata]);
@@ -117,26 +164,53 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
           tooltip="By setting a limit on the number of tokens, you can control the length of the response and manage the cost and performance of your API calls."
         />
       </div>
-      <Variable
-        label={"Enter user message"}
-        name={userPrompt}
-        setName={setUserPrompt}
-        tooltip="The user messages provide requests or comments for the assistant to respond to."
-      />
+      <div className="poc-grid md:poc-grid-cols-[80%_20%] md:poc-gap-2">
+        <Variable
+          label={"Enter user message"}
+          name={userPrompt}
+          setName={setUserPrompt}
+          tooltip="The user messages provide requests or comments for the assistant to respond to."
+        />
+        <Select
+          label={"Choose method"}
+          option={userVarType}
+          options={userVarTypeOptions}
+          setOption={setUserVarType}
+          tooltip={"Choose if you want to type the text or give the variable with text."}
+        />
+      </div>
       {advanced && (
         <>
-          <Variable
-            label={"Enter system message"}
-            name={systemPrompt}
-            setName={setSystemPrompt}
-            tooltip="The system message is optional and can be used to set the behavior of the assistant."
-          />
-          <Variable
-            label={"Enter assistant message"}
-            name={assistantPrompt}
-            setName={setAssistantPrompt}
-            tooltip="Assistant messages store previous assistant responses, but can also be written by you to give examples of desired behavior"
-          />
+          <div className="poc-grid md:poc-grid-cols-[80%_20%] md:poc-gap-2">
+            <Variable
+              label={"Enter system message"}
+              name={systemPrompt}
+              setName={setSystemPrompt}
+              tooltip="The system message is optional and can be used to set the behavior of the assistant."
+            />
+            <Select
+              label={"Choose method"}
+              option={systemVarType}
+              options={systemVarTypeOptions}
+              setOption={setSystemVarType}
+              tooltip={"Choose if you want to type the text or give the variable with text."}
+            />
+          </div>
+          <div className="poc-grid md:poc-grid-cols-[80%_20%] md:poc-gap-2">
+            <Variable
+              label={"Enter assistant message"}
+              name={assistantPrompt}
+              setName={setAssistantPrompt}
+              tooltip="Assistant messages store previous assistant responses, but can also be written by you to give examples of desired behavior"
+            />
+            <Select
+              label={"Choose method"}
+              option={assistantVarType}
+              options={assistantVarTypeOptions}
+              setOption={setAssistantVarType}
+              tooltip={"Choose if you want to type the text or give the variable with text."}
+            />
+          </div>
         </>
       )}
     </div>
