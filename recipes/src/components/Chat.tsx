@@ -425,7 +425,7 @@ export const Chat: React.FC<IChatProps> = ({
                                     poc-p-4 poc-max-h-14 poc-float-right
                                     poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
                     <button
-                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300"
+                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300 dark:poc-text-white"
                       onClick={() => { dialog ? setDialog(false) : setDialog(true) }}>
                       <SettingsIcon />
                     </button>
@@ -442,7 +442,7 @@ export const Chat: React.FC<IChatProps> = ({
                     )}
 
                     <button
-                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300`}
+                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300 dark:poc-text-white`}
                       onClick={() => {
                         if (msg !== "") {
                           lama(msg);
@@ -456,10 +456,10 @@ export const Chat: React.FC<IChatProps> = ({
                 )}
 
                 {streaming && (
-
                   <div className={`${dialog ? "poc-w-3/12" : "poc-w-1/12"}
                                     poc-p-4 poc-max-h-14 poc-float-right
                                     poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
+
                     <button
                       className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300"
                       onClick={() => { stopStreaming = true }}>
