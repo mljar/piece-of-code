@@ -8,10 +8,9 @@ import IVariable from "./IVariable";
 import ExecutionStatus from "./ExecutionStatus";
 import { PlayIcon } from "../icons/Play";
 import { PlusIcon } from "../icons/Plus";
-import { CakeIcon } from "../icons/Cake";
 import { getStatusElements } from "./RunStatus";
-import { WandIcon } from "../icons/Wand";
-import { Select } from "./Select";
+import { SettingsIcon } from "../icons/Settings";
+import { SelectModel } from "./SelectModel";
 
 const DOCS_URL = "python-notebook-ai-assistant";
 
@@ -122,6 +121,7 @@ export const Chat: React.FC<IChatProps> = ({
     const varDesc = getVariablesDesc();
 
     setStreaming(true);
+    setDialog(false);
     setMsgs([...msgs, prompt]);
     let messages = [
       {
@@ -263,7 +263,7 @@ export const Chat: React.FC<IChatProps> = ({
     }
   });
 
-  const [models] = useState([] as string[])
+  const [models] = useState([] as string[]);
   const [model, setModel] = useState(models[0]);
 
   const fetchModels = async () => {
@@ -278,6 +278,8 @@ export const Chat: React.FC<IChatProps> = ({
   useEffect(() => {
     fetchModels();
   }, []);
+
+  const [dialog, setDialog] = useState(false);
 
   if (!isStatic) {
     if (checkingLLM) {
@@ -337,16 +339,6 @@ export const Chat: React.FC<IChatProps> = ({
         className="poc-flex poc-flex-col poc-w-full poc-max-w-full"
         style={{ minHeight: "266px", maxHeight: "266px" }}
       >
-        <div
-          className="poc-w-80 poc-self-end"
-        >
-          <Select
-            label={""}
-            option={model}
-            options={models.map((m) => [m, m])}
-            setOption={setModel}
-          />
-        </div>
         <div
           className="poc-flex-1 poc-overflow-y-auto poc-p-4"
           style={{ maxHeight: "266px", height: "266px" }}
@@ -429,37 +421,69 @@ export const Chat: React.FC<IChatProps> = ({
             <div className="">
               <div className="poc-w-full poc-border-t poc-relative poc-bg-gray-50 dark:poc-bg-gray-700">
                 {!streaming && (
-                  <button
-                    className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
-                    onClick={() => {
-                      if (msg !== "") {
-                        lama(msg);
-                        setMsg("");
-                      }
-                    }}
-                    disabled={msg === ""}
-                  >
-                    {" "}
-                    <SendIcon className="poc-inline" />
-                  </button>
+                  <div className={`${dialog ? "poc-w-3/12" : "poc-w-1/12"}
+                                    poc-p-4 poc-max-h-14 poc-float-right
+                                    poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
+                    <button
+                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300 dark:poc-text-white"
+                      onClick={() => { dialog ? setDialog(false) : setDialog(true) }}>
+                      <SettingsIcon />
+                    </button>
+
+                    {dialog && (
+                      <div className="poc-z-10 poc-min-w-10 poc-flex-1">
+                        <SelectModel
+                          label={""}
+                          option={model}
+                          options={models.map((m) => [m, m])}
+                          setOption={setModel}
+                        />
+                      </div>
+                    )}
+
+                    <button
+                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300 dark:poc-text-white`}
+                      onClick={() => {
+                        if (msg !== "") {
+                          lama(msg);
+                          setMsg("");
+                        }
+                      }}
+                      disabled={msg === ""}>
+                      <SendIcon />
+                    </button>
+                  </div>
                 )}
 
                 {streaming && (
-                  <button
-                    className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
-                    onClick={() => {
-                      stopStreaming = true;
-                    }}
-                  >
-                    {" "}
-                    <PlayerStopIcon className="poc-inline" />
-                  </button>
+                  <div className={`${dialog ? "poc-w-3/12" : "poc-w-1/12"}
+                                    poc-p-4 poc-max-h-14 poc-float-right
+                                    poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
+
+                    <button
+                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300"
+                      onClick={() => { stopStreaming = true }}>
+                      <PlayerStopIcon />
+                    </button>
+
+                    <button
+                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300`}
+                      onClick={() => {
+                        if (msg !== "") {
+                          lama(msg);
+                          setMsg("");
+                        }
+                      }}
+                      disabled={msg === ""}>
+                      <SendIcon />
+                    </button>
+                  </div>
                 )}
 
                 <input
                   type="text"
-                  className="poc-peer poc-w-11/12  poc-bg-gray-50 poc-text-gray-900
-             poc-p-4  poc-outline-0 dark:poc-bg-gray-700   dark:poc-placeholder-gray-400 dark:poc-text-white"
+                  className={`poc-peer ${dialog ? "poc-w-9/12" : "poc-w-11/12"} poc-bg-gray-50 poc-text-gray-900 poc-h-14
+             poc-p-4 poc-outline-0 poc-overflow-x-clip dark:poc-bg-gray-700 dark:poc-placeholder-gray-400 dark:poc-text-white`}
                   placeholder={
                     streaming
                       ? "Please wait for response ..."
