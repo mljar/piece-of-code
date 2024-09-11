@@ -48,6 +48,11 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
   const [text, setText] = useState("");
   const [fileName, setFileName] = useState("speech.mp3");
   const [filePath, setFilePath] = useState("");
+  const [varType, setVarType] = useState("str");
+  const varTypeOptions = [
+    ["Text", "str"],
+    ["Variable", "var"],
+  ] as [string, string][];
 
   useEffect(() => {
     let src = `# set file path\n`;
@@ -56,7 +61,11 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
     src += `with client.audio.speech.with_streaming_response.create(\n`;
     src += `  model="${model}",\n`;
     src += `  voice="${voice}",\n`;
-    src += `  input="${text}"\n`;
+    if (varType === "str") {
+      src += `  input="${text}"\n`;
+    } else {
+      src += `  input=${text}\n`;
+    }
     src += `) as response:\n`;
     src += `  response.stream_to_file(file_path)\n\n`;
     src += `# play audio\n`;
@@ -75,11 +84,12 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
         text,
         fileName,
         filePath,
+        varType,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [model, voice, text, fileName, filePath]);
+  }, [model, voice, text, fileName, filePath, varType]);
 
   useEffect(() => {
     if (metadata) {
@@ -89,6 +99,7 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
       if (metadata["text"] !== undefined) setText(metadata["text"]);
       if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
       if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
+      if (metadata["varType"] !== undefined) setVarType(metadata["varType"]);
     }
   }, [metadata]);
 
@@ -115,12 +126,21 @@ export const TextToSpeech: React.FC<IRecipeProps> = ({
           tooltip="Experiment with different voices to find one that matches your desired tone and audience. The current voices are optimized for English."
         />
       </div>
-      <Variable
-        label={"Enter the text"}
-        name={text}
-        setName={setText}
-        tooltip="This is the text that you want to be spoken aloud by the TTS model."
-      />
+      <div className="poc-grid md:poc-grid-cols-[80%_20%] md:poc-gap-2">
+        <Variable
+          label={"Enter the text"}
+          name={text}
+          setName={setText}
+          tooltip="This is the text that you want to be spoken aloud by the TTS model."
+        />
+        <Select
+          label={"Choose method"}
+          option={varType}
+          options={varTypeOptions}
+          setOption={setVarType}
+          tooltip={"Choose if you want to type the text or give the variable with text."}
+        />
+      </div>
       <SelectPath
         label={
           "Select the output directory, leave empty to save in the current directory"

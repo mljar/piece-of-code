@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { Translations } from "./translations";
+import TranslationsRecipe, { Translations } from "./translations";
 
 const meta: Meta<typeof Translations> = {
   component: Translations,
@@ -27,4 +27,6 @@ export const TranslationsForm: Story = (
 TranslationsForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: TranslationsRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

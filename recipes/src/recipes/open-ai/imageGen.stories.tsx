@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { ImageGen } from "./imageGen";
+import ImageGenRecipe, { ImageGen } from "./imageGen";
 
 const meta: Meta<typeof ImageGen> = {
   component: ImageGen,
@@ -27,4 +27,6 @@ export const ImageGenForm: Story = (
 ImageGenForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: ImageGenRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

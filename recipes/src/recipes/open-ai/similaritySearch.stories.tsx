@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { SimilaritySearch } from "./similaritySearch";
+import SimilaritySearchRecipe, { SimilaritySearch } from "./similaritySearch";
 
 const meta: Meta<typeof SimilaritySearch> = {
   component: SimilaritySearch,
@@ -27,4 +27,6 @@ export const SimilaritySearchForm: Story = (
 SimilaritySearchForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: SimilaritySearchRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

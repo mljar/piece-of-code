@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { VisionLocal } from "./visionLocal";
+import VisionLocalRecipe, { VisionLocal } from "./visionLocal";
 
 const meta: Meta<typeof VisionLocal> = {
   component: VisionLocal,
@@ -27,4 +27,6 @@ export const VisionLocalForm: Story = (
 VisionLocalForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: VisionLocalRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };

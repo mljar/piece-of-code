@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { IRecipeProps } from "../base";
-import { Embedding } from "./createEmbedding";
+import EmbeddingRecipe, { Embedding } from "./createEmbedding";
 
 const meta: Meta<typeof Embedding> = {
   component: Embedding,
@@ -27,4 +27,6 @@ export const EmbeddingForm: Story = (
 EmbeddingForm.args = {
   setCode: (src: string) => console.log(src),
   setPackages: (packages: string[]) => console.log(packages),
+  variables: EmbeddingRecipe.defaultVariables,
+  variablesStatus: "loaded",
 };
