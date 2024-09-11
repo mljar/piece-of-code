@@ -1,4 +1,4 @@
-import React, { cloneElement, useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { IPackage, IRecipeSet } from "../recipes/base";
 import markdownit from "markdown-it";
 import { SendIcon } from "../icons/Send";
@@ -9,8 +9,8 @@ import ExecutionStatus from "./ExecutionStatus";
 import { PlayIcon } from "../icons/Play";
 import { PlusIcon } from "../icons/Plus";
 import { getStatusElements } from "./RunStatus";
-import { Select } from "./Select";
 import { SettingsIcon } from "../icons/Settings";
+import { SelectModel } from "./SelectModel";
 
 const DOCS_URL = "python-notebook-ai-assistant";
 
@@ -340,7 +340,7 @@ export const Chat: React.FC<IChatProps> = ({
         style={{ minHeight: "266px", maxHeight: "266px" }}
       >
         <div
-          className="poc-flex-1 poc-overflow-y-auto poc-p-4 poc-relative"
+          className="poc-flex-1 poc-overflow-y-auto poc-p-4"
           style={{ maxHeight: "266px", height: "266px" }}
           ref={elementRef}
         >
@@ -432,7 +432,7 @@ export const Chat: React.FC<IChatProps> = ({
 
                     {dialog && (
                       <div className="poc-z-10 poc-min-w-10 poc-flex-1">
-                        <Select
+                        <SelectModel
                           label={""}
                           option={model}
                           options={models.map((m) => [m, m])}
@@ -456,23 +456,26 @@ export const Chat: React.FC<IChatProps> = ({
                 )}
 
                 {streaming && (
-                  <div>
+
+                  <div className={`${dialog ? "poc-w-3/12" : "poc-w-1/12"}
+                                    poc-p-4 poc-max-h-14 poc-float-right
+                                    poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
                     <button
-                      className="!poc-absolute poc-right-9 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
-                      onClick={() => {
-                        stopStreaming = true;
-                      }}
-                    >
-                      {" "}
-                      <PlayerStopIcon className="poc-inline" />
+                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300"
+                      onClick={() => { stopStreaming = true }}>
+                      <PlayerStopIcon />
                     </button>
 
                     <button
-                      className="!poc-absolute poc-right-1 poc-top-1 poc-z-10 poc-p-2 poc-pt-3 disabled:poc-text-gray-300"
-                      onClick={() => { dialog ? setDialog(false) : setDialog(true) }}
-                      disabled={true}
-                    >
-                      <SettingsIcon className="poc-inline" />
+                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300`}
+                      onClick={() => {
+                        if (msg !== "") {
+                          lama(msg);
+                          setMsg("");
+                        }
+                      }}
+                      disabled={msg === ""}>
+                      <SendIcon />
                     </button>
                   </div>
                 )}
