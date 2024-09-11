@@ -8,6 +8,7 @@ import { Numeric } from "../../components/Numeric";
 import { Select } from "../../components/Select";
 
 import { ToolIcon } from "../../icons/Tool";
+import { spread } from "axios";
 
 const DOCS_URL = "open-worksheet-python";
 
@@ -20,6 +21,13 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
   setMetadata,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(SPREADSHEET));
+
+  const varsS = variables
+    .filter((v) => v.varType.includes(SPREADSHEET))
+    .map((v) => v.varName);
+  const [spreadsheet, setSpreadsheet] = useState(
+    varsS.length > 0 ? varsS[0] : ""
+  );
 
   if (variablesStatus === "loaded" && !vars.length) {
     return (
@@ -48,13 +56,13 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
     let src = ``;
     src += `# open worksheet\n`;
     if (open == "index") {
-      src += `${worksheetName} = sh.get_worksheet(${index})`;
+      src += `${worksheetName} = ${spreadsheet}.get_worksheet(${index})`;
     }
     if (open == "title") {
-      src += `${worksheetName} = sh.worksheet("${title}")`;
+      src += `${worksheetName} = ${spreadsheet}.worksheet("${title}")`;
     }
     if (open == "id") {
-      src += `${worksheetName} = sh.get_worksheet_by_id(${ID})`;
+      src += `${worksheetName} = ${spreadsheet}.get_worksheet_by_id(${ID})`;
     }
 
     setCode(src);
@@ -66,11 +74,12 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         index,
         title,
         ID,
+        spreadsheet,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [worksheetName, open, index, title, ID]);
+  }, [worksheetName, open, index, title, ID, spreadsheet]);
 
   useEffect(() => {
     if (metadata) {
@@ -81,6 +90,8 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
       if (metadata["index"] !== undefined) setIndex(metadata["index"]);
       if (metadata["title"] !== undefined) setTitle(metadata["title"]);
       if (metadata["ID"] !== undefined) setID(metadata["ID"]);
+      if (metadata["spreadsheet"] !== undefined)
+        setSpreadsheet(metadata["spreadsheet"]);
     }
   }, [metadata]);
 
@@ -91,14 +102,25 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         label={"Open worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Variable
-        label={"Enter worksheet name"}
-        name={worksheetName}
-        setName={setWorksheetName}
-        tooltip={
-          "Enter the name of the variable to which the worksheet will be assigned."
-        }
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Select
+          label={"Choose spreadsheet"}
+          option={spreadsheet}
+          options={varsS.map((d) => [d, d])}
+          setOption={setSpreadsheet}
+          tooltip={
+            "Choose the spreadsheet in which you want to open the worksheet."
+          }
+        />
+        <Variable
+          label={"Enter worksheet name"}
+          name={worksheetName}
+          setName={setWorksheetName}
+          tooltip={
+            "Enter the name of the variable to which the worksheet will be assigned."
+          }
+        />
+      </div>
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
           label={"Choose option"}

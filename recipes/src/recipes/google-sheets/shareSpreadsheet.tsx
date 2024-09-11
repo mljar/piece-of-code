@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
-import { GOOGLE_CONNECTION } from "./utils";
+import { GOOGLE_CONNECTION, SPREADSHEET } from "./utils";
 import { Title } from "../../components/Title";
 import { Select } from "../../components/Select";
 import { Variable } from "../../components/Variable";
 
 import { SpreadsheetIcon } from "../../icons/Spreadsheet";
+import { spread } from "axios";
 
 const DOCS_URL = "python-share-spreadsheet";
 
@@ -19,6 +20,13 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
   setMetadata,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
+
+  const varsS = variables
+    .filter((v) => v.varType.includes(SPREADSHEET))
+    .map((v) => v.varName);
+  const [spreadsheet, setSpreadsheet] = useState(
+    varsS.length > 0 ? varsS[0] : ""
+  );
 
   if (variablesStatus === "loaded" && !vars.length) {
     return (
@@ -48,7 +56,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``;
     src += `# share spreadsheet\n`;
-    src += `sh.share(email_address='${email}', perm_type='${permission}', role='${role}')`;
+    src += `${spreadsheet}.share(email_address='${email}', perm_type='${permission}', role='${role}')`;
 
     setCode(src);
     setPackages(["import gspread"]);
@@ -57,11 +65,12 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
         permission,
         role,
         email,
+        spreadsheet,
         variables,
         docsUrl: DOCS_URL,
       });
     }
-  }, [permission, role, email]);
+  }, [permission, role, email, spreadsheet]);
 
   useEffect(() => {
     if (metadata) {
@@ -79,6 +88,13 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
         Icon={SpreadsheetIcon}
         label={"Share spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+      />
+      <Select
+        label={"Choose spreadsheet"}
+        option={spreadsheet}
+        options={varsS.map((d) => [d, d])}
+        setOption={setSpreadsheet}
+        tooltip={"Choose the spreadsheet you want to share."}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
@@ -130,6 +146,17 @@ export const ShareSpreadSheetRecipe: IRecipe = {
     {
       varName: "gc",
       varType: GOOGLE_CONNECTION,
+      varColumns: [""],
+      varColumnTypes: [""],
+      varSize: "",
+      varShape: "",
+      varContent: "",
+      isMatrix: false,
+      isWidget: false,
+    },
+    {
+      varName: "sh",
+      varType: SPREADSHEET,
       varColumns: [""],
       varColumnTypes: [""],
       varSize: "",
