@@ -6,6 +6,7 @@ import { Select } from "../../components/Select";
 import { TableIcon } from "../../icons/Table";
 import { Toggle } from "../../components/Toggle";
 import { CONNECITON_PSYCOPG_TYPE } from "./utils";
+import { Variable } from "../../components/Variable";
 
 const DOCS_URL = "python-postgres-list-tables";
 
@@ -46,6 +47,7 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
     connections.length ? connections[0] : ""
   );
   const [schema, setSchema] = useState(false);
+  const [queryResults, setQueryResults] = useState("queryResults");
 
   useEffect(() => {
     let src = `# if connection was used and closed it is reopen here\n`;
@@ -78,9 +80,12 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
     src += `You can use show tables and columns recipes.\n`;
     src += `            """)\n\n`;
 
+    src += `        # save query results to a variable\n`;
+    src += `        ${queryResults} = cur.fetchall()\n\n`;
+
     src += `        # print the results\n`;
     src += `        print("Tables:")\n`;
-    src += `        for table in cur.fetchall():\n`;
+    src += `        for table in ${queryResults}:\n`;
     src += `            print(f"{table}")`;
 
     setCode(src);
@@ -89,19 +94,21 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
       setMetadata({
         conn,
         schema,
+        queryResults,
         variables: variables.filter(
           (v) => v.varType === CONNECITON_PSYCOPG_TYPE
         ),
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, schema]);
+  }, [conn, schema, queryResults]);
 
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
       if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
       if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
+      if (metadata["queryResults"] !== undefined) setQueryResults(metadata["queryResults"]);
     }
   }, [metadata]);
 
@@ -112,12 +119,17 @@ export const ShowAllTables: React.FC<IRecipeProps> = ({
         label={"Show all tables"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+      <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
         <Select
           label={"Choose connection variable"}
           option={conn}
           options={connections.map((d) => [d, d])}
           setOption={setConnection}
+        />
+        <Variable
+          label={"Variable to store query results"}
+          name={queryResults}
+          setName={setQueryResults}
         />
         <Toggle
           label={"Show table schema"}
