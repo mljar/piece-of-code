@@ -461,21 +461,22 @@ export const Chat: React.FC<IChatProps> = ({
                                     poc-flex poc-flex-row-reverse poc-gap-x-4 poc-items-center`}>
 
                     <button
-                      className="poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300"
-                      onClick={() => { stopStreaming = true }}>
-                      <PlayerStopIcon />
+                      className="poc-z-10 poc-flex-none poc-h-6 disabled:dark:poc-text-gray-500 disabled:poc-text-gray-300"
+                      onClick={() => { stopStreaming = true }}
+                      disabled={true}>
+                      <SettingsIcon />
                     </button>
 
                     <button
-                      className={`poc-z-10 poc-flex-none poc-h-6 disabled:poc-text-gray-300`}
+                      className={`poc-z-10 poc-flex-none poc-h-6  disabled:dark:poc-text-gray-500 disabled:poc-text-gray-300`}
                       onClick={() => {
                         if (msg !== "") {
                           lama(msg);
                           setMsg("");
                         }
                       }}
-                      disabled={msg === ""}>
-                      <SendIcon />
+                      disabled={true}>
+                      <PlayerStopIcon />
                     </button>
                   </div>
                 )}
