@@ -253,7 +253,7 @@ export const Chat: React.FC<IChatProps> = ({
       return (
         <div
           key={`msg-${index}`}
-          className="poc-inline poc-p-1.5 poc-my-2 poc-bg-blue-100 poc-rounded-md poc-text-sm"
+          className="poc-inline poc-p-1.5 poc-my-2 poc-bg-blue-100 dark:poc-bg-slate-800 dark:poc-text-white poc-rounded-md poc-text-sm"
         >
           {m}
         </div>
