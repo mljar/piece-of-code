@@ -2,7 +2,10 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-
+import {
+  IThemeManager,
+  ThemeManager
+} from '@jupyterlab/apputils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { commandsPlugin } from './commands';
 import { extendedCellFactory } from './extendedcell';
@@ -14,13 +17,18 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'pieceofcode:plugin',
   description: 'Write code with UI.',
   autoStart: true,
-  optional: [ISettingRegistry],
+  optional: [ISettingRegistry, IThemeManager],
   activate: async (
     app: JupyterFrontEnd,
     settingRegistry: ISettingRegistry | null,
+    themeManager: IThemeManager
   ) => {
     console.log('Piece of Code extension is activated!');
-
+    const tm = themeManager as ThemeManager;
+    if(tm) {
+      if(!tm.isToggledThemeScrollbars())
+      tm.toggleThemeScrollbars();
+    }
     if (settingRegistry) {
       settingRegistry
         .load(plugin.id)
@@ -45,7 +53,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 import { ITranslator } from '@jupyterlab/translation';
 import {
   Dialog,
-  ISplashScreen,
+  ISplashScreen
 } from '@jupyterlab/apputils';
 // import { jupyterFaviconIcon } from '@jupyterlab/ui-components';
 import { Throttler } from '@lumino/polling';
@@ -119,8 +127,8 @@ Would you like to clear the workspace or keep waiting?`),
     return {
       show: (light = true) => {
         splash.classList.remove('splash-fade');
-        splash.classList.toggle('light', light);
-        splash.classList.toggle('dark', !light);
+        //splash.classList.toggle('light', light);
+        //splash.classList.toggle('dark', !light);
         splashCount++;
         document.body.appendChild(splash);
 
