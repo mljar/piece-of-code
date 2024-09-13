@@ -15,6 +15,7 @@ import RocCurveRecipe from "./rocCurve";
 import PrecisionRecallRecipe from "./precisionRecall";
 import LiftChartRecipe from "./liftChart";
 import CalibrationPlotRecipe from "./calibrationPlot";
+import TrainKMeansRecipe from "./trainKMeans";
 
 export const ScikitLearnRecipes: IRecipeSet = {
     name: "Scikit-learn",
@@ -39,5 +40,6 @@ export const ScikitLearnRecipes: IRecipeSet = {
         [PrecisionRecallRecipe.name]: PrecisionRecallRecipe,
         [LiftChartRecipe.name]: LiftChartRecipe,
         [CalibrationPlotRecipe.name]: CalibrationPlotRecipe,
+        [TrainKMeansRecipe.name]: TrainKMeansRecipe,
     }
 };

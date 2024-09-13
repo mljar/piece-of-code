@@ -91,10 +91,10 @@ export const TrainKNN: React.FC<IRecipeProps> = ({
 
       <>
         <Variable
-          label={"Assign Random Forest model to variable"}
+          label={"Assign K-NN model to variable"}
           name={model}
           setName={setModel}
-          tooltip="Decision Tree model can be later reused for computing predictions on new data."
+          tooltip="K-NN model can be later reused for computing predictions on new data."
         />
         <Select
           label={"Machine Learning task"}
