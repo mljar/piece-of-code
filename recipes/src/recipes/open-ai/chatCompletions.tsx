@@ -8,6 +8,8 @@ import { Variable } from "../../components/Variable";
 import { Select } from "../../components/Select";
 import { MessagesIcon } from "../../icons/Messages";
 
+import { InfoIcon } from "../../icons/Info";
+
 const DOCS_URL = "python-chat-completions";
 
 export const ChatCompl: React.FC<IRecipeProps> = ({
@@ -38,6 +40,8 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
     ["GPT-4 Turbo", "gpt-4-turbo"],
     ["GPT-4", "gpt-4"],
     ["GPT-3.5 Turbo", "gpt-3.5-turbo"],
+    ["o1-preview", "o1-preview"],
+    ["o1-mini", "o1-mini"],
   ] as [string, string][];
   const [maxTokens, setMaxTokens] = useState(300);
   const [systemPrompt, setSystemPrompt] = useState("");
@@ -149,6 +153,22 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
+      {model === "o1-preview" && (
+        <>
+          <div className="poc-border-2 poc-w-fulll poc-rounded-lg poc-border-blue-600 poc-bg-[#F9FAFB] poc-p-1">
+            <InfoIcon />
+            <span className=" poc-ml-3">The availability of this OpenAI model is very limited. Please, check out your account's rate limits on the <a href="https://platform.openai.com/docs/guides/rate-limits" className="poc-font-medium poc-text-blue-500">OpenAI Platform.</a></span>
+          </div>
+        </>
+      )}
+      {model === "o1-mini" && (
+        <>
+          <div className="poc-border-2 poc-w-full poc-rounded-lg poc-border-blue-600 poc-bg-[#F9FAFB] poc-p-1">
+            <InfoIcon className="poc-ml-2"/>
+            <span className=" poc-ml-3">The availability of this OpenAI model is very limited. Please, check out your account's rate limits on the <a href="https://platform.openai.com/docs/guides/rate-limits" className="poc-font-medium poc-text-blue-500">OpenAI Platform.</a></span>
+          </div>
+        </>
+      )}
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select
           label={"Choose model"}
@@ -176,7 +196,9 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
           option={userVarType}
           options={userVarTypeOptions}
           setOption={setUserVarType}
-          tooltip={"Choose if you want to type the text or give the variable with text."}
+          tooltip={
+            "Choose if you want to type the text or give the variable with text."
+          }
         />
       </div>
       {advanced && (
@@ -193,7 +215,9 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
               option={systemVarType}
               options={systemVarTypeOptions}
               setOption={setSystemVarType}
-              tooltip={"Choose if you want to type the text or give the variable with text."}
+              tooltip={
+                "Choose if you want to type the text or give the variable with text."
+              }
             />
           </div>
           <div className="poc-grid md:poc-grid-cols-[80%_20%] md:poc-gap-2">
@@ -208,7 +232,9 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
               option={assistantVarType}
               options={assistantVarTypeOptions}
               setOption={setAssistantVarType}
-              tooltip={"Choose if you want to type the text or give the variable with text."}
+              tooltip={
+                "Choose if you want to type the text or give the variable with text."
+              }
             />
           </div>
         </>
