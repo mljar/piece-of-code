@@ -409,9 +409,8 @@ export class VariableInspector {
           package: string;
           version: string;
         }
-        try {
-          const p: IPackage = JSON.parse(content.text);
-
+        try { 
+          const p: IPackage = JSON.parse(content.text); 
           if (this._notebookId) {
             if (!(this._notebookId in checkedPackages)) {
               checkedPackages[this._notebookId] = { [p.package]: p.version }

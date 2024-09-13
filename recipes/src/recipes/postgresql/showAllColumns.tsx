@@ -44,6 +44,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
   const [table, setTable] = useState("table_name");
   const [advanced, setAdvanced] = useState(false);
   const [schema, setSchema] = useState("public");
+  const [queryResults, setQueryResults] = useState("queryResults");
 
   useEffect(() => {
     let src = `# if connection was used and closed it is reopen here\n`;
@@ -82,13 +83,16 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
     src += `You can use show tables and columns recipes.\n`;
     src += `            """)\n\n`;
 
+    src += `        # save query results to a variable\n`;
+    src += `        ${queryResults} = cur.fetchall()\n\n`;
+
     src += `        # print the results\n`;
     if (advanced) {
       src += `        print("Columns of ${schema}.${table}:")\n`;
     } else {
       src += `        print("Columns of ${table}:")\n`;
     }
-    src += `        for column in cur.fetchall():\n`;
+    src += `        for column in ${queryResults}:\n`;
     src += `            print(f"{column}")`;
 
     setCode(src);
@@ -98,12 +102,13 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         conn,
         table,
         schema,
+        queryResults,
         advanced,
         variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, table, advanced, schema]);
+  }, [conn, table, advanced, schema, queryResults]);
 
   useEffect(() => {
     if (metadata) {
@@ -112,6 +117,7 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
       if (metadata["table"] !== undefined) setTable(metadata["table"]);
       if (metadata["schema"] !== undefined) setSchema(metadata["schema"]);
       if (metadata["advanced"] !== undefined) setAdvanced(metadata["advanced"]);
+      if (metadata["queryResults"] !== undefined) setQueryResults(metadata["queryResults"]);
     }
   }, [metadata]);
 
@@ -124,14 +130,21 @@ export const ShowAllColumns: React.FC<IRecipeProps> = ({
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Select
-        label={"Choose connection variable"}
-        option={conn}
-        options={connections.map((d) => [d, d])}
-        setOption={setConnection}
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Select
+          label={"Choose connection variable"}
+          option={conn}
+          options={connections.map((d) => [d, d])}
+          setOption={setConnection}
+        />
+        <Variable
+          label={"Variable to store query results"}
+          name={queryResults}
+          setName={setQueryResults}
+        />
+      </div>
       <Variable
-        label={"Query table"}
+        label={"Table to list columns from"}
         name={table}
         setName={setTable}
       />

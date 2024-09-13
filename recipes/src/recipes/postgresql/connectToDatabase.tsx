@@ -31,10 +31,6 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
     src += `            host=os.getenv("POSTGRES_HOST"),\n`;
     src += `            port=os.getenv("POSTGRES_PORT"),\n`;
     src += `        )\n`;
-    if (displayConnStatus) {
-      src += `        # display connection status\n`;
-      src += `        print("Connection status: " + conn.info.status.name)\n`;
-    }
     src += `        return conn\n`;
     src += `    # check for errors\n`;
     src += `    except psycopg.Error as e:\n`;
@@ -48,6 +44,10 @@ export const ConnectToDatabase: React.FC<IRecipeProps> = ({
 
     src += `# open new connection:\n`;
     src += `${conn} = create_new_connection()`;
+    if (displayConnStatus) {
+      src += `\n\n# display connection status\n`;
+      src += `print("Connection status: " + conn.info.status.name)\n`;
+    }
 
     setCode(src);
     setPackages(["import psycopg", "import os", "from dotenv import load_dotenv"]);

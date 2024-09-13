@@ -44,6 +44,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
   const [conn, setConnection] = useState(connections.length ? connections[0] : "");
   const [columns, setColumns] = useState("col1,col2,col3");
   const [table, setTable] = useState("table_name");
+  const [queryResults, setQueryResults] = useState("queryResults");
 
   let columnsArr = columns.split(",");
 
@@ -88,8 +89,11 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
     src += `You can use show tables and columns recipes.\n`;
     src += `            """)\n\n`;
 
+    src += `        # save query results to a variable\n`;
+    src += `        ${queryResults} = cur.fetchall()\n\n`;
+
     src += `        # print the results\n`;
-    src += `        for row in cur.fetchall():\n`;
+    src += `        for row in ${queryResults}:\n`;
     src += `            print(f"{row}")`;
 
     setCode(src);
@@ -99,11 +103,12 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
         conn,
         columns,
         table,
+        queryResults,
         variables: variables.filter((v) => v.varType === CONNECITON_PSYCOPG_TYPE),
         docsUrl: DOCS_URL,
       });
     }
-  }, [conn, columns, table]);
+  }, [conn, columns, table, queryResults]);
 
   useEffect(() => {
     if (metadata) {
@@ -111,6 +116,7 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
       if (metadata["conn"] !== undefined) setConnection(metadata["conn"]);
       if (metadata["columns"] !== undefined) setColumns(metadata["columns"]);
       if (metadata["table"] !== undefined) setTable(metadata["table"]);
+      if (metadata["queryResults"] !== undefined) setQueryResults(metadata["queryResults"]);
     }
   }, [metadata]);
 
@@ -121,12 +127,19 @@ export const SelectQuery: React.FC<IRecipeProps> = ({
         label={"Run sql select query"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
-      <Select
-        label={"Choose connection variable"}
-        option={conn}
-        options={connections.map((d) => [d, d])}
-        setOption={setConnection}
-      />
+      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+        <Select
+          label={"Choose connection variable"}
+          option={conn}
+          options={connections.map((d) => [d, d])}
+          setOption={setConnection}
+        />
+        <Variable
+          label={"Variable to store query results"}
+          name={queryResults}
+          setName={setQueryResults}
+        />
+      </div>
       <Variable
         label={"Select table"}
         name={table}
