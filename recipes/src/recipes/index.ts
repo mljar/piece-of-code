@@ -14,6 +14,7 @@ import { PostgresqlRecipes } from "./postgresql";
 import { OpenAIRecipes } from "./open-ai";
 import { PDFRecipes } from "./pdf-operations"
 import { GoogleSheetsRecipes } from "./google-sheets"
+import { HttpRequestRecipes } from "./http-requests";
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -32,7 +33,8 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   [OpenAIRecipes.name]: OpenAIRecipes,
   [PDFRecipes.name]: PDFRecipes,
-  [GoogleSheetsRecipes.name]: GoogleSheetsRecipes
+  [GoogleSheetsRecipes.name]: GoogleSheetsRecipes,
+  [HttpRequestRecipes.name]: HttpRequestRecipes
   // [WidgetsRecipes.name]: WidgetsRecipes,
 }
 
