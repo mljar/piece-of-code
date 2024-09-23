@@ -47,7 +47,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const authOptions: [string, string][] = [
     ["None", ""],
     ["HTTPBasicAuth", "HTTPBasicAuth"],
-    ["HTTPProxyAuth", "HTTPProxyAuth"],
     ["HTTPDigestAuth", "HTTPDigestAuth"],
     ["Bearer", "Bearer"],
     ["API KEY", "ApiKey"]
