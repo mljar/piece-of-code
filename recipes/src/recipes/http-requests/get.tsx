@@ -109,10 +109,10 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       src += `    headers=headers,\n`;
     }
     else if (authOption === "HTTPBasicAuth") {
-      src += `    auth=requests.models.HTTPBasicAuth(os.getenv("${username}"),os.getenv("${password}")),\n`;
+      src += `    auth=HTTPBasicAuth(os.getenv("${username}"),os.getenv("${password}")),\n`;
     }
     else if (authOption === "HTTPDigestAuth") {
-      src += `    auth=requests.models.HTTPDigestAuth(os.getenv("${username}"),os.getenv("${password}")),\n`;
+      src += `    auth=HTTPDigestAuth(os.getenv("${username}"),os.getenv("${password}")),\n`;
     }
 
     if (passParams) {
@@ -130,7 +130,34 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     src += `else: print(${response}.text)`;
 
     setCode(src);
-    setPackages(["import requests", "import json", "import os", "from dotenv import load_dotenv"]);
+
+    if (authOption === "HTTPBasicAuth") {
+      setPackages([
+        "import requests",
+        "import json",
+        "import os",
+        "from dotenv import load_dotenv",
+        "from requests.auth import HTTPBasicAuth",
+      ]);
+    }
+    else if (authOption === "HTTPDigestAuth") {
+      setPackages([
+        "import requests",
+        "import json",
+        "import os",
+        "from dotenv import load_dotenv",
+        "from requests.auth import HTTPDigestAuth",
+      ]);
+    }
+    else {
+      setPackages([
+        "import requests",
+        "import json",
+        "import os",
+        "from dotenv import load_dotenv"
+      ]);
+    }
+
     if (setMetadata) {
       setMetadata({
         response, url, timeout, authOption, username, password, token, preetyPrint, passParams, params,
