@@ -10,7 +10,7 @@ import { Toggle } from "../../components/Toggle";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 
-const DOCS_URL = "";
+const DOCS_URL = "python-http-get-request";
 
 type ParamsType = {
   key: string;
@@ -333,11 +333,17 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 export const GetRequestRecipe: IRecipe = {
   name: "Get request",
   longName: "Get request",
-  parentName: "https-requests",
-  // len: 176
-  description: "",
-  shortDescription: "",
-  codeExplanation: ``,
+  parentName: "http-requests",
+  // len: 159
+  description: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
+  shortDescription: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
+  codeExplanation: `
+1. If chosen set request parameters to the payload variable.
+2. If chosen set authentication secrets in request headers.
+3. Send requeset.
+4. If the response status code is from 4XX or 5XX range, raise the exception.
+5. Show the response body, if chosen pretty print the JSON response.
+`,
   ui: GetRequest,
   Icon: GetIcon,
   requiredPackages: [
@@ -345,8 +351,7 @@ export const GetRequestRecipe: IRecipe = {
     { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
   ],
   docsUrl: DOCS_URL,
-  tags: ["request"],
+  tags: ["http", "requests", "get"],
   defaultVariables: [],
 };
 export default GetRequestRecipe;
-

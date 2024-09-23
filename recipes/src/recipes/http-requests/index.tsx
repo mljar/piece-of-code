@@ -1,4 +1,4 @@
-import { GetIcon } from "../../icons/httpGet";
+import { GlobeIcon } from "../../icons/Globe";
 import { IRecipeSet } from "../base";
 
 import GetRequestRecipe from "./get";
@@ -12,7 +12,7 @@ export const HttpRequestRecipes: IRecipeSet = {
   //len: 176
   shortDescription: "",
   tags: ["http"],
-  Icon: GetIcon,
+  Icon: GlobeIcon,
   recipes: {
     [GetRequestRecipe.name]: GetRequestRecipe,
   },
