@@ -40,6 +40,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const [response, setResponse] = useState("response");
   const [url, setUrl] = useState("https://example.com");
   const [timeout, setTimeout] = useState(10);
+  const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
   const [saveToFile, setSaveToFile] = useState(false);
@@ -124,19 +125,23 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     }
 
     src += `    timeout=${timeout},\n`;
-    src += `)\n`;
-    src += `${response}.raise_for_status()\n`;
+    src += `)\n\n`;
+
+    src += `${response}.raise_for_status()`;
+
     if (saveToFile) {
-      src += `with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
-      src += `    if ${response}.headers["Content-type"] == "application/json": file.write(json.dump(r.json(), file, ensure_ascii=False, indent=4)\n`;
-      src += `    else: file.write(r.content)\n`;
+      src += `\n\nwith open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
+      src += `    if ${response}.headers["Content-type"] == "application/json": file.write(json.dump(${response}.json(), file, ensure_ascii=False, indent=4))\n`;
+      src += `    else: file.write(${response}.content)`;
     }
-    if (preetyPrint) {
-      src += `if ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=2))\n`;
-    } else {
-      src += `if ${response}.headers["Content-type"] == "application/json": print(${response}.json())\n`;
+    if (showResponse) {
+      if (preetyPrint) {
+        src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=4))\n`;
+      } else {
+        src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(${response}.json())\n`;
+      }
+      src += `else: print(${response}.text)`;
     }
-    src += `else: print(${response}.text)`;
 
     setCode(src);
 
@@ -169,11 +174,11 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, preetyPrint, passParams, params, saveToFile, filePath, fileName,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName,
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, preetyPrint, passParams, params, saveToFile, filePath, fileName]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName]);
 
   useEffect(() => {
     if (metadata) {
@@ -185,6 +190,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       if (metadata["username"] !== undefined) setUsername(metadata["username"]);
       if (metadata["password"] !== undefined) setPassword(metadata["password"]);
       if (metadata["token"] !== undefined) setToken(metadata["token"]);
+      if (metadata["showResponse"] !== undefined) setShowResponse(metadata["showResponse"]);
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
@@ -297,12 +303,22 @@ export const GetRequest: React.FC<IRecipeProps> = ({
           setValue={setPassParams}
           paddingTop={false}
         />
-        <Toggle
-          label={"Pretty print json"}
-          value={preetyPrint}
-          setValue={setPreetyPrint}
-          paddingTop={false}
-        />
+        <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+          <Toggle
+            label={"Show response"}
+            value={showResponse}
+            setValue={setShowResponse}
+            paddingTop={false}
+          />
+          {showResponse && (
+            < Toggle
+              label={"Pretty print json"}
+              value={preetyPrint}
+              setValue={setPreetyPrint}
+              paddingTop={false}
+            />
+          )}
+        </div>
       </div>
       {paramsElements}
       <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2 poc-h-16">
