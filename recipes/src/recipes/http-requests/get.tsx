@@ -98,9 +98,8 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``
 
-    if (authOption !== "None") {
-      src += `load_dotenv(override=True)\n\n`;
-    }
+    src += `load_dotenv(override=True)\n\n`;
+
     if (authOption === "ApiKey") {
       src += `headers = { "Authorization": f"ApiKey {os.getenv("${token}")}" }\n\n`;
     }
@@ -136,9 +135,15 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     src += `${response}.raise_for_status()`;
 
     if (saveToFile) {
-      src += `\n\nwith open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
-      src += `    if ${response}.headers["Content-type"] == "application/json": file.write(json.dump(${response}.json(), file, ensure_ascii=False, indent=4))\n`;
-      src += `    else: file.write(${response}.content)`;
+      src += `\n\nif ${response}.headers["Content-type"] == "application/json":\n`;
+      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file:\n`;
+      src += `        json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
+      src += `else:\n`;
+      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
+      src += `        file.write(${response}.content)`;
+
+      // src += `\n\nif ${response}.headers["Content-type"] == "application/json": with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file: json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
+      // src += `else: with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file: file.write(${response}.content)`;
     }
     if (showResponse) {
       if (preetyPrint) {
