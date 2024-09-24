@@ -15,6 +15,7 @@ const DOCS_URL = "python-http-get-request";
 
 type ParamsType = {
   key: string;
+  valueFromSecret: boolean;
   value: string;
 };
 
@@ -69,6 +70,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         setParams([
           {
             key: "",
+            valueFromSecret: false,
             value: "",
           },
         ]);
@@ -83,7 +85,11 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       let valArr = params[i].value.split(",");
       let valRow = ""
       for (let j = 0; j < valArr.length; j++) {
-        valRow = valRow.concat("\"", valArr[j].trim(), "\", ")
+        if (params[i].valueFromSecret) {
+          valRow = valRow.concat("os.getenv(\"", valArr[j].trim(), "\"), ")
+        } else {
+          valRow = valRow.concat("\"", valArr[j].trim(), "\", ")
+        }
       }
       rows = rows.concat("\"", params[i].key, "\": [", valRow, "], ",)
     }
@@ -208,6 +214,13 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
+    function setValueFromSecret(value: SetStateAction<boolean>): void {
+      setParams(
+        params.map((p, j) =>
+          index !== j ? p : { ...param, valueFromSecret: value.valueOf() as boolean }
+        )
+      );
+    }
     function setValue(value: SetStateAction<string>): void {
       setParams(
         params.map((p, j) =>
@@ -221,20 +234,38 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
         key={`request-params-${index}`}
       >
-        <div className="poc-col-span-5">
+        <div className="poc-col-span-4">
           <Variable
             label="Key"
             name={param.key}
             setName={setKey}
           />
         </div>
-        <div className="poc-col-span-5">
-          <Variable
-            label="Value"
-            name={param.value}
-            setName={setValue}
+        <div className="poc-col-span-2">
+          <Toggle
+            label={"Secret value"}
+            value={param.valueFromSecret}
+            setValue={setValueFromSecret}
           />
         </div>
+        {param.valueFromSecret && (
+          <div className="poc-col-span-4">
+            <Variable
+              label="Secret value"
+              name={param.value}
+              setName={setValue}
+            />
+          </div>
+        )}
+        {!param.valueFromSecret && (
+          <div className="poc-col-span-4">
+            <Variable
+              label="Value"
+              name={param.value}
+              setName={setValue}
+            />
+          </div>
+        )}
         <div className="">
           <div className=" poc-inline">
             <button
@@ -247,6 +278,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
                   ...params,
                   {
                     key: "",
+                    valueFromSecret: false,
                     value: "",
                   },
                 ])
@@ -296,14 +328,16 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         name={url}
         setName={setUrl}
       />
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-        <Toggle
-          label={"Pass parameters"}
-          value={passParams}
-          setValue={setPassParams}
-          paddingTop={false}
-        />
-        <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+      <div className="poc-grid md:poc-grid-cols-11 md:poc-gap-2">
+        <div className="poc-col-span-6">
+          <Toggle
+            label={"Pass parameters"}
+            value={passParams}
+            setValue={setPassParams}
+            paddingTop={false}
+          />
+        </div>
+        <div className="poc-col-span-5 poc-grid md:poc-grid-cols-2 md:poc-gap-2">
           <Toggle
             label={"Show response"}
             value={showResponse}
