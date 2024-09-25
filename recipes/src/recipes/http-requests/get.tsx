@@ -28,8 +28,8 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
-  variablesStatus,
-  variables,
+  // variablesStatus,
+  // variables,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -118,7 +118,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `payload = { ${rows} }\n\n`;
+      src += `params = { ${rows} }\n\n`;
     }
 
     src += `${response} = requests.get(\n`;
@@ -136,7 +136,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `    params=payload,\n`;
+      src += `    params=params,\n`;
     }
 
     src += `    timeout=${timeout},\n`;
@@ -476,7 +476,7 @@ export const GetRequestRecipe: IRecipe = {
   description: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
   shortDescription: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
   codeExplanation: `
-1. If chosen set request parameters to the payload variable.
+1. If chosen set request parameters to the params variable.
 2. If chosen set authentication secrets in request headers.
 3. Send requeset.
 4. If the response status code is from 4XX or 5XX range, raise the exception.
