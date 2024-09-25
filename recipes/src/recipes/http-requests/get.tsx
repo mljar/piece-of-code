@@ -9,7 +9,6 @@ import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
-import { SelectPath } from "../../components/SelectPath";
 import { CakeIcon } from "../../icons/Cake";
 import { PlayIcon } from "../../icons/Play";
 
@@ -48,9 +47,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
-  const [saveToFile, setSaveToFile] = useState(false);
-  const [fileName, setFileName] = useState("response.json")
-  const [filePath, setFilePath] = useState("")
 
   const [params, setParams] = useState([] as ParamsType[]);
 
@@ -144,17 +140,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 
     src += `${response}.raise_for_status()`;
 
-    if (saveToFile) {
-      src += `\n\nif ${response}.headers["Content-type"] == "application/json":\n`;
-      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file:\n`;
-      src += `        json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
-      src += `else:\n`;
-      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
-      src += `        file.write(${response}.content)`;
-
-      // src += `\n\nif ${response}.headers["Content-type"] == "application/json": with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file: json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
-      // src += `else: with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file: file.write(${response}.content)`;
-    }
     if (showResponse) {
       if (preetyPrint) {
         src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=4))\n`;
@@ -195,11 +180,11 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params,
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params]);
 
   useEffect(() => {
     if (metadata) {
@@ -215,9 +200,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
-      if (metadata["saveToFile"] !== undefined) setSaveToFile(metadata["saveToFile"]);
-      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
-      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
@@ -370,36 +352,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         </div>
       </div>
       {paramsElements}
-      <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2 poc-h-16">
-        <div className="poc-col-span-1">
-          <Toggle
-            label={"Save response to file"}
-            value={saveToFile}
-            setValue={setSaveToFile}
-          />
-        </div>
-        <div className="poc-col-span-2">
-          {saveToFile && (
-            <SelectPath
-              label={"Select folder"}
-              setPath={setFilePath}
-              defaultPath={filePath}
-              selectFolder={true}
-            />
-          )}
-        </div>
-        <div className="poc-col-span-2">
-          {saveToFile && (
-            <Variable
-              label={"File name"}
-              name={fileName}
-              setName={setFileName}
-              tooltip="Dont't forget to add extension to the file name"
-            />
-          )}
-        </div>
-      </div>
-
       <Numeric
         label={"Set the timeout"}
         name={timeout}
