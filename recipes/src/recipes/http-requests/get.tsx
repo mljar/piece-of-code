@@ -10,6 +10,8 @@ import { Toggle } from "../../components/Toggle";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { SelectPath } from "../../components/SelectPath";
+import { CakeIcon } from "../../icons/Cake";
+import { PlayIcon } from "../../icons/Play";
 
 const DOCS_URL = "python-http-get-request";
 
@@ -24,6 +26,8 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  runCell,
+  setKeepOpen,
   variablesStatus,
   variables,
 }) => {
@@ -61,6 +65,12 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (setKeepOpen) {
+      setKeepOpen(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!passParams) {
@@ -423,6 +433,37 @@ export const GetRequest: React.FC<IRecipeProps> = ({
           setName={setToken}
         />
       )}
+      <div className="poc-grid md:poc-grid-cols-1 md:poc-gap-2">
+        <div className="poc-pt-4">
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Add new cell below"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center  poc-float-right"
+            onClick={() => {
+              if (setKeepOpen) {
+                setKeepOpen(false);
+              }
+            }}
+          >
+            <CakeIcon className="poc-inline poc-pb-1" />
+            Response is ok, hide recipe
+          </button>
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Run code"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center poc-mx-1 poc-float-right"
+            onClick={() => {
+              if (runCell) {
+                runCell();
+              }
+            }}
+          >
+            {<PlayIcon className="poc-inline poc-p-1" />}Run request
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
