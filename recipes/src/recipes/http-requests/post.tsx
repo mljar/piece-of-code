@@ -134,7 +134,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
     }
 
 
-    src += `${response} = requests.get(\n`;
+    src += `${response} = requests.post(\n`;
     src += `    url = '${url}',\n`;
 
     if (authOption === "") { }
