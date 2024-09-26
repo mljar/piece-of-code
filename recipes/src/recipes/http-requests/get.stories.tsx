@@ -5,7 +5,7 @@ import { GetRequest } from "./get";
 
 const meta: Meta<typeof GetRequest> = {
   component: GetRequest,
-  title: "CodePieces/requests",
+  title: "CodePieces/http-requests/Get",
   argTypes: {},
 };
 export default meta;

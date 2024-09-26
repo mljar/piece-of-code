@@ -27,8 +27,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
-  // variablesStatus,
-  // variables,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -328,7 +326,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       <div className="poc-grid md:poc-grid-cols-11 md:poc-gap-2">
         <div className="poc-col-span-6">
           <Toggle
-            label={"Pass parameters"}
+            label={"Pass url parameters"}
             value={passParams}
             setValue={setPassParams}
             paddingTop={false}
