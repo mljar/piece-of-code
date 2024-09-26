@@ -252,7 +252,6 @@ export const PostRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
-
     return (
       <div
         className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
@@ -311,7 +310,6 @@ export const PostRequest: React.FC<IRecipeProps> = ({
               {<PlusIcon className="poc-inline poc-pb-1" />}
             </button>
           </div>
-
           {params.length > 1 && (
             <div className=" poc-inline poc-mx-1">
               <button
@@ -479,10 +477,17 @@ export const PostRequestRecipe: IRecipe = {
   name: "Post request",
   longName: "Post request",
   parentName: "http-requests",
-  // len: 159
-  description: "",
-  shortDescription: "",
+  // len: 223
+  description: "Send HTTP Post request to the URL of your choosing, pass URL parameters and data body as string or JSON, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
+  shortDescription: "Send HTTP Post request to the URL of your choosing, pass URL parameters and data body as string or JSON, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
   codeExplanation: `
+1. If chosen set request parameters to the params variable with option to load a secret value.
+2. If chosen set request body data with option to set json as body.
+3. If chosen set authentication secrets in request headers.
+4. Send requeset.
+5. If timeout time exeeded, fail the request.
+6. If the response status code is from 4XX or 5XX range, raise the exception.
+7. If chosen show the response body, with option to pretty print the JSON response.
 `,
   ui: PostRequest,
   Icon: PostIcon,

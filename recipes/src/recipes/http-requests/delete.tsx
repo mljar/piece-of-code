@@ -4,7 +4,6 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { GetIcon } from "../../icons/httpGet";
 import { Numeric } from "../../components/Numeric";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
@@ -225,7 +224,6 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
-
     return (
       <div
         className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
@@ -284,7 +282,6 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
               {<PlusIcon className="poc-inline poc-pb-1" />}
             </button>
           </div>
-
           {params.length > 1 && (
             <div className=" poc-inline poc-mx-1">
               <button
@@ -424,10 +421,16 @@ export const DeleteRequestRecipe: IRecipe = {
   name: "Delete request",
   longName: "Delete request",
   parentName: "http-requests",
-  // len: 159
-  description: "",
-  shortDescription: "",
+  // len: 193
+  description: "Send HTTP Delete request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
+  shortDescription: "Send HTTP Delete request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
   codeExplanation: `
+1. If chosen set request parameters to the params variable with option to load a secret value.
+2. If chosen set authentication secrets in request headers.
+3. Send requeset.
+4. If timeout time exeeded, fail the request.
+5. If the response status code is from 4XX or 5XX range, raise the exception.
+6. If chosen show the response body, with option to pretty print the JSON response.
 `,
   ui: DeleteRequest,
   Icon: DeleteIcon,
