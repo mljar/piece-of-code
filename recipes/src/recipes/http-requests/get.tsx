@@ -410,7 +410,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
               }
             }}
           >
-            {<PlayIcon className="poc-inline poc-p-1" />}Run request
+            {<PlayIcon className="poc-inline poc-p-1" />}Send request
           </button>
         </div>
       </div>
