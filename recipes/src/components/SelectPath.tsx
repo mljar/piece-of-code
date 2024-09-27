@@ -62,10 +62,10 @@ export const SelectPath: React.FC<SelectPathProps> = ({
 
       {isElectron && (
         <div
-          className="poc-block poc-w-full poc-text-gray-900 
+          className="poc-h-8 poc-block poc-w-full poc-text-gray-900 
         poc-border poc-border-gray-300 poc-rounded-md poc-cursor-pointer poc-bg-gray-50 
         dark:poc-text-gray-400 focus:poc-outline-none focus:poc-border focus:poc-border-blue-500 dark:poc-bg-gray-700 
-        dark:poc-border-gray-600 dark:poc-placeholder-gray-400 poc-p-0.5 "
+        dark:poc-border-gray-600 dark:poc-placeholder-gray-400"
         >
           <button
             type="button"
@@ -90,7 +90,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
 
       {!isElectron && !selectFolder && (
         <input
-          className="poc-block poc-w-full poc-text-gray-900 
+          className="poc-h-8 poc-block poc-w-full poc-text-gray-900 
         poc-border poc-border-gray-300 poc-rounded-md poc-cursor-pointer poc-bg-gray-50 
         dark:poc-text-gray-400 focus:poc-outline-none focus:poc-border focus:poc-border-blue-500 dark:poc-bg-gray-700 
         dark:poc-border-gray-600 dark:poc-placeholder-gray-400 poc-p-0.5 poc-text-base
@@ -113,7 +113,7 @@ export const SelectPath: React.FC<SelectPathProps> = ({
       {!isElectron && selectFolder && (
         <input
           type="text"
-          className="poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
+          className="poc-h-8 poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
         poc-rounded-md 
         focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 
         focus:poc-border
