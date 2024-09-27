@@ -5,6 +5,7 @@ import DeleteRequestRecipe from "./delete";
 import PostRequestRecipe from "./post";
 import PutRequestRecipe from "./put";
 import PatchRequestRecipe from "./patch";
+import PostFileRequestRecipe from "./post-file";
 
 
 export const HttpRequestRecipes: IRecipeSet = {
@@ -21,6 +22,7 @@ export const HttpRequestRecipes: IRecipeSet = {
     [GetRequestRecipe.name]: GetRequestRecipe,
     [PutRequestRecipe.name]: PutRequestRecipe,
     [PostRequestRecipe.name]: PostRequestRecipe,
+    [PostFileRequestRecipe.name]: PostFileRequestRecipe,
     [PatchRequestRecipe.name]: PatchRequestRecipe,
     [DeleteRequestRecipe.name]: DeleteRequestRecipe,
   },
