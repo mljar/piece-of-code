@@ -20,12 +20,6 @@ type ParamsType = {
   value: string;
 };
 
-// type DataType = {
-//   key: string;
-//   valueFromSecret: boolean;
-//   value: string;
-// };
-
 export const PutRequest: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
@@ -33,7 +27,6 @@ export const PutRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
-  variablesStatus,
   variables,
 }) => {
 
@@ -135,7 +128,7 @@ export const PutRequest: React.FC<IRecipeProps> = ({
 
 
     src += `${response} = requests.put(\n`;
-    src += `    url = '${url}',\n`;
+    src += `    url = "${url}",\n`;
 
     if (authOption === "") { }
     else if (authOption === "Bearer" || authOption === "ApiKey") {

@@ -20,12 +20,6 @@ type ParamsType = {
   value: string;
 };
 
-// type DataType = {
-//   key: string;
-//   valueFromSecret: boolean;
-//   value: string;
-// };
-
 export const PostRequest: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
@@ -33,7 +27,6 @@ export const PostRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
-  variablesStatus,
   variables,
 }) => {
 
@@ -53,7 +46,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
   const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
-  const [sendData, setSendData] = useState("");
+  const [data, setData] = useState("");
   const [sendJSON, setSendJSON] = useState(false);
 
   const jsons = variables
@@ -135,7 +128,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
 
 
     src += `${response} = requests.post(\n`;
-    src += `    url = '${url}',\n`;
+    src += `    url = "${url}",\n`;
 
     if (authOption === "") { }
     else if (authOption === "Bearer" || authOption === "ApiKey") {
@@ -152,8 +145,8 @@ export const PostRequest: React.FC<IRecipeProps> = ({
       src += `    params=params,\n`;
     }
 
-    if ((sendData !== "") && (!sendJSON)) {
-      src += `    data="${sendData}",\n`;
+    if ((data !== "") && (!sendJSON)) {
+      src += `    data="${data}",\n`;
     } else if (sendJSON) {
       src += `    json=${json},\n`;
     }
@@ -204,11 +197,11 @@ export const PostRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, sendData, sendJSON, json,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, data, sendJSON, json,
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, sendData, sendJSON, json]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, data, sendJSON, json]);
 
   useEffect(() => {
     if (metadata) {
@@ -224,7 +217,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
-      if (metadata["sendData"] !== undefined) setSendData(metadata["sendData"]);
+      if (metadata["data"] !== undefined) setData(metadata["data"]);
       if (metadata["sendJSON"] !== undefined) setSendJSON(metadata["sendJSON"]);
       if (metadata["json"] !== undefined) setJSON(metadata["json"]);
     }
@@ -382,8 +375,8 @@ export const PostRequest: React.FC<IRecipeProps> = ({
           <div className="poc-col-span-6">
             <Variable
               label={"Send data"}
-              name={sendData}
-              setName={setSendData}
+              name={data}
+              setName={setData}
             />
           </div>
         )}
