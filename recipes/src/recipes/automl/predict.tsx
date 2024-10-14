@@ -31,8 +31,8 @@ export const Predict: React.FC<IRecipeProps> = ({
   }
   if (variablesStatus === "loaded" && !automls.length) {
     return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
+      <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-4 poc-rounded-md poc-text-xl">
+        <p className="poc-text-base poc-text-gray-800 dark:poc-text-white">
           There are no AutoML objects in your notebook. Please train AutoML or
           load AutoML from folder.
         </p>
@@ -44,8 +44,8 @@ export const Predict: React.FC<IRecipeProps> = ({
     .map((v) => v.varName);
   if (variablesStatus === "loaded" && !dataFrames.length) {
     return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
+      <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-4 poc-rounded-md">
+        <p className="poc-text-base poc-text-gray-800 dark:poc-text-white">
           There are no DataFrames in your notebook. Please load example dataset
           or read data from file.
         </p>

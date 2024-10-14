@@ -16,8 +16,8 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 }) => {
   if (variablesStatus === "loading") {
     return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
+      <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-4 poc-rounded-md">
+        <p className="poc-text-base poc-text-gray-800 dark:poc-text-white">
           Loading variables ...
         </p>
       </div>
@@ -30,8 +30,8 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
 
   if (automls.length == 0) {
     return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
+      <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-4 poc-rounded-md">
+        <p className="poc-text-base poc-text-gray-800 dark:poc-text-white">
           There are no AutoML objects in your notebook. Please train AutoML or
           load AutoML from folder.
         </p>
