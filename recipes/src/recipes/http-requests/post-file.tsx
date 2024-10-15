@@ -3,7 +3,6 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { PatchIcon } from "../../icons/httpPatch";
 import { Numeric } from "../../components/Numeric";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
@@ -11,8 +10,10 @@ import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
 import { CakeIcon } from "../../icons/Cake";
 import { PlayIcon } from "../../icons/Play";
+import { UploadIcon } from "../../icons/upload";
+import { SelectPath } from "../../components/SelectPath";
 
-const DOCS_URL = "python-http-patch-request";
+const DOCS_URL = "python-http-postFile-request";
 
 type ParamsType = {
   key: string;
@@ -20,14 +21,13 @@ type ParamsType = {
   value: string;
 };
 
-export const PatchRequest: React.FC<IRecipeProps> = ({
+export const PostFileRequest: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
   setMetadata,
   runCell,
   setKeepOpen,
-  variables,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -46,16 +46,8 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
   const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
-  const [sendData, setSendData] = useState("");
-  const [sendJSON, setSendJSON] = useState(false);
-
-  const jsons = variables
-    .filter((v) => v.varType === "dict")
-    .map((v) => v.varName);
-
-  const [json, setJSON] = useState(
-    jsons.length ? jsons[0] : ""
-  );
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("");
 
   const [params, setParams] = useState([] as ParamsType[]);
 
@@ -127,7 +119,7 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
     }
 
 
-    src += `${response} = requests.patch(\n`;
+    src += `${response} = requests.post(\n`;
     src += `    url = "${url}",\n`;
 
     if (authOption === "") { }
@@ -145,11 +137,10 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
       src += `    params=params,\n`;
     }
 
-    if ((sendData !== "") && (!sendJSON)) {
-      src += `    data="${sendData}",\n`;
-    } else if (sendJSON) {
-      src += `    json=${json},\n`;
-    }
+    src += `    files={"file": ("${fileName}", open(os.path.join(r"${filePath}", "${fileName}"), "rb"))},\n`;
+    // src += `fname = os.path.join(r"${filePath}", "${fileName}")\n`;
+    // files = {'file': ('report.xls', open('report.xls', 'rb'), 'application/vnd.ms-excel', {'Expires': '0'})}
+
 
     src += `    timeout=${timeout},\n`;
     src += `)\n\n`;
@@ -197,11 +188,11 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, sendData, sendJSON, json,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, fileName, filePath, 
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, sendData, sendJSON, json]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, fileName, filePath]);
 
   useEffect(() => {
     if (metadata) {
@@ -217,9 +208,8 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
-      if (metadata["sendData"] !== undefined) setSendData(metadata["sendData"]);
-      if (metadata["sendJSON"] !== undefined) setSendJSON(metadata["sendJSON"]);
-      if (metadata["json"] !== undefined) setJSON(metadata["json"]);
+      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
+      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
     }
   }, [metadata]);
 
@@ -329,8 +319,8 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
   return (
     <div>
       <Title
-        Icon={PatchIcon}
-        label={"Patch request"}
+        Icon={UploadIcon}
+        label={"PostFile request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
       />
       <Variable
@@ -371,30 +361,20 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
       </div>
       {paramsElements}
       <div className="poc-grid md:poc-grid-cols-11 md:poc-gap-2">
-        {!sendJSON && (
-          <div className="poc-col-span-6">
-            <Variable
-              label={"Send data"}
-              name={sendData}
-              setName={setSendData}
-            />
-          </div>
-        )}
-        {sendJSON && (
-          <div className="poc-col-span-6">
-            <Select
-              label={"Send JSON"}
-              option={json}
-              options={jsons.map((d) => [d, d])}
-              setOption={setJSON}
-            />
-          </div>
-        )}
-        <div className="poc-col-span-4">
-          <Toggle
-            label={"Send JSON"}
-            value={sendJSON}
-            setValue={setSendJSON}
+        <div className="poc-col-span-6">
+          <SelectPath
+            label={"Select folder"}
+            defaultPath={filePath}
+            setPath={setFilePath}
+            selectFolder={true}
+          />
+        </div>
+        <div className="poc-col-span-5">
+          <Variable
+            label={"File name"}
+            name={fileName}
+            setName={setFileName}
+            tooltip="Dont't forget to add extension"
           />
         </div>
       </div>
@@ -466,30 +446,23 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
   );
 };
 
-export const PatchRequestRecipe: IRecipe = {
-  name: "Patch request",
-  longName: "Patch request",
+export const PostFileRequestRecipe: IRecipe = {
+  name: "Post file request",
+  longName: "Post file request",
   parentName: "http-requests",
-  // len: 224
-  description: "Send HTTP Patch request to the URL of your choosing, pass URL parameters and data body as string or JSON, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
-  shortDescription: "Send HTTP Patch request to the URL of your choosing, pass URL parameters and data body as string or JSON, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
+  // len:
+  description: "",
+  shortDescription: "",
   codeExplanation: `
-1. If chosen set request parameters to the params variable with option to load a secret value.
-2. If chosen set request body data with option to set json as body.
-3. If chosen set authentication secrets in request headers.
-4. Send requeset.
-5. If timeout time exeeded, fail the request.
-6. If the response status code is from 4XX or 5XX range, raise the exception.
-7. If chosen show the response body, with option to pretty print the JSON response.
 `,
-  ui: PatchRequest,
-  Icon: PatchIcon,
+  ui: PostFileRequest,
+  Icon: UploadIcon,
   requiredPackages: [
     { importName: "requests", installationName: "requests", version: ">=2.32.3" },
     { importName: "dotenv", installationName: "python-dotenv", version: ">=1.0.1" },
   ],
   docsUrl: DOCS_URL,
-  tags: ["http", "requests", "patch"],
+  tags: ["http", "requests", "post"],
   defaultVariables: [],
 };
-export default PatchRequestRecipe;
+export default PostFileRequestRecipe;

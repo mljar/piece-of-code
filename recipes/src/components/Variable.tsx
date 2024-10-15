@@ -37,7 +37,7 @@ export const Variable: React.FC<VariableProps> = ({
           )}
           <input
             type={inputType}
-            className="poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
+            className="poc-h-8 poc-bg-gray-50 poc-border poc-border-gray-300 poc-text-gray-900 
         poc-rounded-md 
         focus:poc-border-blue-500 poc-block poc-w-full poc-p-1.5 poc-pb-2
         focus:poc-border

@@ -58,7 +58,7 @@ export const FilterSelect: React.FC<FilterSelectProps> = ({
         <select
           value={option}
           onChange={(e) => setOption(e.target.value)}
-          className="poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
+          className="poc-h-8 poc-border poc-rounded-md poc-block poc-w-full poc-p-2 
           poc-bg-gray-50 
           poc-border-gray-300 
           poc-text-gray-900 

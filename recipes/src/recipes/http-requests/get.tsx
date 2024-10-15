@@ -9,7 +9,8 @@ import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
-import { SelectPath } from "../../components/SelectPath";
+import { CakeIcon } from "../../icons/Cake";
+import { PlayIcon } from "../../icons/Play";
 
 const DOCS_URL = "python-http-get-request";
 
@@ -24,8 +25,8 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
-  variablesStatus,
-  variables,
+  runCell,
+  setKeepOpen,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -44,9 +45,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
-  const [saveToFile, setSaveToFile] = useState(false);
-  const [fileName, setFileName] = useState("response.json")
-  const [filePath, setFilePath] = useState("")
 
   const [params, setParams] = useState([] as ParamsType[]);
 
@@ -61,6 +59,12 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (setKeepOpen) {
+      setKeepOpen(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!passParams) {
@@ -108,7 +112,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `payload = { ${rows} }\n\n`;
+      src += `params = { ${rows} }\n\n`;
     }
 
     src += `${response} = requests.get(\n`;
@@ -126,7 +130,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `    params=payload,\n`;
+      src += `    params=params,\n`;
     }
 
     src += `    timeout=${timeout},\n`;
@@ -134,17 +138,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 
     src += `${response}.raise_for_status()`;
 
-    if (saveToFile) {
-      src += `\n\nif ${response}.headers["Content-type"] == "application/json":\n`;
-      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file:\n`;
-      src += `        json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
-      src += `else:\n`;
-      src += `    with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file:\n`;
-      src += `        file.write(${response}.content)`;
-
-      // src += `\n\nif ${response}.headers["Content-type"] == "application/json": with open(os.path.join(r"${filePath}", "${fileName}"), "w") as file: json.dump(${response}.json(), file, ensure_ascii=False, indent=4)\n`;
-      // src += `else: with open(os.path.join(r"${filePath}", "${fileName}"), "wb") as file: file.write(${response}.content)`;
-    }
     if (showResponse) {
       if (preetyPrint) {
         src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=4))\n`;
@@ -185,11 +178,11 @@ export const GetRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params,
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params, saveToFile, filePath, fileName]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params]);
 
   useEffect(() => {
     if (metadata) {
@@ -205,9 +198,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
-      if (metadata["saveToFile"] !== undefined) setSaveToFile(metadata["saveToFile"]);
-      if (metadata["filePath"] !== undefined) setFilePath(metadata["filePath"]);
-      if (metadata["fileName"] !== undefined) setFileName(metadata["fileName"]);
     }
   }, [metadata]);
 
@@ -233,7 +223,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
-
     return (
       <div
         className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
@@ -292,7 +281,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
               {<PlusIcon className="poc-inline poc-pb-1" />}
             </button>
           </div>
-
           {params.length > 1 && (
             <div className=" poc-inline poc-mx-1">
               <button
@@ -336,7 +324,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
       <div className="poc-grid md:poc-grid-cols-11 md:poc-gap-2">
         <div className="poc-col-span-6">
           <Toggle
-            label={"Pass parameters"}
+            label={"Pass url parameters"}
             value={passParams}
             setValue={setPassParams}
             paddingTop={false}
@@ -360,36 +348,6 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         </div>
       </div>
       {paramsElements}
-      <div className="poc-grid md:poc-grid-cols-5 md:poc-gap-2 poc-h-16">
-        <div className="poc-col-span-1">
-          <Toggle
-            label={"Save response to file"}
-            value={saveToFile}
-            setValue={setSaveToFile}
-          />
-        </div>
-        <div className="poc-col-span-2">
-          {saveToFile && (
-            <SelectPath
-              label={"Select folder"}
-              setPath={setFilePath}
-              defaultPath={filePath}
-              selectFolder={true}
-            />
-          )}
-        </div>
-        <div className="poc-col-span-2">
-          {saveToFile && (
-            <Variable
-              label={"File name"}
-              name={fileName}
-              setName={setFileName}
-              tooltip="Dont't forget to add extension to the file name"
-            />
-          )}
-        </div>
-      </div>
-
       <Numeric
         label={"Set the timeout"}
         name={timeout}
@@ -423,6 +381,37 @@ export const GetRequest: React.FC<IRecipeProps> = ({
           setName={setToken}
         />
       )}
+      <div className="poc-grid md:poc-grid-cols-1 md:poc-gap-2">
+        <div className="poc-pt-4">
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Add new cell below"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center  poc-float-right"
+            onClick={() => {
+              if (setKeepOpen) {
+                setKeepOpen(false);
+              }
+            }}
+          >
+            <CakeIcon className="poc-inline poc-pb-1" />
+            Response is ok, hide recipe
+          </button>
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Run code"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center poc-mx-1 poc-float-right"
+            onClick={() => {
+              if (runCell) {
+                runCell();
+              }
+            }}
+          >
+            {<PlayIcon className="poc-inline poc-p-1" />}Send request
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -431,15 +420,16 @@ export const GetRequestRecipe: IRecipe = {
   name: "Get request",
   longName: "Get request",
   parentName: "http-requests",
-  // len: 159
-  description: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
-  shortDescription: "Send HTTP Get request to the URL of your choosing, pass parameters, set timeout, authenticate with many different auth options, pretty print the JSON response.",
+  // len: 190
+  description: "Send HTTP Get request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
+  shortDescription: "Send HTTP Get request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
   codeExplanation: `
-1. If chosen set request parameters to the payload variable.
+1. If chosen set request parameters to the params variable with option to load a secret value.
 2. If chosen set authentication secrets in request headers.
 3. Send requeset.
-4. If the response status code is from 4XX or 5XX range, raise the exception.
-5. Show the response body, if chosen pretty print the JSON response.
+4. If timeout time exeeded, fail the request.
+5. If the response status code is from 4XX or 5XX range, raise the exception.
+6. If chosen show the response body, with option to pretty print the JSON response.
 `,
   ui: GetRequest,
   Icon: GetIcon,

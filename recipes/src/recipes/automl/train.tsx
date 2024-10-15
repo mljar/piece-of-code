@@ -21,8 +21,8 @@ export const Train: React.FC<IRecipeProps> = ({
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
-      <div className="bg-white dark:poc-bg-slate-800 p-4 rounded-md">
-        <p className="text-base text-gray-800 dark:text-white">
+      <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-4 poc-rounded-md">
+        <p className="poc-text-base poc-text-gray-800 dark:poc-text-white">
           There are no DataFrames in your notebook. Please create DataFrame by
           reading data from file, url or database.
         </p>

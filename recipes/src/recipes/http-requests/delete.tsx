@@ -1,19 +1,23 @@
+
 import React, { SetStateAction, useEffect, useState } from "react";
 
 import { IRecipe, IRecipeProps } from "../base";
 import { Title } from "../../components/Title";
 import { Variable } from "../../components/Variable";
-import { DeleteIcon } from "../../icons/httpDelete";
 import { Numeric } from "../../components/Numeric";
 import { Select } from "../../components/Select";
 import { Toggle } from "../../components/Toggle";
 import { PlusIcon } from "../../icons/Plus";
 import { TrashIcon } from "../../icons/Trash";
+import { CakeIcon } from "../../icons/Cake";
+import { PlayIcon } from "../../icons/Play";
+import { DeleteIcon } from "../../icons/httpDelete";
 
 const DOCS_URL = "python-http-delete-request";
 
 type ParamsType = {
   key: string;
+  valueFromSecret: boolean;
   value: string;
 };
 
@@ -22,8 +26,8 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
-  variablesStatus,
-  variables,
+  runCell,
+  setKeepOpen,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -39,6 +43,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
   const [response, setResponse] = useState("response");
   const [url, setUrl] = useState("https://example.com");
   const [timeout, setTimeout] = useState(10);
+  const [showResponse, setShowResponse] = useState(false);
   const [preetyPrint, setPreetyPrint] = useState(false);
   const [passParams, setPassParams] = useState(false);
 
@@ -57,6 +62,12 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
   const [password, setPassword] = useState("");
 
   useEffect(() => {
+    if (setKeepOpen) {
+      setKeepOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!passParams) {
       setParams([]);
     } else {
@@ -64,6 +75,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         setParams([
           {
             key: "",
+            valueFromSecret: false,
             value: "",
           },
         ]);
@@ -78,7 +90,11 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
       let valArr = params[i].value.split(",");
       let valRow = ""
       for (let j = 0; j < valArr.length; j++) {
-        valRow = valRow.concat("\"", valArr[j].trim(), "\", ")
+        if (params[i].valueFromSecret) {
+          valRow = valRow.concat("os.getenv(\"", valArr[j].trim(), "\"), ")
+        } else {
+          valRow = valRow.concat("\"", valArr[j].trim(), "\", ")
+        }
       }
       rows = rows.concat("\"", params[i].key, "\": [", valRow, "], ",)
     }
@@ -87,9 +103,8 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
   useEffect(() => {
     let src = ``
 
-    if (authOption !== "None") {
-      src += `load_dotenv(override=True)\n\n`;
-    }
+    src += `load_dotenv(override=True)\n\n`;
+
     if (authOption === "ApiKey") {
       src += `headers = { "Authorization": f"ApiKey {os.getenv("${token}")}" }\n\n`;
     }
@@ -98,11 +113,11 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `payload = { ${rows} }\n\n`;
+      src += `params = { ${rows} }\n\n`;
     }
 
-    src += `${response} = requests.get(\n`;
-    src += `    url = '${url}',\n`;
+    src += `${response} = requests.delete(\n`;
+    src += `    url = "${url}",\n`;
 
     if (authOption === "") { }
     else if (authOption === "Bearer" || authOption === "ApiKey") {
@@ -116,18 +131,22 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
     }
 
     if (passParams) {
-      src += `    params=payload,\n`;
+      src += `    params=params,\n`;
     }
 
     src += `    timeout=${timeout},\n`;
-    src += `)\n`;
-    src += `${response}.raise_for_status()\n`;
-    if (preetyPrint) {
-      src += `if ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=2))\n`;
-    } else {
-      src += `if ${response}.headers["Content-type"] == "application/json": print(${response}.json())\n`;
+    src += `)\n\n`;
+
+    src += `${response}.raise_for_status()`;
+
+    if (showResponse) {
+      if (preetyPrint) {
+        src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(json.dumps(${response}.json(), indent=4))\n`;
+      } else {
+        src += `\n\nif ${response}.headers["Content-type"] == "application/json": print(${response}.json())\n`;
+      }
+      src += `else: print(${response}.text)`;
     }
-    src += `else: print(${response}.text)`;
 
     setCode(src);
 
@@ -160,11 +179,11 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
 
     if (setMetadata) {
       setMetadata({
-        response, url, timeout, authOption, username, password, token, preetyPrint, passParams, params,
+        response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params,
         docsUrl: DOCS_URL,
       });
     }
-  }, [response, url, timeout, authOption, username, password, token, preetyPrint, passParams, params]);
+  }, [response, url, timeout, authOption, username, password, token, showResponse, preetyPrint, passParams, params]);
 
   useEffect(() => {
     if (metadata) {
@@ -176,6 +195,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
       if (metadata["username"] !== undefined) setUsername(metadata["username"]);
       if (metadata["password"] !== undefined) setPassword(metadata["password"]);
       if (metadata["token"] !== undefined) setToken(metadata["token"]);
+      if (metadata["showResponse"] !== undefined) setShowResponse(metadata["showResponse"]);
       if (metadata["preetyPrint"] !== undefined) setPreetyPrint(metadata["preetyPrint"]);
       if (metadata["passParams"] !== undefined) setPassParams(metadata["passParams"]);
       if (metadata["params"] !== undefined) setParams(metadata["params"]);
@@ -190,6 +210,13 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
+    function setValueFromSecret(value: SetStateAction<boolean>): void {
+      setParams(
+        params.map((p, j) =>
+          index !== j ? p : { ...param, valueFromSecret: value.valueOf() as boolean }
+        )
+      );
+    }
     function setValue(value: SetStateAction<string>): void {
       setParams(
         params.map((p, j) =>
@@ -197,26 +224,43 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         )
       );
     }
-
     return (
       <div
         className="poc-grid md:poc-grid-cols-11 md:poc-gap-2"
         key={`request-params-${index}`}
       >
-        <div className="poc-col-span-5">
+        <div className="poc-col-span-4">
           <Variable
             label="Key"
             name={param.key}
             setName={setKey}
           />
         </div>
-        <div className="poc-col-span-5">
-          <Variable
-            label="Value"
-            name={param.value}
-            setName={setValue}
+        <div className="poc-col-span-2">
+          <Toggle
+            label={"Secret value"}
+            value={param.valueFromSecret}
+            setValue={setValueFromSecret}
           />
         </div>
+        {param.valueFromSecret && (
+          <div className="poc-col-span-4">
+            <Variable
+              label="Secret value"
+              name={param.value}
+              setName={setValue}
+            />
+          </div>
+        )}
+        {!param.valueFromSecret && (
+          <div className="poc-col-span-4">
+            <Variable
+              label="Value"
+              name={param.value}
+              setName={setValue}
+            />
+          </div>
+        )}
         <div className="">
           <div className=" poc-inline">
             <button
@@ -229,6 +273,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
                   ...params,
                   {
                     key: "",
+                    valueFromSecret: false,
                     value: "",
                   },
                 ])
@@ -237,7 +282,6 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
               {<PlusIcon className="poc-inline poc-pb-1" />}
             </button>
           </div>
-
           {params.length > 1 && (
             <div className=" poc-inline poc-mx-1">
               <button
@@ -278,19 +322,31 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         name={url}
         setName={setUrl}
       />
-      <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
-        <Toggle
-          label={"Pass parameters"}
-          value={passParams}
-          setValue={setPassParams}
-          paddingTop={false}
-        />
-        <Toggle
-          label={"Pretty print json"}
-          value={preetyPrint}
-          setValue={setPreetyPrint}
-          paddingTop={false}
-        />
+      <div className="poc-grid md:poc-grid-cols-11 md:poc-gap-2">
+        <div className="poc-col-span-6">
+          <Toggle
+            label={"Pass url parameters"}
+            value={passParams}
+            setValue={setPassParams}
+            paddingTop={false}
+          />
+        </div>
+        <div className="poc-col-span-5 poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+          <Toggle
+            label={"Show response"}
+            value={showResponse}
+            setValue={setShowResponse}
+            paddingTop={false}
+          />
+          {showResponse && (
+            < Toggle
+              label={"Pretty print json"}
+              value={preetyPrint}
+              setValue={setPreetyPrint}
+              paddingTop={false}
+            />
+          )}
+        </div>
       </div>
       {paramsElements}
       <Numeric
@@ -326,6 +382,37 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
           setName={setToken}
         />
       )}
+      <div className="poc-grid md:poc-grid-cols-1 md:poc-gap-2">
+        <div className="poc-pt-4">
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Add new cell below"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-cyan-400 poc-via-cyan-500 poc-to-cyan-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-cyan-300 dark:focus:poc-ring-cyan-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center  poc-float-right"
+            onClick={() => {
+              if (setKeepOpen) {
+                setKeepOpen(false);
+              }
+            }}
+          >
+            <CakeIcon className="poc-inline poc-pb-1" />
+            Response is ok, hide recipe
+          </button>
+          <button
+            data-tooltip-id="top-buttons-tooltip"
+            data-tooltip-content="Run code"
+            type="button"
+            className="poc-text-white poc-bg-gradient-to-r poc-from-green-400 poc-via-green-500 poc-to-green-600 hover:poc-bg-gradient-to-br focus:poc-ring-4 focus:poc-outline-none focus:poc-ring-green-300 dark:focus:poc-ring-green-800 poc-font-medium poc-rounded-lg poc-text-sm poc-px-3 poc-py-1 poc-text-center poc-mx-1 poc-float-right"
+            onClick={() => {
+              if (runCell) {
+                runCell();
+              }
+            }}
+          >
+            {<PlayIcon className="poc-inline poc-p-1" />}Send request
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -334,10 +421,16 @@ export const DeleteRequestRecipe: IRecipe = {
   name: "Delete request",
   longName: "Delete request",
   parentName: "http-requests",
-  // len: 159
-  description: "",
-  shortDescription: "",
+  // len: 193
+  description: "Send HTTP Delete request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
+  shortDescription: "Send HTTP Delete request to the URL of your choosing, pass URL parameters, set timeout, authenticate with many different auth options, display the response, even pretty print the JSON response.",
   codeExplanation: `
+1. If chosen set request parameters to the params variable with option to load a secret value.
+2. If chosen set authentication secrets in request headers.
+3. Send requeset.
+4. If timeout time exeeded, fail the request.
+5. If the response status code is from 4XX or 5XX range, raise the exception.
+6. If chosen show the response body, with option to pretty print the JSON response.
 `,
   ui: DeleteRequest,
   Icon: DeleteIcon,
