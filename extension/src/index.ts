@@ -8,7 +8,7 @@ import {
 } from '@jupyterlab/apputils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { commandsPlugin } from './commands';
-import { extendedCellFactory } from './extendedcell';
+// import { extendedCellFactory } from './extendedcell';
 import { setAlwaysOpen } from './flags';
 /**
  * Initialization data for the pieceofcode extension.
@@ -25,9 +25,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
   ) => {
     console.log('Piece of Code extension is activated!');
     const tm = themeManager as ThemeManager;
-    if(tm) {
-      if(!tm.isToggledThemeScrollbars())
-      tm.toggleThemeScrollbars();
+    if (tm) {
+      if (!tm.isToggledThemeScrollbars())
+        tm.toggleThemeScrollbars();
     }
     if (settingRegistry) {
       settingRegistry
@@ -156,6 +156,34 @@ Would you like to clear the workspace or keep waiting?`),
 };
 
 
-const plugins: JupyterFrontEndPlugin<any>[] = [plugin, commandsPlugin, extendedCellFactory, splash];
+import { createPocLeft } from './selectRecipeLeft';
+import { ActiveCellManager } from './contexts/activeCell';
+ 
+
+const pocLeft: JupyterFrontEndPlugin<void> = {
+  id: '@mljar/pocLeft',
+  autoStart: true,
+  activate: async (
+    app: JupyterFrontEnd
+  ) => {
+
+
+    const activeCellManager = new ActiveCellManager(app.shell);
+
+    let widget = createPocLeft(activeCellManager);
+
+
+    /**
+     * Add Chat widget to right sidebar
+     */
+    app.shell.add(widget, 'left', { rank: 2000 });
+
+  }
+};
+
+
+
+// extendedCellFactory
+const plugins: JupyterFrontEndPlugin<any>[] = [plugin, commandsPlugin, splash, pocLeft];
 
 export default plugins;

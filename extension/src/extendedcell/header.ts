@@ -485,9 +485,8 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
     }
     return 0;
   }
-
+  
   protected onAfterAttach(msg: Message): void {
-
     RecipeWidgetsRegistry.getInstance().checkLabShell();
 
     const cell = this.parent as Cell<ICellModel>;

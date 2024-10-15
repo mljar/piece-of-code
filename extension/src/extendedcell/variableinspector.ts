@@ -4,6 +4,9 @@ import { IVariable } from "@mljar/recipes";
 
 var notebooksInitialized: string[] = [];
 
+
+// below code is based on
+// https://github.com/jupyterlab-contrib/jupyterlab-variableInspector
 const initCode = `import json
 import sys
 from importlib import __import__

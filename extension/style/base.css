@@ -30,11 +30,11 @@
   background-color: rgba(37, 99, 235, 0.02) !important;
 }
 
-.lm-DockPanel {
+/* .lm-DockPanel {
   background: linear-gradient(-45deg, #3b82f6, #a855f7);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
-}
+} */
 
 @keyframes gradient {
   0% {
