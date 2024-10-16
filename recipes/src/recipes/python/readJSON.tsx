@@ -16,6 +16,7 @@ export const ReadJSON: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myFile, setMyFile] = useState("file_name");
   const [myDict, setMyDict] = useState("data_json");
@@ -50,6 +51,7 @@ export const ReadJSON: React.FC<IRecipeProps> = ({
         Icon={JSONIcon}
         label={"Read JSON from file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label="Select JSON file"

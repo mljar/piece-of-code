@@ -13,6 +13,7 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [directoryPath, setDirectoryPath] = useState("");
   const [list, setList] = useState(false);
@@ -60,6 +61,7 @@ export const LoadManyPDF: React.FC<IRecipeProps> = ({
         Icon={LoadFileIcon}
         label={"Load many PDFs"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select direcory"}

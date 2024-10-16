@@ -17,6 +17,7 @@ export const SavePickle: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -69,6 +70,7 @@ export const SavePickle: React.FC<IRecipeProps> = ({
         Icon={CucumberIcon}
         label={"Save Python object to Pickle"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

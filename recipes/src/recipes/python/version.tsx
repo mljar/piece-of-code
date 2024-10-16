@@ -11,6 +11,7 @@ export const CheckPythonVersion: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   useEffect(() => {
     let src = `# check python version\n`;
@@ -36,6 +37,7 @@ export const CheckPythonVersion: React.FC<IRecipeProps> = ({
         Icon={PythonIcon}
         label={"Check Python version"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <p className="text-base text-gray-800 dark:text-white">
         Please run the cell to print Python version.

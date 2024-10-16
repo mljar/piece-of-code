@@ -27,6 +27,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
+  hideTitle,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -310,6 +311,7 @@ export const GetRequest: React.FC<IRecipeProps> = ({
         Icon={GetIcon}
         label={"Get request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Name response variable"}

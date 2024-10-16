@@ -11,6 +11,7 @@ export const FileCopy: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myFile, setMyFile] = useState("source_file_name");
   const [myDstFile, setDstFile] = useState("destination_path");
@@ -45,6 +46,7 @@ export const FileCopy: React.FC<IRecipeProps> = ({
         Icon={FilesIcon}
         label={"Copy files"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label="Select file to be copied"

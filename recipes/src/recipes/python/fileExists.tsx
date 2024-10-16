@@ -13,6 +13,7 @@ export const FileExists: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [exists, setExists] = useState("my_file_exists");
   const [myFile, setMyFile] = useState("file_name");
@@ -50,6 +51,7 @@ export const FileExists: React.FC<IRecipeProps> = ({
         Icon={FileUnknownIcon}
         label={"Check if file exists"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"File exists variable"}

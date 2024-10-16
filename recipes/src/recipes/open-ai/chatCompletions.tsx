@@ -19,6 +19,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -152,6 +153,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {model === "o1-preview" && (
         <>

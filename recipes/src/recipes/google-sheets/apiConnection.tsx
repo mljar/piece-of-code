@@ -13,6 +13,7 @@ export const APICon: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [filePath, setFilePath] = useState("");
 
@@ -53,6 +54,7 @@ export const APICon: React.FC<IRecipeProps> = ({
         Icon={APIIcon}
         label={"Connection"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select file"}

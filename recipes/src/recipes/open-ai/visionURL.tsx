@@ -17,6 +17,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -93,6 +94,7 @@ export const VisionURL: React.FC<IRecipeProps> = ({
         Icon={aiEyeIcon}
         label={"Vision with URL images"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select

@@ -15,6 +15,7 @@ export const TrainKNN: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [advanced, setAdvanced] = useState(false);
   const [model, setModel] = useState("knn");
@@ -87,6 +88,7 @@ export const TrainKNN: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <>

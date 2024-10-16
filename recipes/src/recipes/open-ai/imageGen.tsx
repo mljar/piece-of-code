@@ -17,6 +17,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -108,6 +109,7 @@ export const ImageGen: React.FC<IRecipeProps> = ({
         Icon={imageAIIcon}
         label={"AI images generator"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select

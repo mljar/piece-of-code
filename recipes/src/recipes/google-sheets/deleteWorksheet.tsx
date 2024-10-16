@@ -16,6 +16,7 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const varsW = variables
     .filter((v) => v.varType.includes(WORKSHEET))
@@ -76,6 +77,7 @@ export const DeleteWorkSheet: React.FC<IRecipeProps> = ({
         Icon={ToolIcon}
         label={"Delete worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
       <Select

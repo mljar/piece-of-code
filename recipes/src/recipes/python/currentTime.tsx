@@ -13,6 +13,7 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [now, setNow] = useState("now");
   const [showDate, setShowDate] = useState(true);
@@ -52,6 +53,7 @@ export const CurrentTime: React.FC<IRecipeProps> = ({
         Icon={CalendarClockIcon}
         label={"Get current time"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Current time variable"}

@@ -13,6 +13,7 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
   metadata,
   setMetadata,
   setEnv,
+  hideTitle,
 }) => {
   const [myEnvVar, setMyEnvVar] = useState("MY_ENV_VARIABLE");
   const [myVar, setMyVar] = useState("my_var");
@@ -55,6 +56,7 @@ export const AddDotEnvVar: React.FC<IRecipeProps> = ({
         Icon={DesktopIcon}
         label={"Add .env variable"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">

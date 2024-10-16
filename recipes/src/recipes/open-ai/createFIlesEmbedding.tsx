@@ -16,6 +16,7 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -107,6 +108,7 @@ export const FilesEmbedding: React.FC<IRecipeProps> = ({
         Icon={CodeIcon}
         label={"Files embeddings"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-3 md:poc-gap-2">
         <Select

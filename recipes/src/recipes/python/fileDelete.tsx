@@ -12,6 +12,7 @@ export const FileDelete: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myFile, setMyFile] = useState("file_path");
 
@@ -46,6 +47,7 @@ export const FileDelete: React.FC<IRecipeProps> = ({
         Icon={FileShredderIcon}
         label={"Delete file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label="Select file to be deleted"

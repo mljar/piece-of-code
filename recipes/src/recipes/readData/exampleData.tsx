@@ -13,6 +13,7 @@ export const ExampleData: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const datasetOptions: [string, string][] = [
@@ -149,6 +150,7 @@ export const ExampleData: React.FC<IRecipeProps> = ({
         Icon={FileSmileIcon}
         label={"Sample datasets"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

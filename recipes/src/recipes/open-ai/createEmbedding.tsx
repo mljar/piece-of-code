@@ -17,6 +17,7 @@ export const Embedding: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -79,6 +80,7 @@ export const Embedding: React.FC<IRecipeProps> = ({
         Icon={CodeIcon}
         label={"Embeddings"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Enter the text"}

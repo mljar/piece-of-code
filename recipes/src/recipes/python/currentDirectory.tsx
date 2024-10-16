@@ -14,6 +14,7 @@ export const CurrentDirectory: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myVar, setMyVar] = useState("working_dir");
 
@@ -45,6 +46,7 @@ export const CurrentDirectory: React.FC<IRecipeProps> = ({
         Icon={FolderOpenIcon}
         label={"Get working directory"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Current working directory"}

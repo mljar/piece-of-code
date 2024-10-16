@@ -12,6 +12,7 @@ export const ReadXml: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.xml");
@@ -49,6 +50,7 @@ export const ReadXml: React.FC<IRecipeProps> = ({
         Icon={XmlIcon}
         label={"Read Stata file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

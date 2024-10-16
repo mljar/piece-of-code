@@ -16,6 +16,7 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
@@ -64,6 +65,7 @@ export const CreateSpreadSheet: React.FC<IRecipeProps> = ({
         Icon={SpreadsheetIcon}
         label={"Create spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Variable

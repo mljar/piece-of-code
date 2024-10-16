@@ -16,6 +16,7 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -68,6 +69,7 @@ export const FillMissingReuse: React.FC<IRecipeProps> = ({
         Icon={AffiliateIcon}
         label={"Use imputer to fill missing values"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

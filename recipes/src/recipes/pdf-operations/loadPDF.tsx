@@ -14,6 +14,7 @@ export const LoadPDF: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [filePath, setFilePath] = useState("");
   const [page, setPage] = useState(1);
@@ -65,6 +66,7 @@ export const LoadPDF: React.FC<IRecipeProps> = ({
         Icon={LoadFileIcon}
         label={"Load PDF"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select file"}

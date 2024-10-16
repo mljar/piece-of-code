@@ -18,6 +18,11 @@ export const FileReadForm: Story = (
 ) => (
   <>
     <FileRead {...args} />
+    <FileRead {...args} hideTitle={true} />
+
+    <div className="poc-dark poc-bg-black poc-p-8">
+      <FileRead {...args} />
+    </div>
   </>
 );
 FileReadForm.args = {

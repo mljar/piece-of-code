@@ -14,6 +14,7 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const myDicts = variables
     .filter((v) => v.varType === "dict")
@@ -66,6 +67,7 @@ export const PrettyPrintJSON: React.FC<IRecipeProps> = ({
         Icon={JSONIcon}
         label={"Pretty print JSON"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Select JSON (dict) object"}

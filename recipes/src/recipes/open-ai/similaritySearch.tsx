@@ -16,6 +16,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -89,6 +90,7 @@ export const SimilaritySearch: React.FC<IRecipeProps> = ({
         Icon={SearchIcon}
         label={"Cosine similarity search"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Enter query"}

@@ -9,6 +9,7 @@ interface TitleProps {
   advanced?: boolean;
   setAdvanced?: React.Dispatch<React.SetStateAction<boolean>>;
   docsUrl?: string;
+  hideTitle?: boolean;
 }
 
 export const Title: React.FC<TitleProps> = ({
@@ -17,11 +18,17 @@ export const Title: React.FC<TitleProps> = ({
   advanced,
   setAdvanced,
   docsUrl,
+  hideTitle,
 }: TitleProps) => {
+  const cl = `poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white poc-pb-1 ${hideTitle !== undefined && hideTitle? "poc-relative poc-right-2 poc-top-0" : ""}`;
   return (
-    <h2 className="poc-text-lg poc-font-medium poc-text-gray-900 dark:poc-text-white poc-pb-1">
-      {Icon && <Icon className="poc-inline poc-pb-1" />}
-      {label}
+    <h2 className={cl}>
+      {!hideTitle && (
+        <>
+          {Icon && <Icon className="poc-inline poc-pb-1" />}
+          {label}
+        </>
+      )}
 
       {setAdvanced && (
         <div className="poc-inline poc-items-center poc-float-right poc-px-2 poc-pt-1">
@@ -47,7 +54,7 @@ export const Title: React.FC<TitleProps> = ({
                         peer-checked:after:poc-border-white after:poc-content-[''] 
                         after:poc-absolute after:poc-top-[2px] after:poc-start-[2px] after:poc-bg-white after:poc-border-gray-300 after:poc-border after:poc-rounded-full after:poc-h-4 after:poc-w-4 after:poc-transition-all dark:poc-border-gray-600 peer-checked:poc-bg-blue-600"
             ></div>
-            <span className="poc-ms-1 poc-text-xs poc-font-normal poc-text-gray-900 dark:poc-text-gray-300">
+            <span className="poc-ms-1 poc-text-xs poc-font-medium poc-text-gray-900 dark:poc-text-gray-300">
               Advanced
             </span>
           </label>

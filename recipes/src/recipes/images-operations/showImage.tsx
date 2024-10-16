@@ -13,6 +13,7 @@ export const ShowImage: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [image, setImage] = useState("myImage.png");
   const [advanced, setAdvanced] = useState(false);
@@ -68,6 +69,7 @@ export const ShowImage: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select image"}

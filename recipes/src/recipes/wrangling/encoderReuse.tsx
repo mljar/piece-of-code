@@ -17,6 +17,7 @@ export const EncoderReuse: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -71,6 +72,7 @@ export const EncoderReuse: React.FC<IRecipeProps> = ({
         Icon={CategoryIcon}
         label={"Use encoder to convert categoricals"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

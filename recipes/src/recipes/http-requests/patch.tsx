@@ -28,6 +28,7 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
   runCell,
   setKeepOpen,
   variables,
+  hideTitle,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -332,6 +333,7 @@ export const PatchRequest: React.FC<IRecipeProps> = ({
         Icon={PatchIcon}
         label={"Patch request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Name response variable"}

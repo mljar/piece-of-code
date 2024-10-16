@@ -15,6 +15,7 @@ export const CalibrationPlot: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   console.log(variables);
   if (variablesStatus === "loaded" && !variables.length) {
@@ -71,6 +72,7 @@ export const CalibrationPlot: React.FC<IRecipeProps> = ({
         Icon={Focus2Icon}
         label={"Calibration Plot"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {(target === "" || predictions === "") && (
         <p className="text-base text-gray-800 dark:text-white">

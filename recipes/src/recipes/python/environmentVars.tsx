@@ -12,6 +12,7 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myEnvVar, setMyEnvVar] = useState("MY_ENV_VARIABLE");
   const [myVar, setMyVar] = useState("my_var");
@@ -49,6 +50,7 @@ export const EnvironmentVars: React.FC<IRecipeProps> = ({
         Icon={DesktopIcon}
         label={"Get environment variable"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Environment variable name"}

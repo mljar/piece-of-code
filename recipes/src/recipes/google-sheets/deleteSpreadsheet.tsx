@@ -16,6 +16,7 @@ export const DeleteSpreadSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
@@ -61,6 +62,7 @@ export const DeleteSpreadSheet: React.FC<IRecipeProps> = ({
         Icon={SpreadsheetIcon}
         label={"Delete spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Enter id"}

@@ -28,6 +28,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
+  hideTitle,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -311,6 +312,7 @@ export const DeleteRequest: React.FC<IRecipeProps> = ({
         Icon={DeleteIcon}
         label={"Delete request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Name response variable"}

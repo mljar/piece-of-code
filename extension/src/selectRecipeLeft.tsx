@@ -18,7 +18,15 @@ export function Hello() {
   const activeCell = useActiveCellContext();
   const variables = useVariablesContext();
   const [code, setCode] = useState('');
-  console.log('Left compoenent');
+
+  console.log('Left compoenent', activeCell.exists);
+  if(!activeCell.exists) {
+    return <div style={{fontSize: "2rem", fontWeight: "bold", textAlign: "center"}}>
+      Please open notebook
+    </div>
+  }
+  
+
   return (
     <div>
       <SelectRecipeLeft
@@ -54,24 +62,15 @@ export function Hello() {
         setEnv={() => {}}
       />
       {code && (
-        <div style={{ border: '1px solid #eee', margin: '5px' }}>
+        <div style={{ border: '1px solid #eee', margin: '8px', borderRadius: "7px" }}>
+          <div style={{padding: "5px"}}>
           <CodeCellComponent cellInput={code} languageMimetype="python" />
+          </div>
         </div>
       )}
     </div>
   );
 }
-
-// public setVariablesStatus(
-//   status: 'loading' | 'loaded' | 'error' | 'unknown'
-// ) {
-//   this._variablesStatus = status;
-// }
-
-// public setVariables(variables: IVariable[]) {
-//   this._variables = variables;
-//   this.updateWidget();
-// }
 
 export function createPocLeft(
   activeCellManager: ActiveCellManager

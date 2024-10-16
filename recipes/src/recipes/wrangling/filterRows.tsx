@@ -19,6 +19,7 @@ export const FilterRows: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -116,6 +117,7 @@ export const FilterRows: React.FC<IRecipeProps> = ({
         Icon={FilterIcon}
         label={"Filter rows in DataFrame"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

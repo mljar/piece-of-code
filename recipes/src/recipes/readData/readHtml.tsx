@@ -12,6 +12,7 @@ export const ReadHtml: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.xml");
@@ -49,6 +50,7 @@ export const ReadHtml: React.FC<IRecipeProps> = ({
         Icon={HtmlIcon}
         label={"Read HTML file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

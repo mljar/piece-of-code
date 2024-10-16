@@ -18,6 +18,7 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables
     .filter((v) => v.varType.includes(WORKSHEET))
@@ -99,6 +100,7 @@ export const UpdateRange: React.FC<IRecipeProps> = ({
         Icon={SquareArrowUPIcon}
         label={"Update range"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Choose worksheet"}

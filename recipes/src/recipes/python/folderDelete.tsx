@@ -12,6 +12,7 @@ export const FolderDelete: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myFolder, setMyFolder] = useState("directory_path");
 
@@ -45,6 +46,7 @@ export const FolderDelete: React.FC<IRecipeProps> = ({
         Icon={FolderXIcon}
         label={"Delete folder"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label="Select folder to be deleted"

@@ -18,6 +18,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
@@ -88,6 +89,7 @@ export const ShareSpreadSheet: React.FC<IRecipeProps> = ({
         Icon={SpreadsheetIcon}
         label={"Share spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Choose spreadsheet"}

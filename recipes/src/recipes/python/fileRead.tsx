@@ -14,6 +14,7 @@ export const FileRead: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myFile, setMyFile] = useState("file_name");
   const [content, setContent] = useState("content");
@@ -58,6 +59,7 @@ export const FileRead: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <SelectPath

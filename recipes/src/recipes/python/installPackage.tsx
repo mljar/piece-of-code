@@ -12,6 +12,7 @@ export const InstallPackage: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [installPackage, setInstallPackage] = useState("package-name");
 
@@ -44,6 +45,7 @@ export const InstallPackage: React.FC<IRecipeProps> = ({
         Icon={SettingsDownIcon}
         label={"Install new package"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Package name, you can also specify version, for example my_package>=1.0.2"}

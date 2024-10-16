@@ -13,6 +13,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loading") {
     return (
@@ -67,6 +68,7 @@ export const AutoMLReport: React.FC<IRecipeProps> = ({
         Icon={ReportIcon}
         label="Display AutoML report"
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Display report for AutoML object"}

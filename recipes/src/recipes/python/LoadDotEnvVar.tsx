@@ -12,6 +12,7 @@ export const LoadDotEnvVar: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   useEffect(() => {
     let src = `# load .env to environment variables\n`;
@@ -38,6 +39,7 @@ export const LoadDotEnvVar: React.FC<IRecipeProps> = ({
         Icon={DesktopIcon}
         label={"Load .env file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
     </div>
   );

@@ -17,6 +17,7 @@ export const FindCell: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables
     .filter((v) => v.varType.includes(WORKSHEET))
@@ -90,6 +91,7 @@ export const FindCell: React.FC<IRecipeProps> = ({
         Icon={SearchIcon}
         label={"Find cell by value"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Choose Worksheet"}

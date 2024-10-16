@@ -96,8 +96,12 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
   const [showNav, setShowNav] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const allRecipeSets: Record<string, IRecipeSet> = allRecipes;
+
   const [selectedRecipeSet, setSelectedRecipeSet] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState("");
+  const [previewRecipeSet, setPreviewRecipeSet] = useState("");
+  const [previewRecipe, setPreviewRecipe] = useState("");
+
   const [executed, setExecuted] = useState(previousExecutionCount !== 0);
   const [license, setLicense] = useState("");
   const [showBuyLicense, setShowBuyLicense] = useState(false);
@@ -107,8 +111,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
   const [showChat, setShowChat] = useState(false);
   const [pythonOnly, setPythonOnly] = useState(false);
   const [installProgress, setInstallProgress] = useState(0.0);
-  const [installFullLog, setInstallFullLog] = useState("");
-  const [showRecipes, setShowRecipes] = useState(true);
+  const [installFullLog, setInstallFullLog] = useState(""); 
 
   const setCodeWithCopy = (src: string) => {
     setCurrentCode(src);
@@ -436,9 +439,13 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
         }
         onClick={() => {
           setSelectedRecipeSet(name);
-          setSelectedRecipe("");
-          setShowRecipes(true);
+          setSelectedRecipe(""); 
           setCode("");
+        }}
+        onMouseEnter={() => {
+          setPreviewRecipeSet(name);
+          setPreviewRecipe("");
+          setCode(""); 
         }}
       >
         {recipeSet.Icon && (
@@ -449,6 +456,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
     </div>
   ));
 
+
   let showSubTabs = false;
   let subTabs = undefined;
   if (selectedRecipeSet !== "") {
@@ -457,14 +465,14 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
         <div key={`select-recipe-${recipe.name}`}>
           <a
             className={
-              selectedRecipe === recipe.name ? ActiveTabClass : TabClass
+              //selectedRecipe === recipe.name ? ActiveTabClass : TabClass
+              TabClass
             }
             onClick={() => {
               setSelectedRecipe(recipe.name);
-              setShowRecipes(false);
             }}
             onMouseEnter={() => {
-              setSelectedRecipe(recipe.name);
+              setPreviewRecipe(recipe.name);
               setCode("");
             }}
           >
@@ -474,7 +482,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
         </div>
       )
     );
-    if (Object.entries(allRecipeSets[selectedRecipeSet].recipes).length > 0) {
+    if (Object.entries(allRecipeSets[selectedRecipeSet].recipes).length > 0 && selectedRecipe !== "") {
       showSubTabs = true;
     }
   }
@@ -484,15 +492,12 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
       title={"Select your next step"}
       Icon={WalkIcon}
       description={
-        "What is your next step? Please select code recipe from the left sidebar or use AI assistant."
-      }
-      setShowEnterLicense={
-        isElectron && license === "" ? setShowEnterLicense : undefined
+        "What is your next step? Please select your code recipe or use AI assistant."
       }
     />
   );
-  if (selectedRecipeSet !== "" && selectedRecipe == "") {
-    const recipeSet = allRecipeSets[selectedRecipeSet];
+  if (previewRecipeSet !== "" && selectedRecipe == "") {
+    const recipeSet = allRecipeSets[previewRecipeSet];
     welcomeMsg = (
       <Welcome
         title={recipeSet.name}
@@ -505,18 +510,18 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
 
   let installPackages: IPackage[] = [];
   let RecipeUI = undefined;
-  if (selectedRecipeSet !== "" && selectedRecipe !== "") {
-    const recipe = allRecipeSets[selectedRecipeSet].recipes[selectedRecipe];
+  if (selectedRecipeSet !== "" && previewRecipe !== "") {
+    const recipe = allRecipeSets[selectedRecipeSet].recipes[previewRecipe];
     welcomeMsg = (
       <Welcome
         title={recipe.name}
         Icon={recipe.Icon}
         description={recipe.description}
-        packages={recipe.requiredPackages}
+        //packages={recipe.requiredPackages}
         docsLink={`https://mljar.com/docs/${recipe.docsUrl}/`}
-        checkPackage={checkPackage}
-        checkedPackages={checkedPackages}
-        installPackage={installPackage}
+        //checkPackage={checkPackage}
+        //checkedPackages={checkedPackages}
+        //installPackage={installPackage}
         tags={recipe.tags}
       />
     );
@@ -631,9 +636,6 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
 
   return (
     <div className="poc-flex" style={{ overflowY: "auto" }}>
-      {/* <div className="poc-flex-none" style={{ width: "72px" }}>
-        {(executionSteps.length === 0 || keepOpen) && leftButtons}
-      </div> */}
       <div className="poc-w-full">
         {executionSteps.length > 0 && !keepOpen && topButtons}
         <div
@@ -690,32 +692,33 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
                     </button>  */}
                   </div>
                 </div>
-                {showSubTabs && (
+                {selectedRecipeSet !== "" && (
                   <div
                     className="hover:poc-text-blue-600 hover:poc-cursor-pointer"
                     onClick={() => {
                       setSelectedRecipeSet("");
                       setSelectedRecipe("");
-                      setShowRecipes(true);
+                      setPreviewRecipeSet("");
+                      setPreviewRecipe("");
                       setCode("");
                     }}
                   >
                     ↩ Back to cookbooks
                   </div>
                 )}
-                {!showSubTabs && (
+                {selectedRecipeSet === "" && (
                   <div
                     // className="poc-text-sm poc-flex poc-flex-wrap"
-                    className="poc-text-sm poc-grid poc-grid-cols-1 sm:poc-grid-cols-2 md:poc-grid-cols-3 lg:poc-grid-cols-4 poc-gap-2"
-                    style={{ maxHeight: "650px", overflowY: "auto" }}
+                    className="poc-text-sm poc-grid poc-grid-cols-1 sm:poc-grid-cols-2 poc-gap-2"
+                    style={{ maxHeight: "800px", overflowY: "auto" }}
                   >
                     {tabs}
                   </div>
                 )} 
-                {showSubTabs && showRecipes && (
+                {selectedRecipeSet !== "" && selectedRecipe === ""  && (
                   <div
-                    className="poc-text-sm poc-grid poc-grid-cols-1 sm:poc-grid-cols-2 md:poc-grid-cols-3 lg:poc-grid-cols-4 poc-gap-2"
-                    style={{ maxHeight: "650px", overflowY: "auto" }}
+                    className="poc-text-sm poc-grid poc-grid-cols-1 sm:poc-grid-cols-2 poc-gap-2"
+                    style={{ maxHeight: "800px", overflowY: "auto" }}
                   >
                     {subTabs}
                   </div>
@@ -724,8 +727,8 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
 
               <div
                 // className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
-                className="poc-pt-4 poc-text-medium poc-text-gray-900 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
-                style={{ maxHeight: "400px", overflowY: "auto" }}
+                className="poc-pt-4 poc-text-medium poc-text-gray-900 dark:poc-text-gray-400  poc-rounded-lg poc-w-full"
+                style={{ maxHeight: "800px", overflowY: "auto" }}
               >
                 {welcomeMsg}
               </div>
@@ -736,9 +739,9 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
             <div
             // onMouseOver={()=>{setShowNav(false)}}
             >
-              {showNav && <hr className="poc-p-1 poc-m-1" />}
+              {/* {showNav && <hr className="poc-p-1 poc-m-1" />} */}
               {/* <div className="poc-bg-white dark:poc-bg-slate-800 poc-p-2 poc-pt-0 poc-rounded-md"> */}
-              <div className="poc-p-2 poc-pt-0 ">
+              <div className="poc-p-2 poc-py-4 poc-pt-0 poc-border poc-border-gray-100 dark:poc-border-slate-600 poc-rounded-md poc-mx-2">
                 <RecipeUI
                   setCode={setCodeWithCopy}
                   setPackages={setPackages}
@@ -752,6 +755,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
                   metadata={metadata}
                   setMetadata={setMetadata}
                   setEnv={setEnv}
+                  hideTitle={true}
                 />
               </div>
             </div>
@@ -759,7 +763,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
           {installPackages.length > 0 && (
             <div className="poc-px-2 poc-pb-2">
               <hr className="poc-mb-2" />
-              <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full">
+              <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full poc-border ">
                 <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
                   <PackageIcon className="poc-inline poc-pb-1" /> Install
                   packages

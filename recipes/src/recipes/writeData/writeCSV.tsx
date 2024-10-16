@@ -16,6 +16,7 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -83,6 +84,7 @@ export const WriteCSV: React.FC<IRecipeProps> = ({
         //advanced={advanced}
         //setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

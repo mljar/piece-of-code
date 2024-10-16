@@ -14,6 +14,7 @@ export const ReadFeather: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.feather");
@@ -52,6 +53,7 @@ export const ReadFeather: React.FC<IRecipeProps> = ({
         Icon={FeatherIcon}
         label={"Read Feather file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

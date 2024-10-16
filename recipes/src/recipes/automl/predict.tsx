@@ -15,6 +15,7 @@ export const Predict: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const automls = variables
     .filter((v) => v.varType === "AutoML")
@@ -89,6 +90,7 @@ export const Predict: React.FC<IRecipeProps> = ({
         Icon={TargetArrowIcon}
         label="Predict with AutoML"
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Store predictions in variable name"}

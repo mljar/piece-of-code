@@ -13,6 +13,7 @@ export const TimeDelay: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myDelay, setMyDelay] = useState(3);
 
@@ -42,6 +43,7 @@ export const TimeDelay: React.FC<IRecipeProps> = ({
         Icon={HourGlassIcon}
         label={"Add time delay"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Numeric
         label={"Delay time in seconds"}

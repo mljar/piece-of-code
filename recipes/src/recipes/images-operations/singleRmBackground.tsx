@@ -13,6 +13,7 @@ export const SingleImage: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [image, setImage] = useState("myImage.png");
   const [outImage, setOutImage] = useState("outputImage.png");
@@ -56,6 +57,7 @@ export const SingleImage: React.FC<IRecipeProps> = ({
         Icon={ImageIcon}
         label={"Remove background from single image"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select input image"}

@@ -13,7 +13,8 @@ export const FileAppend: React.FC<IRecipeProps> = ({
   setCode,
   setPackages,
   metadata,
-  setMetadata
+  setMetadata,
+  hideTitle,
 }) => {
   const [myFile, setMyFile] = useState("file_name");
   const [text, setText] = useState("hello!");
@@ -56,6 +57,7 @@ export const FileAppend: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <SelectPath

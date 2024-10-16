@@ -19,6 +19,7 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
   variables,
   variablesStatus,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables
     .filter((v) => v.varType.includes(WORKSHEET))
@@ -128,6 +129,7 @@ export const ReadSheets: React.FC<IRecipeProps> = ({
         Icon={OpenBookIcon}
         label={"Read data"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Choose worksheet"}

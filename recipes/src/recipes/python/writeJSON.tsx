@@ -18,6 +18,7 @@ export const WriteJSON: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const myDicts = variables
     .filter((v) => v.varType === "dict")
@@ -75,6 +76,7 @@ export const WriteJSON: React.FC<IRecipeProps> = ({
         Icon={JSONIcon}
         label={"Write JSON to file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Select JSON (dict) object"}

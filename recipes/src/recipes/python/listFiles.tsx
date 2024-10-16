@@ -14,6 +14,7 @@ export const ListFiles: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myList, setMyList] = useState("my_files");
   const [myFolder, setMyFolder] = useState("my_path");
@@ -70,6 +71,7 @@ export const ListFiles: React.FC<IRecipeProps> = ({
         Icon={FolderOpenIcon}
         label={"List all files in directory"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Assign list with files to variable"}

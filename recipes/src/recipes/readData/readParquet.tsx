@@ -13,6 +13,7 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.parquet");
@@ -53,6 +54,7 @@ export const ReadParquet: React.FC<IRecipeProps> = ({
         Icon={DashboardIcon}
         label={"Read Parquet file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

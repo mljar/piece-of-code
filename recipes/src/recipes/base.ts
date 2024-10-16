@@ -14,6 +14,7 @@ export interface IRecipeProps {
     metadata?: any;
     setMetadata?: (m: any) => void;
     setEnv?: (envVariables: [string, string][]) => void;
+    hideTitle?: boolean;
 }
 
 export interface IRecipeSet {

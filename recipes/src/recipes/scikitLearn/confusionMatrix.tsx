@@ -15,6 +15,7 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   console.log(variables)
   if (variablesStatus === "loaded" && !variables.length) {
@@ -73,6 +74,7 @@ export const ConfusionMatrix: React.FC<IRecipeProps> = ({
         Icon={BorderAllIcon}
         label={"Confusion Matrix"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {(target === "" || predictions === "") && (
         <p className="text-base text-gray-800 dark:text-white">

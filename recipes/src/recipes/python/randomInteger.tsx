@@ -13,6 +13,7 @@ export const RandomInteger: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [myVar, setMyVar] = useState("my_random_number");
   const [myLower, setMyLower] = useState(0);
@@ -50,6 +51,7 @@ export const RandomInteger: React.FC<IRecipeProps> = ({
         Icon={Dice5Icon}
         label={"Generate random integer"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Variable with random number"}

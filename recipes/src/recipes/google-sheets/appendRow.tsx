@@ -17,6 +17,7 @@ export const AppendRow: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables
     .filter((v) => v.varType.includes(WORKSHEET))
@@ -84,6 +85,7 @@ export const AppendRow: React.FC<IRecipeProps> = ({
         Icon={TableAddIcon}
         label={"Append rows"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Select
         label={"Choose Worksheet"}

@@ -14,6 +14,7 @@ export const TrainKMeans: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [model, setModel] = useState("kmeans");
   const [k, setK] = useState(8);
@@ -58,6 +59,7 @@ export const TrainKMeans: React.FC<IRecipeProps> = ({
         Icon={ChartScatter3DIcon}
         label={"k-Means"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <>

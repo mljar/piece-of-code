@@ -12,6 +12,7 @@ export const Client: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [dotenvVar, setDotenvVar] = useState("OPENAI_KEY");
 
@@ -58,6 +59,7 @@ export const Client: React.FC<IRecipeProps> = ({
         Icon={OpenAIIcon}
         label={"OpenAI client"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Enter dotenv variable with API KEY"}

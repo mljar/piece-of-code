@@ -28,6 +28,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
   runCell,
   setKeepOpen,
   variables,
+  hideTitle,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -332,6 +333,7 @@ export const PostRequest: React.FC<IRecipeProps> = ({
         Icon={PostIcon}
         label={"Post request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Name response variable"}

@@ -28,6 +28,7 @@ export const PostFileRequest: React.FC<IRecipeProps> = ({
   setMetadata,
   runCell,
   setKeepOpen,
+  hideTitle,
 }) => {
 
   // if (variablesStatus === "loading") {
@@ -322,6 +323,7 @@ export const PostFileRequest: React.FC<IRecipeProps> = ({
         Icon={UploadIcon}
         label={"PostFile request"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Name response variable"}

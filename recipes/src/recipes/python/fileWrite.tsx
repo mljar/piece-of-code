@@ -17,6 +17,7 @@ export const FileWrite: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [variable, setVariable] = useState("");
   const [filePath, setFilePath] = useState("");
@@ -89,6 +90,7 @@ export const FileWrite: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <SelectPath

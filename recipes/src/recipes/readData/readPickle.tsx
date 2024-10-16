@@ -13,6 +13,7 @@ export const ReadPickle: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("my_obj");
   const [filePath, setFilePath] = useState("data.pickle");
@@ -51,6 +52,7 @@ export const ReadPickle: React.FC<IRecipeProps> = ({
         Icon={CucumberIcon}
         label={"Load Pickle file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate Pickle to variable"}

@@ -15,6 +15,7 @@ export const Predict: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => { 
   if (
     variables === undefined ||
@@ -90,6 +91,7 @@ export const Predict: React.FC<IRecipeProps> = ({
         Icon={CrystalBallIcon}
         label={"Compute predictions"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {df === "" && (
         <p className="text-base text-gray-800 dark:text-white">

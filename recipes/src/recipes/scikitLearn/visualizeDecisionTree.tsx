@@ -15,6 +15,7 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   if (variablesStatus === "loaded" && !variables.length) {
     return (
@@ -97,6 +98,7 @@ export const VisualizeDecisionTree: React.FC<IRecipeProps> = ({
         Icon={BinaryTreeIcon}
         label={"Visualize Decision Tree"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       {/*
       // ill add advanced with max depth choosing when tomek adds it to the supertree library

@@ -19,6 +19,7 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(SPREADSHEET));
 
@@ -101,6 +102,7 @@ export const OpenWorkSheet: React.FC<IRecipeProps> = ({
         Icon={ToolIcon}
         label={"Open worksheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <Select

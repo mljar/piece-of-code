@@ -13,6 +13,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [advanced, setAdvanced] = useState(false);
   const [name, setName] = useState("df");
@@ -72,6 +73,7 @@ export const ReadCSV: React.FC<IRecipeProps> = ({
         advanced={advanced}
         setAdvanced={setAdvanced}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

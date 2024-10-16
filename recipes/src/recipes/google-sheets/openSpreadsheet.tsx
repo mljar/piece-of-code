@@ -17,6 +17,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
   variables,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(GOOGLE_CONNECTION));
 
@@ -87,6 +88,7 @@ export const OpenSpreadSheet: React.FC<IRecipeProps> = ({
         Icon={SpreadsheetIcon}
         label={"Open spreadsheet"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Enter spreadsheet name"}

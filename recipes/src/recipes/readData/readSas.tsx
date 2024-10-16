@@ -12,6 +12,7 @@ export const ReadSas: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.sas7bdat");
@@ -49,6 +50,7 @@ export const ReadSas: React.FC<IRecipeProps> = ({
         Icon={SasIcon}
         label={"Read SAS file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

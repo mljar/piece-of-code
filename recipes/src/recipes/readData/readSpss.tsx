@@ -13,6 +13,7 @@ export const ReadSpss: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [name, setName] = useState("df");
   const [filePath, setFilePath] = useState("data.sav");
@@ -50,6 +51,7 @@ export const ReadSpss: React.FC<IRecipeProps> = ({
         Icon={SumIcon}
         label={"Read SPSS file"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <Variable
         label={"Allocate DataFrame to variable"}

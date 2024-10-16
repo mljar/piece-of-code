@@ -13,6 +13,7 @@ export const MultiImages: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [directory, setDirectory] = useState("");
   const [extension, setExtension] = useState("*.png");
@@ -77,6 +78,7 @@ export const MultiImages: React.FC<IRecipeProps> = ({
         Icon={MultiImagesIcon}
         label={"Remove background from many images"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select the directory"}

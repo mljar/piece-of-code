@@ -13,6 +13,7 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [directoryPath, setDirectoryPath] = useState("");
   const [text, setText] = useState("");
@@ -63,6 +64,7 @@ export const SearchInPDF: React.FC<IRecipeProps> = ({
         Icon={SearchIcon}
         label={"Search text in many PDFs"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <SelectPath
         label={"Select direcory"}

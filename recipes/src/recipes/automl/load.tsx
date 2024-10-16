@@ -13,6 +13,7 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
   setPackages,
   metadata,
   setMetadata,
+  hideTitle,
 }) => {
   const [automl, setAutoml] = useState("automl");
   const [folder, setFolder] = useState("");
@@ -46,6 +47,7 @@ export const LoadAutoML: React.FC<IRecipeProps> = ({
         Icon={FolderOpenIcon}
         label={"Load AutoML from disk"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
 
       <Variable

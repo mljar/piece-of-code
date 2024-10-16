@@ -16,6 +16,7 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
   variablesStatus,
   variables,
   setMetadata,
+  hideTitle,
 }) => {
   const vars = variables.filter((v) => v.varType.includes(CLIENT_OPENAI));
 
@@ -78,6 +79,7 @@ export const Transcriptions: React.FC<IRecipeProps> = ({
         Icon={TextIcon}
         label={"Speech transcriptions"}
         docsUrl={metadata === undefined ? "" : `/docs/${DOCS_URL}/`}
+        hideTitle={hideTitle}
       />
       <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
         <SelectPath
