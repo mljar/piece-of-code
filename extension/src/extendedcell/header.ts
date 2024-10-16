@@ -11,7 +11,7 @@ import { Message } from '@lumino/messaging';
 import { SelectRecipeWidget } from './recipes';
 import { getAlwaysOpen } from '../flags';
 import { ExecutionStatus } from '@mljar/recipes';
-import { VariableInspector } from './variableinspector';
+//import { VariableInspector } from '../inspector/variablesInspector';
 
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { mIcon } from '../icons';
@@ -223,7 +223,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
   private _cellId: string | undefined;
   private _packages: string[] = [];
   private _executionSteps: [string, ExecutionStatus][] = [];
-  private _variableInspector: VariableInspector | undefined;
+  // private _variableInspector: VariableInspector | undefined;
   private _meta: any = {};
   private _envVariables: [string, string][] = [];
 
@@ -513,7 +513,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
           this.layout?.addWidget(this.selectRecipe);
         }
       }
-
+      /*
       if (this._variableInspector === undefined && this.selectRecipe !== undefined) {
         this._variableInspector = new VariableInspector(this.notebook,
           this.selectRecipe.setVariablesStatus.bind(this.selectRecipe),
@@ -526,7 +526,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
         this.selectRecipe.setInstallPackage(this._variableInspector.installPackage.bind(this._variableInspector));
 
         this.selectRecipe.updateWidget();
-      }
+      }*/
 
       //console.log('try add focus');
       // cell.inputArea?.node.addEventListener('focusout', () => {
@@ -603,7 +603,7 @@ export class ExtendedCellHeader extends Widget implements ICellHeader {
             const executionCount = this.getExecutionCount(cell);
             this.selectRecipe?.setPreviousExecutionCount(executionCount);
             //this.selectRecipe?.updateWidget();
-            this._variableInspector?.getVariables();
+            //this._variableInspector?.getVariables();
 
             this.selectRecipe?.showWidget();
 

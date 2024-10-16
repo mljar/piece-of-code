@@ -9,14 +9,14 @@ import {
 } from './contexts/activeCell';
 import { CodeCellComponent } from './contexts/codeCell';
 import {
-  useVariablesContext,
-  VariablesContextProvider
+  usePackagesContext,
+  PackagesContextProvider
 } from './contexts/variables';
 import { cakeIcon } from './icons';
 
 export function Hello() {
   const activeCell = useActiveCellContext();
-  const variables = useVariablesContext();
+  const variables = usePackagesContext();
   const [code, setCode] = useState('');
 
   console.log('Left compoenent', activeCell.exists);
@@ -77,9 +77,9 @@ export function createPocLeft(
 ): ReactWidget {
   const widget = ReactWidget.create(
     <ActiveCellContextProvider activeCellManager={activeCellManager}>
-      <VariablesContextProvider activeCellManager={activeCellManager}>
+      <PackagesContextProvider activeCellManager={activeCellManager}>
         <Hello />
-      </VariablesContextProvider>
+      </PackagesContextProvider>
     </ActiveCellContextProvider>
   );
   widget.id = 'mljar::piece-of-code';

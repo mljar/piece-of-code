@@ -7,8 +7,6 @@ import { ActiveCellManager } from './activeCell';
 type PackagesContextValue = {
   status: 'loading' | 'loaded' | 'error' | 'unknown';
   variables: IVariable[];
-
-
 };
 
 const defaultPackagesContext: PackagesContextValue = {
