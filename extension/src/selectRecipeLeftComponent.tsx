@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SelectRecipeLeft } from '@mljar/recipes';
-import {
-  useActiveCellContext
-} from './contexts/activeCell';
+import { useActiveCellContext } from './contexts/activeCell';
 import { CodeCellComponent } from './contexts/codeCell';
-import {
-  useVariablesContext,
-} from './contexts/variables';
+import { useVariablesContext } from './contexts/variables';
 
-import {
-
-  usePackagesContext
-} from './contexts/packages';
-
+import { usePackagesContext } from './contexts/packages';
 
 export const PieceOfCodeComponent = (): JSX.Element => {
   const activeCell = useActiveCellContext();
   const variables = useVariablesContext();
   const packages = usePackagesContext();
   const [code, setCode] = useState('');
+  const [importCode, setImportCode] = useState('');
 
-  console.log('Left component', activeCell.exists);
   if (!activeCell.exists) {
     return (
       <div
@@ -33,11 +25,8 @@ export const PieceOfCodeComponent = (): JSX.Element => {
   }
 
   const checkPackage = (pkgInstallName: string, pkgImportName: string) => {
-    console.log('hello check Package', pkgInstallName, pkgImportName);
     packages.checkPackage(pkgInstallName, pkgImportName);
   };
-
-  console.log(packages.packages);
 
   return (
     <div>
@@ -49,7 +38,9 @@ export const PieceOfCodeComponent = (): JSX.Element => {
         setCode={(code: string) => {
           setCode(code);
         }}
-        setPackages={(p: string[]) => {}}
+        setPackages={(imports: string[]) => {
+          setImportCode(imports.join('\n'));
+        }}
         runCell={() => {}}
         executionSteps={[]}
         deleteCell={() => {}}
@@ -73,6 +64,24 @@ export const PieceOfCodeComponent = (): JSX.Element => {
         getCellCode={() => ''}
         setEnv={() => {}}
       />
+
+      {importCode && (
+        <div
+          style={{
+            border: '1px solid #eee',
+            margin: '8px',
+            borderRadius: '7px'
+          }}
+        >
+          <div style={{ padding: '5px' }}>
+            <CodeCellComponent
+              cellInput={importCode}
+              languageMimetype="python"
+            />
+          </div>
+        </div>
+      )}
+
       {code && (
         <div
           style={{

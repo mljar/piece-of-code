@@ -23,7 +23,6 @@ export class PackagesInspector extends BaseInspector {
 
     if (this._notebookId) {
       if (this._notebookId in checkedPackages && pkgImportName in checkedPackages[this._notebookId]) {
-        // const version = checkedPackages[this._notebookId][pkg];
         this._setAvailablePackages(checkedPackages[this._notebookId]);
       } else {
         let future = this._notebook?.sessionContext.session?.kernel?.requestExecute({
@@ -49,7 +48,7 @@ export class PackagesInspector extends BaseInspector {
           text: string;
         }
         const content = msg.content as ContentData;
-        console.log(content);
+        
         interface IPackage {
           package: string;
           version: string;
