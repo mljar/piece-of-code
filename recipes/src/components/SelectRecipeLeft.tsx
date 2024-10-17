@@ -527,6 +527,12 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
     );
     RecipeUI = recipe.ui;
 
+    recipe.requiredPackages?.forEach((p: IPackage) => {
+      if (checkPackage && checkedPackages && !(p.importName in checkedPackages)) {
+        checkPackage(p.installationName, p.importName);
+      }
+    });
+
     recipe.requiredPackages?.forEach((p) => {
       if (
         !(

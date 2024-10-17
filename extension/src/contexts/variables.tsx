@@ -4,29 +4,27 @@ import { VariablesInspector } from '../inspector/variablesInspector';
 import { IVariable } from '@mljar/recipes';
 import { ActiveCellManager } from './activeCell';
 
-type PackagesContextValue = {
+type VariablesContextValue = {
   status: 'loading' | 'loaded' | 'error' | 'unknown';
   variables: IVariable[];
-
-
 };
 
-const defaultPackagesContext: PackagesContextValue = {
+const defaultVariablesContext: VariablesContextValue = {
   status: 'unknown',
   variables: []
 };
 
-const PackagesContext = React.createContext<PackagesContextValue>(
-  defaultPackagesContext
+const VariablesContext = React.createContext<VariablesContextValue>(
+  defaultVariablesContext
 );
 
-type PackagesContextProps = {
+type VariablesContextProps = {
   activeCellManager: ActiveCellManager;
   children: React.ReactNode;
 };
 
-export function PackagesContextProvider(
-  props: PackagesContextProps
+export function VariablesContextProvider(
+  props: VariablesContextProps
 ): JSX.Element {
   const [status, setStatus] = useState<
     'loading' | 'loaded' | 'error' | 'unknown'
@@ -66,19 +64,19 @@ export function PackagesContextProvider(
   }, [status, variables])
 
   return (
-    <PackagesContext.Provider
+    <VariablesContext.Provider
       value={{
         status,
         variables
       }}
     >
       {props.children}
-    </PackagesContext.Provider>
+    </VariablesContext.Provider>
   );
 }
 
-export function usePackagesContext(): PackagesContextValue {
-  const { status, variables } = useContext(PackagesContext);
+export function useVariablesContext(): VariablesContextValue {
+  const { status, variables } = useContext(VariablesContext);
 
   return {
     status,
