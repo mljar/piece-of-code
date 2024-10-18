@@ -9,11 +9,20 @@ export abstract class BaseInspector {
 
   protected _notebook: NotebookPanel | null;
   protected _notebookId: string | undefined;
-  
+
   constructor(nb: NotebookPanel | null) {
     this._notebook = nb;
     this._notebookId = this._notebook?.id;
   }
+
+  getPackageManager() {
+    let packageManager: 'conda' | 'pip' = 'conda';
+    if (this._notebookId && this._notebookId in notebookPackageManager) {
+      packageManager = notebookPackageManager[this._notebookId];
+    }
+    return packageManager;
+  }
+
 
   checkPackageManager() {
     // if already checked, then skip this step

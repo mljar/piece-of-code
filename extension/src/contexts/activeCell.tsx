@@ -35,6 +35,23 @@ function getActiveCell(widget: Widget | null): Cell | null {
   return notebook.activeCell;
 }
 
+function getFirstCodeCellSource(widget: Widget | null): string {
+  const notebook = getNotebook(widget);
+  if (!notebook) {
+    return '';
+  }
+  const cells = notebook.model?.cells;
+  if (cells) {
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells.get(i);
+      if (cell.type === 'code') {
+        return cell.sharedModel.source;
+      }
+    }
+  }
+  return '';
+}
+
 type CellContent = {
   type: string;
   source: string;
@@ -134,6 +151,24 @@ export class ActiveCellManager {
       return null;
     }
     return notebook.parent instanceof NotebookPanel ? notebook.parent : null;
+  }
+
+  firstCodeCellSource(): string {
+    const notebook = getNotebook(this._mainAreaWidget);
+    if (!notebook) {
+      return '';
+    }
+    return getFirstCodeCellSource(notebook);
+  }
+
+  setContent(content: string): void {
+    const notebook = getNotebook(this._mainAreaWidget);
+    if (!notebook) {
+      return;
+    }
+    this._pollActiveCell();
+    // replace content of active cell
+    this.replace(content);
   }
   /**
    * Inserts `content` in a new cell above the active cell.

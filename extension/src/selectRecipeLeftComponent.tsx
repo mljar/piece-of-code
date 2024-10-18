@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { SelectRecipeLeft } from '@mljar/recipes';
 import { useActiveCellContext } from './contexts/activeCell';
@@ -28,6 +28,18 @@ export const PieceOfCodeComponent = (): JSX.Element => {
     packages.checkPackage(pkgInstallName, pkgImportName);
   };
 
+  const installPackage = (pkgInstallName: string, pkgImportName: string) => {
+    packages.installPackage(pkgInstallName, pkgImportName);
+  };
+
+  const useThisCode = () => {
+    console.log('use this code');
+    console.log(importCode, code);
+    activeCell.manager.setContent(code);
+
+    // console.log(activeCell.manager.firstCodeCellSource());
+  };
+
   return (
     <div>
       <SelectRecipeLeft
@@ -53,8 +65,8 @@ export const PieceOfCodeComponent = (): JSX.Element => {
         variables={variables.variables}
         checkPackage={checkPackage}
         checkedPackages={packages.packages}
-        installPackage={(pkgInstallName: string, pkgImportName: string) => {}}
-        installLog={''}
+        installPackage={installPackage}
+        installLog={packages.installLog}
         clearExecutionSteps={() => {}}
         metadata={{}}
         setMetadata={(m: any) => {}}
@@ -65,7 +77,7 @@ export const PieceOfCodeComponent = (): JSX.Element => {
         setEnv={() => {}}
       />
 
-      {importCode && (
+      {/* {code && importCode && (
         <div
           style={{
             border: '1px solid #eee',
@@ -80,20 +92,35 @@ export const PieceOfCodeComponent = (): JSX.Element => {
             />
           </div>
         </div>
-      )}
+      )} */}
 
       {code && (
-        <div
-          style={{
-            border: '1px solid #eee',
-            margin: '8px',
-            borderRadius: '7px'
-          }}
-        >
-          <div style={{ padding: '5px' }}>
-            <CodeCellComponent cellInput={code} languageMimetype="python" />
+        <>
+          <div
+            style={{
+              border: '1px solid #eee',
+              margin: '8px',
+              borderRadius: '7px'
+            }}
+          >
+            <div style={{ padding: '5px' }}>
+              <CodeCellComponent cellInput={importCode + "\n" + code} languageMimetype="python" />
+            </div>
           </div>
-        </div>
+          <div
+            style={{
+              margin: '8px'
+            }}
+          >
+            <button
+              className="useCodeButton"
+              role="button"
+              onClick={() => useThisCode()}
+            >
+              Use this code
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

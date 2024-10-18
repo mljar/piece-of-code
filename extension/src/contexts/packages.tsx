@@ -5,12 +5,16 @@ import { PackagesInspector } from '../inspector/packagesInspector';
 
 type PackagesContextValue = {
   packages: Record<string, string>;
+  installLog: string;
   checkPackage: (pkgInstallName: string, pkgImportName: string) => void;
+  installPackage: (pkgInstallName: string, pkgImportName: string) => void;
 };
 
 const defaultPackagesContext: PackagesContextValue = {
   packages: {},
-  checkPackage: (pkgInstallName: string, pkgImportName: string) => {}
+  installLog: '',
+  checkPackage: (pkgInstallName: string, pkgImportName: string) => {},
+  installPackage: (pkgInstallName: string, pkgImportName: string) => {}
 };
 
 const PackagesContext = React.createContext<PackagesContextValue>(
@@ -28,9 +32,9 @@ var inspectors: Record<string, PackagesInspector> = {}; // panelId -> PackagesIn
 export function PackagesContextProvider(
   props: PackagesContextProps
 ): JSX.Element {
-
-  const [packages, setPackages] = useState<Record<string, string>>({});
   const [panelId, setPanelId] = useState('');
+  const [packages, setPackages] = useState<Record<string, string>>({});
+  const [installLog, setInstallLogState] = useState('');
 
   const checkPackage = (pkgInstallName: string, pkgImportName: string) => {
     if (!(pkgImportName in packages)) {
@@ -41,8 +45,20 @@ export function PackagesContextProvider(
     }
   };
 
+  const installPackage = (pkgInstallName: string, pkgImportName: string) => {
+    if (panelId !== '' && panelId in inspectors) {
+      const inspector = inspectors[panelId];
+      inspector.installPackage(pkgInstallName, pkgImportName);
+    }
+  };
+
   const setAvailablePackages = (pkgs: Record<string, string>) => {
     setPackages(pkgs);
+    props.updateWidget();
+  };
+
+  const setInstallLog = (log: string) => {
+    setInstallLogState(log);
     props.updateWidget();
   };
 
@@ -56,24 +72,27 @@ export function PackagesContextProvider(
         if (!(nbPanel.id in inspectors)) {
           const inspector = new PackagesInspector(
             nbPanel,
-            setAvailablePackages
+            setAvailablePackages,
+            setInstallLog
           );
           inspectors[nbPanel.id] = inspector;
         }
       }
     });
-
   }, [props.activeCellManager]);
 
   useEffect(() => {
     setPackages({});
+    setInstallLog('');
   }, [panelId]);
 
   return (
     <PackagesContext.Provider
       value={{
         packages,
-        checkPackage
+        installLog,
+        checkPackage,
+        installPackage
       }}
     >
       {props.children}
@@ -82,10 +101,13 @@ export function PackagesContextProvider(
 }
 
 export function usePackagesContext(): PackagesContextValue {
-  const { packages, checkPackage } = useContext(PackagesContext);
+  const { packages, installLog, checkPackage, installPackage } =
+    useContext(PackagesContext);
 
   return {
     packages,
-    checkPackage
+    installLog,
+    checkPackage,
+    installPackage
   };
 }

@@ -522,7 +522,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
         //checkPackage={checkPackage}
         //checkedPackages={checkedPackages}
         //installPackage={installPackage}
-        tags={recipe.tags}
+        //tags={recipe.tags}
       />
     );
     RecipeUI = recipe.ui;
@@ -734,7 +734,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
               <div
                 // className="poc-p-3 poc-bg-gray-50 poc-text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full"
                 className="poc-pt-4 poc-text-medium poc-text-gray-900 dark:poc-text-gray-400  poc-rounded-lg poc-w-full"
-                style={{ maxHeight: "800px", overflowY: "auto" }}
+                style={{ maxHeight: "300px", overflowY: "auto" }}
               >
                 {welcomeMsg}
               </div>

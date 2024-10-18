@@ -19,7 +19,6 @@ export class VariablesInspector extends BaseInspector {
     super(nb);
     this._setVariablesStatus = setVariablesStatus;
     this._setVariables = setVariables;
-
   }
 
   async getVariables() {
