@@ -1,6 +1,6 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
-// code from https://github.com/jupyter/jupyter-ai
+// code from https://github.com/jupyterlab/jupyter-ai
 //
 import React, { useState, useContext, useEffect } from 'react';
 
