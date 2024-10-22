@@ -67,6 +67,7 @@ export function createPocLeft(
   widget.id = 'mljar::piece-of-code';
   widget.title.icon = cakeIcon;
   widget.title.caption = 'Piece of Code';
+  widget.addClass("overflowYAuto");
 
   return widget;
 }

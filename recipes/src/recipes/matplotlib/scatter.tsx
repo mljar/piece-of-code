@@ -590,7 +590,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
               </div>
             </>
           )}
-          <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
+          {/* <div className="poc-grid md:poc-grid-cols-2 md:poc-gap-2">
             <Toggle
               label={"Automatically run code on chart update"}
               value={automatic}
@@ -627,7 +627,7 @@ export const ScatterPlot: React.FC<IRecipeProps> = ({
                 {<PlayIcon className="poc-inline poc-p-1" />}Run code
               </button>
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </div>

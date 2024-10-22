@@ -35,7 +35,7 @@ export const PieceOfCodeComponent = (): JSX.Element => {
   const useThisCode = () => {
     console.log('use this code');
     console.log(importCode, code);
-    activeCell.manager.setContent(code);
+    activeCell.manager.setContent(importCode + '\n' + code);
 
     // console.log(activeCell.manager.firstCodeCellSource());
   };
@@ -95,7 +95,7 @@ export const PieceOfCodeComponent = (): JSX.Element => {
       )} */}
 
       {code && (
-        <>
+        <div>
           <div
             style={{
               border: '1px solid #eee',
@@ -104,7 +104,10 @@ export const PieceOfCodeComponent = (): JSX.Element => {
             }}
           >
             <div style={{ padding: '5px' }}>
-              <CodeCellComponent cellInput={importCode + "\n" + code} languageMimetype="python" />
+              <CodeCellComponent
+                cellInput={importCode + '\n' + code}
+                languageMimetype="python"
+              />
             </div>
           </div>
           <div
@@ -120,7 +123,7 @@ export const PieceOfCodeComponent = (): JSX.Element => {
               Use this code
             </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
