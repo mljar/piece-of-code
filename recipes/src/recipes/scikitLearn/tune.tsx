@@ -51,7 +51,9 @@ export const Tune: React.FC<IRecipeProps> = ({
   const dataObjects = variables.filter((v) => v.isMatrix).map((v) => v.varName);
   const models = variables
     .filter(
-      (v) => v && (v.varType.includes("Classifier") || v.varType.includes("Regressor"))
+      (v) =>
+        v &&
+        (v.varType.includes("Classifier") || v.varType.includes("Regressor"))
     )
     .map((v) => v.varName);
   const [model, setModel] = useState(models.length > 0 ? models[0] : "");
@@ -77,14 +79,21 @@ export const Tune: React.FC<IRecipeProps> = ({
   const [verbose, setVerbose] = useState(true);
 
   const isClassifier = () => {
-    const selectedModel = variables.filter((v) => v.varName === model)[0];
-    if(!selectedModel) return false;
-    return selectedModel.varType.includes("Classifier");
+    const models = variables.filter((v) => v.varName === model);
+    if (models.length > 0) {
+      const selectedModel = models[0];
+      return selectedModel.varType.includes("Classifier");
+    }
+    return false;
   };
 
   const selectedModelType = () => {
-    const selectedModel = variables.filter((v) => v.varName === model)[0];
-    return selectedModel.varType;
+    const models = variables.filter((v) => v.varName === model);
+    if (models.length > 0) {
+      const selectedModel = models[0];
+      return selectedModel.varType;
+    }
+    return "";
   };
 
   useEffect(() => {
@@ -214,14 +223,18 @@ export const Tune: React.FC<IRecipeProps> = ({
   useEffect(() => {
     if (metadata) {
       if ("mljar" in metadata) metadata = metadata.mljar;
-      if (metadata["searchType"] !== undefined) setSearchType(metadata["searchType"]);
-      if (metadata["iterations"] !== undefined) setIterations(metadata["iterations"]);
+      if (metadata["searchType"] !== undefined)
+        setSearchType(metadata["searchType"]);
+      if (metadata["iterations"] !== undefined)
+        setIterations(metadata["iterations"]);
       if (metadata["model"] !== undefined) setModel(metadata["model"]);
       if (metadata["df"] !== undefined) setDf(metadata["df"]);
       if (metadata["target"] !== undefined) setTarget(metadata["target"]);
-      if (metadata["sampleWeight"] !== undefined) setSampleWeight(metadata["sampleWeight"]);
+      if (metadata["sampleWeight"] !== undefined)
+        setSampleWeight(metadata["sampleWeight"]);
       if (metadata["metric"] !== undefined) setMetric(metadata["metric"]);
-      if (metadata["validation"] !== undefined) setValidation(metadata["validation"]);
+      if (metadata["validation"] !== undefined)
+        setValidation(metadata["validation"]);
       if (metadata["kFolds"] !== undefined) setKFolds(metadata["kFolds"]);
       if (metadata["shuffle"] !== undefined) setShuffle(metadata["shuffle"]);
       if (metadata["stratify"] !== undefined) setStratify(metadata["stratify"]);

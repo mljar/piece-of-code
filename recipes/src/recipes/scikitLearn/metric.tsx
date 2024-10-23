@@ -43,7 +43,9 @@ export const Metric: React.FC<IRecipeProps> = ({
 
   const [advanced, setAdvanced] = useState(false);
   const [metric, setMetric] = useState(Object.keys(metricsFuncs)[0]);
-  const dataObjects = variables.filter((v) => v.isMatrix).map((v) => v.varName);
+  const dataObjects = variables
+    .filter((v) => v && v.isMatrix)
+    .map((v) => v.varName);
   const [yTrue, setYTrue] = useState(dataObjects.length ? dataObjects[0] : "");
   const [yPred, setYPred] = useState(
     dataObjects.length > 1 ? dataObjects[1] : ""
@@ -73,13 +75,16 @@ export const Metric: React.FC<IRecipeProps> = ({
   }, [metric]);
 
   useEffect(() => {
-    const predShape = variables.filter((v) => v.varName === yPred)[0].varShape;
-    if (predShape.includes("x 2 cols")) {
-      setPredVarType("binary");
-    } else if (predShape.includes("x")) {
-      setPredVarType("multiclass");
-    } else {
-      setPredVarType("vector");
+    const preds = variables.filter((v) => v && v.varName === yPred);
+    if (preds.length > 0) {
+      const predShape = preds[0].varShape;
+      if (predShape.includes("x 2 cols")) {
+        setPredVarType("binary");
+      } else if (predShape.includes("x")) {
+        setPredVarType("multiclass");
+      } else {
+        setPredVarType("vector");
+      }
     }
   }, [yPred, metric]);
 
