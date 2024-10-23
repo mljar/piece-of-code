@@ -251,6 +251,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
         Icon={recipe.Icon}
         description={recipe.description}
         docsLink={`https://mljar.com/docs/${recipe.docsUrl}/`}
+        controlDescDisplay={previewRecipe === selectedRecipe ? true : false}
       />
     );
     RecipeUI = recipe.ui;
@@ -420,7 +421,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
             </div>
           </div>
 
-          {RecipeUI && showRecipeUI && (
+          {RecipeUI && showRecipeUI && installPackages.length === 0 && (
             <div>
               <div className="poc-p-2 poc-py-4 poc-pt-0 poc-border poc-border-gray-100 dark:poc-border-slate-600 poc-rounded-md poc-mx-2">
                 <RecipeUI
@@ -443,7 +444,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
           )}
           {installPackages.length > 0 && (
             <div className="poc-px-2 poc-pb-2">
-              <hr className="poc-mb-2" />
+              {/* <hr className="poc-mb-2" /> */}
               <div className="poc-p-3 poc-bg-gray-50 text-medium poc-text-gray-500 dark:poc-text-gray-400 dark:poc-bg-gray-800 poc-rounded-lg poc-w-full poc-border ">
                 <h3 className="poc-text-lg poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
                   <PackageIcon className="poc-inline poc-pb-1" /> Install

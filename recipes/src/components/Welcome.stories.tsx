@@ -16,7 +16,7 @@ export const WelcomeInstallPkgs: Story = (
   args: React.JSX.IntrinsicAttributes & IWelcomeProps
 ) => (
   <>
-    <Welcome {...args} />
+    <Welcome {...args} controlDescDisplay={true} docsLink="test"/>
   </>
 );
 
