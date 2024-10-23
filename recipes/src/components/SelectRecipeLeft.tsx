@@ -411,7 +411,10 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
 
             <div
               className="poc-pt-4 poc-text-medium poc-text-gray-900 dark:poc-text-gray-400  poc-rounded-lg poc-w-full"
-              style={{ maxHeight: "300px", overflowY: "auto" }}
+              style={{
+                maxHeight: selectedRecipeSet === "Markdown" ? "100%" : "300px",
+                overflowY: "auto",
+              }}
             >
               {welcomeMsg}
             </div>
