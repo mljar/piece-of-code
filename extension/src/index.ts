@@ -1,4 +1,5 @@
 import {
+  ILabShell,
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
@@ -17,13 +18,23 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'pieceofcode:plugin',
   description: 'Write code with UI.',
   autoStart: true,
-  optional: [ISettingRegistry, IThemeManager],
+  optional: [ISettingRegistry, IThemeManager, ILabShell],
   activate: async (
     app: JupyterFrontEnd,
     settingRegistry: ISettingRegistry | null,
-    themeManager: IThemeManager
+    themeManager: IThemeManager,
+    labShell: ILabShell
   ) => {
     console.log('Piece of Code extension is activated!');
+
+    const { commands } = app;
+    RecipeWidgetsRegistry.getInstance().setCommandRegistry(commands);
+    RecipeWidgetsRegistry.getInstance().setLabShell(labShell);
+    if (settingRegistry) {
+      RecipeWidgetsRegistry.getInstance().setSettingRegistry(settingRegistry);
+    }
+
+
     const tm = themeManager as ThemeManager;
     if (tm) {
       if (!tm.isToggledThemeScrollbars())
@@ -50,6 +61,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
     }
   }
 };
+
+
 import { ITranslator } from '@jupyterlab/translation';
 import {
   Dialog,
@@ -158,7 +171,8 @@ Would you like to clear the workspace or keep waiting?`),
 
 import { createPocLeft } from './selectRecipeLeft';
 import { ActiveCellManager } from './contexts/activeCell';
- 
+import { RecipeWidgetsRegistry } from './extendedcell/header';
+
 
 const pocLeft: JupyterFrontEndPlugin<void> = {
   id: '@mljar/pocLeft',

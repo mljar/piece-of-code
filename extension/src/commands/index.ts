@@ -3,6 +3,7 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
+import { runIcon } from "@jupyterlab/ui-components";
 import { cakeIcon, cakeOffIcon } from '../icons';
 
 import { getAlwaysOpen, setAlwaysOpen } from '../flags';
@@ -80,6 +81,7 @@ export const commandsPlugin: JupyterFrontEndPlugin<void> = {
     });
     
     app.commands.addCommand(CommandIds.runCurrentCell, {
+      icon: runIcon,
       label: 'Execute current cell',
       execute: () => {
         const nb = tracker.currentWidget;
