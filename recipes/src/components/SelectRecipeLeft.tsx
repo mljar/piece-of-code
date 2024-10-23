@@ -175,11 +175,13 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
           setSelectedRecipeSet(name);
           setSelectedRecipe("");
           setCode("");
+          setPackages([]);
         }}
         onMouseEnter={() => {
           setPreviewRecipeSet(name);
           setPreviewRecipe("");
           setCode("");
+          setPackages([]);
         }}
       >
         {recipeSet.Icon && (
@@ -204,6 +206,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
             onMouseEnter={() => {
               setPreviewRecipe(recipe.name);
               setCode("");
+              setPackages([]);
             }}
           >
             {recipe.Icon && <recipe.Icon className="poc-p-1 poc-mx-auto" />}{" "}
@@ -387,6 +390,7 @@ export const SelectRecipeLeft: React.FC<ISelectRecipeLeftProps> = ({
                     setPreviewRecipeSet("");
                     setPreviewRecipe("");
                     setCode("");
+                    setPackages([]);
                   }}
                 >
                   ↩ Back to cookbooks
