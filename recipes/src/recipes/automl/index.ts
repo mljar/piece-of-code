@@ -9,7 +9,7 @@ export const AutoMLRecipes: IRecipeSet = {
   name: "MLJAR AutoML",
   longName: "AutoML in Python",
   docsUrl: "python-automl",
-  description: "Use MLJAR AutoML to train Machine Learning pipeline on tabular data.",
+  description: "MLJAR AutoML makes it easy to work with data in tables by automatically training and adjusting machine learning models. It handles data preparation, improves features, and provides clear reports and explanations for the models. You can get great results fast.",
   shortDescription: "Train MLJAR AutoML in Python with no-code.",
   tags: ["automl", "mljar"],
   Icon: RobotIcon,

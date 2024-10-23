@@ -17,6 +17,7 @@ export const TrainStory: Story = (
 ) => (
   <>
     <Train {...args} />
+    <Train {...args} hideTitle={true} />
   </>
 );
 
