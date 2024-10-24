@@ -18,6 +18,7 @@ export const SelectRecipeLeftForm: Story = (
   args: React.JSX.IntrinsicAttributes & ISelectRecipeLeftProps
 ) => (
   <>
+  asd
     <SelectRecipeLeft {...args} />
     <h2>Dark theme</h2>
     <div className="poc-dark poc-bg-black poc-p-8">

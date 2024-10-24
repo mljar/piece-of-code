@@ -1,2 +1,3 @@
-# piece-of-code
-Extension for Jupyter Lab to make coding easier
+# Piece of Code
+
+Extension for MLJAR Studio to make coding easier

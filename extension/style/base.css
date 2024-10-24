@@ -18,17 +18,17 @@
   background-color: #0F172A;
 } */
 
-.jp-cell-toolbar {
+/* .jp-cell-toolbar {
   border: none;
   display: none;
-}
+} */
 
 /* rgba(37, 99, 235, 0.15); */
-.jp-Cell.jp-mod-active {
+/* .jp-Cell.jp-mod-active {
   border: 1px solid #1976d2;
   border-radius: 5px;
   background-color: rgba(37, 99, 235, 0.02) !important;
-}
+} */
 
 /* .lm-DockPanel {
   background: linear-gradient(-45deg, #3b82f6, #a855f7);
@@ -116,4 +116,8 @@
 .useCodeButton:focus {
   box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
   outline: 0;
+}
+
+.overflowYAuto {
+  overflow-y: auto;
 }

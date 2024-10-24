@@ -15,12 +15,9 @@
   "jupyter.lab.toolbars": {
     "Cell": [
       {
-        "name": "open-piece-of-code",
-        "command": "@mljar/pieceofcode:open"
-      },
-      {
-        "name": "hide-piece-of-code",
-        "command": "@mljar/pieceofcode:hide"
+        "name": "execute-current-cell", 
+        "command": "@mljar/pieceofcode:runcurrentcell",
+        "rank": 1
       }
     ]
   }

@@ -35,7 +35,7 @@ export const Predict: React.FC<IRecipeProps> = ({
 
   const models = variables
     .filter(
-      (v) => v.varType.includes("Classifier") || v.varType.includes("Regressor")
+      (v) => v && (v.varType.includes("Classifier") || v.varType.includes("Regressor"))
     )
     .map((v) => v.varName);
 

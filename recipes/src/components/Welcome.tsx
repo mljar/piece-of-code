@@ -14,6 +14,8 @@ import { SpinnerIcon } from "../icons/Spinner";
 import { QuestionIcon } from "../icons/Question";
 import { KeyIcon } from "../icons/Key";
 import { SettingsIcon } from "../icons/Settings";
+import { LayoutNavbarExpandIcon } from "../icons/LayoutNavbarExpand";
+import { LayoutNavbarCollapseIcon } from "../icons/LayoutNavbarCollapse";
 
 const md = markdownit();
 
@@ -43,6 +45,7 @@ export interface IWelcomeProps {
   installPackage?: (installationName: string, importName: string) => void;
   setShowEnterLicense?: React.Dispatch<React.SetStateAction<boolean>>;
   tags?: string[];
+  controlDescDisplay?: boolean;
 }
 
 export const Welcome: React.FC<IWelcomeProps> = ({
@@ -56,8 +59,10 @@ export const Welcome: React.FC<IWelcomeProps> = ({
   installPackage,
   setShowEnterLicense,
   tags,
+  controlDescDisplay,
 }: IWelcomeProps) => {
   //
+  const [extended, setExtended] = useState(controlDescDisplay ? false : true);
 
   packages?.forEach((p: IPackage) => {
     if (checkPackage && checkedPackages && !(p.importName in checkedPackages)) {
@@ -91,7 +96,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         className="poc-flex poc-items-center "
         key={`${p.installationName}${p.version}`}
       >
-        <Tooltip id="package-icon-tooltip" className="poc-text-base" />
+        <Tooltip id="package-icon-tooltip" className="poc-text-sm" />
         <div
           data-tooltip-id="package-icon-tooltip"
           data-tooltip-content={tooltipMsg}
@@ -150,7 +155,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
       <h3 className="poc-text-lg   poc-text-gray-900 dark:poc-text-white poc-mb-2 poc-font-medium">
         {Icon && <Icon className="poc-inline poc-pb-1" />} {title && title}
         {docsLink && (
-          <div className="poc-inline poc-items-center poc-float-right">
+          <div className="poc-inline poc-items-center poc-float-right poc-pr-1">
             <a
               className="poc-text-blue-500 hover:poc-text-blue-700 
           poc-font-medium poc-text-sm poc-text-center 
@@ -163,6 +168,32 @@ export const Welcome: React.FC<IWelcomeProps> = ({
               <span>Docs</span>
               <span className="poc-sr-only">Documentation</span>
             </a>
+          </div>
+        )}
+        {controlDescDisplay && (
+          <div className="poc-inline poc-items-center poc-float-right poc-text-sm poc-text-gray-500 hover:poc-text-gray-700">
+            <Tooltip
+              id="control-description-tooltip"
+              className="poc-text-sm"
+            />
+            {extended && (
+              <div
+                onClick={() => setExtended(false)} 
+                data-tooltip-id="control-description-tooltip"
+                data-tooltip-content="Collapse description"
+              >
+                <LayoutNavbarCollapseIcon className="poc-p-0.5 poc-inline" />
+                <span className="poc-sr-only">Collapse description</span>
+              </div>
+            )}
+
+            {!extended && (
+              <div onClick={() => setExtended(true)} data-tooltip-id="control-description-tooltip"
+              data-tooltip-content="Extend description">
+                <LayoutNavbarExpandIcon className="poc-p-0.5 poc-inline" />
+                <span className="poc-sr-only">Expand description</span>
+              </div>
+            )}
           </div>
         )}
         {setShowEnterLicense !== undefined && (
@@ -180,7 +211,7 @@ export const Welcome: React.FC<IWelcomeProps> = ({
         )}
       </h3>
       {/* {description && <p className="poc-mb-2 poc-text-base">{description}</p>} */}
-      {description && (
+      {description && extended && (
         <div
           className="poc-prose poc-max-w-none prose-headings:poc-py-0 prose-headings:poc-my-0 prose-headings:poc-text-base dark:poc-prose-invert"
           dangerouslySetInnerHTML={{

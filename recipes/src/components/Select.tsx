@@ -48,7 +48,7 @@ export const Select: React.FC<SelectProps> = ({
           <select
             value={option}
             onChange={(e) => setOption(e.target.value)}
-            className="poc-h-8 poc-border poc-rounded-md poc-block poc-w-full poc-p-2
+            className="poc-h-8 poc-border poc-rounded-md poc-block poc-w-full poc-p-1
           poc-bg-gray-50
           poc-border-gray-300 
           poc-text-gray-900 

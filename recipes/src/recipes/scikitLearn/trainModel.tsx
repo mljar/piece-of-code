@@ -38,7 +38,7 @@ export const TrainModel: React.FC<IRecipeProps> = ({
   const dataObjects = variables.filter((v) => v.isMatrix).map((v) => v.varName);
   const models = variables
     .filter(
-      (v) => v.varType.includes("Classifier") || v.varType.includes("Regressor")
+      (v) => v && (v.varType.includes("Classifier") || v.varType.includes("Regressor"))
     )
     .map((v) => v.varName); 
   const [model, setModel] = useState(models.length > 0 ? models[0] : "");
