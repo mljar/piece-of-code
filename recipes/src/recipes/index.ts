@@ -15,6 +15,7 @@ import { OpenAIRecipes } from "./open-ai";
 import { PDFRecipes } from "./pdf-operations"
 import { GoogleSheetsRecipes } from "./google-sheets"
 import { HttpRequestRecipes } from "./http-requests";
+import { OllamaRecipes } from "./ollama";
 
 // import { WidgetsRecipes } from "./widgets";
 
@@ -32,6 +33,7 @@ export const allRecipes: Record<string, IRecipeSet> = {
   [AutoMLRecipes.name]: AutoMLRecipes,
   [ImagesOperationsRecipes.name]: ImagesOperationsRecipes,
   [OpenAIRecipes.name]: OpenAIRecipes,
+  [OllamaRecipes.name]: OllamaRecipes,
   [PDFRecipes.name]: PDFRecipes,
   [GoogleSheetsRecipes.name]: GoogleSheetsRecipes,
   [HttpRequestRecipes.name]: HttpRequestRecipes

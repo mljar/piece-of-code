@@ -158,7 +158,7 @@ export const ChatCompl: React.FC<IRecipeProps> = ({
       {model === "o1-preview" && (
         <>
           <div className="poc-border-2 poc-w-fulll poc-rounded-lg poc-border-blue-600 poc-bg-[#F9FAFB] poc-p-1">
-            <InfoIcon />
+            <InfoIcon className="poc-ml-2"/>
             <span className=" poc-ml-3">The availability of this OpenAI model is very limited. Please, check out your account's rate limits on the <a href="https://platform.openai.com/docs/guides/rate-limits" className="poc-font-medium poc-text-blue-500">OpenAI Platform.</a></span>
           </div>
         </>
@@ -252,7 +252,7 @@ export const ChatComplRecipe: IRecipe = {
   description:
     "Learn to create a chat completion using OpenAI's API by setting up system, assistant, and user messages. This recipe details how to generate responses with token limits, choose specific AI models, and print results. Ideal for developers building chatbots and managing AI-driven conversations in Python.",
   shortDescription:
-    "Learn how to create a chat completion using OpenAI's API, setting up system, assistant, and user messages. This recipe covers generating responses with token limits, specified AI models and printing results. ",
+    "Learn how to create a chat completion using OpenAI's API, setting up system, assistant, and user messages. This recipe covers generating responses with token limits, specified AI models and printing results.",
   codeExplanation: `
   1. Create chat completion.
   2. Get response and print it.`,
